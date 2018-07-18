@@ -763,7 +763,7 @@ Polymer-based web component for a course/enrollment card.
 						break;
 				}
 			},
-			_pinClickHandler: function(e) {
+			_pinClickHandler: function() {
 				var pinAction = this.pinned
 					? this.enrollment.getActionByName(this.HypermediaActions.enrollments.unpinCourse)
 					: this.enrollment.getActionByName(this.HypermediaActions.enrollments.pinCourse);
