@@ -79,17 +79,6 @@ Polymer-based web component for a course/enrollment card.
 			d2l-card[disabled]:focus .course-text {
 				text-decoration: none;
 			}
-
-			.course-code-text,
-			.separator-icon,
-			.semester-text {
-				display: none;
-			}
-			:host([show-course-code]) .course-code-text,
-			:host([show-course-code]) .separator-icon,
-			:host([show-semester]) .semester-text {
-				display: inline-block;
-			}
 			.course-code-text,
 			.semester-text  {
 				-ms-word-break: break-all;
@@ -271,7 +260,7 @@ Polymer-based web component for a course/enrollment card.
 				<div class="image-container">
 					<d2l-course-image
 						image="[[_image]]"
-						sizes="[[tileSizes]]"
+						sizes="[[_tileSizes]]"
 						type="tile">
 					</d2l-course-image>
 				</div>
@@ -287,18 +276,16 @@ Polymer-based web component for a course/enrollment card.
 					</div>
 				</div>
 
-				<div class="alert-colour-circle" hidden$="[[!startedInactive]]"></div>
+				<div class="alert-colour-circle" hidden$="[[!_startedInactive]]"></div>
 			</div>
 
 			<div class="flex">
 				<div class="course-text">
 					[[_organization.properties.name]]
 					<div>
-						<span class="course-code-text uppercase">
-							[[_organization.properties.code]]
-							<d2l-icon hidden$="[[!_showSeparator]]" class="separator-icon" icon="d2l-tier1:bullet"></d2l-icon>
-						</span>
-						<span class="semester-text">[[_semesterName]]</span>
+						<span hidden$="[[!_showCourseCode]]" class="course-code-text uppercase">[[_organization.properties.code]]</span>
+						<d2l-icon hidden$="[[!_showSeparator]]" class="separator-icon" icon="d2l-tier1:bullet"></d2l-icon>
+						<span hidden$="[[!_showSemester]]" class="semester-text">[[_semesterName]]</span>
 					</div>
 					<d2l-offscreen>[[_overlayAnnounceText]]</d2l-offscreen>
 				</div>
@@ -325,12 +312,12 @@ Polymer-based web component for a course/enrollment card.
 						</d2l-menu-item>
 						<d2l-menu-item
 							on-d2l-menu-item-select="_pinClickHandler"
-							hidden$="[[pinned]]"
+							hidden$="[[_pinned]]"
 							text="[[localize('pin')]]">
 						</d2l-menu-item>
 						<d2l-menu-item
 							on-d2l-menu-item-select="_pinClickHandler"
-							hidden$="[[!pinned]]"
+							hidden$="[[!_pinned]]"
 							text="[[localize('unpin')]]">
 						</d2l-menu-item>
 					</d2l-menu>
@@ -338,7 +325,7 @@ Polymer-based web component for a course/enrollment card.
 			</d2l-dropdown-more>
 
 			<button
-				hidden$="[[!pinned]]"
+				hidden$="[[!_pinned]]"
 				class="pin-indicator"
 				on-tap="_pinClickHandler"
 				on-keypress="_pinPressHandler"
@@ -352,11 +339,20 @@ Polymer-based web component for a course/enrollment card.
 			is: 'd2l-enrollment-card',
 
 			properties: {
-				courseUpdatesConfig: {
+				 href: {
+					type: String,
+					value: null
+				},
+				presentationHref: {
+					type: String,
+					value: null
+				},
+
+				_courseUpdatesConfig: {
 					type: Object,
 					value: function() { return {}; }
 				},
-				enrollment: {
+				_enrollment: {
 					type: Object,
 					value: function() { return {}; }
 				},
@@ -365,31 +361,41 @@ Polymer-based web component for a course/enrollment card.
 					value: false,
 					reflectToAttribute: true
 				},
-				pinned: {
+				_pinned: {
 					type: Boolean,
 					value: false,
-					reflectToAttribute: true
+					observe: '_handlePinnedChange()'
 				},
-				showCourseCode: {
+				_showCourseCode: {
 					type: Boolean,
-					value: false,
-					reflectToAttribute: true
+					value: false
 				},
-				showSemester: {
+				_showSemester: {
 					type: Boolean,
-					value: false,
-					reflectToAttribute: true
+					value: false
 				},
-				startedInactive: {
+				_startedInactive: {
 					type: Boolean,
-					value: false,
-					reflectToAttribute: true
+					value: false
 				},
-				tileSizes: {
+				_tileSizes: {
 					type: Object,
-					value: function() { return {}; }
+					value: function() {
+						return {
+							mobile: {
+								maxwidth: 767,
+								size: 100
+							},
+							tablet: {
+								maxwidth: 1243,
+								size: 67
+							},
+							desktop: {
+								size: 25
+							}
+						};
+					}
 				},
-
 				_canAccessCourseInfo: {
 					type: Boolean,
 					computed: '_computeCanAccessCourseInfo(_organization)'
@@ -435,12 +441,12 @@ Polymer-based web component for a course/enrollment card.
 				_showSeparator: {
 					type: Boolean,
 					value: false,
-					computed: '_computeShowSeparator(showSemester, showCourseCode, _organization, _semesterName)'
+					computed: '_computeShowSeparator(_showSemester, _showCourseCode, _organization, _semesterName)'
 				},
 				_showUpdateCount: {
 					type: Boolean,
 					value: false,
-					computed: '_computeShowUpdateCount(courseUpdatesConfig, _updateCount)'
+					computed: '_computeShowUpdateCount(_courseUpdatesConfig, _updateCount)'
 				},
 				_updateString: {
 					type: String,
@@ -457,7 +463,8 @@ Polymer-based web component for a course/enrollment card.
 				D2L.PolymerBehaviors.EnrollmentCard.LocalizeBehavior,
 			],
 			observers: [
-				'_fetchEnrollmentData(_load, enrollment)'
+				'_fetchEnrollment(_load, href)',
+				'_fetchPresentationData(_load, hrefPresentation)'
 			],
 			ready: function() {
 				Polymer.IronA11yAnnouncer.requestAvailability();
@@ -569,9 +576,9 @@ Polymer-based web component for a course/enrollment card.
 					this._overlayDate = null;
 					this._overlayInactive = this.localize('overlay.inactive');
 					this._overlayTitle = null;
-					if (startDate && this.pinned && organization.hasLinkByRel(this.HypermediaRels.courseOfferingInfoPage)) {
+					if (startDate && this._pinned && organization.hasLinkByRel(this.HypermediaRels.courseOfferingInfoPage)) {
 						// We only care about calling out started-inactive courses if they're pinned, and if the user is admin-ish
-						this.startedInactive = true;
+						this._startedInactive = true;
 						this.fire('started-inactive');
 					}
 					return this._overlayInactive;
@@ -604,6 +611,13 @@ Polymer-based web component for a course/enrollment card.
 			_computeUpdateString: function(updateCount) {
 				return updateCount > 99 ? '99+' : updateCount;
 			},
+			_handlePinnedChange() {
+				if(this._pinned) {
+					this.setAttribute('pinned', '');
+				} else {
+					this.removeAttribute('pinned', '');
+				}
+			},
 
 			_displaySetImageResult: function(success, skipSetImage) {
 				setTimeout(function() {
@@ -628,17 +642,47 @@ Polymer-based web component for a course/enrollment card.
 					}.bind(this), 1000);
 				}.bind(this), 1000);
 			},
-			_fetchEnrollmentData: function(load, enrollment) {
+			_fetchPresentationData: function(load, presentationHref) {
+				if (!load || !presentationHref) {
+					return Promise.resolve();
+				}
+
+				return this._fetchSirenEntity(presentationHref)
+					.then(this._setPresentation.bind(this));
+			},
+			_handlePesentationReponse: function(presentation) {
+				if (!presentation || !presentation.properties) {
+					return;
+				}
+				this._showCourseCode = presentation.properties.showCourseCode;
+				this._showSemester = presentation.properties.showSemester;
+				this._courseUpdatesConfig = {
+					'showUnattemptedQuizzes': presentation.properties.showUnattemptedQuizzes,
+					'showDropboxUnreadFeedback': presentation.properties.showDropboxUnreadFeedback,
+					'showUngradedQuizAttempts': presentation.properties.showUngradedQuizAttempts,
+					'showUnreadDiscussionMessages': presentation.properties.showUnreadDiscussionMessages,
+					'showUnreadDropboxSubmissions': presentation.properties.showUnreadDropboxSubmissions
+				};
+			},
+			_fetchEnrollment: function(load, enrollmentUrl) {
+				if (!load || !enrollmentUrl) {
+					return Promise.resolve();
+				}
+
+				return this._fetchSirenEntity(enrollmentUrl)
+					.then(this._handleEnrollmentData.bind(this));
+			},
+			_handleEnrollmentData: function(enrollment) {
 				if (
-					!load
-					|| !enrollment
+					!enrollment
 					|| !enrollment.hasLinkByRel
 					|| !enrollment.hasLinkByRel(this.HypermediaRels.organization)
 				) {
 					return;
 				}
 
-				this.pinned = enrollment.hasClass(this.HypermediaClasses.enrollments.pinned);
+				this._enrollment = enrollment;
+				this._pinned = enrollment.hasClass(this.HypermediaClasses.enrollments.pinned);
 
 				var organizationHref = enrollment.getLinkByRel(this.HypermediaRels.organization).href;
 
@@ -652,7 +696,7 @@ Polymer-based web component for a course/enrollment card.
 					}.bind(this));
 			},
 			_fetchNotifications: function() {
-				if (!this._notificationsUrl || !this.courseUpdatesConfig) {
+				if (!this._notificationsUrl || !this._courseUpdatesConfig) {
 					return Promise.resolve();
 				}
 
@@ -663,19 +707,19 @@ Polymer-based web component for a course/enrollment card.
 						}
 
 						var total = 0;
-						if (this.courseUpdatesConfig.showUnattemptedQuizzes) {
+						if (this._courseUpdatesConfig.showUnattemptedQuizzes) {
 							total += notifications.properties.UnattemptedQuizzes;
 						}
-						if (this.courseUpdatesConfig.showDropboxUnreadFeedback) {
+						if (this._courseUpdatesConfig.showDropboxUnreadFeedback) {
 							total += notifications.properties.UnreadAssignmentFeedback;
 						}
-						if (this.courseUpdatesConfig.showUngradedQuizAttempts) {
+						if (this._courseUpdatesConfig.showUngradedQuizAttempts) {
 							total += notifications.properties.UngradedQuizzes;
 						}
-						if (this.courseUpdatesConfig.showUnreadDiscussionMessages) {
+						if (this._courseUpdatesConfig.showUnreadDiscussionMessages) {
 							total += notifications.properties.UnreadDiscussions + notifications.properties.UnapprovedDiscussions;
 						}
-						if (this.courseUpdatesConfig.showUnreadDropboxSubmissions) {
+						if (this._courseUpdatesConfig.showUnreadDropboxSubmissions) {
 							total += notifications.properties.UnreadAssignmentSubmissions;
 						}
 
@@ -687,7 +731,7 @@ Polymer-based web component for a course/enrollment card.
 					});
 			},
 			_fetchSemester: function() {
-				if (!this._semesterUrl || !this.showSemester) {
+				if (!this._semesterUrl || !this._showSemester) {
 					return Promise.resolve();
 				}
 
@@ -812,9 +856,9 @@ Polymer-based web component for a course/enrollment card.
 				}
 			},
 			_pinClickHandler: function() {
-				var pinAction = this.pinned
-					? this.enrollment.getActionByName(this.HypermediaActions.enrollments.unpinCourse)
-					: this.enrollment.getActionByName(this.HypermediaActions.enrollments.pinCourse);
+				var pinAction = this._pinned
+					? this._enrollment.getActionByName(this.HypermediaActions.enrollments.unpinCourse)
+					: this._enrollment.getActionByName(this.HypermediaActions.enrollments.pinCourse);
 
 				var body = '';
 				var fields = pinAction.fields || [];
@@ -822,12 +866,12 @@ Polymer-based web component for a course/enrollment card.
 					body = body + encodeURIComponent(field.name) + '=' + encodeURIComponent(field.value) + '&';
 				});
 
-				this.fire(this.pinned ? 'enrollment-pinned' : 'enrollment-unpinned', {
-					enrollment: this.enrollment,
+				this.fire(this._pinned ? 'enrollment-pinned' : 'enrollment-unpinned', {
+					enrollment: this._enrollment,
 					organization: this._organization
 				});
 
-				var localizeKey = this.pinned ? 'unpinActionResult' : 'pinActionResult';
+				var localizeKey = this._pinned ? 'unpinActionResult' : 'pinActionResult';
 				this.fire('iron-announce', {
 					text: this.localize(localizeKey, 'course', this._organization.properties.name)
 				}, { bubbles: true });
@@ -842,15 +886,13 @@ Polymer-based web component for a course/enrollment card.
 						}
 					}))
 					.then(this._responseToSirenEntity.bind(this))
-					.then(function(enrollment) {
-						this.enrollment = enrollment;
-					}.bind(this))
+					.then(this._handleEnrollmentData.bind(this))
 					.then(function() {
 						// Wait until after PUT has finished to fire, so that
 						// listeners are guaranteed to fetch updated entity
 						this.fire('d2l-course-pinned-change', {
-							enrollment: this.enrollment,
-							isPinned: this.pinned
+							enrollment: this._enrollment,
+							isPinned: this._pinned
 						});
 					}.bind(this));
 			},
