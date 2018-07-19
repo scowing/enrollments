@@ -40,6 +40,19 @@ Polymer-based web component for a course/enrollment card.
 				cursor: not-allowed;
 			}
 
+			d2l-card:hover .image-container,
+			d2l-card:focus .image-container {
+				-webkit-filter: saturate(1.15) contrast(1.15);
+				filter: saturate(1.15) contrast(1.15);
+				transform: scale(1.1);
+			}
+			d2l-card[disabled]:hover .image-container,
+			d2l-card[disabled]:focus .image-container {
+				-webkit-filter: none;
+				filter: none;
+				transform: none;
+			}
+
 			d2l-icon {
 				color: white;
 				--d2l-icon-width: 18px;
@@ -110,7 +123,7 @@ Polymer-based web component for a course/enrollment card.
 
 			.menu-area {
 				position: absolute;
-				top: 15px;
+				top: 0px;
 				right: 0px;
 				justify-content: flex-end;
 			}
@@ -121,10 +134,22 @@ Polymer-based web component for a course/enrollment card.
 			}
 			.menu-area > * {
 				margin-right: 15px;
+				margin-top: 14px;
 			}
 			[dir="rtl"] .menu-area > * {
 				margin-left: 15px;
 				margin-right: auto;
+			}
+			.menu-area > d2l-dropdown-more {
+				opacity: 0;
+				margin-top: 0;
+				transition: opacity 0.5s, margin-top 0.5s;
+			}
+			:host:hover .menu-area > d2l-dropdown-more,
+			:host:focus .menu-area > d2l-dropdown-more,
+			:host[focused] .menu-area > d2l-dropdown-more {
+				opacity: 1;
+				margin-top: 15px;
 			}
 
 			.overlay {
@@ -156,6 +181,7 @@ Polymer-based web component for a course/enrollment card.
 
 			.image-container {
 				height: var(--course-image-height);
+				transition: filter 0.25s, -webkit-filter 0.25s, transform 0.5s ease-in-out;
 			}
 
 			.icon-container {
@@ -234,15 +260,21 @@ Polymer-based web component for a course/enrollment card.
 				right: auto;
 				left: -2px;
 			}
+
+			.overflow-hidden {
+				overflow: hidden;
+			}
 		</style>
 
 		<d2l-card on-tap="_onTapCard" on-keypress="_onKeypressCard" tabindex="0">
-			<div class="image-container" aria-hidden="true" slot="header">
-				<d2l-course-image
-					image="[[_image]]"
-					sizes="[[tileSizes]]"
-					type="tile">
-				</d2l-course-image>
+			<div class="overflow-hidden" slot="header" aria-hidden="true">
+				<div class="image-container">
+					<d2l-course-image
+						image="[[_image]]"
+						sizes="[[tileSizes]]"
+						type="tile">
+					</d2l-course-image>
+				</div>
 				<div hidden$="[[!_hasOverlay]]" class="overlay">
 					<div class="overlay-text">[[_overlayTitle]]</div>
 					<div class="overlay-date">[[_overlayDate]]</div>
@@ -327,6 +359,11 @@ Polymer-based web component for a course/enrollment card.
 				enrollment: {
 					type: Object,
 					value: function() { return {}; }
+				},
+				focused: {
+					type: Boolean,
+					value: false,
+					reflectToAttribute: true
 				},
 				pinned: {
 					type: Boolean,
@@ -430,6 +467,9 @@ Polymer-based web component for a course/enrollment card.
 				window.addEventListener('set-course-image', this._boundOnSetCourseImage);
 
 				Polymer.RenderStatus.afterNextRender(this, function() {
+					this.addEventListener('focus', this._onFocus, true);
+					this.addEventListener('blur', this._onBlur, true);
+
 					var imageTile = this.$$('d2l-card');
 
 					var observerCallback = function(entries, observer) {
@@ -470,6 +510,8 @@ Polymer-based web component for a course/enrollment card.
 			},
 			detached: function() {
 				window.removeEventListener('set-course-image', this._boundOnSetCourseImage);
+				this.removeEventListener('focus', this._onFocus, true);
+				this.removeEventListener('blur', this._onBlur, true);
 			},
 
 			refreshImage: function(organization) {
@@ -714,6 +756,12 @@ Polymer-based web component for a course/enrollment card.
 				this.fire('open-change-image-view', {
 					organization: this._organization
 				});
+			},
+			_onFocus: function() {
+				this.focused = true;
+			},
+			_onBlur: function() {
+				this.focused = false;
 			},
 			_onKeypressCard: function(e) {
 				if (e.code === 'Space' || e.code === 'Enter') {
