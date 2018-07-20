@@ -454,7 +454,7 @@ describe('d2l-enrollment-card', () => {
 				}
 			}));
 
-			var imageOverlay = component.$$('div.overlay:nth-of-type(2)');
+			var imageOverlay = component.$$('div.overlay:nth-of-type(3)');
 			expect(imageOverlay.hasAttribute('hidden')).to.be.false;
 			var spinner = component.$$('.overlay d2l-loading-spinner');
 			expect(spinner.hasAttribute('hidden')).to.be.false;
@@ -471,7 +471,7 @@ describe('d2l-enrollment-card', () => {
 			}));
 
 			clock.tick(1001);
-			var imageOverlay = component.$$('div.overlay:nth-of-type(2)');
+			var imageOverlay = component.$$('div.overlay:nth-of-type(3)');
 			expect(imageOverlay.hasAttribute('hidden')).to.be.false;
 			var spinner = component.$$('.overlay d2l-loading-spinner');
 			expect(spinner.hasAttribute('hidden')).to.be.true;
@@ -494,7 +494,7 @@ describe('d2l-enrollment-card', () => {
 			}));
 
 			clock.tick(1001);
-			var imageOverlay = component.$$('div.overlay:nth-of-type(2)');
+			var imageOverlay = component.$$('div.overlay:nth-of-type(3)');
 			expect(imageOverlay.hasAttribute('hidden')).to.be.false;
 			var spinner = component.$$('.overlay d2l-loading-spinner');
 			expect(spinner.hasAttribute('hidden')).to.be.true;
@@ -581,7 +581,7 @@ describe('d2l-enrollment-card', () => {
 				organizationEntity.properties.isActive = testCase.active;
 				component._organization = organizationEntity;
 
-				var overlay = component.$$('div.overlay:first-of-type:not([hidden])');
+				var overlay = component.$$('div.overlay:nth-of-type(2):not([hidden])');
 				if (
 					testCase.end === futureDate
 					&& (testCase.start === pastDate || !testCase.start)
