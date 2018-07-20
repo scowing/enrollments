@@ -339,7 +339,7 @@ Polymer-based web component for a course/enrollment card.
 			is: 'd2l-enrollment-card',
 
 			properties: {
-				 href: {
+				href: {
 					type: String,
 					value: null
 				},
@@ -606,8 +606,8 @@ Polymer-based web component for a course/enrollment card.
 			_computeUpdateString: function(updateCount) {
 				return updateCount > 99 ? '99+' : updateCount;
 			},
-			_handlePinnedChange() {
-				if(this._pinned) {
+			_handlePinnedChange: function() {
+				if (this._pinned) {
 					this.setAttribute('pinned', '');
 				} else {
 					this.removeAttribute('pinned', '');
