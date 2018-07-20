@@ -356,11 +356,6 @@ Polymer-based web component for a course/enrollment card.
 					type: Object,
 					value: function() { return {}; }
 				},
-				focused: {
-					type: Boolean,
-					value: false,
-					reflectToAttribute: true
-				},
 				_pinned: {
 					type: Boolean,
 					value: false,
@@ -802,10 +797,10 @@ Polymer-based web component for a course/enrollment card.
 				});
 			},
 			_onFocus: function() {
-				this.focused = true;
+				this.setAttribute('focused', '');
 			},
 			_onBlur: function() {
-				this.focused = false;
+				this.removeAttribute('focused', '');
 			},
 			_onKeypressCard: function(e) {
 				if (e.code === 'Space' || e.code === 'Enter') {

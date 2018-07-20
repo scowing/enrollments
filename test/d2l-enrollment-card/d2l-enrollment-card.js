@@ -5,6 +5,7 @@ describe('d2l-enrollment-card', () => {
 		sandbox,
 		enrollmentEntity,
 		organizationEntity,
+		presentationEntity,
 		semesterOrganizationEntity;
 
 	function SetupFetchStub(url, entity) {
