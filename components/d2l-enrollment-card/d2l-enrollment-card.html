@@ -359,7 +359,7 @@ Polymer-based web component for a course/enrollment card.
 				_pinned: {
 					type: Boolean,
 					value: false,
-					observe: '_handlePinnedChange()'
+					observer: '_handlePinnedChange'
 				},
 				_showCourseCode: {
 					type: Boolean,
@@ -459,7 +459,7 @@ Polymer-based web component for a course/enrollment card.
 			],
 			observers: [
 				'_fetchEnrollment(_load, href)',
-				'_fetchPresentationData(_load, hrefPresentation)'
+				'_fetchPresentationData(_load, presentationHref)'
 			],
 			ready: function() {
 				Polymer.IronA11yAnnouncer.requestAvailability();
@@ -606,8 +606,8 @@ Polymer-based web component for a course/enrollment card.
 			_computeUpdateString: function(updateCount) {
 				return updateCount > 99 ? '99+' : updateCount;
 			},
-			_handlePinnedChange: function() {
-				if (this._pinned) {
+			_handlePinnedChange: function(pinned) {
+				if (pinned) {
 					this.setAttribute('pinned', '');
 				} else {
 					this.removeAttribute('pinned', '');
@@ -643,20 +643,20 @@ Polymer-based web component for a course/enrollment card.
 				}
 
 				return this._fetchSirenEntity(presentationHref)
-					.then(this._setPresentation.bind(this));
+					.then(this._handlePesentationReponse.bind(this));
 			},
 			_handlePesentationReponse: function(presentation) {
 				if (!presentation || !presentation.properties) {
 					return;
 				}
-				this._showCourseCode = presentation.properties.showCourseCode;
-				this._showSemester = presentation.properties.showSemester;
+				this._showCourseCode = presentation.properties.ShowCourseCode;
+				this._showSemester = presentation.properties.ShowSemester;
 				this._courseUpdatesConfig = {
-					'showUnattemptedQuizzes': presentation.properties.showUnattemptedQuizzes,
-					'showDropboxUnreadFeedback': presentation.properties.showDropboxUnreadFeedback,
-					'showUngradedQuizAttempts': presentation.properties.showUngradedQuizAttempts,
-					'showUnreadDiscussionMessages': presentation.properties.showUnreadDiscussionMessages,
-					'showUnreadDropboxSubmissions': presentation.properties.showUnreadDropboxSubmissions
+					'showUnattemptedQuizzes': presentation.properties.ShowUnattemptedQuizzes,
+					'showDropboxUnreadFeedback': presentation.properties.ShowDropboxUnreadFeedback,
+					'showUngradedQuizAttempts': presentation.properties.ShowUngradedQuizAttempts,
+					'showUnreadDiscussionMessages': presentation.properties.ShowUnreadDiscussionMessages,
+					'showUnreadDropboxSubmissions': presentation.properties.ShowUnreadDropboxSubmissions
 				};
 			},
 			_fetchEnrollment: function(load, enrollmentUrl) {
