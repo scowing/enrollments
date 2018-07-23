@@ -283,9 +283,9 @@ Polymer-based web component for a course/enrollment card.
 				<div class="course-text">
 					[[_organization.properties.name]]
 					<div>
-						<span hidden$="[[!_showCourseCode]]" class="course-code-text uppercase">[[_organization.properties.code]]</span>
+						<span hidden$="[[!_presentation.properties.ShowCourseCode]]" class="course-code-text uppercase">[[_organization.properties.code]]</span>
 						<d2l-icon hidden$="[[!_showSeparator]]" class="separator-icon" icon="d2l-tier1:bullet"></d2l-icon>
-						<span hidden$="[[!_showSemester]]" class="semester-text">[[_semesterName]]</span>
+						<span hidden$="[[!_presentation.properties.ShowSemester]]" class="semester-text">[[_semesterName]]</span>
 					</div>
 					<d2l-offscreen>[[_overlayAnnounceText]]</d2l-offscreen>
 				</div>
@@ -348,11 +348,11 @@ Polymer-based web component for a course/enrollment card.
 					value: null
 				},
 
-				_courseUpdatesConfig: {
+				_enrollment: {
 					type: Object,
 					value: function() { return {}; }
 				},
-				_enrollment: {
+				_presentation: {
 					type: Object,
 					value: function() { return {}; }
 				},
@@ -360,14 +360,6 @@ Polymer-based web component for a course/enrollment card.
 					type: Boolean,
 					value: false,
 					observer: '_handlePinnedChange'
-				},
-				_showCourseCode: {
-					type: Boolean,
-					value: false
-				},
-				_showSemester: {
-					type: Boolean,
-					value: false
 				},
 				_startedInactive: {
 					type: Boolean,
@@ -436,12 +428,12 @@ Polymer-based web component for a course/enrollment card.
 				_showSeparator: {
 					type: Boolean,
 					value: false,
-					computed: '_computeShowSeparator(_showSemester, _showCourseCode, _organization, _semesterName)'
+					computed: '_computeShowSeparator(_presentation, _organization, _semesterName)'
 				},
 				_showUpdateCount: {
 					type: Boolean,
 					value: false,
-					computed: '_computeShowUpdateCount(_courseUpdatesConfig, _updateCount)'
+					computed: '_computeShowUpdateCount(_presentation, _updateCount)'
 				},
 				_updateString: {
 					type: String,
@@ -590,9 +582,11 @@ Polymer-based web component for a course/enrollment card.
 					&& organization.properties
 					&& this.localize('coursePinButton', 'course', organization.properties.name);
 			},
-			_computeShowSeparator: function(showSemester, showCourseCode, organization, semesterName) {
-				return showSemester
-					&& showCourseCode
+			_computeShowSeparator: function(presentation, organization, semesterName) {
+				return presentation
+					&& presentation.properties
+					&& presentation.properties.ShowSemester
+					&& presentation.properties.ShowCourseCode
 					&& organization
 					&& organization.properties
 					&& organization.properties.code
@@ -600,11 +594,24 @@ Polymer-based web component for a course/enrollment card.
 					&& semesterName
 					&& semesterName.length > 0;
 			},
-			_computeShowUpdateCount: function(courseUpdatesConfig, updateCount) {
-				return !!courseUpdatesConfig && updateCount > 0;
+			_computeShowUpdateCount: function(presentation, updateCount) {
+				var courseUpdateConfig = presentation
+					&& presentation.properties
+					&& (presentation.properties.ShowUnattemptedQuizzes
+					|| presentation.properties.ShowDropboxUnreadFeedback
+					|| presentation.properties.SowUngradedQuizAttempts
+					|| presentation.properties.ShowUnreadDiscussionMessages
+					|| presentation.properties.ShowUnreadDropboxSubmissions);
+
+				return courseUpdateConfig && updateCount > 0;
 			},
 			_computeUpdateString: function(updateCount) {
 				return updateCount > 99 ? '99+' : updateCount;
+			},
+			_computeShowSemester: function(presentation) {
+				return !!presentation
+					&& !!presentation.properties
+					&& !!presentation.properties.ShowSemester;
 			},
 			_handlePinnedChange: function(pinned) {
 				if (pinned) {
@@ -643,21 +650,15 @@ Polymer-based web component for a course/enrollment card.
 				}
 
 				return this._fetchSirenEntity(presentationHref)
-					.then(this._handlePesentationReponse.bind(this));
-			},
-			_handlePesentationReponse: function(presentation) {
-				if (!presentation || !presentation.properties) {
-					return;
-				}
-				this._showCourseCode = presentation.properties.ShowCourseCode;
-				this._showSemester = presentation.properties.ShowSemester;
-				this._courseUpdatesConfig = {
-					'showUnattemptedQuizzes': presentation.properties.ShowUnattemptedQuizzes,
-					'showDropboxUnreadFeedback': presentation.properties.ShowDropboxUnreadFeedback,
-					'showUngradedQuizAttempts': presentation.properties.ShowUngradedQuizAttempts,
-					'showUnreadDiscussionMessages': presentation.properties.ShowUnreadDiscussionMessages,
-					'showUnreadDropboxSubmissions': presentation.properties.ShowUnreadDropboxSubmissions
-				};
+					.then(function(presentation) {
+						this._presentation = presentation;
+					}.bind(this))
+					.then(function() {
+						return Promise.all([
+							this._fetchSemester(),
+							this._fetchNotifications()
+						]);
+					}.bind(this));
 			},
 			_fetchEnrollment: function(load, enrollmentUrl) {
 				if (!load || !enrollmentUrl) {
@@ -691,7 +692,11 @@ Polymer-based web component for a course/enrollment card.
 					}.bind(this));
 			},
 			_fetchNotifications: function() {
-				if (!this._notificationsUrl || !this._courseUpdatesConfig) {
+				if (
+					!this._notificationsUrl
+					|| !this._presentation
+					|| !this._presentation.properties
+				) {
 					return Promise.resolve();
 				}
 
@@ -702,19 +707,19 @@ Polymer-based web component for a course/enrollment card.
 						}
 
 						var total = 0;
-						if (this._courseUpdatesConfig.showUnattemptedQuizzes) {
+						if (this._presentation.properties.ShowUnattemptedQuizzes) {
 							total += notifications.properties.UnattemptedQuizzes;
 						}
-						if (this._courseUpdatesConfig.showDropboxUnreadFeedback) {
+						if (this._presentation.properties.ShowDropboxUnreadFeedback) {
 							total += notifications.properties.UnreadAssignmentFeedback;
 						}
-						if (this._courseUpdatesConfig.showUngradedQuizAttempts) {
+						if (this._presentation.properties.SowUngradedQuizAttempts) {
 							total += notifications.properties.UngradedQuizzes;
 						}
-						if (this._courseUpdatesConfig.showUnreadDiscussionMessages) {
+						if (this._presentation.properties.ShowUnreadDiscussionMessages) {
 							total += notifications.properties.UnreadDiscussions + notifications.properties.UnapprovedDiscussions;
 						}
-						if (this._courseUpdatesConfig.showUnreadDropboxSubmissions) {
+						if (this._presentation.properties.ShowUnreadDropboxSubmissions) {
 							total += notifications.properties.UnreadAssignmentSubmissions;
 						}
 
@@ -726,7 +731,7 @@ Polymer-based web component for a course/enrollment card.
 					});
 			},
 			_fetchSemester: function() {
-				if (!this._semesterUrl || !this._showSemester) {
+				if (!this._semesterUrl || !this._presentation.properties.ShowSemester) {
 					return Promise.resolve();
 				}
 

@@ -302,7 +302,9 @@ describe('d2l-enrollment-card', () => {
 		describe('Course code', () => {
 
 			it('should show the course code if configured true', done => {
-				component._showCourseCode = true;
+				presentationEntity.properties.ShowCourseCode = true;
+				component._presentation = presentationEntity;
+
 				var courseCode = component.$$('.course-code-text');
 
 				setTimeout(() => {
@@ -312,7 +314,9 @@ describe('d2l-enrollment-card', () => {
 			});
 
 			it('should not show the course code if configured false', done => {
-				component._showCourseCode = false;
+				presentationEntity.properties.ShowCourseCode = false;
+				component._presentation = presentationEntity;
+
 				var courseCode = component.$$('.course-code-text');
 
 				setTimeout(() => {
@@ -331,7 +335,9 @@ describe('d2l-enrollment-card', () => {
 		beforeEach(done => loadEnrollment(done));
 
 		it('should show the semester if the showSemester is set', () => {
-			component._showSemester = true;
+			presentationEntity.properties.ShowSemester = true;
+			component._presentation = {};
+			component._presentation = presentationEntity;
 
 			return component._fetchSemester().then(() => {
 				var semester = component.$$('.semester-text');
@@ -342,11 +348,22 @@ describe('d2l-enrollment-card', () => {
 
 		it('should not set the semester name if the show semester config is false', () => {
 			var spy = sandbox.spy(component, '_fetchSirenEntity');
+			presentationEntity.properties.ShowCourseCode = true;
+			component._presentation = presentationEntity;
 
-			component._showSemester = false;
+			component.dispatchEvent(new CustomEvent('d2l-enrollment-card-presentation-change', {
+				detail: {
+					presentationEntity: presentationEntity,
+					status: 'set'
+				}
+			}));
+			presentationEntity.properties.ShowCourseCode = false;
+			component._presentation = presentationEntity;
 
 			return component._fetchSemester().then(() => {
+				var semester = component.$$('.semester-text');
 				expect(spy).to.have.not.been.called;
+				expect(semester.hasAttribute('hidden')).to.be.true;
 			});
 
 		});
@@ -376,8 +393,9 @@ describe('d2l-enrollment-card', () => {
 		].forEach(testCase => {
 
 			it(testName(testCase), () => {
-				component._showCourseCode = testCase.showCourseCode;
-				component._showSemester = testCase.showSemester;
+				presentationEntity.properties.ShowCourseCode = testCase.showCourseCode;
+				presentationEntity.properties.ShowSemester = testCase.showSemester;
+				component._presentation = presentationEntity;
 				component._organization = organizationEntity;
 				component._organization.properties.code = testCase.courseCode;
 				component._semesterName = testCase.semesterName;
@@ -565,9 +583,9 @@ describe('d2l-enrollment-card', () => {
 					}
 				});
 
-				component._courseUpdatesConfig = {
-					showUnattemptedQuizzes: true
-				};
+				presentationEntity.properties.ShowUnattemptedQuizzes = true;
+				component._presentation = {};
+				component._presentation = presentationEntity;
 
 				return component._fetchNotifications().then(() => {
 					expect(component._showUpdateCount).to.equal(testCase.updatesShown);
