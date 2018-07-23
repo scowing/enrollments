@@ -348,15 +348,7 @@ describe('d2l-enrollment-card', () => {
 
 		it('should not set the semester name if the show semester config is false', () => {
 			var spy = sandbox.spy(component, '_fetchSirenEntity');
-			presentationEntity.properties.ShowCourseCode = true;
-			component._presentation = presentationEntity;
 
-			component.dispatchEvent(new CustomEvent('d2l-enrollment-card-presentation-change', {
-				detail: {
-					presentationEntity: presentationEntity,
-					status: 'set'
-				}
-			}));
 			presentationEntity.properties.ShowCourseCode = false;
 			component._presentation = presentationEntity;
 

@@ -363,7 +363,8 @@ Polymer-based web component for a course/enrollment card.
 				},
 				_startedInactive: {
 					type: Boolean,
-					value: false
+					value: false,
+					observer: '_handleStartedInactiveChange'
 				},
 				_tileSizes: {
 					type: Object,
@@ -599,7 +600,7 @@ Polymer-based web component for a course/enrollment card.
 					&& presentation.properties
 					&& (presentation.properties.ShowUnattemptedQuizzes
 					|| presentation.properties.ShowDropboxUnreadFeedback
-					|| presentation.properties.SowUngradedQuizAttempts
+					|| presentation.properties.ShowUngradedQuizAttempts
 					|| presentation.properties.ShowUnreadDiscussionMessages
 					|| presentation.properties.ShowUnreadDropboxSubmissions);
 
@@ -609,15 +610,22 @@ Polymer-based web component for a course/enrollment card.
 				return updateCount > 99 ? '99+' : updateCount;
 			},
 			_computeShowSemester: function(presentation) {
-				return !!presentation
-					&& !!presentation.properties
-					&& !!presentation.properties.ShowSemester;
+				return presentation
+					&& presentation.properties
+					&& presentation.properties.ShowSemester;
 			},
 			_handlePinnedChange: function(pinned) {
 				if (pinned) {
 					this.setAttribute('pinned', '');
 				} else {
-					this.removeAttribute('pinned', '');
+					this.removeAttribute('pinned');
+				}
+			},
+			_handleStartedInactiveChange: function(startedInactive) {
+				if (startedInactive) {
+					this.setAttribute('startedInactive', '');
+				} else {
+					this.removeAttribute('startedInactive');
 				}
 			},
 
@@ -713,7 +721,7 @@ Polymer-based web component for a course/enrollment card.
 						if (this._presentation.properties.ShowDropboxUnreadFeedback) {
 							total += notifications.properties.UnreadAssignmentFeedback;
 						}
-						if (this._presentation.properties.SowUngradedQuizAttempts) {
+						if (this._presentation.properties.ShowUngradedQuizAttempts) {
 							total += notifications.properties.UngradedQuizzes;
 						}
 						if (this._presentation.properties.ShowUnreadDiscussionMessages) {
@@ -744,9 +752,10 @@ Polymer-based web component for a course/enrollment card.
 				if (!url) {
 					return;
 				}
+
 				return window.d2lfetch
 					.fetch(new Request(url, {
-						headers: { Accept: 'application/vnd.siren+json' }
+						headers: { Accept: 'application/vnd.siren+json' },
 					}))
 					.then(this._responseToSirenEntity.bind(this));
 			},
@@ -805,7 +814,7 @@ Polymer-based web component for a course/enrollment card.
 				this.setAttribute('focused', '');
 			},
 			_onBlur: function() {
-				this.removeAttribute('focused', '');
+				this.removeAttribute('focused');
 			},
 			_onKeypressCard: function(e) {
 				if (e.code === 'Space' || e.code === 'Enter') {
