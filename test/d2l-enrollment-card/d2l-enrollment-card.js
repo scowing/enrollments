@@ -223,10 +223,6 @@ describe('d2l-enrollment-card', () => {
 			expect(component._courseInfoUrl).to.equal('http://example.com/1/info');
 		});
 
-		it('should set the semester organization URL', () => {
-			expect(component._semesterUrl).to.equal('/organizations/2');
-		});
-
 		it('should set the notifications URL', () => {
 			expect(component._notificationsUrl).to.equal('/organizations/1/my-notifications');
 		});
@@ -290,116 +286,6 @@ describe('d2l-enrollment-card', () => {
 
 			expect(spy).to.have.been.called;
 			expect(component._pinButtonLabel).to.equal('Course name is pinned. Unpin course');
-		});
-
-		it('should update the course name', () => {
-			component._organization = organizationEntity;
-
-			var courseText = component.$$('.course-text');
-			expect(courseText.innerText).to.contain(organizationEntity.properties.name);
-		});
-
-		describe('Course code', () => {
-
-			it('should show the course code if configured true', done => {
-				presentationEntity.properties.ShowCourseCode = true;
-				component._presentation = presentationEntity.properties;
-
-				var courseCode = component.$$('.course-code-text');
-
-				setTimeout(() => {
-					expect(courseCode.hasAttribute('hidden')).to.be.false;
-					done();
-				});
-			});
-
-			it('should not show the course code if configured false', done => {
-				presentationEntity.properties.ShowCourseCode = false;
-				component._presentation = presentationEntity.properties;
-
-				var courseCode = component.$$('.course-code-text');
-
-				setTimeout(() => {
-					expect(courseCode.hasAttribute('hidden')).to.be.true;
-					done();
-				});
-
-			});
-
-		});
-
-	});
-
-	describe('Semester name', () => {
-
-		beforeEach(done => loadEnrollment(done));
-
-		it('should show the semester if the showSemester is set', done => {
-			presentationEntity.properties.ShowSemester = true;
-			component._presentation = {};
-			component._presentation = presentationEntity.properties;
-
-			var semester = component.$$('.semester-text');
-			setTimeout(() => {
-				expect(semester.innerText).to.equal(semesterOrganizationEntity.properties.name);
-				expect(semester.hasAttribute('hidden')).to.be.false;
-				done();
-			});
-		});
-
-		it('should not set the semester name if the show semester config is false', done => {
-			var spy = sandbox.spy(component, '_fetchSirenEntity');
-
-			presentationEntity.properties.ShowCourseCode = false;
-			component._notificationsUrl = false;
-			component._presentation = {};
-			component._presentation = presentationEntity.properties;
-
-			var semester = component.$$('.semester-text');
-			setTimeout(() => {
-				expect(spy).to.have.not.been.called;
-				expect(semester.hasAttribute('hidden')).to.be.true;
-				done();
-			});
-
-		});
-
-	});
-
-	describe('Separator between course code and semester name', () => {
-
-		function testName(testCase) {
-			return 'should ' + (testCase.showSeparator ? '' : ' not ')
-				+ 'show the separator when '
-				+ 'showCourseCode=' + testCase.showCourseCode + ', '
-				+ 'showSemester=' + testCase.showSemester + ', '
-				+ 'semesterName="' + testCase.semesterName + '", '
-				+ 'courseCode="' + testCase.courseCode + '"';
-		}
-
-		[
-			{ showCourseCode: false, showSemester: false, semesterName: '', courseCode: '', showSeparator: false },
-			{ showCourseCode: false, showSemester: true, semesterName: '', courseCode: '', showSeparator: false },
-			{ showCourseCode: false, showSemester: true, semesterName: 'foo', courseCode: '', showSeparator: false },
-			{ showCourseCode: false, showSemester: true, semesterName: 'foo', courseCode: 'bar', showSeparator: false },
-			{ showCourseCode: true, showSemester: false, semesterName: '', courseCode: '', showSeparator: false },
-			{ showCourseCode: true, showSemester: false, semesterName: '', courseCode: 'bar', showSeparator: false },
-			{ showCourseCode: true, showSemester: true, semesterName: '', courseCode: 'bar', showSeparator: false },
-			{ showCourseCode: true, showSemester: true, semesterName: 'foo', courseCode: 'bar', showSeparator: true }
-		].forEach(testCase => {
-
-			it(testName(testCase), () => {
-				presentationEntity.properties.ShowCourseCode = testCase.showCourseCode;
-				presentationEntity.properties.ShowSemester = testCase.showSemester;
-				component._presentation = presentationEntity.properties;
-				component._organization = organizationEntity;
-				component._organization.properties.code = testCase.courseCode;
-				component._semesterName = testCase.semesterName;
-
-				var separator = component.$$('.separator-icon');
-				expect(separator.hasAttribute('hidden')).to.equal(!testCase.showSeparator);
-			});
-
 		});
 
 	});
