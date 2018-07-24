@@ -609,11 +609,6 @@ Polymer-based web component for a course/enrollment card.
 			_computeUpdateString: function(updateCount) {
 				return updateCount > 99 ? '99+' : updateCount;
 			},
-			_computeShowSemester: function(presentation) {
-				return presentation
-					&& presentation.properties
-					&& presentation.properties.ShowSemester;
-			},
 			_handlePinnedChange: function(pinned) {
 				if (pinned) {
 					this.setAttribute('pinned', '');
