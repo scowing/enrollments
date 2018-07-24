@@ -5,6 +5,7 @@ describe('d2l-enrollment-card', () => {
 		sandbox,
 		enrollmentEntity,
 		organizationEntity,
+		presentationEntity,
 		semesterOrganizationEntity;
 
 	function SetupFetchStub(url, entity) {
@@ -18,7 +19,8 @@ describe('d2l-enrollment-card', () => {
 	function loadEnrollment(done) {
 		var spy = sandbox.spy(component, '_handleOrganizationResponse');
 
-		component.enrollment = enrollmentEntity;
+		component.href = '/enrollments/users/169/organizations/1';
+		component.presentationHref = '/d2l/le/manageCourses/homepage-component/1';
 
 		setTimeout(() => {
 			expect(spy).to.have.been.calledOnce;
@@ -149,12 +151,32 @@ describe('d2l-enrollment-card', () => {
 				}
 			}]
 		});
+		presentationEntity = window.D2L.Hypermedia.Siren.Parse({
+			properties: {
+				ShowCourseCode: false,
+				ShowSemester: false,
+				ShowUnattemptedQuizzes: false,
+				ShowDropboxUnreadFeedback: false,
+				ShowUngradedQuizAttempts: false,
+				ShowUnreadDiscussionMessages: false,
+				ShowUnreadDropboxSubmissions: false
+			},
+			links: [{
+				rel: ['https://api.brightspace.com/rels/user-settings'],
+				href: ''
+			}, {
+				rel: ['self'],
+				href: '/d2l/le/manageCourses/homepage-component/1'
+			}]
+		});
 
 		fetchStub = sandbox.stub(window.d2lfetch, 'fetch');
+		SetupFetchStub(/\/enrollments\/users\/169\/organizations\/1$/, enrollmentEntity);
 		SetupFetchStub(/\/organizations\/1$/, organizationEntity);
 		SetupFetchStub(/\/organizations\/2$/, semesterOrganizationEntity);
 		SetupFetchStub(/\/organizations\/1\/image/, {});
 		SetupFetchStub(/\/organizations\/1\/my-notifications$/, { properties: {} });
+		SetupFetchStub(/\/d2l\/le\/manageCourses\/homepage-component\/1/, presentationEntity);
 
 		component = fixture('d2l-enrollment-card-fixture');
 		component._load = true;
@@ -171,13 +193,8 @@ describe('d2l-enrollment-card', () => {
 	describe('Public API', () => {
 
 		it('should implement all properties', () => {
-			expect(component.courseUpdatesConfig).to.be.an('object');
-			expect(component.enrollment).to.be.an('object');
-			expect(component.pinned).to.equal(false);
-			expect(component.showCourseCode).to.equal(false);
-			expect(component.showSemester).to.equal(false);
-			expect(component.startedInactive).to.equal(false);
-			expect(component.tileSizes).to.be.an('object');
+			expect(component.href).to.equal(null);
+			expect(component.presentationHref).to.equal(null);
 		});
 
 		it('should implement refreshImage', () => {
@@ -189,6 +206,14 @@ describe('d2l-enrollment-card', () => {
 	describe('Setting the enrollment attribute', () => {
 
 		beforeEach(done => loadEnrollment(done));
+
+		it('should set the enrollment href', () => {
+			expect(component.href).to.equal('/enrollments/users/169/organizations/1');
+		});
+
+		it('should set presentation href', () => {
+			expect(component.presentationHref).to.equal('/d2l/le/manageCourses/homepage-component/1');
+		});
 
 		it('should fetch the organization', () => {
 			expect(component._organization).to.equal(organizationEntity);
@@ -215,7 +240,7 @@ describe('d2l-enrollment-card', () => {
 		});
 
 		it('should set the pin state', () => {
-			expect(component.pinned).to.equal(true);
+			expect(component._pinned).to.equal(true);
 		});
 
 	});
@@ -277,21 +302,25 @@ describe('d2l-enrollment-card', () => {
 		describe('Course code', () => {
 
 			it('should show the course code if configured true', done => {
-				component.showCourseCode = true;
+				presentationEntity.properties.ShowCourseCode = true;
+				component._presentation = presentationEntity.properties;
+
 				var courseCode = component.$$('.course-code-text');
 
 				setTimeout(() => {
-					expect(window.getComputedStyle(courseCode).getPropertyValue('display')).to.equal('inline-block');
+					expect(courseCode.hasAttribute('hidden')).to.be.false;
 					done();
 				});
 			});
 
 			it('should not show the course code if configured false', done => {
-				component.showCourseCode = false;
+				presentationEntity.properties.ShowCourseCode = false;
+				component._presentation = presentationEntity.properties;
+
 				var courseCode = component.$$('.course-code-text');
 
 				setTimeout(() => {
-					expect(window.getComputedStyle(courseCode).getPropertyValue('display')).to.equal('none');
+					expect(courseCode.hasAttribute('hidden')).to.be.true;
 					done();
 				});
 
@@ -305,23 +334,32 @@ describe('d2l-enrollment-card', () => {
 
 		beforeEach(done => loadEnrollment(done));
 
-		it('should show the semester if the showSemester is set', () => {
-			component.showSemester = true;
+		it('should show the semester if the showSemester is set', done => {
+			presentationEntity.properties.ShowSemester = true;
+			component._presentation = {};
+			component._presentation = presentationEntity.properties;
 
-			return component._fetchSemester().then(() => {
-				var semester = component.$$('.semester-text');
+			var semester = component.$$('.semester-text');
+			setTimeout(() => {
 				expect(semester.innerText).to.equal(semesterOrganizationEntity.properties.name);
-				expect(window.getComputedStyle(semester).getPropertyValue('display')).to.equal('inline-block');
+				expect(semester.hasAttribute('hidden')).to.be.false;
+				done();
 			});
 		});
 
-		it('should not set the semester name if the show semester config is false', () => {
+		it('should not set the semester name if the show semester config is false', done => {
 			var spy = sandbox.spy(component, '_fetchSirenEntity');
 
-			component.showSemester = false;
+			presentationEntity.properties.ShowCourseCode = false;
+			component._notificationsUrl = false;
+			component._presentation = {};
+			component._presentation = presentationEntity.properties;
 
-			return component._fetchSemester().then(() => {
+			var semester = component.$$('.semester-text');
+			setTimeout(() => {
 				expect(spy).to.have.not.been.called;
+				expect(semester.hasAttribute('hidden')).to.be.true;
+				done();
 			});
 
 		});
@@ -351,8 +389,9 @@ describe('d2l-enrollment-card', () => {
 		].forEach(testCase => {
 
 			it(testName(testCase), () => {
-				component.showCourseCode = testCase.showCourseCode;
-				component.showSemester = testCase.showSemester;
+				presentationEntity.properties.ShowCourseCode = testCase.showCourseCode;
+				presentationEntity.properties.ShowSemester = testCase.showSemester;
+				component._presentation = presentationEntity.properties;
 				component._organization = organizationEntity;
 				component._organization.properties.code = testCase.courseCode;
 				component._semesterName = testCase.semesterName;
@@ -370,7 +409,7 @@ describe('d2l-enrollment-card', () => {
 		beforeEach(done => loadEnrollment(done));
 
 		it('should have a visible "Unpin" menu item when pinned', () => {
-			component.pinned = true;
+			component._pinned = true;
 
 			var unpinMenuItem = component.$$('d2l-menu-item.d2l-menu-item-last');
 
@@ -379,7 +418,7 @@ describe('d2l-enrollment-card', () => {
 		});
 
 		it('should have a visible "Pin" menu item when pinned', () => {
-			component.pinned = false;
+			component._pinned = false;
 
 			var pinMenuItem = component.$$('d2l-menu-item.d2l-menu-item-last');
 			expect(pinMenuItem).to.not.be.null;
@@ -387,14 +426,14 @@ describe('d2l-enrollment-card', () => {
 		});
 
 		it('should have a visible pinned button when pinned', () => {
-			component.pinned = true;
+			component._pinned = true;
 
 			var pinButton = component.$$('.pin-indicator:not([hidden])');
 			expect(pinButton).to.not.be.null;
 		});
 
 		it('should hide the pinned button when unpinned', () => {
-			component.pinned = false;
+			component._pinned = false;
 
 			var pinButton = component.$$('.pin-indicator:not([hidden])');
 			expect(pinButton).to.be.null;
@@ -526,7 +565,7 @@ describe('d2l-enrollment-card', () => {
 			{ count: 100, updateString: '99+', updatesShown: true },
 		].forEach(testCase => {
 
-			it(testName(testCase), () => {
+			it(testName(testCase), done => {
 				fetchStub.restore();
 				fetchStub = sandbox.stub(window.d2lfetch, 'fetch');
 				SetupFetchStub(/\/organizations\/1\/my-notifications$/, {
@@ -540,15 +579,15 @@ describe('d2l-enrollment-card', () => {
 					}
 				});
 
-				component.courseUpdatesConfig = {
-					showUnattemptedQuizzes: true
-				};
-
-				return component._fetchNotifications().then(() => {
+				presentationEntity.properties.ShowUnattemptedQuizzes = true;
+				component._presentation = {};
+				component._presentation = presentationEntity.properties;
+				setTimeout(() => {
 					expect(component._showUpdateCount).to.equal(testCase.updatesShown);
 					expect(component._updateCount).to.equal(testCase.count);
 					var updateString = component.$$('.update-text-box').innerText;
 					expect(updateString).to.equal(testCase.updateString);
+					done();
 				});
 
 			});
