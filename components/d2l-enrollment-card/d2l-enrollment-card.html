@@ -45,22 +45,12 @@ Polymer-based web component for a course/enrollment card.
 				cursor: pointer;
 				border: 1px solid var(--d2l-color-celestine);
 			}
+			d2l-card[disabled] {
+				filter: grayscale(1);
+			}
 			d2l-card[disabled]:hover,
 			d2l-card[disabled]:focus {
 				cursor: not-allowed;
-			}
-
-			d2l-card:hover .image-container,
-			d2l-card:focus .image-container {
-				-webkit-filter: saturate(1.15) contrast(1.15);
-				filter: saturate(1.15) contrast(1.15);
-				transform: scale(1.1);
-			}
-			d2l-card[disabled]:hover .image-container,
-			d2l-card[disabled]:focus .image-container {
-				-webkit-filter: none;
-				filter: none;
-				transform: none;
 			}
 
 			d2l-icon {
@@ -71,15 +61,6 @@ Polymer-based web component for a course/enrollment card.
 
 			.flex {
 				display: flex;
-			}
-
-			d2l-card:hover .course-text,
-			d2l-card:focus .course-text {
-				text-decoration: underline;
-			}
-			d2l-card[disabled]:hover .course-text,
-			d2l-card[disabled]:focus .course-text {
-				text-decoration: none;
 			}
 
 			.pin-indicator {
@@ -149,17 +130,9 @@ Polymer-based web component for a course/enrollment card.
 			.overlay[hidden] {
 				display: none;
 			}
-			.overlay-text {
-				font-size: 1rem;
-				font-weight: bold;
-			}
-			.overlay-date {
-				font-size: 0.7rem;
-			}
 
 			.image-container {
 				height: var(--course-image-height);
-				transition: filter 0.25s, -webkit-filter 0.25s, transform 0.5s ease-in-out;
 			}
 
 			.icon-container {
@@ -216,12 +189,12 @@ Polymer-based web component for a course/enrollment card.
 				border: 3px solid white;
 				background-color: #ffce51;
 				position: absolute;
-				top: calc(-1 * var(--course-image-height) - 12px);
-				right: -12px;
+				top: -6px;
+				right: -6px;
 			}
 			[dir="rtl"] .alert-colour-circle {
 				right: auto;
-				left: -2px;
+				left: -6px;
 			}
 		</style>
 
@@ -234,11 +207,6 @@ Polymer-based web component for a course/enrollment card.
 						type="tile">
 					</d2l-course-image>
 				</div>
-				<div hidden$="[[!_hasOverlay]]" class="overlay">
-					<div class="overlay-text">[[_overlayTitle]]</div>
-					<div class="overlay-date">[[_overlayDate]]</div>
-					<div>[[_overlayInactive]]</div>
-				</div>
 				<div hidden$="[[!_imageLoading]]" class="overlay">
 					<d2l-loading-spinner hidden$="[[!_imageLoadingProgress]]" size="85"></d2l-loading-spinner>
 					<div class="icon-container" hidden$="[[_imageLoadingProgress]]">
@@ -249,14 +217,11 @@ Polymer-based web component for a course/enrollment card.
 				<div class="alert-colour-circle" hidden$="[[!_startedInactive]]"></div>
 			</div>
 
-			<div class="flex" slot="content">
-				<d2l-organization-info
-					href="[[_organizationUrl]]"
-					presentation-href="[[presentationHref]]">
-				</d2l-organization-info>
-				<d2l-offscreen>[[_overlayAnnounceText]]</d2l-offscreen>
-			</div>
-
+			<d2l-organization-info
+				slot="content"
+				href="[[_organizationUrl]]"
+				presentation-href="[[presentationHref]]">
+			</d2l-organization-info>
 			<d2l-organization-updates
 				slot="footer"
 				href="[[_notificationsUrl]]"
@@ -365,10 +330,6 @@ Polymer-based web component for a course/enrollment card.
 					type: String,
 					computed: '_computeCourseSettingsLabel(_organization)'
 				},
-				_hasOverlay: {
-					type: Boolean,
-					value: false
-				},
 				_image: Object,
 				_imageLoading: {
 					type: Boolean,
@@ -382,13 +343,6 @@ Polymer-based web component for a course/enrollment card.
 				_organization: Object,
 				_organizationUrl: String,
 				_organizationHomepageUrl: String,
-				_overlayAnnounceText: {
-					type: String,
-					computed: '_computeOverlayAnnounceText(_organization)'
-				},
-				_overlayDate: String,
-				_overlayInactive: String,
-				_overlayTitle: String,
 				_pinButtonLabel: {
 					type: String,
 					computed: '_computePinButtonLabel(_organization)'
@@ -402,7 +356,8 @@ Polymer-based web component for a course/enrollment card.
 			],
 			observers: [
 				'_fetchEnrollment(_load, href)',
-				'_fetchPresentationData(_load, presentationHref)'
+				'_fetchPresentationData(_load, presentationHref)',
+				'_calculatePastCourseAttribute(_organization)'
 			],
 			ready: function() {
 				Polymer.IronA11yAnnouncer.requestAvailability();
@@ -488,44 +443,28 @@ Polymer-based web component for a course/enrollment card.
 					&& organization.properties
 					&& this.localize('courseSettings', 'course', organization.properties.name);
 			},
-			_computeOverlayAnnounceText: function(organization) {
+			_calculatePastCourseAttribute: function(organization) {
 				var nowDate = Date.now();
 				var endDate = Date.parse(organization.properties.endDate);
 				var startDate = Date.parse(organization.properties.startDate);
 				var inactive = !organization.properties.isActive;
 
 				this.removeAttribute('past-course');
-				this._hasOverlay = true;
-
 				if (endDate < nowDate) {
 					this.setAttribute('past-course', '');
-					endDate = new Date(endDate);
-					this._overlayDate = this.formatDateTime(endDate, {format: 'medium'});
-					this._overlayInactive = null;
-					this._overlayTitle = this.localize('overlay.courseClosed');
-					return this.localize('overlay.courseClosedOn', 'dateTime', this.formatDate(endDate, {format: 'MMMM d, yyyy'}) + ' ' + this.formatTime(endDate));
-				} else if (startDate > nowDate) {
-					startDate = new Date(startDate);
-					this._overlayDate = this.formatDateTime(startDate, {format: 'medium'});
-					this._overlayInactive = inactive ? this.localize('brackets', 'content', this.localize('overlay.inactive')) : null;
-					this._overlayTitle = this.localize('overlay.courseOpens');
-					return this.localize('overlay.courseOpeningOn', 'dateTime', this.formatDate(startDate, {format: 'MMMM d, yyyy'}) + ' ' + this.formatTime(startDate));
-				} else if (inactive) {
-					this._overlayDate = null;
-					this._overlayInactive = this.localize('overlay.inactive');
-					this._overlayTitle = null;
-					if (startDate && this._pinned && organization.hasLinkByRel(this.HypermediaRels.courseOfferingInfoPage)) {
-						// We only care about calling out started-inactive courses if they're pinned, and if the user is admin-ish
-						this._startedInactive = true;
-						this.fire('started-inactive');
-					}
-					return this._overlayInactive;
-				} else {
-					this._overlayDate = null;
-					this._overlayInactive = null;
-					this._overlayTitle = null;
-					this._hasOverlay = false;
-					return null;
+					return;
+				}
+
+				if (
+					inactive
+					&& startDate
+					&& startDate < nowDate
+					&& this._pinned
+					&& organization.hasLinkByRel(this.HypermediaRels.courseOfferingInfoPage)
+				) {
+					// We only care about calling out started-inactive courses if they're pinned, and if the user is admin-ish
+					this._startedInactive = true;
+					this.fire('started-inactive');
 				}
 			},
 			_computePinButtonLabel: function(organization) {
