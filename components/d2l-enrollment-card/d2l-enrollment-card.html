@@ -531,19 +531,6 @@ Polymer-based web component for a course/enrollment card.
 					&& organization.properties
 					&& this.localize('coursePinButton', 'course', organization.properties.name);
 			},
-			_computeShowUpdateCount: function(presentation, updateCount) {
-				var courseUpdateConfig = presentation
-					&& (presentation.ShowUnattemptedQuizzes
-					|| presentation.ShowDropboxUnreadFeedback
-					|| presentation.ShowUngradedQuizAttempts
-					|| presentation.ShowUnreadDiscussionMessages
-					|| presentation.ShowUnreadDropboxSubmissions);
-
-				return courseUpdateConfig && updateCount > 0;
-			},
-			_computeUpdateString: function(updateCount) {
-				return updateCount > 99 ? '99+' : updateCount;
-			},
 			_handlePinnedChange: function(pinned) {
 				if (pinned) {
 					this.setAttribute('pinned', '');
