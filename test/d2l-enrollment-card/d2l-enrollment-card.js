@@ -471,7 +471,7 @@ describe('d2l-enrollment-card', () => {
 				setTimeout(() => {
 					expect(component._showUpdateCount).to.equal(testCase.updatesShown);
 					expect(component._updateCount).to.equal(testCase.count);
-					var updateString = component.$$('.update-text-box').innerText;
+					var updateString = component.$$('.update-text');
 					expect(updateString).to.equal(testCase.updateString);
 					done();
 				});

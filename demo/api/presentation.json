@@ -1,0 +1,25 @@
+{
+  "properties":{
+     "ShowCourseCode":true,
+     "ShowSemester":true,
+     "ShowUnattemptedQuizzes":true,
+     "ShowDropboxUnreadFeedback":true,
+     "ShowUngradedQuizAttempts":true,
+     "ShowUnreadDiscussionMessages":true,
+     "ShowUnreadDropboxSubmissions":true
+  },
+  "links":[
+     {
+        "rel":[
+           "https://api.brightspace.com/rels/user-settings"
+        ],
+        "href":"http://i-82091fa8.eucalyptus.d2l:44445/d2l/le/manageCourses/homepage-component/1/user-settings/169"
+     },
+     {
+        "rel":[
+           "self"
+        ],
+        "href":"http://i-82091fa8.eucalyptus.d2l:44445/d2l/le/manageCourses/homepage-component/1"
+     }
+  ]
+}

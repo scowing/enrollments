@@ -14,6 +14,7 @@
 <link rel="import" href="../../../d2l-organization-hm-behavior/d2l-organization-hm-behavior.html">
 <link rel="import" href="../../../d2l-organizations/d2l-organization-info.html">
 <link rel="import" href="../../../d2l-tile/d2l-card.html">
+<link rel="import" href="../../../d2l-organization/components/d2l-organization-updates/d2l-organization-updates.html">
 <link rel="import" href="../../../siren-parser-import/siren-parser.html">
 <link rel="import" href="localize-behavior.html">
 
@@ -204,21 +205,6 @@ Polymer-based web component for a course/enrollment card.
 				15% { transform: scale(2.30); }
 				20% { transform: scale(2.0); }
 				100% { transform: scale(2.0); }
-			}
-
-			.update-text-box {
-				border: 2px solid var(--d2l-color-carnelian);
-				color: var(--d2l-color-carnelian);
-				border-radius: 0.25rem;
-				box-sizing: border-box;
-				font-size: 1rem;
-				font-weight: 700;
-				width: 2rem;
-				height: 2rem;
-				line-height: 2rem;
-				display: inline-flex;
-				align-items: center;
-				justify-content: center;
 			}
 
 			.alert-colour-circle {
@@ -827,7 +813,7 @@ Polymer-based web component for a course/enrollment card.
 						// Wait until after PUT has finished to fire, so that
 						// listeners are guaranteed to fetch updated entity
 						this.fire('d2l-course-pinned-change', {
-							enrollment: this._enrollment,
+							organization: this._organization,
 							isPinned: this._pinned
 						});
 					}.bind(this));
