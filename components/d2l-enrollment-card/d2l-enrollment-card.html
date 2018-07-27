@@ -31,6 +31,7 @@ Polymer-based web component for a course/enrollment card.
 			}
 
 			d2l-card {
+				height: 100%;
 				/* Prevents long, non-breaking course names from overflowing */
 				width: 100%;
 			}
@@ -66,7 +67,6 @@ Polymer-based web component for a course/enrollment card.
 
 			.flex {
 				display: flex;
-				align-items: center;
 			}
 
 			.course-text {
@@ -127,11 +127,11 @@ Polymer-based web component for a course/enrollment card.
 				left: 0px;
 			}
 			.menu-area > * {
-				margin-right: 15px;
+				margin-right: 12px;
 				margin-top: 14px;
 			}
 			[dir="rtl"] .menu-area > * {
-				margin-left: 15px;
+				margin-left: 12px;
 				margin-right: auto;
 			}
 			.menu-area > d2l-dropdown-more {
@@ -143,7 +143,7 @@ Polymer-based web component for a course/enrollment card.
 			:host:focus .menu-area > d2l-dropdown-more,
 			:host[focused] .menu-area > d2l-dropdown-more {
 				opacity: 1;
-				margin-top: 15px;
+				margin-top: 12px;
 			}
 
 			.overlay {
@@ -254,14 +254,10 @@ Polymer-based web component for a course/enrollment card.
 				right: auto;
 				left: -2px;
 			}
-
-			.overflow-hidden {
-				overflow: hidden;
-			}
 		</style>
 
 		<d2l-card on-tap="_onTapCard" on-keypress="_onKeypressCard" tabindex="0">
-			<div class="overflow-hidden" slot="header" aria-hidden="true">
+			<div slot="header" aria-hidden="true">
 				<div class="image-container">
 					<d2l-course-image
 						image="[[_image]]"
