@@ -433,4 +433,61 @@ describe('d2l-enrollment-card', () => {
 
 	});
 
+	describe('Notification Overlay', () => {
+		var futureDate = new Date(3000, 0, 1, 15, 5).toISOString(),
+			pastDate = new Date(1900, 3, 30, 4, 38).toISOString(),
+			formattedFutureDateTime = 'Jan 1, 3000 3:05 PM',
+			formattedPastDateTime = 'Apr 30, 1900 4:38 AM';
+
+		[
+			{ start: futureDate, end: futureDate, active: false },
+			{ start: futureDate, end: futureDate, active: true },
+			{ start: pastDate, end: pastDate, active: false },
+			{ start: pastDate, end: pastDate, active: true },
+			{ start: pastDate, end: futureDate, active: false },
+			{ start: pastDate, end: futureDate, active: true },
+			{ start: null, end: futureDate, active: false },
+			{ start: null, end: futureDate, active: true }
+		].forEach(testCase => {
+			it(`${testCase.start}, ${testCase.end}, ${testCase.active}`, () => {
+				organizationEntity.properties.startDate = testCase.start;
+				organizationEntity.properties.endDate = testCase.end;
+				organizationEntity.properties.isActive = testCase.active;
+				component._organization = organizationEntity;
+				var overlay = component.$$('div.overlay:nth-of-type(2):not([hidden])');
+				if (
+					testCase.end === futureDate
+					&& (testCase.start === pastDate || !testCase.start)
+					&& testCase.active
+				) {
+					expect(overlay).to.be.null;
+					return;
+				}
+				expect(overlay).to.not.be.null;
+				var overlayTitleText = overlay.querySelector('.overlay-text').innerText;
+				var overlayDateText = overlay.querySelector('.overlay-date').innerText;
+				var overlayInactiveText = overlay.querySelector('.overlay-date + div').innerText;
+				if (testCase.start === futureDate) {
+					expect(overlayTitleText).to.equal('Opens On');
+					expect(overlayDateText).to.equal(formattedFutureDateTime);
+				} else if (testCase.end === pastDate) {
+					expect(overlayTitleText).to.equal('Closed');
+					expect(overlayDateText).to.equal(formattedPastDateTime);
+				} else {
+					expect(overlayTitleText).to.be.empty;
+					expect(overlayDateText).to.be.empty;
+				}
+				if (testCase.active || testCase.end === pastDate) {
+					expect(overlayInactiveText).to.be.empty;
+				} else if (testCase.start === futureDate) {
+					expect(overlayInactiveText).to.equal('(Inactive)');
+				} else {
+					expect(overlayInactiveText).to.equal('Inactive');
+				}
+			});
+
+		});
+
+	});
+
 });

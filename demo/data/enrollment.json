@@ -1,0 +1,27 @@
+{
+  "class":["enrollment","pinned"],
+  "links":[
+    {
+      "rel":["self"],
+      "href":"../data/enrollment.json"
+    },{
+        "rel":["https://api.brightspace.com/rels/organization"],
+        "href":"../data/organizations.json"
+    }
+  ],
+  "actions":[
+    {
+      "href":"#pinned",
+      "name":"unpin-course",
+      "method":"PUT",
+      "fields":[
+        {
+          "type":"hidden",
+          "name":"pinned",
+          "value":false
+        }
+      ]
+    }
+  ],
+  "rel":["../data/enrollment.json"]
+}
