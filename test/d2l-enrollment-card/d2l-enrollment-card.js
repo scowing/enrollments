@@ -456,6 +456,7 @@ describe('d2l-enrollment-card', () => {
 				organizationEntity.properties.endDate = testCase.end;
 				organizationEntity.properties.isActive = testCase.active;
 				component._organization = organizationEntity;
+
 				var overlay = component.$$('div.overlay:nth-of-type(2):not([hidden])');
 				if (
 					testCase.end === futureDate
