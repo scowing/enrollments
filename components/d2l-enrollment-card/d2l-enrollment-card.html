@@ -641,8 +641,8 @@ Polymer-based web component for a course/enrollment card.
 				this._organizationUrl = enrollment.getLinkByRel(this.HypermediaRels.organization).href;
 
 				this.fire('d2l-enrollment-card-fetched', {
-					href: this._organizationUrl,
-					enrollment: this._getEntityIdentifier(this._enrollment)
+					organizationUrl: this._organizationUrl,
+					enrollmentUrl: this._getEntityIdentifier(this._enrollment)
 				});
 
 				return this._fetchSirenEntity(this._organizationUrl)
