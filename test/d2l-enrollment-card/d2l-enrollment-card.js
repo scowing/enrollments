@@ -434,6 +434,7 @@ describe('d2l-enrollment-card', () => {
 	});
 
 	describe('Notification Overlay', () => {
+
 		var futureDate = new Date(3000, 0, 1, 15, 5).toISOString(),
 			pastDate = new Date(1900, 3, 30, 4, 38).toISOString(),
 			formattedFutureDateTime = 'Jan 1, 3000 3:05 PM',
@@ -449,6 +450,7 @@ describe('d2l-enrollment-card', () => {
 			{ start: null, end: futureDate, active: false },
 			{ start: null, end: futureDate, active: true }
 		].forEach(testCase => {
+
 			it(`${testCase.start}, ${testCase.end}, ${testCase.active}`, () => {
 				organizationEntity.properties.startDate = testCase.start;
 				organizationEntity.properties.endDate = testCase.end;
@@ -464,9 +466,11 @@ describe('d2l-enrollment-card', () => {
 					return;
 				}
 				expect(overlay).to.not.be.null;
+
 				var overlayTitleText = overlay.querySelector('.overlay-text').innerText;
 				var overlayDateText = overlay.querySelector('.overlay-date').innerText;
 				var overlayInactiveText = overlay.querySelector('.overlay-date + div').innerText;
+
 				if (testCase.start === futureDate) {
 					expect(overlayTitleText).to.equal('Opens On');
 					expect(overlayDateText).to.equal(formattedFutureDateTime);
@@ -477,6 +481,7 @@ describe('d2l-enrollment-card', () => {
 					expect(overlayTitleText).to.be.empty;
 					expect(overlayDateText).to.be.empty;
 				}
+
 				if (testCase.active || testCase.end === pastDate) {
 					expect(overlayInactiveText).to.be.empty;
 				} else if (testCase.start === futureDate) {
@@ -484,6 +489,7 @@ describe('d2l-enrollment-card', () => {
 				} else {
 					expect(overlayInactiveText).to.equal('Inactive');
 				}
+
 			});
 
 		});
