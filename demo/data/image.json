@@ -21,8 +21,5 @@
         "type":"image/jpeg",
         "href":"../images/tile-low-density-max-size.jpg"
      }
-  ],
-  "rel":[
-     "../data/image.json"
   ]
 }
