@@ -433,55 +433,6 @@ describe('d2l-enrollment-card', () => {
 
 	});
 
-	describe('Course updates functionality', () => {
-
-		beforeEach(done => loadEnrollment(done));
-
-		function testName(testCase) {
-			return 'should show ' +
-				(testCase.updatesShown ? testCase.updateString : 'nothing') +
-				' when updates=' + testCase.count;
-		}
-
-		[
-			{ count: -1, updateString: '-1', updatesShown: false },
-			{ count: 0, updateString: '0', updatesShown: false },
-			{ count: 1, updateString: '1', updatesShown: true },
-			{ count: 99, updateString: '99', updatesShown: true },
-			{ count: 100, updateString: '99+', updatesShown: true },
-		].forEach(testCase => {
-
-			it(testName(testCase), done => {
-				fetchStub.restore();
-				fetchStub = sandbox.stub(window.d2lfetch, 'fetch');
-				SetupFetchStub(/\/organizations\/1\/my-notifications$/, {
-					properties: {
-						UnattemptedQuizzes: testCase.count,
-						UnreadAssignmentFeedback: 0,
-						UngradedQuizzes: 0,
-						UnreadDiscussions: 0,
-						UnapprovedDiscussions: 0,
-						UnreadAssignmentSubmissions: 0
-					}
-				});
-
-				presentationEntity.properties.ShowUnattemptedQuizzes = true;
-				component._presentation = {};
-				component._presentation = presentationEntity.properties;
-				setTimeout(() => {
-					expect(component._showUpdateCount).to.equal(testCase.updatesShown);
-					expect(component._updateCount).to.equal(testCase.count);
-					var updateString = component.$$('.update-text-box').innerText;
-					expect(updateString).to.equal(testCase.updateString);
-					done();
-				});
-
-			});
-
-		});
-
-	});
-
 	describe('Notification Overlay', () => {
 
 		var futureDate = new Date(3000, 0, 1, 15, 5).toISOString(),

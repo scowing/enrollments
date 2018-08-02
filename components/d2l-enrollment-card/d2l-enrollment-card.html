@@ -14,6 +14,7 @@
 <link rel="import" href="../../../d2l-organization-hm-behavior/d2l-organization-hm-behavior.html">
 <link rel="import" href="../../../d2l-organizations/d2l-organization-info.html">
 <link rel="import" href="../../../d2l-tile/d2l-card.html">
+<link rel="import" href="../../../d2l-organizations/d2l-organization-updates.html">
 <link rel="import" href="../../../siren-parser-import/siren-parser.html">
 <link rel="import" href="localize-behavior.html">
 
@@ -21,6 +22,8 @@
 `d2l-enrollment-card`
 
 Polymer-based web component for a course/enrollment card.
+
+@demo demo/d2l-enrollment-card/d2l-enrollment-card-demo.html d2l-enrollment-card
 -->
 
 <dom-module id="d2l-enrollment-card">
@@ -206,21 +209,6 @@ Polymer-based web component for a course/enrollment card.
 				100% { transform: scale(2.0); }
 			}
 
-			.update-text-box {
-				border: 2px solid var(--d2l-color-carnelian);
-				color: var(--d2l-color-carnelian);
-				border-radius: 0.25rem;
-				box-sizing: border-box;
-				font-size: 1rem;
-				font-weight: 700;
-				width: 2rem;
-				height: 2rem;
-				line-height: 2rem;
-				display: inline-flex;
-				align-items: center;
-				justify-content: center;
-			}
-
 			.alert-colour-circle {
 				height: 20px;
 				width: 20px;
@@ -261,18 +249,19 @@ Polymer-based web component for a course/enrollment card.
 				<div class="alert-colour-circle" hidden$="[[!_startedInactive]]"></div>
 			</div>
 
-			<div class="flex">
+			<div class="flex" slot="content">
 				<d2l-organization-info
 					href="[[_organizationUrl]]"
 					presentation-href="[[presentationHref]]">
 				</d2l-organization-info>
 				<d2l-offscreen>[[_overlayAnnounceText]]</d2l-offscreen>
-
-				<div hidden$="[[!_showUpdateCount]]">
-					<d2l-offscreen>[[localize('courseTile.updates')]]</d2l-offscreen>
-					<span class="update-text-box">[[_updateString]]</span>
-				</div>
 			</div>
+
+			<d2l-organization-updates
+				slot="footer"
+				href="[[_notificationsUrl]]"
+				presentation-href="[[presentationHref]]">
+			</d2l-organization-updates>
 		</d2l-card>
 
 		<div class="flex menu-area">
@@ -404,19 +393,7 @@ Polymer-based web component for a course/enrollment card.
 					type: String,
 					computed: '_computePinButtonLabel(_organization)'
 				},
-				_showUpdateCount: {
-					type: Boolean,
-					value: false,
-					computed: '_computeShowUpdateCount(_presentation, _updateCount)'
-				},
-				_updateString: {
-					type: String,
-					computed: '_computeUpdateString(_updateCount)'
-				},
-				_updateCount: {
-					type: Number,
-					value: 0
-				}
+				_notificationsUrl: String
 			},
 			behaviors: [
 				window.D2L.Hypermedia.HMConstantsBehavior,
@@ -425,8 +402,7 @@ Polymer-based web component for a course/enrollment card.
 			],
 			observers: [
 				'_fetchEnrollment(_load, href)',
-				'_fetchPresentationData(_load, presentationHref)',
-				'_fetchNotifications(_notificationsUrl, _presentation)'
+				'_fetchPresentationData(_load, presentationHref)'
 			],
 			ready: function() {
 				Polymer.IronA11yAnnouncer.requestAvailability();
@@ -557,19 +533,6 @@ Polymer-based web component for a course/enrollment card.
 					&& organization.properties
 					&& this.localize('coursePinButton', 'course', organization.properties.name);
 			},
-			_computeShowUpdateCount: function(presentation, updateCount) {
-				var courseUpdateConfig = presentation
-					&& (presentation.ShowUnattemptedQuizzes
-					|| presentation.ShowDropboxUnreadFeedback
-					|| presentation.ShowUngradedQuizAttempts
-					|| presentation.ShowUnreadDiscussionMessages
-					|| presentation.ShowUnreadDropboxSubmissions);
-
-				return courseUpdateConfig && updateCount > 0;
-			},
-			_computeUpdateString: function(updateCount) {
-				return updateCount > 99 ? '99+' : updateCount;
-			},
 			_handlePinnedChange: function(pinned) {
 				if (pinned) {
 					this.setAttribute('pinned', '');
@@ -647,41 +610,6 @@ Polymer-based web component for a course/enrollment card.
 
 				return this._fetchSirenEntity(this._organizationUrl)
 					.then(this._handleOrganizationResponse.bind(this));
-			},
-			_fetchNotifications: function(notificationsUrl, presentation) {
-				if (!notificationsUrl || !presentation) {
-					return Promise.resolve();
-				}
-
-				return this._fetchSirenEntity(notificationsUrl)
-					.then(function(notifications) {
-						if (!notifications) {
-							return;
-						}
-
-						var total = 0;
-						if (this._presentation.ShowUnattemptedQuizzes) {
-							total += notifications.properties.UnattemptedQuizzes;
-						}
-						if (this._presentation.ShowDropboxUnreadFeedback) {
-							total += notifications.properties.UnreadAssignmentFeedback;
-						}
-						if (this._presentation.ShowUngradedQuizAttempts) {
-							total += notifications.properties.UngradedQuizzes;
-						}
-						if (this._presentation.ShowUnreadDiscussionMessages) {
-							total += notifications.properties.UnreadDiscussions + notifications.properties.UnapprovedDiscussions;
-						}
-						if (this._presentation.ShowUnreadDropboxSubmissions) {
-							total += notifications.properties.UnreadAssignmentSubmissions;
-						}
-
-						this._updateCount = total;
-					}.bind(this))
-					.catch(function() {
-						// If we fail to fetch notifications, hide the orange box (via computed _showUpdateCount)
-						this._updateCount = 0;
-					});
 			},
 			_fetchSirenEntity: function(url) {
 				if (!url) {
