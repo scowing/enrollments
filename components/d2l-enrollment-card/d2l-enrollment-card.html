@@ -14,8 +14,11 @@
 <link rel="import" href="../../../d2l-organization-hm-behavior/d2l-organization-hm-behavior.html">
 <link rel="import" href="../../../d2l-organizations/d2l-organization-info.html">
 <link rel="import" href="../../../d2l-tile/d2l-card.html">
+<link rel="import" href="../../../d2l-status-indicator/d2l-status-indicator.html">
 <link rel="import" href="../../../d2l-organizations/d2l-organization-updates.html">
 <link rel="import" href="../../../siren-parser-import/siren-parser.html">
+<link rel="import" href="../../../siren-parser-import/siren-parser.html">
+<link rel="import" href="../d2l-user-activity-usage/d2l-user-activity-usage.html">
 <link rel="import" href="localize-behavior.html">
 
 <!--
@@ -39,12 +42,13 @@ Polymer-based web component for a course/enrollment card.
 				/* Prevents long, non-breaking course names from overflowing */
 				width: 100%;
 			}
-
+			/*
 			d2l-card:hover,
 			d2l-card:focus {
 				cursor: pointer;
 				border: 1px solid var(--d2l-color-celestine);
 			}
+			*/
 			d2l-card[disabled] {
 				filter: grayscale(1);
 			}
@@ -133,6 +137,7 @@ Polymer-based web component for a course/enrollment card.
 
 			.image-container {
 				height: var(--course-image-height);
+				line-height:0;
 			}
 
 			.icon-container {
@@ -196,6 +201,22 @@ Polymer-based web component for a course/enrollment card.
 				right: auto;
 				left: -6px;
 			}
+			.content-flex {
+				overflow: hidden;
+				word-wrap: break-word; /* IE/Edge */
+				overflow-wrap: break-word; /* replaces 'word-wrap' in Firefox, Chrome, Safari */
+				display: flex;
+				flex-direction: column;
+				width: 100%;
+				text-align: center;
+			}
+			d2l-card > d2l-status-indicator[slot=badge] {
+				position:relative;
+				top: -0.5rem;
+				background-color: #FFFFFF;
+				box-shadow: 0 0 0 2px #FFFFFF;
+				padding: 0.2rem 0.5rem 0.15rem 0.5rem;
+			}
 		</style>
 
 		<d2l-card on-tap="_onTapCard" on-keypress="_onKeypressCard" tabindex="0">
@@ -217,11 +238,15 @@ Polymer-based web component for a course/enrollment card.
 				<div class="alert-colour-circle" hidden$="[[!_startedInactive]]"></div>
 			</div>
 
-			<d2l-organization-info
-				slot="content"
-				href="[[_organizationUrl]]"
-				presentation-href="[[presentationHref]]">
-			</d2l-organization-info>
+			<d2l-status-indicator slot="badge" state="[[_badgeState]]" text="[[_badgeText]]" hidden$="[[!_badgeText]]"></d2l-status-indicator>
+
+			<div class="content-flex" slot="content">
+				<d2l-organization-info
+					href="[[_organizationUrl]]"
+					presentation-href="[[presentationHref]]">
+				</d2l-organization-info>
+				<d2l-user-activity-usage user-activity-usage-href="[[_userActivityUsageUrl]]"></d2l-user-activity-usage>
+			</div>
 			<d2l-organization-updates
 				slot="footer"
 				href="[[_notificationsUrl]]"
@@ -347,7 +372,14 @@ Polymer-based web component for a course/enrollment card.
 					type: String,
 					computed: '_computePinButtonLabel(_organization)'
 				},
-				_notificationsUrl: String
+				_notificationsUrl: String,
+				// can't be undefined as falsy means hidden
+				_badgeText: {
+					type: String,
+					value: null
+				},
+				_badgeState: String,
+				_userActivityUsageUrl: String
 			},
 			behaviors: [
 				window.D2L.Hypermedia.HMConstantsBehavior,
@@ -359,6 +391,9 @@ Polymer-based web component for a course/enrollment card.
 				'_fetchPresentationData(_load, presentationHref)',
 				'_calculatePastCourseAttribute(_organization)'
 			],
+			listeners: {
+				'd2l-enrollment-status': '_onD2lEnrollmentStatus'
+			},
 			ready: function() {
 				Polymer.IronA11yAnnouncer.requestAvailability();
 				this._boundOnSetCourseImage = this._onSetCourseImage.bind(this);
@@ -539,13 +574,15 @@ Polymer-based web component for a course/enrollment card.
 
 				this._enrollment = enrollment;
 				this._pinned = enrollment.hasClass(this.HypermediaClasses.enrollments.pinned);
-
 				this._organizationUrl = enrollment.getLinkByRel(this.HypermediaRels.organization).href;
 
 				this.fire('d2l-enrollment-card-fetched', {
 					organizationUrl: this._organizationUrl,
 					enrollmentUrl: this._getEntityIdentifier(this._enrollment)
 				});
+				if (enrollment.hasLinkByRel(this.HypermediaRels.Activities.userActivityUsage)) {
+					this._userActivityUsageUrl = enrollment.getLinkByRel(this.HypermediaRels.Activities.userActivityUsage).href;
+				}
 
 				return this._fetchSirenEntity(this._organizationUrl)
 					.then(this._handleOrganizationResponse.bind(this));
@@ -661,6 +698,22 @@ Polymer-based web component for a course/enrollment card.
 					default:
 						this._displaySetImageResult(false);
 						break;
+				}
+			},
+			_onD2lEnrollmentStatus: function(e) {
+				var status = e.detail.status;
+				switch (status) {
+					case 'completed':
+						this._badgeText = 'completed';
+						this._badgeState = 'success';
+						break;
+					case 'overdue':
+						this._badgeText = 'overdue';
+						this._badgeState = 'alert';
+						break;
+					default:
+						this._badgeText = null;
+						return;
 				}
 			},
 			_pinClickHandler: function() {

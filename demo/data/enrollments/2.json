@@ -5,8 +5,11 @@
       "rel":["self"],
       "href":"../data/enrollment.json"
     },{
-        "rel":["https://api.brightspace.com/rels/organization"],
-        "href":"../data/organizations.json"
+      "rel":["https://api.brightspace.com/rels/organization"],
+      "href":"../data/organizations.json"
+    },{
+      "rel":["https://activities.api.brightspace.com/rels/user-activity-usage"],
+      "href":"../data/userActivityUsage/2.json"
     }
   ],
   "actions":[

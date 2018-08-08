@@ -1,0 +1,129 @@
+<link rel="import" href="../../../d2l-localize-behavior/d2l-localize-behavior.html">
+
+<script>
+	window.D2L = window.D2L || {};
+	window.D2L.PolymerBehaviors = window.D2L.PolymerBehaviors || {};
+	window.D2L.PolymerBehaviors.UserActivityUsage = window.D2L.PolymerBehaviors.UserActivityUsage || {};
+	/*
+	* @polymerBehavior D2L.PolymerBehaviors.UserActivityUsage.LocalizeBehaviorImpl
+	*/
+	D2L.PolymerBehaviors.UserActivityUsage.LocalizeBehaviorImpl = {
+		properties: {
+			locale: {
+				type: String,
+				value: function() {
+					return document.documentElement.lang
+						|| document.documentElement.getAttribute('data-lang-default')
+						|| 'en-us';
+				}
+			},
+			resources: {
+				value: function() {
+					return {
+						'en': {
+							'brackets': '({content})',
+							'dueOn': 'Due {dateTime}',
+							'completedOn': 'Completed {dateTime}',
+							'dueToday': 'Due Today',
+							'completedToday': 'Completed Today',
+							'dueTomorrow': 'Due Tomorrow',
+							'completedTomorrow': 'Completed Tomorrow',
+						},
+						'ar': {
+							'brackets': '({content})',
+							'dueOn': 'تم الإغلاق في {dateTime}',
+							'completedOn': 'يفتح في {dateTime}',
+							'dueTomorrow': 'غير نشط',
+						},
+						'de': {
+							'brackets': '({content})',
+							'dueOn': 'Geschlossen am {dateTime} um',
+							'completedOn': 'Öffnet am {dateTime} um',
+							'dueTomorrow': 'Inaktiv',
+						},
+						'es': {
+							'brackets': '({content})',
+							'dueOn': 'Cerrado el {dateTime}',
+							'completedOn': 'Se abre el día {dateTime}',
+							'dueTomorrow': 'Inactivo',
+						},
+						'fi': {
+							'brackets': '({content})',
+							'dueOn': 'Suljettu {dateTime}',
+							'completedOn': 'Avautuu {dateTime}',
+							'dueTomorrow': 'Ei aktiivinen',
+						},
+						'fr': {
+							'brackets': '({content})',
+							'dueOn': 'Fermé le {dateTime} à',
+							'completedOn': 'Ouvert le {dateTime} à',
+							'dueTomorrow': 'Inactif',
+						},
+						'ja': {
+							'brackets': '（{content}）',
+							'dueOn': '{dateTime} にクローズ',
+							'completedOn': '{dateTime} にオープン',
+							'dueTomorrow': '非アクティブ',
+						},
+						'ko': {
+							'brackets': '({content})',
+							'dueOn': '닫힘 일시: {dateTime}',
+							'completedOn': '열림 일시 {dateTime}',
+							'dueTomorrow': '비활성',
+						},
+						'nb': {
+							'brackets': '({content})',
+							'dueOn': 'Closed {dateTime}',
+							'completedOn': 'Opens on {dateTime}',
+							'dueTomorrow': 'Inaktiv',
+						},
+						'nl': {
+							'brackets': '({content})',
+							'dueOn': 'Gesloten {dateTime}',
+							'completedOn': 'Opent op {dateTime}',
+							'dueTomorrow': 'Inactief',
+						},
+						'pt': {
+							'brackets': '({content})',
+							'dueOn': 'Fechado em {dateTime}',
+							'completedOn': 'Abre em {dateTime}',
+							'dueTomorrow': 'Inativo',
+						},
+						'sv': {
+							'brackets': '({content})',
+							'dueOn': 'Stängdes {dateTime}',
+							'completedOn': 'Öppnas {dateTime}',
+							'dueTomorrow': 'Inaktiv',
+						},
+						'tr': {
+							'brackets': '({content})',
+							'dueOn': 'Şu tarihte kapandı: {dateTime}',
+							'completedOn': 'Şu tarihte açılacak: {dateTime}',
+							'dueTomorrow': 'Etkin Değil',
+						},
+						'zh': {
+							'brackets': '({content})',
+							'dueOn': '已于 {dateTime} 关闭',
+							'completedOn': '于 {dateTime} 开启',
+							'dueTomorrow': '非活动',
+						},
+						'zh-tw': {
+							'brackets': '({content})',
+							'dueOn': '關閉於 {dateTime}',
+							'completedOn': '開啟於 {dateTime}',
+							'dueTomorrow': '停用',
+						}
+					};
+				}
+			}
+		}
+	};
+
+	/*
+	* @polymerBehavior D2L.PolymerBehaviors.UserActivityUsage.LocalizeBehavior
+	*/
+	D2L.PolymerBehaviors.UserActivityUsage.LocalizeBehavior = [
+		D2L.PolymerBehaviors.LocalizeBehavior,
+		D2L.PolymerBehaviors.UserActivityUsage.LocalizeBehaviorImpl
+	];
+</script>

@@ -20,10 +20,8 @@
 			html {
 				font-size: 20px;
 			}
-			.subtle-demo {
-				background-color: #f6f7f8;
-				margin: -20px;
-				padding: 20px;
+			demo-snippet, d2l-enrollment-card {
+				max-width: 450px
 			}
 		</style>
 	</head>
@@ -34,7 +32,43 @@
 
 			<demo-snippet class="d2l-typography">
 				<template>
-					<d2l-enrollment-card href="../data/enrollment.json" presentation-href="../data/presentation.json">
+					<d2l-enrollment-card href="../data/enrollments/1.json" presentation-href="../data/presentation.json">
+					</d2l-enrollment-card>
+				</template>
+			</demo-snippet>
+
+			<h3>Overdue Enrollment Card</h3>
+
+			<demo-snippet class="d2l-typography">
+				<template>
+					<d2l-enrollment-card href="../data/enrollments/2.json" presentation-href="../data/presentation.json">
+					</d2l-enrollment-card>
+				</template>
+			</demo-snippet>
+
+			<h3>Completed Enrollment Card</h3>
+
+			<demo-snippet class="d2l-typography">
+				<template>
+					<d2l-enrollment-card href="../data/enrollments/3.json" presentation-href="../data/presentation.json">
+					</d2l-enrollment-card>
+				</template>
+			</demo-snippet>
+
+			<h3>Due Tomorrow Enrollment Card</h3>
+
+			<demo-snippet class="d2l-typography">
+				<template>
+					<d2l-enrollment-card href="../data/enrollments/4.json" presentation-href="../data/presentation.json">
+					</d2l-enrollment-card>
+				</template>
+			</demo-snippet>
+
+			<h3>Due this week Enrollment Card</h3>
+
+			<demo-snippet class="d2l-typography">
+				<template>
+					<d2l-enrollment-card href="../data/enrollments/5.json" presentation-href="../data/presentation.json">
 					</d2l-enrollment-card>
 				</template>
 			</demo-snippet>

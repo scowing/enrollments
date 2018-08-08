@@ -19,6 +19,12 @@
            "https://api.brightspace.com/rels/organization-image"
         ],
         "href":"../data/image.json"
+     },
+     {
+        "rel":[
+          "https://api.brightspace.com/rels/organization-homepage"
+        ],
+        "href":"http://example.com"
      }
   ],
   "links":[

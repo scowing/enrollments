@@ -1,0 +1,134 @@
+<link rel="import" href="../../../polymer/polymer.html">
+<link rel="import" href="../../../d2l-fetch/d2l-fetch.html">
+<link rel="import" href="../../../d2l-icons/d2l-icon.html">
+<link rel="import" href="../../../d2l-icons/tier2-icons.html">
+<link rel="import" href="../../../d2l-icons/tier1-icons.html">
+<link rel="import" href="../../../siren-parser-import/siren-parser.html">
+<link rel="import" href="localize-behavior.html">
+
+<!--
+`d2l-user-activity-usage`
+
+Polymer-based web component for a organization due and completion dates.
+
+@demo demo/d2l-user-activity-usage/d2l-user-activity-usage-demo.html Organization Updates
+-->
+
+<dom-module id="d2l-user-activity-usage">
+	<template strip-whitespace>
+		<style>
+			:host {
+				@apply --d2l-body-small-text;
+			}
+
+		</style>
+		[[_dateText]]
+	</template>
+	<script>
+		Polymer({
+			is: 'd2l-user-activity-usage',
+
+			properties: {
+				userActivityUsageHref: {
+					type: String,
+					observer: '_userActivityUsageHrefChange'
+				},
+				hidden: {
+					type: Boolean,
+					computed: '_computeHidden(_dateText)',
+					reflectToAttribute: true
+				},
+
+				_date: String,
+				_isCompletionDate: Boolean,
+				_dateText: {
+					type: String,
+					computed: '_computeDateText(_date, _isCompletionDate)'
+				}
+			},
+
+			behaviors: [
+				D2L.PolymerBehaviors.UserActivityUsage.LocalizeBehavior
+			],
+
+			_computeDateText: function(date, isCompletionDate) {
+				if (!date || typeof isCompletionDate !== 'boolean') {
+					return;
+				}
+
+				var nowDate = new Date(Date.now());
+				var msInDay = 86400000;
+				var tomorrowDate = new Date(Date.now() + msInDay);
+				date = new Date(Date.parse(date));
+
+				if (date < nowDate) {
+					this.fire('d2l-enrollment-status', {
+						status: isCompletionDate ? 'completed' : 'overdue'
+					});
+				}
+
+				var dateTypeText = isCompletionDate ? 'completed' : 'due';
+
+				var dateText;
+				if (date.getDate() === nowDate.getDate()) {
+					dateText = this.localize(dateTypeText + 'Today');
+				} else if (date.getDate() === tomorrowDate.getDate()) {
+					dateText = this.localize(dateTypeText + 'Tomorrow');
+				} else {
+					dateText = this.localize(dateTypeText + 'On', 'dateTime', this.formatDate(date, {format: this._dateFormat(date, nowDate)}));
+				}
+
+				return dateText;
+			},
+			_computeHidden: function(dateText) {
+				return !dateText;
+			},
+			_userActivityUsageHrefChange: function(userActivityUsageHref) {
+				if (!userActivityUsageHref) {
+					return;
+				}
+				return this._fetchSirenEntity(userActivityUsageHref)
+					.then(function(userActivityUsageEntity) {
+						if (!userActivityUsageEntity || !userActivityUsageEntity.properties) {
+							return;
+						}
+
+						this._isCompletionDate = !!userActivityUsageEntity.properties.CompletionDate;
+						this._date = this._isCompletionDate
+							? userActivityUsageEntity.properties.CompletionDate
+							: userActivityUsageEntity.properties.DueDate;
+
+					}.bind(this));
+			},
+			_dateFormat: function(date, nowDate) {
+				var msInAWeek = 604800000;
+				var weekFromNow = new Date(Date.now() + msInAWeek);
+				weekFromNow.setHours(0, 0, 0, 0);
+
+				if (date < weekFromNow && date > nowDate) {
+					return 'dddd';
+				} else if (date.getYear() === nowDate.getYear()) {
+					return 'MMM d';
+				}
+
+				return 'MMM d, yyyy';
+			},
+			_fetchSirenEntity: function(url) {
+				if (!url) {
+					return;
+				}
+				return window.d2lfetch
+					.fetch(new Request(url, {
+						headers: { Accept: 'application/vnd.siren+json' },
+					}))
+					.then(function(response) {
+						if (response.ok) {
+							return response.json();
+						}
+						return Promise.reject(response.status + ' ' + response.statusText);
+					})
+					.then(window.D2L.Hypermedia.Siren.Parse);
+			}
+		});
+	</script>
+</dom-module>

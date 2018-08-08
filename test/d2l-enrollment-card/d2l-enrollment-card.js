@@ -424,4 +424,45 @@ describe('d2l-enrollment-card', () => {
 
 	});
 
+	describe('Display Badge', () => {
+
+		beforeEach(done => loadEnrollment(done));
+
+		afterEach(() => sandbox.reset());
+
+		it('Completed Badge', done => {
+			component.fire('d2l-enrollment-status', {status: 'completed'});
+
+			setTimeout(() => {
+				expect(component._badgeText).to.equal('completed');
+				expect(component._badgeState).to.equal('success');
+				var badge = component.$$('d2l-status-indicator');
+				expect(badge.hasAttribute('hidden')).to.be.false;
+				done();
+			});
+
+		});
+
+		it('Overdue Badge', done => {
+			component.fire('d2l-enrollment-status', {status: 'overdue'});
+
+			setTimeout(() => {
+				expect(component._badgeText).to.equal('overdue');
+				expect(component._badgeState).to.equal('alert');
+				var badge = component.$$('d2l-status-indicator');
+				expect(badge.hasAttribute('hidden')).to.be.false;
+				done();
+			});
+
+		});
+
+		it('No Badge', () => {
+			expect(component._badgeText).to.be.null;
+			expect(component._badgeState).to.be.undefined;
+			var badge = component.$$('d2l-status-indicator');
+			expect(badge.hasAttribute('hidden')).to.be.true;
+		});
+
+	});
+
 });
