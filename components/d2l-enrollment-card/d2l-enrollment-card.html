@@ -134,14 +134,14 @@ Polymer-based web component for a course/enrollment card.
 			}
 
 			.alert-colour-circle {
-				height: 20px;
-				width: 20px;
-				border-radius: 20px;
-				border: 3px solid white;
-				background-color: #ffce51;
+				height: 1rem;
+				width: 1rem;
+				border-radius: 50%;
+				border: 2px solid white;
+				background-color: var(--alert-circle-colour);
 				position: absolute;
-				top: -6px;
-				right: -6px;
+				top: -10px;
+				right: -10px;
 			}
 			[dir="rtl"] .alert-colour-circle {
 				right: auto;
@@ -186,8 +186,6 @@ Polymer-based web component for a course/enrollment card.
 						<d2l-icon></d2l-icon>
 					</div>
 				</div>
-
-				<div class="alert-colour-circle" hidden$="[[!_startedInactive]]"></div>
 			</div>
 
 			<d2l-status-indicator class="badge" slot="badge" state="[[_badgeState]]" text="[[_badgeText]]" hidden$="[[!_badgeText]]"></d2l-status-indicator>
@@ -247,7 +245,7 @@ Polymer-based web component for a course/enrollment card.
 			</d2l-button-icon>
 		</d2l-card>
 
-
+		<div class="alert-colour-circle" hidden$="[[!_showAlertCircle]]"></div>
 	</template>
 	<script>
 		Polymer({
@@ -341,6 +339,11 @@ Polymer-based web component for a course/enrollment card.
 				_accessibilityData: {
 					type: Object,
 					value: function() { return {}; }
+				},
+				_newEnrollment: Boolean,
+				_showAlertCircle: {
+					type: Boolean,
+					computed: '_computeShowAlertCircle(_startedInactive,_newEnrollment)'
 				}
 			},
 			behaviors: [
@@ -356,7 +359,8 @@ Polymer-based web component for a course/enrollment card.
 			listeners: {
 				'd2l-enrollment-status': '_onD2lEnrollmentStatus',
 				'd2l-organization-accessible': '_onD2lOrganizationAccessible',
-				'd2l-user-activity-usage-accessible': '_onD2lUserActivityUsageAccessible'
+				'd2l-user-activity-usage-accessible': '_onD2lUserActivityUsageAccessible',
+				'd2l-enrollment-new': '_onD2lEnrollmentNew'
 			},
 			ready: function() {
 				Polymer.IronA11yAnnouncer.requestAvailability();
@@ -436,6 +440,18 @@ Polymer-based web component for a course/enrollment card.
 				return organization
 					&& organization.properties
 					&& this.localize('courseSettings', 'course', organization.properties.name);
+			},
+			_computeShowAlertCircle: function(startedInactive, newEnrollment) {
+				var colour = null;
+				if (startedInactive) {
+					colour = '#ffce51';
+				} else if (newEnrollment) {
+					colour = 'var(--d2l-color-celestine)';
+				}
+				if (colour) {
+					this.updateStyles({'--alert-circle-colour': colour});
+				}
+				return (!startedInactive || newEnrollment) && colour;
 			},
 			_calculatePastCourseAttribute: function(organization) {
 				var nowDate = Date.now();
@@ -673,6 +689,9 @@ Polymer-based web component for a course/enrollment card.
 
 				this._accessibilityData.badge = badgeText;
 				this._accessibilityDataReset();
+			},
+			_onD2lEnrollmentNew: function() {
+				this._newEnrollment = true;
 			},
 			_pinClickHandler: function() {
 				var pinAction = this._pinned

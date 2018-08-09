@@ -17,13 +17,25 @@
           }
       },
       {
+          "class": [
+              "completion"
+          ],
+          "rel": [
+              "item"
+          ]
+      },
+      {
         "class": [
-            "completion"
+            "date",
+            "last-accessed"
         ],
         "rel": [
-            "item"
-        ]
-    }
+            "https://api.brightspace.com/rels/date"
+        ],
+        "properties": {
+            "date": "2018-08-25T04:00:00.000Z"
+        }
+      }
   ],
   "links": []
 }
