@@ -13,10 +13,10 @@ describe('d2l-user-activity-usage', () => {
 			}));
 	}
 
-	function loadUserActivityUsage(properties) {
+	function loadUserActivityUsage(entities) {
 		sandbox = sinon.sandbox.create();
 		userActivityUsageEntity = window.D2L.Hypermedia.Siren.Parse({
-			'properties': properties
+			'entities': entities
 		});
 
 		fetchStub = sandbox.stub(window.d2lfetch, 'fetch');
@@ -35,11 +35,22 @@ describe('d2l-user-activity-usage', () => {
 	describe('Due Date correctly displayed', () => {
 
 		it('Show year if not in the same year.', done => {
-			var properties = {
-				DueDate: '2017-08-01T04:00:00.000Z'
-			};
+			var entities = [
+				{
+					class: [
+						'date',
+						'due-date'
+					],
+					rel: [
+						'https://api.brightspace.com/rels/date'
+					],
+					properties: {
+						date: '2017-08-01T04:00:00.000Z'
+					}
+				}
+			];
 
-			loadUserActivityUsage(properties);
+			loadUserActivityUsage(entities);
 
 			setTimeout(() => {
 				expect(component._dateText).to.equal('Due Aug 1, 2017');
@@ -48,12 +59,36 @@ describe('d2l-user-activity-usage', () => {
 
 		});
 		it('Show completed.', done => {
-			var properties = {
-				DueDate: '2017-08-01T04:00:00.000Z',
-				CompletionDate: '2017-08-01T04:00:00.000Z'
-			};
+			var entities = [
+				{
+					class: [
+						'date',
+						'due-date'
+					],
+					rel: [
+						'https://api.brightspace.com/rels/date'
+					],
+					properties: {
+						date: '2017-08-01T04:00:00.000Z'
+					}
+				},
+				{
+					class: [
+						'completion',
+						'date'
+					],
+					rel: [
+						'item',
+						'https://activities.api.brightspace.com/rels/completion',
+						'https://api.brightspace.com/rels/date'
+					],
+					properties: {
+						date: '2017-08-01T04:00:00.000Z'
+					}
+				}
+			];
 
-			loadUserActivityUsage(properties);
+			loadUserActivityUsage(entities);
 
 			setTimeout(() => {
 				expect(component._dateText).to.equal('Completed Aug 1, 2017');
@@ -108,12 +143,22 @@ describe('d2l-user-activity-usage', () => {
 				},
 			].forEach((testCase) => {
 				it(testCase.display, (done) => {
+					var entities = [
+						{
+							class: [
+								'date',
+								'due-date'
+							],
+							rel: [
+								'https://api.brightspace.com/rels/date'
+							],
+							properties: {
+								date: testCase.date.toISOString()
+							}
+						}
+					];
 
-					var properties = {
-						DueDate: testCase.date.toISOString()
-					};
-
-					loadUserActivityUsage(properties);
+					loadUserActivityUsage(entities);
 
 					setTimeout(() => {
 						expect(component._dateText).to.equal(testCase.display);
@@ -130,43 +175,88 @@ describe('d2l-user-activity-usage', () => {
 
 	describe('Check if events fire.', () => {
 		it('Overdue', (done) => {
-			var properties = {
-				DueDate: '2017-08-01T04:00:00.000Z'
-			};
+			var entities = [
+				{
+					class: [
+						'date',
+						'due-date'
+					],
+					rel: [
+						'https://api.brightspace.com/rels/date'
+					],
+					properties: {
+						date: '2017-08-01T04:00:00.000Z'
+					}
+				}
+			];
 
 			component.addEventListener('d2l-enrollment-status', function(e) {
 				expect(e.detail.status).to.equal('overdue');
 				done();
 			});
 
-			loadUserActivityUsage(properties);
+			loadUserActivityUsage(entities);
 
 		});
 
 		it('Completed', (done) => {
-			var properties = {
-				DueDate: '2017-08-01T04:00:00.000Z',
-				CompletionDate: '2017-08-01T04:00:00.000Z'
-			};
+			var entities = [
+				{
+					class: [
+						'date',
+						'due-date'
+					],
+					rel: [
+						'https://api.brightspace.com/rels/date'
+					],
+					properties: {
+						date: '2017-08-01T04:00:00.000Z'
+					}
+				},
+				{
+					class: [
+						'completion',
+						'date'
+					],
+					rel: [
+						'item',
+						'https://activities.api.brightspace.com/rels/completion',
+						'https://api.brightspace.com/rels/date'
+					],
+					properties: {
+						date: '2017-08-01T04:00:00.000Z'
+					}
+				}
+			];
 
 			component.addEventListener('d2l-enrollment-status', function(e) {
 				expect(e.detail.status).to.equal('completed');
 				done();
 			});
 
-			loadUserActivityUsage(properties);
+			loadUserActivityUsage(entities);
 
 		});
 
 		it('No event fires', (done) => {
-			var properties = {
-				DueDate: '2100-08-01T04:00:00.000Z'
-			};
-
+			var entities = [
+				{
+					class: [
+						'date',
+						'due-date'
+					],
+					rel: [
+						'https://api.brightspace.com/rels/date'
+					],
+					properties: {
+						date: '2100-08-01T04:00:00.000Z'
+					}
+				}
+			];
 			var eventSpy = sinon.spy();
 			component.addEventListener('d2l-enrollment-status', eventSpy);
 
-			loadUserActivityUsage(properties);
+			loadUserActivityUsage(entities);
 
 			setTimeout(() => {
 				sinon.assert.notCalled(eventSpy);

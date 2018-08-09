@@ -42,13 +42,6 @@ Polymer-based web component for a course/enrollment card.
 				/* Prevents long, non-breaking course names from overflowing */
 				width: 100%;
 			}
-			/*
-			d2l-card:hover,
-			d2l-card:focus {
-				cursor: pointer;
-				border: 1px solid var(--d2l-color-celestine);
-			}
-			*/
 			d2l-card[disabled] {
 				filter: grayscale(1);
 			}
@@ -210,9 +203,7 @@ Polymer-based web component for a course/enrollment card.
 				width: 100%;
 				text-align: center;
 			}
-			d2l-card > d2l-status-indicator[slot=badge] {
-				position:relative;
-				top: -0.5rem;
+			.badge {
 				background-color: #FFFFFF;
 				box-shadow: 0 0 0 2px #FFFFFF;
 				padding: 0.2rem 0.5rem 0.15rem 0.5rem;
@@ -238,7 +229,7 @@ Polymer-based web component for a course/enrollment card.
 				<div class="alert-colour-circle" hidden$="[[!_startedInactive]]"></div>
 			</div>
 
-			<d2l-status-indicator slot="badge" state="[[_badgeState]]" text="[[_badgeText]]" hidden$="[[!_badgeText]]"></d2l-status-indicator>
+			<d2l-status-indicator class="badge" slot="badge" state="[[_badgeState]]" text="[[_badgeText]]" hidden$="[[!_badgeText]]"></d2l-status-indicator>
 
 			<div class="content-flex" slot="content">
 				<d2l-organization-info

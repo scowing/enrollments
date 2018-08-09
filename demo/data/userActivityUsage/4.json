@@ -1,5 +1,37 @@
 {
-  "properties": {
-    "DueDate": "2018-08-09T04:00:00.000Z"
-  }
+  "class": [
+      "activity",
+      "user-course-offering-activity-usage"
+  ],
+  "entities": [
+      {
+          "class": [
+              "date",
+              "due-date"
+          ],
+          "rel": [
+              "https://api.brightspace.com/rels/date"
+          ],
+          "properties": {
+              "date": "2018-08-10T04:00:00.000Z"
+          }
+      },
+      {
+        "class": [
+            "completion",
+            "date"
+        ],
+        "rel": [
+            "item",
+            "https://activities.api.brightspace.com/rels/completion",
+            "https://api.brightspace.com/rels/date"
+        ],
+        "properties": {
+            "date": ""
+        }
+    }
+  ],
+  "links": []
 }
+
+

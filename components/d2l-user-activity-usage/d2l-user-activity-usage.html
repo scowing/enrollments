@@ -89,16 +89,24 @@ Polymer-based web component for a organization due and completion dates.
 				}
 				return this._fetchSirenEntity(userActivityUsageHref)
 					.then(function(userActivityUsageEntity) {
-						if (!userActivityUsageEntity || !userActivityUsageEntity.properties) {
-							return;
-						}
+						var completionDate = this._sirenClassProperty(userActivityUsageEntity, 'completion');
+						var dueDate = this._sirenClassProperty(userActivityUsageEntity, 'due-date');
 
-						this._isCompletionDate = !!userActivityUsageEntity.properties.CompletionDate;
-						this._date = this._isCompletionDate
-							? userActivityUsageEntity.properties.CompletionDate
-							: userActivityUsageEntity.properties.DueDate;
-
+						this._isCompletionDate = !!completionDate;
+						this._date = this._isCompletionDate ? completionDate : dueDate;
 					}.bind(this));
+			},
+			_sirenClassProperty: function(entity, sirenClass) {
+				if (!entity.hasSubEntityByClass(sirenClass)) {
+					return;
+				}
+				var subEntity = entity.getSubEntityByClass(sirenClass);
+
+				if (subEntity.hasClass('date')) {
+					return subEntity.properties ? subEntity.properties.date : null;
+				} else if (subEntity.hasClass('duration')) {
+					return subEntity.properties ? subEntity.properties.seconds : null;
+				}
 			},
 			_dateFormat: function(date, nowDate) {
 				var msInAWeek = 604800000;
