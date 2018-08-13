@@ -1,8 +1,5 @@
 <link rel="import" href="../../../polymer/polymer.html">
 <link rel="import" href="../../../d2l-fetch/d2l-fetch.html">
-<link rel="import" href="../../../d2l-icons/d2l-icon.html">
-<link rel="import" href="../../../d2l-icons/tier2-icons.html">
-<link rel="import" href="../../../d2l-icons/tier1-icons.html">
 <link rel="import" href="../../../siren-parser-import/siren-parser.html">
 <link rel="import" href="localize-behavior.html">
 
@@ -29,9 +26,9 @@ Polymer-based web component for a organization due and completion dates.
 			is: 'd2l-user-activity-usage',
 
 			properties: {
-				userActivityUsageHref: {
+				href: {
 					type: String,
-					observer: '_userActivityUsageHrefChange'
+					observer: '_hrefChange'
 				},
 				hidden: {
 					type: Boolean,
@@ -83,11 +80,11 @@ Polymer-based web component for a organization due and completion dates.
 			_computeHidden: function(dateText) {
 				return !dateText;
 			},
-			_userActivityUsageHrefChange: function(userActivityUsageHref) {
-				if (!userActivityUsageHref) {
+			_hrefChange: function(href) {
+				if (!href) {
 					return;
 				}
-				return this._fetchSirenEntity(userActivityUsageHref)
+				return this._fetchSirenEntity(href)
 					.then(function(userActivityUsageEntity) {
 						var completionDate = this._sirenClassProperty(userActivityUsageEntity, 'completion');
 						var dueDate = this._sirenClassProperty(userActivityUsageEntity, 'due-date');

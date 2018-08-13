@@ -14,7 +14,6 @@ describe('d2l-user-activity-usage', () => {
 	}
 
 	function loadUserActivityUsage(entities) {
-		sandbox = sinon.sandbox.create();
 		userActivityUsageEntity = window.D2L.Hypermedia.Siren.Parse({
 			'entities': entities
 		});
@@ -22,10 +21,11 @@ describe('d2l-user-activity-usage', () => {
 		fetchStub = sandbox.stub(window.d2lfetch, 'fetch');
 		SetupFetchStub(/\/userActivityUsage$/, userActivityUsageEntity);
 
-		component.userActivityUsageHref = '/userActivityUsage';
+		component.href = '/userActivityUsage';
 	}
 
 	beforeEach(() => {
+		sandbox = sinon.sandbox.create();
 		component = fixture('d2l-user-activity-usage-fixture');
 	});
 	afterEach(() => {

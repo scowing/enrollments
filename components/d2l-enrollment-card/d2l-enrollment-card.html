@@ -17,7 +17,6 @@
 <link rel="import" href="../../../d2l-status-indicator/d2l-status-indicator.html">
 <link rel="import" href="../../../d2l-organizations/d2l-organization-updates.html">
 <link rel="import" href="../../../siren-parser-import/siren-parser.html">
-<link rel="import" href="../../../siren-parser-import/siren-parser.html">
 <link rel="import" href="../d2l-user-activity-usage/d2l-user-activity-usage.html">
 <link rel="import" href="localize-behavior.html">
 
@@ -236,7 +235,7 @@ Polymer-based web component for a course/enrollment card.
 					href="[[_organizationUrl]]"
 					presentation-href="[[presentationHref]]">
 				</d2l-organization-info>
-				<d2l-user-activity-usage user-activity-usage-href="[[_userActivityUsageUrl]]"></d2l-user-activity-usage>
+				<d2l-user-activity-usage href="[[_userActivityUsageUrl]]"></d2l-user-activity-usage>
 			</div>
 			<d2l-organization-updates
 				slot="footer"
