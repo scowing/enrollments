@@ -54,6 +54,7 @@ Polymer-based web component for a organization due and completion dates.
 				}
 
 				var nowDate = new Date(Date.now());
+				nowDate.setHours(0, 0, 0, 0);
 				var msInDay = 86400000;
 				var tomorrowDate = new Date(Date.now() + msInDay);
 				date = new Date(Date.parse(date));
