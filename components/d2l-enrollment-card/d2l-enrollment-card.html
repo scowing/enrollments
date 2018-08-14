@@ -76,30 +76,10 @@ Polymer-based web component for a course/enrollment card.
 				background: var(--d2l-color-celestine);
 			}
 
-			.menu-area {
-				position: absolute;
-				top: 0px;
-				right: 0px;
-				justify-content: flex-end;
-			}
-			[dir="rtl"] .menu-area {
-				justify-content: flex-start;
-				right: auto;
-				left: 0px;
-			}
 			.menu-area > * {
 				margin-right: 12px;
-				margin-top: 12px;
 			}
-			[dir="rtl"] .menu-area > * {
-				margin-left: 12px;
-				margin-right: auto;
-			}
-			.menu-area > d2l-dropdown-more {
-				opacity: 0;
-				margin-top: 0;
-				transition: opacity 0.5s, margin-top 0.5s;
-			}
+
 			:host:hover .menu-area > d2l-dropdown-more,
 			:host:focus .menu-area > d2l-dropdown-more,
 			:host[focused] .menu-area > d2l-dropdown-more {
@@ -209,7 +189,9 @@ Polymer-based web component for a course/enrollment card.
 			}
 		</style>
 
-		<d2l-card on-tap="_onTapCard" on-keypress="_onKeypressCard" tabindex="0">
+		<d2l-card
+			href="[[_organizationHomepageUrl]]"
+			text="[[_accessibilityDataToString(_accessibilityData)]]">
 			<div slot="header" aria-hidden="true">
 				<div class="image-container">
 					<d2l-course-image
@@ -242,45 +224,82 @@ Polymer-based web component for a course/enrollment card.
 				href="[[_notificationsUrl]]"
 				presentation-href="[[presentationHref]]">
 			</d2l-organization-updates>
+			<div slot="actions" class="menu-area">
+				<d2l-dropdown-more label="[[_courseSettingsLabel]]">
+					<d2l-dropdown-menu>
+						<d2l-menu>
+							<d2l-menu-item-link
+								hidden$="[[!_canAccessCourseInfo]]"
+								text="[[localize('courseOfferingInformation')]]"
+								href="[[_courseInfoUrl]]">
+							</d2l-menu-item-link>
+							<d2l-menu-item
+								on-d2l-menu-item-select="_launchCourseImageSelector"
+								hidden$="[[!_canChangeCourseImage]]"
+								text="[[localize('changeImage')]]">
+							</d2l-menu-item>
+							<d2l-menu-item
+								on-d2l-menu-item-select="_pinClickHandler"
+								hidden$="[[_pinned]]"
+								text="[[localize('pin')]]">
+							</d2l-menu-item>
+							<d2l-menu-item
+								on-d2l-menu-item-select="_pinClickHandler"
+								hidden$="[[!_pinned]]"
+								text="[[localize('unpin')]]">
+							</d2l-menu-item>
+						</d2l-menu>
+					</d2l-dropdown-menu>
+				</d2l-dropdown-more>
+
+				<button
+					hidden$="[[!_pinned]]"
+					class="pin-indicator"
+					on-tap="_pinClickHandler"
+					on-keypress="_pinPressHandler"
+					aria-label$="[[_pinButtonLabel]]">
+					<d2l-icon icon="d2l-tier1:pin-filled"></d2l-icon>
+				</button>
+			</div>>
+				<d2l-dropdown-more label="[[_courseSettingsLabel]]">
+					<d2l-dropdown-menu>
+						<d2l-menu>
+							<d2l-menu-item-link
+								hidden$="[[!_canAccessCourseInfo]]"
+								text="[[localize('courseOfferingInformation')]]"
+								href="[[_courseInfoUrl]]">
+							</d2l-menu-item-link>
+							<d2l-menu-item
+								on-d2l-menu-item-select="_launchCourseImageSelector"
+								hidden$="[[!_canChangeCourseImage]]"
+								text="[[localize('changeImage')]]">
+							</d2l-menu-item>
+							<d2l-menu-item
+								on-d2l-menu-item-select="_pinClickHandler"
+								hidden$="[[_pinned]]"
+								text="[[localize('pin')]]">
+							</d2l-menu-item>
+							<d2l-menu-item
+								on-d2l-menu-item-select="_pinClickHandler"
+								hidden$="[[!_pinned]]"
+								text="[[localize('unpin')]]">
+							</d2l-menu-item>
+						</d2l-menu>
+					</d2l-dropdown-menu>
+				</d2l-dropdown-more>
+
+				<button
+					hidden$="[[!_pinned]]"
+					class="pin-indicator"
+					on-tap="_pinClickHandler"
+					on-keypress="_pinPressHandler"
+					aria-label$="[[_pinButtonLabel]]">
+					<d2l-icon icon="d2l-tier1:pin-filled"></d2l-icon>
+				</button>
+			</div>
 		</d2l-card>
 
-		<div class="flex menu-area">
-			<d2l-dropdown-more label="[[_courseSettingsLabel]]">
-				<d2l-dropdown-menu>
-					<d2l-menu>
-						<d2l-menu-item-link
-							hidden$="[[!_canAccessCourseInfo]]"
-							text="[[localize('courseOfferingInformation')]]"
-							href="[[_courseInfoUrl]]">
-						</d2l-menu-item-link>
-						<d2l-menu-item
-							on-d2l-menu-item-select="_launchCourseImageSelector"
-							hidden$="[[!_canChangeCourseImage]]"
-							text="[[localize('changeImage')]]">
-						</d2l-menu-item>
-						<d2l-menu-item
-							on-d2l-menu-item-select="_pinClickHandler"
-							hidden$="[[_pinned]]"
-							text="[[localize('pin')]]">
-						</d2l-menu-item>
-						<d2l-menu-item
-							on-d2l-menu-item-select="_pinClickHandler"
-							hidden$="[[!_pinned]]"
-							text="[[localize('unpin')]]">
-						</d2l-menu-item>
-					</d2l-menu>
-				</d2l-dropdown-menu>
-			</d2l-dropdown-more>
 
-			<button
-				hidden$="[[!_pinned]]"
-				class="pin-indicator"
-				on-tap="_pinClickHandler"
-				on-keypress="_pinPressHandler"
-				aria-label$="[[_pinButtonLabel]]">
-				<d2l-icon icon="d2l-tier1:pin-filled"></d2l-icon>
-			</button>
-		</div>
 	</template>
 	<script>
 		Polymer({
@@ -366,10 +385,15 @@ Polymer-based web component for a course/enrollment card.
 				// can't be undefined as falsy means hidden
 				_badgeText: {
 					type: String,
-					value: null
+					value: null,
+					observer: '_badgeTextChange'
 				},
 				_badgeState: String,
-				_userActivityUsageUrl: String
+				_userActivityUsageUrl: String,
+				_accessibilityData: {
+					type: Object,
+					value: function() { return {}; }
+				}
 			},
 			behaviors: [
 				window.D2L.Hypermedia.HMConstantsBehavior,
@@ -382,7 +406,9 @@ Polymer-based web component for a course/enrollment card.
 				'_calculatePastCourseAttribute(_organization)'
 			],
 			listeners: {
-				'd2l-enrollment-status': '_onD2lEnrollmentStatus'
+				'd2l-enrollment-status': '_onD2lEnrollmentStatus',
+				'd2l-organization-accessible': '_onD2lOrganizationAccessible',
+				'd2l-user-activity-usage-accessible': '_onD2lUserActivityUsageAccessible'
 			},
 			ready: function() {
 				Polymer.IronA11yAnnouncer.requestAvailability();
@@ -642,17 +668,6 @@ Polymer-based web component for a course/enrollment card.
 			_onBlur: function() {
 				this.removeAttribute('focused');
 			},
-			_onKeypressCard: function(e) {
-				if (e.code === 'Space' || e.code === 'Enter') {
-					this._onTapCard();
-				}
-			},
-			_onTapCard: function() {
-				if (this._organizationHomepageUrl) {
-					// Homepage not set when user doesn't have access to course
-					window.location = this._organizationHomepageUrl;
-				}
-			},
 			_onSetCourseImage: function(e) {
 				if (this._getEntityIdentifier(e.detail.organization) !== this._getEntityIdentifier(this._organization)) {
 					return;
@@ -705,6 +720,22 @@ Polymer-based web component for a course/enrollment card.
 						this._badgeText = null;
 						return;
 				}
+			},
+			_onD2lOrganizationAccessible: function(e) {
+				this._accessibilityData.organizationName = e.detail.organization && e.detail.organization.name;
+				this._accessibilityData.organizationCode = e.detail.organization && e.detail.organization.code;
+				this._accessibilityData.semesterName = e.detail.semesterName;
+				this._accessibilityDataReset();
+			},
+			_onD2lUserActivityUsageAccessible: function(e) {
+				this._accessibilityData.userActivityUsageInfo = e.detail;
+				this._accessibilityDataReset();
+			},
+			_badgeTextChange: function(badgeText) {
+				if (!badgeText) return;
+
+				this._accessibilityData.badge = badgeText;
+				this._accessibilityDataReset();
 			},
 			_pinClickHandler: function() {
 				var pinAction = this._pinned
@@ -761,6 +792,26 @@ Polymer-based web component for a course/enrollment card.
 						});
 				}
 				return Promise.reject(response.status + ' ' + response.statusText);
+			},
+			_accessibilityDataToString: function(accessibility) {
+				if (!accessibility || !accessibility.organizationName) {
+					return this.localize('courseClosed');
+				}
+				var textData = [
+					accessibility.organizationName,
+					accessibility.organizationCode,
+					accessibility.semesterName,
+					accessibility.badge,
+					accessibility.userActivityUsageInfo
+				];
+				return textData.filter(function(text) {
+					return text && typeof text === 'string';
+				}).join(', ');
+			},
+			_accessibilityDataReset: function() {
+				var accessiblity = this._accessibilityData;
+				this._accessibilityData = {};
+				this._accessibilityData = accessiblity;
 			}
 		});
 	</script>

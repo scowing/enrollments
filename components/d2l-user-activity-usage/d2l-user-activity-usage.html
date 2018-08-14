@@ -75,6 +75,8 @@ Polymer-based web component for a organization due and completion dates.
 					dateText = this.localize(dateTypeText + 'On', 'dateTime', this.formatDate(date, {format: this._dateFormat(date, nowDate)}));
 				}
 
+				this.fire('d2l-user-activity-usage-accessible', dateText);
+
 				return dateText;
 			},
 			_computeHidden: function(dateText) {
