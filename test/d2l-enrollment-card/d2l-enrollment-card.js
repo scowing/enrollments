@@ -531,17 +531,17 @@ describe('d2l-enrollment-card', () => {
 
 		});
 
-		it('No organization name', () => {
+		it('No semester name', () => {
 			component.fire('d2l-organization-accessible', {
 				organization: {
-					name: undefined,
+					name: 'Course Name',
 					code: 'Course Code'
 				},
-				semesterName: 'Semester Name'
+				semesterName: undefined
 			});
-			expect(component._accessibilityData.organizationName).to.be.undefined;
+			expect(component._accessibilityData.semesterName).to.be.undefined;
 			var cardText = component.$$('d2l-card').getAttribute('text');
-			expect(cardText).to.contain('Closed');
+			expect(cardText).to.not.contain('Semester Name');
 
 		});
 

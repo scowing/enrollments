@@ -189,7 +189,8 @@ Polymer-based web component for a course/enrollment card.
 			}
 		</style>
 
-		<d2l-card subtle
+		<d2l-card
+			subtle
 			href="[[_organizationHomepageUrl]]"
 			text="[[_accessibilityDataToString(_accessibilityData)]]">
 			<div slot="header" aria-hidden="true">
@@ -225,42 +226,6 @@ Polymer-based web component for a course/enrollment card.
 				presentation-href="[[presentationHref]]">
 			</d2l-organization-updates>
 			<div slot="actions" class="menu-area">
-				<d2l-dropdown-more label="[[_courseSettingsLabel]]">
-					<d2l-dropdown-menu>
-						<d2l-menu>
-							<d2l-menu-item-link
-								hidden$="[[!_canAccessCourseInfo]]"
-								text="[[localize('courseOfferingInformation')]]"
-								href="[[_courseInfoUrl]]">
-							</d2l-menu-item-link>
-							<d2l-menu-item
-								on-d2l-menu-item-select="_launchCourseImageSelector"
-								hidden$="[[!_canChangeCourseImage]]"
-								text="[[localize('changeImage')]]">
-							</d2l-menu-item>
-							<d2l-menu-item
-								on-d2l-menu-item-select="_pinClickHandler"
-								hidden$="[[_pinned]]"
-								text="[[localize('pin')]]">
-							</d2l-menu-item>
-							<d2l-menu-item
-								on-d2l-menu-item-select="_pinClickHandler"
-								hidden$="[[!_pinned]]"
-								text="[[localize('unpin')]]">
-							</d2l-menu-item>
-						</d2l-menu>
-					</d2l-dropdown-menu>
-				</d2l-dropdown-more>
-
-				<button
-					hidden$="[[!_pinned]]"
-					class="pin-indicator"
-					on-tap="_pinClickHandler"
-					on-keypress="_pinPressHandler"
-					aria-label$="[[_pinButtonLabel]]">
-					<d2l-icon icon="d2l-tier1:pin-filled"></d2l-icon>
-				</button>
-			</div>
 				<d2l-dropdown-more label="[[_courseSettingsLabel]]">
 					<d2l-dropdown-menu>
 						<d2l-menu>
