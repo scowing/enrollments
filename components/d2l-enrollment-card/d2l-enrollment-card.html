@@ -181,13 +181,17 @@ Polymer-based web component for a course/enrollment card.
 				overflow-wrap: break-word; /* replaces 'word-wrap' in Firefox, Chrome, Safari */
 				display: flex;
 				flex-direction: column;
-				width: 100%;
 				text-align: center;
 			}
 			.badge {
 				background-color: #FFFFFF;
 				box-shadow: 0 0 0 2px #FFFFFF;
 				padding: 0.2rem 0.5rem 0.15rem 0.5rem;
+			}
+
+			d2l-organization-updates {
+				float: right;
+				margin: -0.35rem 0.2rem 0.2rem 0.2rem;
 			}
 		</style>
 
@@ -215,6 +219,13 @@ Polymer-based web component for a course/enrollment card.
 
 			<d2l-status-indicator class="badge" slot="badge" state="[[_badgeState]]" text="[[_badgeText]]" hidden$="[[!_badgeText]]"></d2l-status-indicator>
 
+			<d2l-organization-updates
+				combined
+				slot="content"
+				href="[[_notificationsUrl]]"
+				presentation-href="[[presentationHref]]">
+			</d2l-organization-updates>
+
 			<div class="content-flex" slot="content">
 				<d2l-organization-info
 					href="[[_organizationUrl]]"
@@ -224,11 +235,7 @@ Polymer-based web component for a course/enrollment card.
 					<d2l-user-activity-usage href="[[_userActivityUsageUrl]]"></d2l-user-activity-usage>
 				</d2l-card-content-meta>
 			</div>
-			<d2l-organization-updates
-				slot="footer"
-				href="[[_notificationsUrl]]"
-				presentation-href="[[presentationHref]]">
-			</d2l-organization-updates>
+
 			<div slot="actions" class="menu-area">
 				<d2l-dropdown-more label="[[_courseSettingsLabel]]">
 					<d2l-dropdown-menu>
