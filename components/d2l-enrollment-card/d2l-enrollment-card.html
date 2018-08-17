@@ -78,14 +78,15 @@ Polymer-based web component for a course/enrollment card.
 			}
 
 			.menu-area > * {
-				margin-right: 12px;
+				margin-right: 5px;
 			}
-
+			:host .menu-area > d2l-dropdown-more {
+				opacity: 0;
+			}
 			:host:hover .menu-area > d2l-dropdown-more,
 			:host:focus .menu-area > d2l-dropdown-more,
 			:host[focused] .menu-area > d2l-dropdown-more {
 				opacity: 1;
-				margin-top: 12px;
 			}
 
 			.overlay {
