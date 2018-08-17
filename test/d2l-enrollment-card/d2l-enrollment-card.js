@@ -465,4 +465,86 @@ describe('d2l-enrollment-card', () => {
 
 	});
 
+	describe('Accessibility', () => {
+
+		beforeEach(done => loadEnrollment(done));
+
+		afterEach(() => sandbox.reset());
+
+		it('Organization', done => {
+			component.fire('d2l-organization-accessible', {
+				organization: {
+					name: 'Course Name',
+					code: 'Course Code'
+				},
+				semesterName: 'Semester Name'
+			});
+
+			setTimeout(() => {
+				expect(component._accessibilityData.organizationName).to.equal('Course Name');
+				expect(component._accessibilityData.organizationCode).to.equal('Course Code');
+				expect(component._accessibilityData.semesterName).to.equal('Semester Name');
+				var cardText = component.$$('d2l-card').getAttribute('text');
+				expect(cardText).to.contain('Course Name');
+				expect(cardText).to.contain('Course Code');
+				expect(cardText).to.contain('Semester Name');
+				done();
+			});
+
+		});
+
+		it('user activity usage', done => {
+			component.fire('d2l-organization-accessible', {
+				organization: {
+					name: 'Course Name',
+					code: 'Course Code'
+				},
+				semesterName: 'Semester Name'
+			});
+			component.fire('d2l-user-activity-usage-accessible', 'Due Feb 15');
+
+			setTimeout(() => {
+				expect(component._accessibilityData.userActivityUsageInfo).to.equal('Due Feb 15');
+				var cardText = component.$$('d2l-card').getAttribute('text');
+				expect(cardText).to.contain('Due Feb 15');
+				done();
+			});
+
+		});
+
+		it('Badge', done => {
+			component.fire('d2l-organization-accessible', {
+				organization: {
+					name: 'Course Name',
+					code: 'Course Code'
+				},
+				semesterName: 'Semester Name'
+			});
+			component.fire('d2l-enrollment-status', {status: 'overdue'});
+
+			setTimeout(() => {
+				expect(component._accessibilityData.badge).to.equal('overdue');
+				var cardText = component.$$('d2l-card').getAttribute('text');
+				expect(cardText).to.contain('overdue');
+				done();
+			});
+
+		});
+
+		it('No semester name', () => {
+			component.fire('d2l-organization-accessible', {
+				organization: {
+					name: 'Course Name',
+					code: 'Course Code'
+				},
+				semesterName: undefined
+			});
+			expect(component._accessibilityData.semesterName).to.be.undefined;
+			var cardText = component.$$('d2l-card').getAttribute('text');
+			expect(cardText).to.not.contain('Semester Name');
+
+		});
+
+	});
+
 });
