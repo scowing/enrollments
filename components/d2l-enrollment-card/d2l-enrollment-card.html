@@ -61,10 +61,6 @@ Polymer-based web component for a course/enrollment card.
 				display: flex;
 			}
 
-			.menu-area > * {
-				margin-right: 5px;
-			}
-
 			.overlay {
 				box-sizing: border-box;
 				display: flex;
@@ -213,44 +209,42 @@ Polymer-based web component for a course/enrollment card.
 				</d2l-card-content-meta>
 			</div>
 
-			<div slot="actions" class="menu-area">
-				<d2l-dropdown-more text="[[_courseSettingsLabel]]" translucent visible-on-ancestor>
-					<d2l-dropdown-menu>
-						<d2l-menu>
-							<d2l-menu-item-link
-								hidden$="[[!_canAccessCourseInfo]]"
-								text="[[localize('courseOfferingInformation')]]"
-								href="[[_courseInfoUrl]]">
-							</d2l-menu-item-link>
-							<d2l-menu-item
-								on-d2l-menu-item-select="_launchCourseImageSelector"
-								hidden$="[[!_canChangeCourseImage]]"
-								text="[[localize('changeImage')]]">
-							</d2l-menu-item>
-							<d2l-menu-item
-								on-d2l-menu-item-select="_pinClickHandler"
-								hidden$="[[_pinned]]"
-								text="[[localize('pin')]]">
-							</d2l-menu-item>
-							<d2l-menu-item
-								on-d2l-menu-item-select="_pinClickHandler"
-								hidden$="[[!_pinned]]"
-								text="[[localize('unpin')]]">
-							</d2l-menu-item>
-						</d2l-menu>
-					</d2l-dropdown-menu>
-				</d2l-dropdown-more>
+			<d2l-dropdown-more slot="actions"  text="[[_courseSettingsLabel]]" translucent visible-on-ancestor>
+				<d2l-dropdown-menu>
+					<d2l-menu>
+						<d2l-menu-item-link
+							hidden$="[[!_canAccessCourseInfo]]"
+							text="[[localize('courseOfferingInformation')]]"
+							href="[[_courseInfoUrl]]">
+						</d2l-menu-item-link>
+						<d2l-menu-item
+							on-d2l-menu-item-select="_launchCourseImageSelector"
+							hidden$="[[!_canChangeCourseImage]]"
+							text="[[localize('changeImage')]]">
+						</d2l-menu-item>
+						<d2l-menu-item
+							on-d2l-menu-item-select="_pinClickHandler"
+							hidden$="[[_pinned]]"
+							text="[[localize('pin')]]">
+						</d2l-menu-item>
+						<d2l-menu-item
+							on-d2l-menu-item-select="_pinClickHandler"
+							hidden$="[[!_pinned]]"
+							text="[[localize('unpin')]]">
+						</d2l-menu-item>
+					</d2l-menu>
+				</d2l-dropdown-menu>
+			</d2l-dropdown-more>
 
-				<d2l-button-icon
-					slot="actions"
-					translucent
-					hidden$="[[!_pinned]]"
-					text="[[_pinButtonLabel]]"
-					icon="d2l-tier1:pin-filled"
-					on-tap="_pinClickHandler"
-					on-keypress="_pinPressHandler">
-				</d2l-button-icon>
-			</div>
+			<d2l-button-icon
+				slot="actions"
+				translucent
+				hidden$="[[!_pinned]]"
+				text="[[_pinButtonLabel]]"
+				icon="d2l-tier1:pin-filled"
+				on-tap="_pinClickHandler"
+				on-keypress="_pinPressHandler">
+			</d2l-button-icon>
 		</d2l-card>
 
 
@@ -372,9 +366,6 @@ Polymer-based web component for a course/enrollment card.
 				window.addEventListener('set-course-image', this._boundOnSetCourseImage);
 
 				Polymer.RenderStatus.afterNextRender(this, function() {
-					this.addEventListener('focus', this._onFocus, true);
-					this.addEventListener('blur', this._onBlur, true);
-
 					var imageTile = this.$$('d2l-card');
 
 					var observerCallback = function(entries, observer) {
@@ -415,8 +406,6 @@ Polymer-based web component for a course/enrollment card.
 			},
 			detached: function() {
 				window.removeEventListener('set-course-image', this._boundOnSetCourseImage);
-				this.removeEventListener('focus', this._onFocus, true);
-				this.removeEventListener('blur', this._onBlur, true);
 			},
 
 			refreshImage: function(organization) {
@@ -615,12 +604,6 @@ Polymer-based web component for a course/enrollment card.
 				this.fire('open-change-image-view', {
 					organization: this._organization
 				});
-			},
-			_onFocus: function() {
-				this.setAttribute('focused', '');
-			},
-			_onBlur: function() {
-				this.removeAttribute('focused');
 			},
 			_onSetCourseImage: function(e) {
 				if (this._getEntityIdentifier(e.detail.organization) !== this._getEntityIdentifier(this._organization)) {
