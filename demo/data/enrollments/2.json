@@ -1,5 +1,5 @@
 {
-  "class":["enrollment","pinned"],
+  "class":["enrollment"],
   "links":[
     {
       "rel":["self"],
