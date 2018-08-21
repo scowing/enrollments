@@ -24,7 +24,9 @@
         "rel":[
           "https://api.brightspace.com/rels/organization-homepage"
         ],
-        "href":"http://example.com"
+        "properties": {
+          "path": "http://example.com"
+        }
      }
   ],
   "links":[
