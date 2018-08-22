@@ -15,6 +15,7 @@
 <link rel="import" href="../../../d2l-organizations/d2l-organization-info.html">
 <link rel="import" href="../../../d2l-tile/d2l-card.html">
 <link rel="import" href="../../../d2l-tile/d2l-card-content-meta.html">
+<link rel="import" href="../../../d2l-button/d2l-button-icon.html">
 <link rel="import" href="../../../d2l-status-indicator/d2l-status-indicator.html">
 <link rel="import" href="../../../d2l-organizations/d2l-organization-updates.html">
 <link rel="import" href="../../../siren-parser-import/siren-parser.html">
@@ -58,35 +59,6 @@ Polymer-based web component for a course/enrollment card.
 
 			.flex {
 				display: flex;
-			}
-
-			.pin-indicator {
-				line-height: 20px;
-				opacity: 1;
-				background: rgba(0,0,0,0.5);
-				border: none;
-				border-radius: 5px;
-				transition: color 0.5s, background 0.5s, opacity 0.25s, width 0.15s, margin-right 0.25s, padding-left 0.25s, padding-right 0.25s;
-				cursor: pointer;
-				width: 35px;
-				height: 35px;
-			}
-			.pin-indicator:hover,
-			.pin-indicator:focus {
-				color: rgba(255,255,255,1);
-				background: var(--d2l-color-celestine);
-			}
-
-			.menu-area > * {
-				margin-right: 5px;
-			}
-			:host .menu-area > d2l-dropdown-more {
-				opacity: 0;
-			}
-			:host:hover .menu-area > d2l-dropdown-more,
-			:host:focus .menu-area > d2l-dropdown-more,
-			:host[focused] .menu-area > d2l-dropdown-more {
-				opacity: 1;
 			}
 
 			.overlay {
@@ -181,14 +153,19 @@ Polymer-based web component for a course/enrollment card.
 				overflow-wrap: break-word; /* replaces 'word-wrap' in Firefox, Chrome, Safari */
 				display: flex;
 				flex-direction: column;
-				width: 100%;
-				text-align: center;
+				margin: -0.35rem 0 -0.1rem -0.05rem;
 			}
 			.badge {
 				background-color: #FFFFFF;
 				box-shadow: 0 0 0 2px #FFFFFF;
 				padding: 0.2rem 0.5rem 0.15rem 0.5rem;
 			}
+
+			d2l-organization-updates {
+				float: right;
+				margin: -0.7rem 0 0 0.2rem;
+			}
+
 		</style>
 
 		<d2l-card
@@ -215,6 +192,13 @@ Polymer-based web component for a course/enrollment card.
 
 			<d2l-status-indicator class="badge" slot="badge" state="[[_badgeState]]" text="[[_badgeText]]" hidden$="[[!_badgeText]]"></d2l-status-indicator>
 
+			<d2l-organization-updates
+				combined
+				slot="content"
+				href="[[_notificationsUrl]]"
+				presentation-href="[[presentationHref]]">
+			</d2l-organization-updates>
+
 			<div class="content-flex" slot="content">
 				<d2l-organization-info
 					href="[[_organizationUrl]]"
@@ -224,48 +208,43 @@ Polymer-based web component for a course/enrollment card.
 					<d2l-user-activity-usage href="[[_userActivityUsageUrl]]"></d2l-user-activity-usage>
 				</d2l-card-content-meta>
 			</div>
-			<d2l-organization-updates
-				slot="footer"
-				href="[[_notificationsUrl]]"
-				presentation-href="[[presentationHref]]">
-			</d2l-organization-updates>
-			<div slot="actions" class="menu-area">
-				<d2l-dropdown-more label="[[_courseSettingsLabel]]">
-					<d2l-dropdown-menu>
-						<d2l-menu>
-							<d2l-menu-item-link
-								hidden$="[[!_canAccessCourseInfo]]"
-								text="[[localize('courseOfferingInformation')]]"
-								href="[[_courseInfoUrl]]">
-							</d2l-menu-item-link>
-							<d2l-menu-item
-								on-d2l-menu-item-select="_launchCourseImageSelector"
-								hidden$="[[!_canChangeCourseImage]]"
-								text="[[localize('changeImage')]]">
-							</d2l-menu-item>
-							<d2l-menu-item
-								on-d2l-menu-item-select="_pinClickHandler"
-								hidden$="[[_pinned]]"
-								text="[[localize('pin')]]">
-							</d2l-menu-item>
-							<d2l-menu-item
-								on-d2l-menu-item-select="_pinClickHandler"
-								hidden$="[[!_pinned]]"
-								text="[[localize('unpin')]]">
-							</d2l-menu-item>
-						</d2l-menu>
-					</d2l-dropdown-menu>
-				</d2l-dropdown-more>
 
-				<button
-					hidden$="[[!_pinned]]"
-					class="pin-indicator"
-					on-tap="_pinClickHandler"
-					on-keypress="_pinPressHandler"
-					aria-label$="[[_pinButtonLabel]]">
-					<d2l-icon icon="d2l-tier1:pin-filled"></d2l-icon>
-				</button>
-			</div>
+			<d2l-dropdown-more slot="actions"  text="[[_courseSettingsLabel]]" translucent visible-on-ancestor>
+				<d2l-dropdown-menu>
+					<d2l-menu>
+						<d2l-menu-item-link
+							hidden$="[[!_canAccessCourseInfo]]"
+							text="[[localize('courseOfferingInformation')]]"
+							href="[[_courseInfoUrl]]">
+						</d2l-menu-item-link>
+						<d2l-menu-item
+							on-d2l-menu-item-select="_launchCourseImageSelector"
+							hidden$="[[!_canChangeCourseImage]]"
+							text="[[localize('changeImage')]]">
+						</d2l-menu-item>
+						<d2l-menu-item
+							on-d2l-menu-item-select="_pinClickHandler"
+							hidden$="[[_pinned]]"
+							text="[[localize('pin')]]">
+						</d2l-menu-item>
+						<d2l-menu-item
+							on-d2l-menu-item-select="_pinClickHandler"
+							hidden$="[[!_pinned]]"
+							text="[[localize('unpin')]]">
+						</d2l-menu-item>
+					</d2l-menu>
+				</d2l-dropdown-menu>
+			</d2l-dropdown-more>
+
+			<d2l-button-icon
+				slot="actions"
+				translucent
+				hidden$="[[!_pinned]]"
+				text="[[_pinButtonLabel]]"
+				icon="d2l-tier1:pin-filled"
+				on-tap="_pinClickHandler"
+				on-keypress="_pinPressHandler">
+			</d2l-button-icon>
 		</d2l-card>
 
 
@@ -387,9 +366,6 @@ Polymer-based web component for a course/enrollment card.
 				window.addEventListener('set-course-image', this._boundOnSetCourseImage);
 
 				Polymer.RenderStatus.afterNextRender(this, function() {
-					this.addEventListener('focus', this._onFocus, true);
-					this.addEventListener('blur', this._onBlur, true);
-
 					var imageTile = this.$$('d2l-card');
 
 					var observerCallback = function(entries, observer) {
@@ -430,8 +406,6 @@ Polymer-based web component for a course/enrollment card.
 			},
 			detached: function() {
 				window.removeEventListener('set-course-image', this._boundOnSetCourseImage);
-				this.removeEventListener('focus', this._onFocus, true);
-				this.removeEventListener('blur', this._onBlur, true);
 			},
 
 			refreshImage: function(organization) {
@@ -630,12 +604,6 @@ Polymer-based web component for a course/enrollment card.
 				this.fire('open-change-image-view', {
 					organization: this._organization
 				});
-			},
-			_onFocus: function() {
-				this.setAttribute('focused', '');
-			},
-			_onBlur: function() {
-				this.removeAttribute('focused');
 			},
 			_onSetCourseImage: function(e) {
 				if (this._getEntityIdentifier(e.detail.organization) !== this._getEntityIdentifier(this._organization)) {

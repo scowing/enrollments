@@ -6,10 +6,10 @@
       "href":"../data/enrollment.json"
     },{
       "rel":["https://api.brightspace.com/rels/organization"],
-      "href":"../data/organizations/1.json"
+      "href":"../data/organizations/3.json"
     },{
       "rel":["https://activities.api.brightspace.com/rels/user-activity-usage"],
-      "href":"../data/userActivityUsage/5.json"
+      "href":"../data/userActivityUsage/1.json"
     }
   ],
   "actions":[

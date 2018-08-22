@@ -305,15 +305,15 @@ describe('d2l-enrollment-card', () => {
 		it('should have a visible pinned button when pinned', () => {
 			component._pinned = true;
 
-			var pinButton = component.$$('.pin-indicator:not([hidden])');
-			expect(pinButton).to.not.be.null;
+			var pinButton = component.$$('d2l-button-icon');
+			expect(pinButton.hasAttribute('hidden')).to.be.false;
 		});
 
 		it('should hide the pinned button when unpinned', () => {
 			component._pinned = false;
 
-			var pinButton = component.$$('.pin-indicator:not([hidden])');
-			expect(pinButton).to.be.null;
+			var pinButton = component.$$('d2l-button-icon');
+			expect(pinButton.hasAttribute('hidden')).to.be.true;
 		});
 
 		it('should set the update action parameters correctly and call the pinning API', done => {
