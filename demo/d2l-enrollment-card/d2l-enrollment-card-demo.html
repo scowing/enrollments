@@ -20,20 +20,40 @@
 			html {
 				font-size: 20px;
 			}
-			demo-snippet, d2l-enrollment-card {
-				max-width: 450px
+			.subtle-demo {
+				background-color: #f6f7f8;
+				margin: -20px;
+				padding: 20px;
+			}
+			.grid {
+				grid-template-columns: repeat(2, 1fr);
+				display: grid;
+				grid-column-gap: 15px;
+			}
+			d2l-enrollment-card {
+				max-width: 350px;
+				margin: auto;
 			}
 		</style>
 	</head>
 	<body unresolved class="d2l-typography">
 		<div class="vertical-section-container centered">
 
-			<h3>Enrollment Card</h3>
-
+			<h3>Enrollment Card Pin</h3>
 			<demo-snippet class="d2l-typography">
 				<template>
-					<d2l-enrollment-card href="../data/enrollments/1.json" presentation-href="../data/presentation.json">
-					</d2l-enrollment-card>
+					<div class="subtle-demo grid">
+
+						<d2l-enrollment-card
+							href="../data/enrollments/pinned/1.json"
+							presentation-href="../data/presentation.json">
+						</d2l-enrollment-card>
+						<d2l-enrollment-card
+							href="../data/enrollments/not-pinned/1.json"
+							presentation-href="../data/presentation.json">
+						</d2l-enrollment-card>
+
+					</div>
 				</template>
 			</demo-snippet>
 
@@ -41,7 +61,7 @@
 
 			<demo-snippet class="d2l-typography">
 				<template>
-					<d2l-enrollment-card href="../data/enrollments/2.json" presentation-href="../data/presentation.json">
+					<d2l-enrollment-card href="../data/enrollments/not-pinned/2.json" presentation-href="../data/presentation.json">
 					</d2l-enrollment-card>
 				</template>
 			</demo-snippet>
@@ -50,7 +70,7 @@
 
 			<demo-snippet class="d2l-typography">
 				<template>
-					<d2l-enrollment-card href="../data/enrollments/3.json" presentation-href="../data/presentation.json">
+					<d2l-enrollment-card href="../data/enrollments/not-pinned/3.json" presentation-href="../data/presentation.json">
 					</d2l-enrollment-card>
 				</template>
 			</demo-snippet>
@@ -59,7 +79,7 @@
 
 			<demo-snippet class="d2l-typography">
 				<template>
-					<d2l-enrollment-card href="../data/enrollments/4.json" presentation-href="../data/presentation.json">
+					<d2l-enrollment-card href="../data/enrollments/not-pinned/4.json" presentation-href="../data/presentation.json">
 					</d2l-enrollment-card>
 				</template>
 			</demo-snippet>
@@ -68,7 +88,7 @@
 
 			<demo-snippet class="d2l-typography">
 				<template>
-					<d2l-enrollment-card href="../data/enrollments/5.json" presentation-href="../data/presentation.json">
+					<d2l-enrollment-card href="../data/enrollments/not-pinned/5.json" presentation-href="../data/presentation.json">
 					</d2l-enrollment-card>
 				</template>
 			</demo-snippet>
@@ -77,7 +97,7 @@
 
 			<demo-snippet class="d2l-typography">
 				<template>
-					<d2l-enrollment-card href="../data/enrollments/6.json" presentation-href="../data/presentation.json">
+					<d2l-enrollment-card href="../data/enrollments/not-pinned/6.json" presentation-href="../data/presentation.json">
 					</d2l-enrollment-card>
 				</template>
 			</demo-snippet>
@@ -86,7 +106,7 @@
 
 			<demo-snippet class="d2l-typography">
 				<template>
-					<d2l-enrollment-card href="../data/enrollments/7.json" presentation-href="../data/presentation.json">
+					<d2l-enrollment-card href="../data/enrollments/not-pinned/7.json" presentation-href="../data/presentation.json">
 					</d2l-enrollment-card>
 				</template>
 			</demo-snippet>
