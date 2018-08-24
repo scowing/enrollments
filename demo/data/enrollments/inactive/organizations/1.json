@@ -1,0 +1,44 @@
+{
+  "class":[
+     "active",
+     "course-offering"
+  ],
+  "properties":{
+     "name":"Actuators & Power Electronics",
+     "code":"MTE320",
+     "startDate":null,
+     "endDate":null,
+     "isActive":true
+  },
+  "entities":[
+     {
+        "class":[
+           "course-image"
+        ],
+        "rel":[
+           "https://api.brightspace.com/rels/organization-image"
+        ],
+        "href":"../data/base/image.json"
+     }
+  ],
+  "links":[
+     {
+        "rel":[
+           "https://notifications.api.brightspace.com/rels/organization-notifications"
+        ],
+        "href":"../data/base/notification.json"
+     },
+     {
+        "rel":[
+           "https://api.brightspace.com/rels/parent-semester"
+        ],
+        "href":"../data/base/semester.json"
+     },
+     {
+        "rel":[
+           "self"
+        ],
+        "href":"../data/enrollment/inactive/organizations/1.json"
+     }
+  ]
+}

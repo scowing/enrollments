@@ -3,13 +3,13 @@
   "links":[
     {
       "rel":["self"],
-      "href":"../data/enrollment.json"
+      "href":"../data/enrollments/pin/1.json"
     },{
       "rel":["https://api.brightspace.com/rels/organization"],
-      "href":"../data/organizations/1.json"
+      "href":"../data/enrollments/update/organizations/1.json"
     },{
       "rel":["https://activities.api.brightspace.com/rels/user-activity-usage"],
-      "href":"../data/userActivityUsage/1.json"
+      "href":"../data/base/userActivityUsage.json"
     }
   ],
   "actions":[
@@ -21,7 +21,7 @@
         {
           "type":"hidden",
           "name":"pinned",
-          "value":true
+          "value":false
         }
       ]
     }
