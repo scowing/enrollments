@@ -62,9 +62,9 @@ Polymer-based web component for a organization due and completion dates.
 				var dateTypeText = isCompletionDate ? 'completed' : 'due';
 
 				var dateText;
-				if (date.getDate() === nowDate.getDate()) {
+				if (date.getDate() === nowDate.getDate() && date.getYear() === nowDate.getYear()) {
 					dateText = this.localize(dateTypeText + 'Today');
-				} else if (date.getDate() === tomorrowDate.getDate()) {
+				} else if (date.getDate() === tomorrowDate.getDate() && date.getYear() === nowDate.getYear()) {
 					dateText = this.localize(dateTypeText + 'Tomorrow');
 				} else {
 					dateText = this.localize(dateTypeText + 'On', 'dateTime', this.formatDate(date, {format: this._dateFormat(date, nowDate)}));
