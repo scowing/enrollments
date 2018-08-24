@@ -141,6 +141,10 @@ describe('d2l-user-activity-usage', () => {
 					date: new Date(24 * 3600 * 1000 * 7 + offset),
 					display: 'Due Jan 8'
 				},
+				{
+					date: new Date(24 * 3600 * 1000 * 365 + offset),
+					display: 'Due Jan 1, 1971'
+				},
 			].forEach((testCase) => {
 				it(testCase.display, (done) => {
 					var entities = [
