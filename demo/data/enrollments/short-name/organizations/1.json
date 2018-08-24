@@ -4,7 +4,7 @@
      "course-offering"
   ],
   "properties":{
-     "name":"Rindfleischetikettierungsueberwachungsaufgabenuebertragungsgesetz",
+     "name":"A",
      "code":"MTE320",
      "startDate":null,
      "endDate":null,
@@ -18,7 +18,7 @@
         "rel":[
            "https://api.brightspace.com/rels/organization-image"
         ],
-        "href":"../data/image.json"
+        "href":"../data/base/image.json"
      },
      {
         "rel":[
@@ -34,19 +34,19 @@
         "rel":[
            "https://notifications.api.brightspace.com/rels/organization-notifications"
         ],
-        "href":"../data/notification/1.json"
+        "href":"../data/base/notification.json"
      },
      {
         "rel":[
            "https://api.brightspace.com/rels/parent-semester"
         ],
-        "href":"../data/semester.json"
+        "href":"../data/base/semester.json"
      },
      {
         "rel":[
            "self"
         ],
-        "href":"../data/organizations.json"
+        "href":"../data/base/organizations.json"
      }
   ]
 }
