@@ -100,6 +100,8 @@ Polymer-based web component for a organization due and completion dates.
 					return subEntity.properties ? subEntity.properties.date : null;
 				} else if (subEntity.hasClass('duration')) {
 					return subEntity.properties ? subEntity.properties.seconds : null;
+				} else if (subEntity.hasClass('completion')) {
+					return this._sirenClassProperty(subEntity,  'completion-date');
 				}
 			},
 			_dateFormat: function(date, nowDate) {

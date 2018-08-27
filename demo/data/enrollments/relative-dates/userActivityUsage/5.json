@@ -21,8 +21,7 @@
             "completion"
         ],
         "rel": [
-            "item",
-            "https://activities.api.brightspace.com/rels/completion"
+            "item"
         ]
     }
   ],

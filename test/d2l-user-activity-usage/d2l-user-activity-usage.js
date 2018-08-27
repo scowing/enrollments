@@ -75,16 +75,25 @@ describe('d2l-user-activity-usage', () => {
 				{
 					class: [
 						'completion',
-						'date'
+						'complete'
+					],
+					entities: [
+						{
+							class: [
+								'date',
+								'completion-date'
+							],
+							rel: [
+								'https://api.brightspace.com/rels/date'
+							],
+							properties: {
+								date: '2017-08-01T04:00:00.000Z'
+							}
+						}
 					],
 					rel: [
-						'item',
-						'https://activities.api.brightspace.com/rels/completion',
-						'https://api.brightspace.com/rels/date'
-					],
-					properties: {
-						date: '2017-08-01T04:00:00.000Z'
-					}
+						'item'
+					]
 				}
 			];
 
@@ -220,16 +229,25 @@ describe('d2l-user-activity-usage', () => {
 				{
 					class: [
 						'completion',
-						'date'
+						'complete'
+					],
+					entities: [
+						{
+							class: [
+								'date',
+								'completion-date'
+							],
+							rel: [
+								'https://api.brightspace.com/rels/date'
+							],
+							properties: {
+								date: '2017-08-01T04:00:00.000Z'
+							}
+						}
 					],
 					rel: [
-						'item',
-						'https://activities.api.brightspace.com/rels/completion',
-						'https://api.brightspace.com/rels/date'
-					],
-					properties: {
-						date: '2017-08-01T04:00:00.000Z'
-					}
+						'item'
+					]
 				}
 			];
 
@@ -266,6 +284,86 @@ describe('d2l-user-activity-usage', () => {
 				sinon.assert.notCalled(eventSpy);
 				done();
 			}, 1000);
+
+		});
+
+	});
+
+	describe('Due Date correctly displayed', () => {
+		it('Read a date', () => {
+			var entity =  window.D2L.Hypermedia.Siren.Parse({
+				entities: [
+					{
+						class: [
+							'date',
+							'due-date'
+						],
+						rel: [
+							'https://api.brightspace.com/rels/date'
+						],
+						properties: {
+							date: '2100-08-01T04:00:00.000Z'
+						}
+					}
+				]
+			});
+
+			expect(component._sirenClassProperty(entity, 'due-date')).to.equal('2100-08-01T04:00:00.000Z');
+
+		});
+
+		it('Read a duration', () => {
+			var entity =  window.D2L.Hypermedia.Siren.Parse({
+				entities: [
+					{
+						class: [
+							'duration',
+							'due-date'
+						],
+						rel: [
+							'https://api.brightspace.com/rels/date'
+						],
+						properties: {
+							seconds: 6
+						}
+					}
+				]
+			});
+
+			expect(component._sirenClassProperty(entity, 'due-date')).to.equal(6);
+
+		});
+
+		it('Read a completion', () => {
+			var entity =  window.D2L.Hypermedia.Siren.Parse({
+				entities: [
+					{
+						class: [
+							'completion',
+							'due-date'
+						],
+						entities: [
+							{
+								class: [
+									'completion-date',
+									'date'
+								],
+								rel: [
+									'https://api.brightspace.com/rels/date'
+								],
+								properties: {
+									date: '2100-08-01T04:00:00.000Z'
+								}
+							}
+						],
+						rel: [
+							'https://api.brightspace.com/rels/date'
+						]
+					}
+				]
+			});
+
+			expect(component._sirenClassProperty(entity, 'due-date')).to.equal('2100-08-01T04:00:00.000Z');
 
 		});
 

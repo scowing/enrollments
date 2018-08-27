@@ -19,16 +19,25 @@
       {
         "class": [
             "completion",
-            "date"
+            "complete"
+        ],
+        "entities": [
+          {
+            "class": [
+              "date",
+              "completion-date"
+            ],
+            "rel": [
+              "https://api.brightspace.com/rels/date"
+            ],
+            "properties": {
+              "date": ""
+            }
+          }
         ],
         "rel": [
-            "item",
-            "https://activities.api.brightspace.com/rels/completion",
-            "https://api.brightspace.com/rels/date"
-        ],
-        "properties": {
-            "date": ""
-        }
+            "item"
+        ]
     }
   ],
   "links": []
