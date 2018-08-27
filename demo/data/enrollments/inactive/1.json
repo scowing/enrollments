@@ -1,15 +1,15 @@
 {
-  "class":["enrollment","pinned"],
+  "class":["enrollment","inactive"],
   "links":[
     {
       "rel":["self"],
-      "href":"../data/enrollment.json"
+      "href":"../data/enrollments/inactive/1.json"
     },{
       "rel":["https://api.brightspace.com/rels/organization"],
-      "href":"../data/organizations/1.json"
+      "href":"../data/enrollments/inactive/organizations/1.json"
     },{
       "rel":["https://activities.api.brightspace.com/rels/user-activity-usage"],
-      "href":"../data/userActivityUsage/3.json"
+      "href":"../data/base/userActivityUsage.json"
     }
   ],
   "actions":[
@@ -21,7 +21,7 @@
         {
           "type":"hidden",
           "name":"pinned",
-          "value":false
+          "value":true
         }
       ]
     }

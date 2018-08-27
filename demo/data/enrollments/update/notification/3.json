@@ -1,0 +1,10 @@
+{
+  "properties": {
+    "UnattemptedQuizzes": 99,
+    "UnreadAssignmentFeedback": 99,
+    "UngradedQuizzes": 99,
+    "UnreadDiscussions": 99,
+    "UnapprovedDiscussions": 99,
+    "UnreadAssignmentSubmissions": 99
+  }
+}
