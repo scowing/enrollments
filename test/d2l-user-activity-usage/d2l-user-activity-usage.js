@@ -75,16 +75,25 @@ describe('d2l-user-activity-usage', () => {
 				{
 					class: [
 						'completion',
-						'date'
+						'complete'
+					],
+					entities: [
+						{
+							class: [
+								'date',
+								'completion-date'
+							],
+							rel: [
+								'https://api.brightspace.com/rels/date'
+							],
+							properties: {
+								date: '2017-08-01T04:00:00.000Z'
+							}
+						}
 					],
 					rel: [
-						'item',
-						'https://activities.api.brightspace.com/rels/completion',
-						'https://api.brightspace.com/rels/date'
-					],
-					properties: {
-						date: '2017-08-01T04:00:00.000Z'
-					}
+						'item'
+					]
 				}
 			];
 
@@ -220,16 +229,25 @@ describe('d2l-user-activity-usage', () => {
 				{
 					class: [
 						'completion',
-						'date'
+						'complete'
+					],
+					entities: [
+						{
+							class: [
+								'date',
+								'completion-date'
+							],
+							rel: [
+								'https://api.brightspace.com/rels/date'
+							],
+							properties: {
+								date: '2017-08-01T04:00:00.000Z'
+							}
+						}
 					],
 					rel: [
-						'item',
-						'https://activities.api.brightspace.com/rels/completion',
-						'https://api.brightspace.com/rels/date'
-					],
-					properties: {
-						date: '2017-08-01T04:00:00.000Z'
-					}
+						'item'
+					]
 				}
 			];
 
