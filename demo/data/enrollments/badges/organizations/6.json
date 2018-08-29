@@ -1,13 +1,13 @@
 {
   "class":[
-     "active",
+    "active",
      "course-offering"
   ],
   "properties":{
-     "name":"No course page",
+     "name":"Actuators & Power Electronics",
      "code":"MTE320",
      "startDate":null,
-     "endDate":null,
+     "endDate":"1969-01-02T10:00:00.000Z",
      "isActive":true
   },
   "entities":[
@@ -26,7 +26,7 @@
         "rel":[
            "https://notifications.api.brightspace.com/rels/organization-notifications"
         ],
-        "href":"../data/base/notification.json"
+        "href":"../data/enrollments/update/notification/1.json"
      },
      {
         "rel":[

@@ -370,7 +370,7 @@ describe('d2l-user-activity-usage', () => {
 
 	});
 
-	describe('Due Date correctly displayed', () => {
+	describe('Tests for _sirenClassProperty', () => {
 		it('Read a date', () => {
 			var entity =  window.D2L.Hypermedia.Siren.Parse({
 				entities: [

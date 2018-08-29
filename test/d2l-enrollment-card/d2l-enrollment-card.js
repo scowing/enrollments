@@ -56,7 +56,7 @@ describe('d2l-enrollment-card', () => {
 			properties: {
 				name: 'Course name',
 				code: 'COURSE100',
-				startDate: '2050-01-01T00:00:00.000Z',
+				startDate: null,
 				endDate: null,
 				isActive: true
 			},
@@ -456,11 +456,92 @@ describe('d2l-enrollment-card', () => {
 
 		});
 
+		it('Closed Badge', done => {
+			component.fire('d2l-organization-date', {active: true, afterEndDate: true});
+
+			setTimeout(() => {
+				expect(component._badgeText).to.equal('courseClosed');
+				expect(component._badgeState).to.equal('default');
+				var badge = component.$$('d2l-status-indicator');
+				expect(badge.hasAttribute('hidden')).to.be.false;
+				done();
+			});
+
+		});
+
 		it('No Badge', () => {
 			expect(component._badgeText).to.be.null;
 			expect(component._badgeState).to.be.undefined;
 			var badge = component.$$('d2l-status-indicator');
 			expect(badge.hasAttribute('hidden')).to.be.true;
+		});
+
+		describe('Badge Priority Order', () => {
+			var fireClosed = function() {
+				component.fire('d2l-organization-date', {active: true, afterEndDate: true});
+			};
+			var fireOverdue = function() {
+				component.fire('d2l-enrollment-status', {status: 'overdue'});
+			};
+			var fireCompleted = function() {
+				component.fire('d2l-enrollment-status', {status: 'completed'});
+			};
+			var fireBeforeStart = function() {
+				component.fire('d2l-organization-date', {active: false, beforeStartDate: true});
+			};
+
+			[
+				{
+					name: 'Completed should be shown when recieved first',
+					methods: [fireCompleted, fireBeforeStart, fireOverdue, fireClosed],
+					badge: 'completed'
+				},
+				{
+					name: 'Completed should be shown when recieved last',
+					methods: [fireBeforeStart, fireOverdue, fireClosed, fireCompleted],
+					badge: 'completed'
+				},
+				{
+					name: 'Completed should be shown when recieved last',
+					methods: [fireOverdue, fireCompleted],
+					badge: 'completed'
+				},
+				{
+					name: 'An inactive card before start, should show inactive badge.',
+					methods: [fireBeforeStart, fireOverdue],
+					badge: 'inactive'
+				},
+				{
+					name: 'An inactive card before start, should show inactive badge.',
+					methods: [fireOverdue, fireClosed, fireBeforeStart],
+					badge: 'inactive'
+				},
+				{
+					name: 'Closed should be shown over overdue when sent first.',
+					methods: [fireClosed, fireOverdue],
+					badge: 'courseClosed'
+				},
+				{
+					name: 'Closed should be shown over overdue when sent second.',
+					methods: [fireOverdue, fireClosed],
+					badge: 'courseClosed'
+				},
+			].forEach((testCase) => {
+				it(testCase.name, (done) => {
+					Polymer.dom.flush();
+					testCase.methods.forEach((method) => method());
+
+					setTimeout(() => {
+						expect(component._badgeText).to.equal(testCase.badge);
+						var badge = component.$$('d2l-status-indicator');
+						expect(badge.hasAttribute('hidden')).to.be.false;
+						done();
+					});
+
+				});
+
+			});
+
 		});
 
 	});
@@ -523,9 +604,9 @@ describe('d2l-enrollment-card', () => {
 			component.fire('d2l-enrollment-status', {status: 'overdue'});
 
 			setTimeout(() => {
-				expect(component._accessibilityData.badge).to.equal('overdue');
+				expect(component._accessibilityData.badge).to.equal('Overdue');
 				var cardText = component.$$('d2l-card').getAttribute('text');
-				expect(cardText).to.contain('overdue');
+				expect(cardText).to.contain('Overdue');
 				done();
 			});
 
