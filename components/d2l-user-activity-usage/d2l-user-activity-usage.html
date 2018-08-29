@@ -71,11 +71,11 @@ Polymer-based web component for a organization due and completion dates.
 				var dateTypeText = isCompletionDate ? 'completed' : 'due';
 
 				var dateText;
-				if (date.getDate() === nowDate.getDate() && date.getYear() === nowDate.getYear()) {
+				if (this._compareDate(date, nowDate)) {
 					dateText = this.localize(dateTypeText + 'Today');
-				} else if (date.getDate() === tomorrowDate.getDate() && date.getYear() === tomorrowDate.getYear()) {
+				} else if (this._compareDate(date, tomorrowDate)) {
 					dateText = this.localize(dateTypeText + 'Tomorrow');
-				} else if (date.getDate() === yesterdayDate.getDate() && date.getYear() === yesterdayDate.getYear()) {
+				} else if (this._compareDate(date, yesterdayDate)) {
 					dateText = this.localize(dateTypeText + 'Yesterday');
 				} else if (date >= pastWeekFromNow && date <= nowDate) {
 					var daysAgo = Math.ceil((nowDate - date) / this._msInDay);
@@ -124,11 +124,16 @@ Polymer-based web component for a organization due and completion dates.
 
 				if (date < weekFromNow && date > nowDate) {
 					return 'dddd';
-				} else if (date.getYear() === nowDate.getYear()) {
+				} else if (date.getFullYear() === nowDate.getFullYear()) {
 					return 'MMM d';
 				}
 
 				return 'MMM d, yyyy';
+			},
+			_compareDate: function(dateOne, dateTwo) {
+				return dateOne.getFullYear() === dateTwo.getFullYear() &&
+					dateOne.getMonth() === dateTwo.getMonth() &&
+					dateOne.getDate() === dateTwo.getDate();
 			},
 			_fetchSirenEntity: function(url) {
 				if (!url) {
