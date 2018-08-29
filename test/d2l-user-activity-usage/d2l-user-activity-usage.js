@@ -154,6 +154,46 @@ describe('d2l-user-activity-usage', () => {
 					date: new Date(24 * 3600 * 1000 * 365 + offset),
 					display: 'Due Jan 1, 1971'
 				},
+				{
+					date: new Date(-24 * 3600 * 1000 + offset),
+					display: 'Due Yesterday'
+				},
+				{
+					date: new Date(-24 * 3600 * 1000 * 2 + offset),
+					display: 'Due 2 Days Ago'
+				},
+				{
+					date: new Date(-24 * 3600 * 1000 * 3 + offset),
+					display: 'Due 3 Days Ago'
+				},
+				{
+					date: new Date(-24 * 3600 * 1000 * 4 + offset),
+					display: 'Due 4 Days Ago'
+				},
+				{
+					date: new Date(-24 * 3600 * 1000 * 5 + offset),
+					display: 'Due 5 Days Ago'
+				},
+				{
+					date: new Date(-24 * 3600 * 1000 * 6 + offset),
+					display: 'Due 6 Days Ago'
+				},
+				{
+					date: new Date(-24 * 3600 * 1000 * 7 + offset),
+					display: 'Due 7 Days Ago'
+				},
+				{
+					date: new Date(-24 * 3600 * 1000 * 8 + offset),
+					display: 'Due Dec 24, 1969'
+				},
+				{
+					date: new Date(24 * 3600 * 1000 * 31 + offset),
+					display: 'Due Feb 1'
+				},
+				{
+					date: new Date(24 * 3600 * 1000 * 365 + offset),
+					display: 'Due Jan 1, 1971'
+				},
 			].forEach((testCase) => {
 				it(testCase.display, (done) => {
 					var entities = [
