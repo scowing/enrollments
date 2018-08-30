@@ -102,6 +102,12 @@ Polymer-based web component for a organization due and completion dates.
 
 						this._isCompletionDate = !!completionDate;
 						this._date = this._isCompletionDate ? completionDate : dueDate;
+
+						var lastAccessed = this._sirenClassProperty(userActivityUsageEntity, 'last-accessed');
+						if (!lastAccessed) {
+							this.fire('d2l-enrollment-new');
+						}
+
 					}.bind(this));
 			},
 			_sirenClassProperty: function(entity, sirenClass) {

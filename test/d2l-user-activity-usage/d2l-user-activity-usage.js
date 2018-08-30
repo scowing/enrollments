@@ -300,6 +300,34 @@ describe('d2l-user-activity-usage', () => {
 
 		});
 
+		it('New Enrollment', (done) => {
+			var entities = [
+				{
+					class: [
+						'date',
+						'due-date'
+					],
+					rel: [
+						'https://api.brightspace.com/rels/date'
+					],
+					properties: {
+						date: '2017-08-01T04:00:00.000Z'
+					}
+				}
+			];
+
+			var eventSpy = sandbox.spy();
+			component.addEventListener('d2l-enrollment-new', eventSpy);
+
+			loadUserActivityUsage(entities);
+
+			setTimeout(() => {
+				sinon.assert.called(eventSpy);
+				done();
+			});
+
+		});
+
 		it('No event fires', (done) => {
 			var entities = [
 				{
@@ -313,10 +341,23 @@ describe('d2l-user-activity-usage', () => {
 					properties: {
 						date: '2100-08-01T04:00:00.000Z'
 					}
+				},
+				{
+					class: [
+						'date',
+						'last-accessed'
+					],
+					rel: [
+						'https://api.brightspace.com/rels/date'
+					],
+					properties: {
+						date: '2018-09-01T01:24:00.000Z'
+					}
 				}
 			];
-			var eventSpy = sinon.spy();
+			var eventSpy = sandbox.spy();
 			component.addEventListener('d2l-enrollment-status', eventSpy);
+			component.addEventListener('d2l-enrollment-new', eventSpy);
 
 			loadUserActivityUsage(entities);
 

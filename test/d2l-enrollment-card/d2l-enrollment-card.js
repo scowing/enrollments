@@ -547,4 +547,22 @@ describe('d2l-enrollment-card', () => {
 
 	});
 
+	describe('New Enrollment Highlight', () => {
+
+		beforeEach(done => loadEnrollment(done));
+
+		afterEach(() => sandbox.reset());
+
+		it('Highlight visible', done => {
+			component.fire('d2l-enrollment-new');
+
+			setTimeout(() => {
+				var highlight = component.$$('.alert-colour-circle');
+				expect(highlight.hasAttribute('hidden')).to.be.false;
+				done();
+			});
+
+		});
+
+	});
 });

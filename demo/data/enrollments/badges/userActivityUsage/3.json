@@ -38,6 +38,18 @@
           "rel": [
             "item"
           ]
+      },
+      {
+        "class": [
+            "date",
+            "last-accessed"
+        ],
+        "rel": [
+            "https://api.brightspace.com/rels/date"
+        ],
+        "properties": {
+            "date": "2018-08-25T04:00:00.000Z"
+        }
       }
   ],
   "links": []
