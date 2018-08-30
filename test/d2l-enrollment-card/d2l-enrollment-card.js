@@ -553,7 +553,7 @@ describe('d2l-enrollment-card', () => {
 
 		afterEach(() => sandbox.reset());
 
-		it('See hightlight', done => {
+		it('Highlight visible', done => {
 			component.fire('d2l-enrollment-new');
 
 			setTimeout(() => {

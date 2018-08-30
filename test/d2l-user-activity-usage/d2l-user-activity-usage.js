@@ -316,7 +316,7 @@ describe('d2l-user-activity-usage', () => {
 				}
 			];
 
-			var eventSpy = sinon.spy();
+			var eventSpy = sandbox.spy();
 			component.addEventListener('d2l-enrollment-new', eventSpy);
 
 			loadUserActivityUsage(entities);
@@ -355,7 +355,7 @@ describe('d2l-user-activity-usage', () => {
 					}
 				}
 			];
-			var eventSpy = sinon.spy();
+			var eventSpy = sandbox.spy();
 			component.addEventListener('d2l-enrollment-status', eventSpy);
 			component.addEventListener('d2l-enrollment-new', eventSpy);
 
