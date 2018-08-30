@@ -243,9 +243,9 @@ Polymer-based web component for a course/enrollment card.
 				on-tap="_pinClickHandler"
 				on-keypress="_pinPressHandler">
 			</d2l-button-icon>
-		</d2l-card>
 
-		<div class="alert-colour-circle" hidden$="[[!_showAlertCircle]]"></div>
+			<div slot="content" class="alert-colour-circle" hidden$="[[!_showAlertCircle]]"></div>
+		</d2l-card>
 	</template>
 	<script>
 		Polymer({
