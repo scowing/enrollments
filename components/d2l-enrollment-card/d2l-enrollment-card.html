@@ -169,10 +169,18 @@ Polymer-based web component for a course/enrollment card.
 				top: -0.375rem;
 				right: -0.375rem;
 			}
-			[dir="rtl"] .alert-colour-circle {
+
+			/* P2-shadow */
+			:host-context([dir="rtl"]) .alert-colour-circle {
 				right: auto;
 				left: -10px;
 			}
+			/* P1-shady, P2-shady */
+			:host(:dir(rtl)) .alert-colour-circle {
+				right: auto;
+				left: -10px;
+			}
+
 			.content-flex {
 				overflow: hidden;
 				word-wrap: break-word; /* IE/Edge */
@@ -242,7 +250,7 @@ Polymer-based web component for a course/enrollment card.
 						href="[[_organizationUrl]]"
 						presentation-href="[[presentationHref]]">
 					</d2l-organization-info>
-					<d2l-user-activity-usage class="block" href="[[_userActivityUsageUrl]]" override-to-default="[[_orgDateSlot]]">
+					<d2l-user-activity-usage class="block" href="[[_userActivityUsageUrl]]" override-to-default$="[[_orgDateSlot]]">
 						<d2l-organization-date slot="default" href="[[_organizationUrl]]"></d2l-organization-date>
 					</d2l-user-activity-usage>
 				</d2l-card-content-meta>
