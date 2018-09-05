@@ -13,11 +13,13 @@
 <link rel="import" href="../../../d2l-offscreen/d2l-offscreen.html">
 <link rel="import" href="../../../d2l-organization-hm-behavior/d2l-organization-hm-behavior.html">
 <link rel="import" href="../../../d2l-organizations/d2l-organization-info.html">
-<link rel="import" href="../../../d2l-tile/d2l-card.html">
-<link rel="import" href="../../../d2l-tile/d2l-card-content-meta.html">
+<link rel="import" href="../../../d2l-organizations/d2l-organization-updates.html">
+<link rel="import" href="../../../d2l-organizations/d2l-organization-date.html">
+<link rel="import" href="../../../d2l-organizations/d2l-organization-name.html">
+<link rel="import" href="../../../d2l-card/d2l-card.html">
+<link rel="import" href="../../../d2l-card/d2l-card-content-meta.html">
 <link rel="import" href="../../../d2l-button/d2l-button-icon.html">
 <link rel="import" href="../../../d2l-status-indicator/d2l-status-indicator.html">
-<link rel="import" href="../../../d2l-organizations/d2l-organization-updates.html">
 <link rel="import" href="../../../siren-parser-import/siren-parser.html">
 <link rel="import" href="../d2l-user-activity-usage/d2l-user-activity-usage.html">
 <link rel="import" href="localize-behavior.html">
@@ -43,12 +45,31 @@ Polymer-based web component for a course/enrollment card.
 				/* Prevents long, non-breaking course names from overflowing */
 				width: 100%;
 			}
-			d2l-card[disabled] {
+			d2l-card[disabled] .image-container {
+				/* Firefox 10-34 */
+				filter: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg'><filter id='grayscale'><feColorMatrix type='saturate' values='0'/></filter></svg>#grayscale");
+
+				/*
+				Chrome 19+,
+				Safari 6+,
+				Safari 6+ iOS,
+				Opera 15+
+				*/
+				-webkit-filter: grayscale(1);
+
+				/* Firefox 35+ */
 				filter: grayscale(1);
+
+				opacity: 0.5;
 			}
 			d2l-card[disabled]:hover,
 			d2l-card[disabled]:focus {
 				cursor: not-allowed;
+			}
+
+			d2l-card[disabled] d2l-organization-updates,
+			d2l-card[disabled] [slot=actions] {
+				display: none;
 			}
 
 			d2l-icon {
@@ -57,8 +78,8 @@ Polymer-based web component for a course/enrollment card.
 				--d2l-icon-height: 18px;
 			}
 
-			.flex {
-				display: flex;
+			.enrollment-content-block {
+				display: block;
 			}
 
 			.overlay {
@@ -134,19 +155,27 @@ Polymer-based web component for a course/enrollment card.
 			}
 
 			.alert-colour-circle {
-				height: 1rem;
-				width: 1rem;
+				height: .75rem;
+				width: .75rem;
 				border-radius: 50%;
-				border: 2px solid white;
-				background-color: var(--alert-circle-colour);
+				border: 1px solid #f6f7f8;
+				background-color: var(--d2l-color-celestine);
 				position: absolute;
-				top: -10px;
-				right: -10px;
+				top: -0.375rem;
+				right: -0.375rem;
 			}
-			[dir="rtl"] .alert-colour-circle {
+
+			/* P2-shadow */
+			:host-context([dir="rtl"]) .alert-colour-circle {
 				right: auto;
-				left: -10px;
+				left: -0.375rem;
 			}
+			/* P1-shady, P2-shady */
+			:host(:dir(rtl)) .alert-colour-circle {
+				right: auto;
+				left: -0.375rem;
+			}
+
 			.content-flex {
 				overflow: hidden;
 				word-wrap: break-word; /* IE/Edge */
@@ -162,6 +191,8 @@ Polymer-based web component for a course/enrollment card.
 				background-color: #FFFFFF;
 				box-shadow: 0 0 0 2px #FFFFFF;
 				padding: 0.2rem 0.5rem 0.15rem 0.5rem;
+				filter: grayscale(0);
+				opacity: 1;
 			}
 
 			d2l-organization-updates {
@@ -176,6 +207,7 @@ Polymer-based web component for a course/enrollment card.
 
 		<d2l-card
 			subtle
+			disabled$=[[disabled]]
 			href="[[_organizationHomepageUrl]]"
 			text="[[_accessibilityDataToString(_accessibilityData)]]">
 			<div slot="header" aria-hidden="true">
@@ -194,23 +226,28 @@ Polymer-based web component for a course/enrollment card.
 				</div>
 			</div>
 
-			<d2l-status-indicator class="badge" slot="badge" state="[[_badgeState]]" text="[[_badgeText]]" hidden$="[[!_badgeText]]"></d2l-status-indicator>
+			<d2l-status-indicator aria-hidden="true" class="badge" slot="badge" state="[[_badgeState]]" text="[[localize(_badgeText)]]" hidden$="[[!_badgeText]]"></d2l-status-indicator>
 
 			<d2l-organization-updates
 				combined
 				badge$="[[_badgeText]]"
 				slot="content"
 				href="[[_notificationsUrl]]"
-				presentation-href="[[presentationHref]]">
+				presentation-href="[[presentationHref]]"
+				aria-hidden="true">
 			</d2l-organization-updates>
 
-			<div class="content-flex" slot="content" badge$="[[_badgeText]]">
-				<d2l-organization-info
-					href="[[_organizationUrl]]"
-					presentation-href="[[presentationHref]]">
-				</d2l-organization-info>
+			<div badge$="[[_badgeText]]" class="content-flex" slot="content" aria-hidden="true">
+				<d2l-organization-name href="[[_organizationUrl]]"></d2l-organization-name>
 				<d2l-card-content-meta>
-					<d2l-user-activity-usage href="[[_userActivityUsageUrl]]"></d2l-user-activity-usage>
+					<d2l-organization-info
+						class="enrollment-content-block"
+						href="[[_organizationUrl]]"
+						presentation-href="[[presentationHref]]">
+					</d2l-organization-info>
+					<d2l-user-activity-usage class="enrollment-content-block" href="[[_userActivityUsageUrl]]" override-to-default$="[[_orgDateSlot]]">
+						<d2l-organization-date slot="default" href="[[_organizationUrl]]"></d2l-organization-date>
+					</d2l-user-activity-usage>
 				</d2l-card-content-meta>
 			</div>
 
@@ -251,7 +288,7 @@ Polymer-based web component for a course/enrollment card.
 				on-keypress="_pinPressHandler">
 			</d2l-button-icon>
 
-			<div slot="content" class="alert-colour-circle" hidden$="[[!_showAlertCircle]]"></div>
+			<div slot="content" class="alert-colour-circle" hidden$="[[!_newEnrollment]]"></div>
 		</d2l-card>
 	</template>
 	<script>
@@ -267,12 +304,39 @@ Polymer-based web component for a course/enrollment card.
 					type: String,
 					value: null
 				},
+				disabled: {
+					type: Boolean,
+					reflectToAttribute: true,
+					value: false,
+					readOnly: true,
+					observer: '_handleDisabledChange'
+				},
+				overdue: {
+					type: Boolean,
+					reflectToAttribute: true,
+					value: false,
+					readOnly: true
+				},
+				completed: {
+					type: Boolean,
+					reflectToAttribute: true,
+					value: false,
+					readOnly: true
+				},
+				closed: {
+					type: Boolean,
+					reflectToAttribute: true,
+					value: false,
+					readOnly: true
+				},
+				inactive: {
+					type: Boolean,
+					reflectToAttribute: true,
+					value: false,
+					readOnly: true
+				},
 
 				_enrollment: {
-					type: Object,
-					value: function() { return {}; }
-				},
-				_presentation: {
 					type: Object,
 					value: function() { return {}; }
 				},
@@ -280,11 +344,6 @@ Polymer-based web component for a course/enrollment card.
 					type: Boolean,
 					value: false,
 					observer: '_handlePinnedChange'
-				},
-				_startedInactive: {
-					type: Boolean,
-					value: false,
-					observer: '_handleStartedInactiveChange'
 				},
 				_tileSizes: {
 					type: Object,
@@ -335,22 +394,28 @@ Polymer-based web component for a course/enrollment card.
 					computed: '_computePinButtonLabel(_organization)'
 				},
 				_notificationsUrl: String,
-				// can't be undefined as falsy means hidden
 				_badgeText: {
 					type: String,
 					value: null,
-					observer: '_badgeTextChange'
+					observer: '_handleBadgeTextChange'
 				},
 				_badgeState: String,
+				_beforeStartDate: {
+					type: Boolean,
+					value: false
+				},
+				_orgDateSlot: {
+					type: Boolean,
+					value: false
+				},
 				_userActivityUsageUrl: String,
 				_accessibilityData: {
 					type: Object,
 					value: function() { return {}; }
 				},
-				_newEnrollment: Boolean,
-				_showAlertCircle: {
+				_newEnrollment: {
 					type: Boolean,
-					computed: '_computeShowAlertCircle(_startedInactive,_newEnrollment)'
+					value: false
 				}
 			},
 			behaviors: [
@@ -359,15 +424,14 @@ Polymer-based web component for a course/enrollment card.
 				D2L.PolymerBehaviors.EnrollmentCard.LocalizeBehavior,
 			],
 			observers: [
-				'_fetchEnrollment(_load, href)',
-				'_fetchPresentationData(_load, presentationHref)',
-				'_calculatePastCourseAttribute(_organization)'
+				'_fetchEnrollment(_load, href)'
 			],
 			listeners: {
 				'd2l-enrollment-status': '_onD2lEnrollmentStatus',
 				'd2l-organization-accessible': '_onD2lOrganizationAccessible',
 				'd2l-user-activity-usage-accessible': '_onD2lUserActivityUsageAccessible',
-				'd2l-enrollment-new': '_onD2lEnrollmentNew'
+				'd2l-enrollment-new': '_onD2lEnrollmentNew',
+				'd2l-organization-date': '_onD2lOrganizationDate'
 			},
 			ready: function() {
 				Polymer.IronA11yAnnouncer.requestAvailability();
@@ -448,42 +512,6 @@ Polymer-based web component for a course/enrollment card.
 					&& organization.properties
 					&& this.localize('courseSettings', 'course', organization.properties.name);
 			},
-			_computeShowAlertCircle: function(startedInactive, newEnrollment) {
-				var colour = null;
-				if (startedInactive) {
-					colour = 'var(--d2l-color-citrine)';
-				} else if (newEnrollment) {
-					colour = 'var(--d2l-color-celestine)';
-				}
-				if (colour) {
-					this.updateStyles({'--alert-circle-colour': colour});
-				}
-				return (!startedInactive || newEnrollment) && colour;
-			},
-			_calculatePastCourseAttribute: function(organization) {
-				var nowDate = Date.now();
-				var endDate = Date.parse(organization.properties.endDate);
-				var startDate = Date.parse(organization.properties.startDate);
-				var inactive = !organization.properties.isActive;
-
-				this.removeAttribute('past-course');
-				if (endDate < nowDate) {
-					this.setAttribute('past-course', '');
-					return;
-				}
-
-				if (
-					inactive
-					&& startDate
-					&& startDate < nowDate
-					&& this._pinned
-					&& organization.hasLinkByRel(this.HypermediaRels.courseOfferingInfoPage)
-				) {
-					// We only care about calling out started-inactive courses if they're pinned, and if the user is admin-ish
-					this._startedInactive = true;
-					this.fire('started-inactive');
-				}
-			},
 			_computePinButtonLabel: function(organization) {
 				return organization
 					&& organization.properties
@@ -496,12 +524,27 @@ Polymer-based web component for a course/enrollment card.
 					this.removeAttribute('pinned');
 				}
 			},
-			_handleStartedInactiveChange: function(startedInactive) {
-				if (startedInactive) {
+			_handleDisabledChange: function(disabled) {
+				if (disabled) {
 					this.setAttribute('started-inactive', '');
+					this.fire('started-inactive');
+					this._accessibilityData.disabled = this.localize('disabled');
 				} else {
 					this.removeAttribute('started-inactive');
+					if (this._accessibilityData) {
+						this._accessibilityData.disabled = null;
+					}
 				}
+
+				this._accessibilityDataReset();
+			},
+			_handleBadgeTextChange: function(badgeText) {
+				if (!badgeText) {
+					return;
+				}
+
+				this._accessibilityData.badge = this.localize(badgeText);
+				this._accessibilityDataReset();
 			},
 
 			_displaySetImageResult: function(success, skipSetImage) {
@@ -526,16 +569,6 @@ Polymer-based web component for a course/enrollment card.
 						this._imageLoading = false;
 					}.bind(this), 1000);
 				}.bind(this), 1000);
-			},
-			_fetchPresentationData: function(load, presentationHref) {
-				if (!load || !presentationHref) {
-					return Promise.resolve();
-				}
-
-				return this._fetchSirenEntity(presentationHref)
-					.then(function(presentation) {
-						this._presentation = presentation.properties || {};
-					}.bind(this));
 			},
 			_fetchEnrollment: function(load, enrollmentUrl) {
 				if (!load || !enrollmentUrl) {
@@ -617,8 +650,8 @@ Polymer-based web component for a course/enrollment card.
 						&& homepageEntity.properties.path;
 				} else {
 					// If the user doesn't have access, don't animate image/show menu/underline on hover
-					this.$$('d2l-card').setAttribute('disabled', '');
 					this._organizationHomepageUrl = null;
+					this._setDisabled(true);
 				}
 
 				return Promise.resolve();
@@ -666,25 +699,46 @@ Polymer-based web component for a course/enrollment card.
 				}
 			},
 			_onD2lEnrollmentStatus: function(e) {
-				var status = e.detail.status;
-				switch (status) {
+				switch (e.detail.status) {
 					case 'completed':
-						this._badgeText = 'completed';
-						this._badgeState = 'success';
+						this._setCompleted(true);
 						break;
 					case 'overdue':
-						this._badgeText = 'overdue';
-						this._badgeState = 'alert';
+						this._setOverdue(true);
 						break;
 					default:
-						this._badgeText = null;
-						return;
+						this._setCompleted(false);
+						this._setOverdue(false);
+						break;
 				}
+
+				this._setBadgeText();
+			},
+			_onD2lOrganizationDate: function(e) {
+				this._setInactive(!e.detail.active);
+				this._setClosed(e.detail.afterEndDate);
+				this._beforeStartDate = e.detail.beforeStartDate;
+				if (e.detail.beforeStartDate || (e.detail.afterEndDate && !this.completed)) {
+					this._orgDateSlot = true;
+				}
+
+				this._setBadgeText();
 			},
 			_onD2lOrganizationAccessible: function(e) {
-				this._accessibilityData.organizationName = e.detail.organization && e.detail.organization.name;
-				this._accessibilityData.organizationCode = e.detail.organization && e.detail.organization.code;
-				this._accessibilityData.semesterName = e.detail.semesterName;
+				if (e.detail.organization) {
+					if (e.detail.organization.name) {
+						this._accessibilityData.organizationName = e.detail.organization.name;
+					}
+					if (e.detail.organization.code) {
+						this._accessibilityData.organizationCode = e.detail.organization.code;
+					}
+					if (e.detail.organization.date) {
+						this._accessibilityData.organizationDate = e.detail.organization.date;
+					}
+				}
+				if (e.detail.semesterName) {
+					this._accessibilityData.semesterName = e.detail.semesterName;
+				}
 				this._accessibilityDataReset();
 			},
 			_onD2lUserActivityUsageAccessible: function(e) {
@@ -692,15 +746,13 @@ Polymer-based web component for a course/enrollment card.
 				this._accessibilityDataReset();
 			},
 			_badgeTextChange: function(badgeText) {
-				if (!badgeText) {
-					return;
-				}
-
 				this._accessibilityData.badge = badgeText;
 				this._accessibilityDataReset();
 			},
 			_onD2lEnrollmentNew: function() {
 				this._newEnrollment = true;
+				this._accessibilityData.new = this.localize('new');
+				this._accessibilityDataReset();
 			},
 			_pinClickHandler: function() {
 				var pinAction = this._pinned
@@ -763,11 +815,13 @@ Polymer-based web component for a course/enrollment card.
 					return this.localize('courseClosed');
 				}
 				var textData = [
+					accessibility.new,
+					accessibility.disabled,
+					accessibility.badge,
 					accessibility.organizationName,
 					accessibility.organizationCode,
 					accessibility.semesterName,
-					accessibility.badge,
-					accessibility.userActivityUsageInfo
+					accessibility.userActivityUsageInfo ? accessibility.userActivityUsageInfo : accessibility.organizationDate
 				];
 				return textData.filter(function(text) {
 					return text && typeof text === 'string';
@@ -777,6 +831,25 @@ Polymer-based web component for a course/enrollment card.
 				var accessiblity = this._accessibilityData;
 				this._accessibilityData = {};
 				this._accessibilityData = accessiblity;
+			},
+			_setBadgeText: function() {
+				var priorityOrder = [
+					[this.completed, 'completed', 'success'],
+					[this._beforeStartDate && !this.inactive, null, null],
+					[this.inactive, 'inactive', 'default'],
+					[this.closed && !this.inactive, 'courseClosed', 'default'],
+					[this.overdue, 'overdue', 'alert']
+				];
+				for (var i = 0; i < priorityOrder.length; i++) {
+					if (priorityOrder[i][0]) {
+						this._badgeText = priorityOrder[i][1];
+						this._badgeState = priorityOrder[i][2];
+						return;
+					}
+				}
+
+				this._badgeText = null;
+				this._badgeState = null;
 			}
 		});
 	</script>
