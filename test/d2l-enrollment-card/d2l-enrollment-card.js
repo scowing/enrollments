@@ -646,4 +646,20 @@ describe('d2l-enrollment-card', () => {
 		});
 
 	});
+
+	describe('Events', () => {
+		beforeEach(done => loadEnrollment(done));
+
+		afterEach(() => sandbox.reset());
+
+		it('d2l-enrollment-card-status event fired', done => {
+			component.addEventListener('d2l-enrollment-card-status', function(e) {
+				expect(e.detail.status.completed).to.be.true;
+				expect(e.detail.enrollmentUrl).to.equal('/enrollments/users/169/organizations/1');
+				done();
+			});
+
+			component._setCompleted(true);
+		});
+	});
 });

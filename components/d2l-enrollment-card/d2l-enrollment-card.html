@@ -320,7 +320,6 @@ Polymer-based web component for a course/enrollment card.
 				completed: {
 					type: Boolean,
 					reflectToAttribute: true,
-					value: false,
 					readOnly: true,
 					observer: '_handleCompletedChange'
 				},
@@ -539,14 +538,13 @@ Polymer-based web component for a course/enrollment card.
 
 				this._accessibilityDataReset();
 			},
-			_handleCompletedChange: function(newCompleted, oldCompleted) {
+			_handleCompletedChange: function(completed) {
 				if (!this._enrollment
-					|| !this._enrollment.hasLinkByRel
-					|| newCompleted === oldCompleted) {
+					|| !this._enrollment.hasLinkByRel) {
 					return;
 				}
 				this.fire('d2l-enrollment-card-status', {
-					status: { completed: newCompleted },
+					status: { completed: completed },
 					enrollmentUrl: this._getEntityIdentifier(this._enrollment)
 				});
 			},
