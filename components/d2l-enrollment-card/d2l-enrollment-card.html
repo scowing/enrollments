@@ -44,6 +44,7 @@ Polymer-based web component for a course/enrollment card.
 				height: 100%;
 				/* Prevents long, non-breaking course names from overflowing */
 				width: 100%;
+				text-align: center;
 			}
 			d2l-card[disabled] .image-container {
 				/* Firefox 10-34 */
@@ -194,24 +195,6 @@ Polymer-based web component for a course/enrollment card.
 				filter: grayscale(0);
 				opacity: 1;
 			}
-
-			d2l-organization-updates {
-				float: right;
-				margin: -0.7rem 0 0 0.2rem;
-			}
-			/* P2-shadow */
-			:host-context([dir="rtl"]) d2l-organization-updates{
-				float: left;
-				margin: -0.7rem 0.2rem 0 0;
-			}
-			/* P1-shady, P2-shady */
-			:host(:dir(rtl)) d2l-organization-updates {
-				float: left;
-				margin: -0.7rem 0.2rem 0 0;
-			}
-			d2l-organization-updates[badge] {
-				margin-top: -1.205rem;
-			}
 		</style>
 
 		<d2l-card
@@ -236,15 +219,6 @@ Polymer-based web component for a course/enrollment card.
 			</div>
 
 			<d2l-status-indicator aria-hidden="true" class="badge" slot="badge" state="[[_badgeState]]" text="[[localize(_badgeText)]]" hidden$="[[!_badgeText]]"></d2l-status-indicator>
-
-			<d2l-organization-updates
-				combined
-				badge$="[[_badgeText]]"
-				slot="content"
-				href="[[_notificationsUrl]]"
-				presentation-href="[[presentationHref]]"
-				aria-hidden="true">
-			</d2l-organization-updates>
 
 			<div badge$="[[_badgeText]]" class="content-flex" slot="content" aria-hidden="true">
 				<d2l-organization-name href="[[_organizationUrl]]"></d2l-organization-name>
@@ -298,6 +272,12 @@ Polymer-based web component for a course/enrollment card.
 			</d2l-button-icon>
 
 			<div slot="content" class="alert-colour-circle" hidden$="[[!_newEnrollment]]"></div>
+
+			<d2l-organization-updates
+				slot="footer"
+				href="[[_notificationsUrl]]"
+				presentation-href="[[presentationHref]]">
+			</d2l-organization-updates>
 		</d2l-card>
 	</template>
 	<script>
