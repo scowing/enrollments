@@ -424,7 +424,8 @@ Polymer-based web component for a course/enrollment card.
 				D2L.PolymerBehaviors.EnrollmentCard.LocalizeBehavior,
 			],
 			observers: [
-				'_fetchEnrollment(_load, href)'
+				'_fetchEnrollment(_load, href)',
+				'_startedInactive(_beforeStartDate, disabled)'
 			],
 			listeners: {
 				'd2l-enrollment-status': '_onD2lEnrollmentStatus',
@@ -526,11 +527,8 @@ Polymer-based web component for a course/enrollment card.
 			},
 			_handleDisabledChange: function(disabled) {
 				if (disabled) {
-					this.setAttribute('started-inactive', '');
-					this.fire('started-inactive');
 					this._accessibilityData.disabled = this.localize('disabled');
 				} else {
-					this.removeAttribute('started-inactive');
 					if (this._accessibilityData) {
 						this._accessibilityData.disabled = null;
 					}
@@ -860,6 +858,14 @@ Polymer-based web component for a course/enrollment card.
 
 				this._badgeText = null;
 				this._badgeState = null;
+			},
+			_startedInactive: function(beforeStartDate, disabled) {
+				if (!beforeStartDate && disabled) {
+					this.setAttribute('started-inactive', '');
+					this.fire('started-inactive');
+				} else {
+					this.removeAttribute('started-inactive');
+				}
 			}
 		});
 	</script>
