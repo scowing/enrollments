@@ -22,6 +22,7 @@
 <link rel="import" href="../../../d2l-status-indicator/d2l-status-indicator.html">
 <link rel="import" href="../../../siren-parser-import/siren-parser.html">
 <link rel="import" href="../d2l-user-activity-usage/d2l-user-activity-usage.html">
+<link rel="import" href="d2l-enrollment-updates.html">
 <link rel="import" href="localize-behavior.html">
 
 <!--
@@ -44,7 +45,6 @@ Polymer-based web component for a course/enrollment card.
 				height: 100%;
 				/* Prevents long, non-breaking course names from overflowing */
 				width: 100%;
-				text-align: center;
 			}
 			d2l-card[disabled] .image-container {
 				/* Firefox 10-34 */
@@ -68,7 +68,7 @@ Polymer-based web component for a course/enrollment card.
 				cursor: not-allowed;
 			}
 
-			d2l-card[disabled] d2l-organization-updates,
+			d2l-card[disabled] d2l-enrollment-updates,
 			d2l-card[disabled] [slot=actions] {
 				display: none;
 			}
@@ -218,7 +218,14 @@ Polymer-based web component for a course/enrollment card.
 				</div>
 			</div>
 
-			<d2l-status-indicator aria-hidden="true" class="badge" slot="badge" state="[[_badgeState]]" text="[[localize(_badgeText)]]" hidden$="[[!_badgeText]]"></d2l-status-indicator>
+			<d2l-status-indicator
+				aria-hidden="true"
+				class="badge"
+				slot="badge"
+				state="[[_badgeState]]"
+				text="[[localize(_badgeText)]]"
+				hidden$="[[!_badgeText]]">
+			</d2l-status-indicator>
 
 			<div badge$="[[_badgeText]]" class="content-flex" slot="content" aria-hidden="true">
 				<d2l-organization-name href="[[_organizationUrl]]"></d2l-organization-name>
@@ -273,11 +280,11 @@ Polymer-based web component for a course/enrollment card.
 
 			<div slot="content" class="alert-colour-circle" hidden$="[[!_newEnrollment]]"></div>
 
-			<d2l-organization-updates
+			<d2l-enrollment-updates
 				slot="footer"
 				href="[[_notificationsUrl]]"
 				presentation-href="[[presentationHref]]">
-			</d2l-organization-updates>
+			</d2l-enrollment-updates>
 		</d2l-card>
 	</template>
 	<script>
@@ -406,12 +413,13 @@ Polymer-based web component for a course/enrollment card.
 				_newEnrollment: {
 					type: Boolean,
 					value: false
-				}
+				},
+				_notifications: Array
 			},
 			behaviors: [
 				window.D2L.Hypermedia.HMConstantsBehavior,
 				D2L.PolymerBehaviors.Hypermedia.OrganizationHMBehavior,
-				D2L.PolymerBehaviors.EnrollmentCard.LocalizeBehavior,
+				D2L.PolymerBehaviors.EnrollmentCard.LocalizeBehavior
 			],
 			observers: [
 				'_fetchEnrollment(_load, href)',
