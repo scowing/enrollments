@@ -199,7 +199,16 @@ Polymer-based web component for a course/enrollment card.
 				float: right;
 				margin: -0.7rem 0 0 0.2rem;
 			}
-
+			/* P2-shadow */
+			:host-context([dir="rtl"]) d2l-organization-updates{
+				float: left;
+				margin: -0.7rem 0.2rem 0 0;
+			}
+			/* P1-shady, P2-shady */
+			:host(:dir(rtl)) d2l-organization-updates {
+				float: left;
+				margin: -0.7rem 0.2rem 0 0;
+			}
 			d2l-organization-updates[badge] {
 				margin-top: -1.205rem;
 			}
