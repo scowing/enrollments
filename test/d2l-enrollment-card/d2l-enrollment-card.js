@@ -652,7 +652,7 @@ describe('d2l-enrollment-card', () => {
 
 		afterEach(() => sandbox.reset());
 
-		it('d2l-enrollment-card-status event fired', done => {
+		it('d2l-enrollment-card-status event fired: completed', done => {
 			component.addEventListener('d2l-enrollment-card-status', function(e) {
 				expect(e.detail.status.completed).to.be.true;
 				expect(e.detail.enrollmentUrl).to.equal('/enrollments/users/169/organizations/1');
@@ -660,6 +660,16 @@ describe('d2l-enrollment-card', () => {
 			});
 
 			component._setCompleted(true);
+		});
+
+		it('d2l-enrollment-card-status event fired: closed', done => {
+			component.addEventListener('d2l-enrollment-card-status', function(e) {
+				expect(e.detail.status.closed).to.be.true;
+				expect(e.detail.enrollmentUrl).to.equal('/enrollments/users/169/organizations/1');
+				done();
+			});
+
+			component._setClosed(true);
 		});
 	});
 });
