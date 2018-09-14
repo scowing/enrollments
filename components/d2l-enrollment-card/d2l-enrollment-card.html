@@ -22,6 +22,7 @@
 <link rel="import" href="../../../d2l-status-indicator/d2l-status-indicator.html">
 <link rel="import" href="../../../siren-parser-import/siren-parser.html">
 <link rel="import" href="../d2l-user-activity-usage/d2l-user-activity-usage.html">
+<link rel="import" href="d2l-enrollment-updates.html">
 <link rel="import" href="localize-behavior.html">
 
 <!--
@@ -67,7 +68,7 @@ Polymer-based web component for a course/enrollment card.
 				cursor: not-allowed;
 			}
 
-			d2l-card[disabled] d2l-organization-updates,
+			d2l-card[disabled] d2l-enrollment-updates,
 			d2l-card[disabled] [slot=actions] {
 				display: none;
 			}
@@ -194,24 +195,6 @@ Polymer-based web component for a course/enrollment card.
 				filter: grayscale(0);
 				opacity: 1;
 			}
-
-			d2l-organization-updates {
-				float: right;
-				margin: -0.7rem 0 0 0.2rem;
-			}
-			/* P2-shadow */
-			:host-context([dir="rtl"]) d2l-organization-updates{
-				float: left;
-				margin: -0.7rem 0.2rem 0 0;
-			}
-			/* P1-shady, P2-shady */
-			:host(:dir(rtl)) d2l-organization-updates {
-				float: left;
-				margin: -0.7rem 0.2rem 0 0;
-			}
-			d2l-organization-updates[badge] {
-				margin-top: -1.205rem;
-			}
 		</style>
 
 		<d2l-card
@@ -235,16 +218,14 @@ Polymer-based web component for a course/enrollment card.
 				</div>
 			</div>
 
-			<d2l-status-indicator aria-hidden="true" class="badge" slot="badge" state="[[_badgeState]]" text="[[localize(_badgeText)]]" hidden$="[[!_badgeText]]"></d2l-status-indicator>
-
-			<d2l-organization-updates
-				combined
-				badge$="[[_badgeText]]"
-				slot="content"
-				href="[[_notificationsUrl]]"
-				presentation-href="[[presentationHref]]"
-				aria-hidden="true">
-			</d2l-organization-updates>
+			<d2l-status-indicator
+				aria-hidden="true"
+				class="badge"
+				slot="badge"
+				state="[[_badgeState]]"
+				text="[[localize(_badgeText)]]"
+				hidden$="[[!_badgeText]]">
+			</d2l-status-indicator>
 
 			<div badge$="[[_badgeText]]" class="content-flex" slot="content" aria-hidden="true">
 				<d2l-organization-name href="[[_organizationUrl]]"></d2l-organization-name>
@@ -298,6 +279,12 @@ Polymer-based web component for a course/enrollment card.
 			</d2l-button-icon>
 
 			<div slot="content" class="alert-colour-circle" hidden$="[[!_newEnrollment]]"></div>
+
+			<d2l-enrollment-updates
+				slot="footer"
+				href="[[_notificationsUrl]]"
+				presentation-href="[[presentationHref]]">
+			</d2l-enrollment-updates>
 		</d2l-card>
 	</template>
 	<script>
@@ -426,12 +413,13 @@ Polymer-based web component for a course/enrollment card.
 				_newEnrollment: {
 					type: Boolean,
 					value: false
-				}
+				},
+				_notifications: Array
 			},
 			behaviors: [
 				window.D2L.Hypermedia.HMConstantsBehavior,
 				D2L.PolymerBehaviors.Hypermedia.OrganizationHMBehavior,
-				D2L.PolymerBehaviors.EnrollmentCard.LocalizeBehavior,
+				D2L.PolymerBehaviors.EnrollmentCard.LocalizeBehavior
 			],
 			observers: [
 				'_fetchEnrollment(_load, href)',
