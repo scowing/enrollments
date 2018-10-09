@@ -36,15 +36,9 @@ Polymer-based web component for a enrollment updates.
 					id="[[item.key]]"
 					icon="[[item.icon]]"
 					text="[[item.ariaLabel]]"
+					href$="[[item.link]]"
 					secondary-text="[[_toString(item.updateCount)]]">
 				</d2l-card-footer-link>
-				<d2l-tooltip class="d2l-enrollment-card-updates-tooltip" for="[[item.key]]" position="top" disabled$="[[item.isDisabled]]">
-					<ul>
-						<template is="dom-repeat" items="[[item.toolTip]]">
-							<li>[[item]]</li>
-						</template>
-					</ul>
-				</d2l-tooltip>
 			</template>
 		</template>
 	</template>
