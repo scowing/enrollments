@@ -87,7 +87,7 @@ Polymer-based web component for a organization due and completion dates.
 
 				this.fire('d2l-user-activity-usage-accessible', dateText);
 
-				if (isCompleted && date < tomorrowDate) {
+				if (isCompletionDate && date < tomorrowDate) {
 					this.fire('d2l-enrollment-status', {status: 'completed'});
 				} else if (date < nowDate) {
 					this.fire('d2l-enrollment-status', {status: 'overdue'});
