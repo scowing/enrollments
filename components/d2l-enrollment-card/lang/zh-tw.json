@@ -1,0 +1,15 @@
+{
+  "changeImage": "Change Image",
+  "courseOfferingInformation": "Course Offering Information",
+  "coursePinButton": "{course} is pinned. Unpin course",
+  "courseSettings": "{course} course settings",
+  "inactive": "Inactive",
+  "pin": "Pin",
+  "pinActionResult": "{course} has been pinned",
+  "unpin": "Unpin",
+  "unpinActionResult": "{course} has been unpinned",
+  "completed": "Completed",
+  "overdue": "Overdue",
+  "new": "New",
+  "disabled": "Disabled"
+}
