@@ -602,6 +602,8 @@ Polymer-based web component for a course/enrollment card.
 					return;
 				}
 
+				this._resetState();
+
 				this._enrollment = enrollment;
 				this._pinned = enrollment.hasClass(this.HypermediaClasses.enrollments.pinned);
 				this._organizationUrl = enrollment.getLinkByRel(this.HypermediaRels.organization).href;
@@ -873,6 +875,15 @@ Polymer-based web component for a course/enrollment card.
 				} else {
 					this.removeAttribute('started-inactive');
 				}
+			},
+			_resetState: function() {
+				this._setCompleted(false);
+				this._setClosed(false);
+				this._setDisabled(false);
+				this._setOverdue(false);
+				this._setInactive(false);
+				this._newEnrollment = false;
+				this._setBadgeText();
 			}
 		});
 	</script>

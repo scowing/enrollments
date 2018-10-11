@@ -471,7 +471,7 @@ describe('d2l-enrollment-card', () => {
 
 		it('No Badge', () => {
 			expect(component._badgeText).to.be.null;
-			expect(component._badgeState).to.be.undefined;
+			expect(component._badgeState).to.be.null;
 			var badge = component.$$('d2l-status-indicator');
 			expect(badge.hasAttribute('hidden')).to.be.true;
 		});
