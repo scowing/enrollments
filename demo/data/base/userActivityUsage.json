@@ -1,7 +1,8 @@
 {
     "class": [
         "activity",
-        "user-course-offering-activity-usage"
+        "user-course-offering-activity-usage",
+        "attended"
     ],
     "entities": [
         {
@@ -15,19 +16,7 @@
             "properties": {
                 "date": "2019-08-25T04:00:00.000Z"
             }
-        },
-        {
-          "class": [
-              "date",
-              "last-accessed"
-          ],
-          "rel": [
-              "https://api.brightspace.com/rels/date"
-          ],
-          "properties": {
-              "date": "2018-08-25T04:00:00.000Z"
-          }
-      }
+        }
     ],
     "links": []
 }
