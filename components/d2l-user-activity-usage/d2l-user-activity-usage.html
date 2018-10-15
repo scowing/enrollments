@@ -100,7 +100,7 @@ Polymer-based web component for a organization due and completion dates.
 			},
 			_hrefChange: function(href) {
 				if (!href) {
-					this._date = false;
+					this._date = null;
 					return;
 				}
 				return this._fetchSirenEntity(href)
