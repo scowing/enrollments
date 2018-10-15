@@ -829,7 +829,7 @@ Polymer-based web component for a course/enrollment card.
 			},
 			_accessibilityDataToString: function(accessibility) {
 				if (!accessibility || !accessibility.organizationName) {
-					return this.localize('courseClosed');
+					return this.localize('closed');
 				}
 				var textData = [
 					accessibility.new,
@@ -854,7 +854,7 @@ Polymer-based web component for a course/enrollment card.
 					[this.completed, 'completed', 'success'],
 					[this._beforeStartDate && !this.inactive, null, null],
 					[this.inactive, 'inactive', 'default'],
-					[this.closed && !this.inactive, 'courseClosed', 'default'],
+					[this.closed && !this.inactive, 'closed', 'default'],
 					[this.overdue, 'overdue', 'alert']
 				];
 				for (var i = 0; i < priorityOrder.length; i++) {
@@ -883,6 +883,7 @@ Polymer-based web component for a course/enrollment card.
 				this._setOverdue(false);
 				this._setInactive(false);
 				this._newEnrollment = false;
+				this._userActivityUsageUrl = null;
 				this._setBadgeText();
 			}
 		});

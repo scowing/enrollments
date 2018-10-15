@@ -460,7 +460,7 @@ describe('d2l-enrollment-card', () => {
 			component.fire('d2l-organization-date', {active: true, afterEndDate: true});
 
 			setTimeout(() => {
-				expect(component._badgeText).to.equal('courseClosed');
+				expect(component._badgeText).to.equal('closed');
 				expect(component._badgeState).to.equal('default');
 				var badge = component.$$('d2l-status-indicator');
 				expect(badge.hasAttribute('hidden')).to.be.false;
@@ -519,12 +519,12 @@ describe('d2l-enrollment-card', () => {
 				{
 					name: 'Closed should be shown over overdue when sent first.',
 					methods: [fireClosed, fireOverdue],
-					badge: 'courseClosed'
+					badge: 'closed'
 				},
 				{
 					name: 'Closed should be shown over overdue when sent second.',
 					methods: [fireOverdue, fireClosed],
-					badge: 'courseClosed'
+					badge: 'closed'
 				},
 			].forEach((testCase) => {
 				it(testCase.name, (done) => {
