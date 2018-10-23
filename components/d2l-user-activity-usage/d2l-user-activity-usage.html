@@ -16,7 +16,7 @@ Polymer-based web component for a organization due and completion dates.
 		<span hidden$="[[overrideToDefault]]">
 			[[_dateText]]
 		</span>
-		<span hidden$="[[_hideDefaultSlot(_dateText, overrideToDefault)]]"><slot name='default'></slot></span>
+		<span hidden$="[[_hideDefaultSlot(_date, overrideToDefault)]]"><slot name='default'></slot></span>
 	</template>
 	<script>
 		Polymer({
@@ -27,17 +27,15 @@ Polymer-based web component for a organization due and completion dates.
 					type: String,
 					observer: '_hrefChange'
 				},
-				hidden: {
-					type: Boolean,
-					computed: '_computeHidden(_dateText)',
-					reflectToAttribute: true
-				},
 				overrideToDefault: {
 					type: Boolean,
 					value: false
 				},
 
-				_date: String,
+				_date: {
+					type: String,
+					value: null
+				},
 				_isCompletionDate: Boolean,
 				_dateText: {
 					type: String,
@@ -52,7 +50,7 @@ Polymer-based web component for a organization due and completion dates.
 			_msInAWeek: 604800000,
 			_computeDateText: function(date, isCompletionDate) {
 				if (!date || typeof isCompletionDate !== 'boolean') {
-					return;
+					return null;
 				}
 
 				var nowDate = new Date(Date.now());
@@ -95,12 +93,9 @@ Polymer-based web component for a organization due and completion dates.
 
 				return dateText;
 			},
-			_computeHidden: function(dateText) {
-				return !dateText;
-			},
 			_hrefChange: function(href) {
+				this._date = null;
 				if (!href) {
-					this._date = null;
 					return;
 				}
 				return this._fetchSirenEntity(href)
@@ -164,8 +159,8 @@ Polymer-based web component for a organization due and completion dates.
 					})
 					.then(window.D2L.Hypermedia.Siren.Parse);
 			},
-			_hideDefaultSlot: function(dateText, overrideToDefault) {
-				return dateText && !overrideToDefault;
+			_hideDefaultSlot: function(date, overrideToDefault) {
+				return date && !overrideToDefault;
 			}
 		});
 	</script>

@@ -396,10 +396,7 @@ Polymer-based web component for a course/enrollment card.
 					observer: '_handleBadgeTextChange'
 				},
 				_badgeState: String,
-				_beforeStartDate: {
-					type: Boolean,
-					value: false
-				},
+				_beforeStartDate: Boolean,
 				_orgDateSlot: {
 					type: Boolean,
 					value: false
@@ -586,6 +583,7 @@ Polymer-based web component for a course/enrollment card.
 				}.bind(this), 1000);
 			},
 			_fetchEnrollment: function(load, enrollmentUrl) {
+				this._resetState();
 				if (!load || !enrollmentUrl) {
 					return Promise.resolve();
 				}
@@ -601,8 +599,6 @@ Polymer-based web component for a course/enrollment card.
 				) {
 					return;
 				}
-
-				this._resetState();
 
 				this._enrollment = enrollment;
 				this._pinned = enrollment.hasClass(this.HypermediaClasses.enrollments.pinned);
@@ -877,9 +873,10 @@ Polymer-based web component for a course/enrollment card.
 				}
 			},
 			_resetState: function() {
+				this._beforeStartDate = undefined;
+				this._setDisabled(false);
 				this._setCompleted(false);
 				this._setClosed(false);
-				this._setDisabled(false);
 				this._setOverdue(false);
 				this._setInactive(false);
 				this._newEnrollment = false;
