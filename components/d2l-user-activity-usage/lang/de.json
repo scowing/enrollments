@@ -1,12 +1,12 @@
 {
-  "dueOn": "Due {dateTime}",
-  "completedOn": "Completed {dateTime}",
-  "dueToday": "Due Today",
-  "completedToday": "Completed Today",
-  "dueTomorrow": "Due Tomorrow",
-  "completedTomorrow": "Completed Tomorrow",
-  "dueYesterday": "Due Yesterday",
-  "completedYesterday": "Completed Yesterday",
-  "dueDaysAgo": "Due {number} Days Ago",
-  "completedDaysAgo": "Completed {number} Days Ago"
+   "completedDaysAgo" : "Vor {number} abgeschlossen",
+   "completedOn" : "Am {dateTime} abgeschlossen",
+   "completedToday" : "Heute abgeschlossen",
+   "completedTomorrow" : "Morgen abgeschlossen",
+   "completedYesterday" : "Gestern abgeschlossen",
+   "dueDaysAgo" : "Vor {number} Tagen fällig",
+   "dueOn" : "Fällig am {dateTime}",
+   "dueToday" : "Heute fällig",
+   "dueTomorrow" : "Morgen fällig",
+   "dueYesterday" : "Gestern fällig"
 }

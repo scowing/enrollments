@@ -1,12 +1,12 @@
 {
-  "dueOn": "Due {dateTime}",
-  "completedOn": "Completed {dateTime}",
-  "dueToday": "Due Today",
-  "completedToday": "Completed Today",
-  "dueTomorrow": "Due Tomorrow",
-  "completedTomorrow": "Completed Tomorrow",
-  "dueYesterday": "Due Yesterday",
-  "completedYesterday": "Completed Yesterday",
-  "dueDaysAgo": "Due {number} Days Ago",
-  "completedDaysAgo": "Completed {number} Days Ago"
+   "completedDaysAgo" : "{number} dagen geleden voltooid",
+   "completedOn" : "Voltooid op {dateTime}",
+   "completedToday" : "Vandaag voltooid",
+   "completedTomorrow" : "Morgen voltooid",
+   "completedYesterday" : "Gisteren voltooid",
+   "dueDaysAgo" : "Uiterste datum {number} dagen geleden",
+   "dueOn" : "Uiterste datum {dateTime}",
+   "dueToday" : "Uiterste datum vandaag",
+   "dueTomorrow" : "Uiterste datum morgen",
+   "dueYesterday" : "Uiterste datum gisteren"
 }
