@@ -560,7 +560,7 @@ Polymer-based web component for a course/enrollment card.
 
 			_displaySetImageResult: function(success, skipSetImage) {
 				setTimeout(function() {
-					var icon = this.$$('.icon-container d2l-icon');
+					var icon = this.$$('.d2l-enrollment-card-icon-container d2l-icon');
 					this.toggleClass('d2l-enrollment-card-checkmark', false, icon);
 					this.toggleClass('d2l-enrollment-card-fail-icon', false, icon);
 					var iconName = success ? 'd2l-tier2:check' : 'd2l-tier3:close';
