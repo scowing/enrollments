@@ -370,9 +370,9 @@ describe('d2l-enrollment-card', () => {
 				}
 			}));
 
-			var imageOverlay = component.$$('div.overlay');
+			var imageOverlay = component.$$('div.d2l-enrollment-card-overlay');
 			expect(imageOverlay.hasAttribute('hidden')).to.be.false;
-			var spinner = component.$$('.overlay d2l-loading-spinner');
+			var spinner = component.$$('.d2l-enrollment-card-overlay d2l-loading-spinner');
 			expect(spinner.hasAttribute('hidden')).to.be.false;
 		});
 
@@ -387,11 +387,11 @@ describe('d2l-enrollment-card', () => {
 			}));
 
 			clock.tick(1001);
-			var imageOverlay = component.$$('div.overlay');
+			var imageOverlay = component.$$('div.d2l-enrollment-card-overlay');
 			expect(imageOverlay.hasAttribute('hidden')).to.be.false;
-			var spinner = component.$$('.overlay d2l-loading-spinner');
+			var spinner = component.$$('.d2l-enrollment-card-overlay d2l-loading-spinner');
 			expect(spinner.hasAttribute('hidden')).to.be.true;
-			var icon = component.$$('.overlay .icon-container d2l-icon');
+			var icon = component.$$('.d2l-enrollment-card-overlay .d2l-enrollment-card-icon-container d2l-icon');
 			expect(icon.getAttribute('icon')).to.equal('d2l-tier2:check');
 
 			clock.tick(1001);
@@ -410,11 +410,11 @@ describe('d2l-enrollment-card', () => {
 			}));
 
 			clock.tick(1001);
-			var imageOverlay = component.$$('div.overlay');
+			var imageOverlay = component.$$('div.d2l-enrollment-card-overlay');
 			expect(imageOverlay.hasAttribute('hidden')).to.be.false;
-			var spinner = component.$$('.overlay d2l-loading-spinner');
+			var spinner = component.$$('.d2l-enrollment-card-overlay d2l-loading-spinner');
 			expect(spinner.hasAttribute('hidden')).to.be.true;
-			var icon = component.$$('.overlay .icon-container d2l-icon');
+			var icon = component.$$('.d2l-enrollment-card-overlay .d2l-enrollment-card-icon-container d2l-icon');
 			expect(icon.getAttribute('icon')).to.equal('d2l-tier3:close');
 
 			clock.tick(1001);
@@ -638,7 +638,7 @@ describe('d2l-enrollment-card', () => {
 			component.fire('d2l-enrollment-new');
 
 			setTimeout(() => {
-				var highlight = component.$$('.alert-colour-circle');
+				var highlight = component.$$('.d2l-enrollment-card-alert-colour-circle');
 				expect(highlight.hasAttribute('hidden')).to.be.false;
 				done();
 			});
