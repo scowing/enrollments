@@ -1,7 +1,7 @@
 {
    "changeImage" : "Afbeelding wijzigen",
    "closed" : "Gesloten",
-   "completed" : "Voltooid",
+   "completed": "Complete",
    "courseOfferingInformation" : "Informatie cursuseditie",
    "coursePinButton" : "{course} is vastgepind. Cursus losmaken",
    "courseSettings" : "{course}-cursusinstellingen",

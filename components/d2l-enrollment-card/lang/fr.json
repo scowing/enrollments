@@ -1,7 +1,7 @@
 {
    "changeImage" : "Modifier l'image",
    "closed" : "Fermé",
-   "completed" : "Terminé",
+   "completed": "Complete",
    "courseOfferingInformation" : "Information sur l'offre de cours",
    "coursePinButton" : "Le cours {course} est épinglé. Annuler l'épinglage du cours",
    "courseSettings" : "Paramètres du cours {course}",
