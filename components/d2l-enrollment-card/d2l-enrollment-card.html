@@ -154,7 +154,7 @@ Polymer-based web component for a course/enrollment card.
 				100% { transform: scale(2.0); }
 			}
 
-			.alert-colour-circle {
+			.d2l-enrollment-card-alert-colour-circle {
 				height: .75rem;
 				width: .75rem;
 				border-radius: 50%;
@@ -166,12 +166,12 @@ Polymer-based web component for a course/enrollment card.
 			}
 
 			/* P2-shadow */
-			:host-context([dir="rtl"]) .alert-colour-circle {
+			:host-context([dir="rtl"]) .d2l-enrollment-card-alert-colour-circle {
 				right: auto;
 				left: -0.375rem;
 			}
 			/* P1-shady, P2-shady */
-			:host(:dir(rtl)) .alert-colour-circle {
+			:host(:dir(rtl)) .d2l-enrollment-card-alert-colour-circle {
 				right: auto;
 				left: -0.375rem;
 			}
@@ -201,7 +201,7 @@ Polymer-based web component for a course/enrollment card.
 			href="[[_organizationHomepageUrl]]"
 			text="[[_accessibilityDataToString(_accessibilityData)]]">
 			<div slot="header" aria-hidden="true">
-				<div class="image-container">
+				<div class="d2l-enrollment-card-image-container">
 					<d2l-course-image
 						image="[[_image]]"
 						sizes="[[_tileSizes]]"
@@ -210,7 +210,7 @@ Polymer-based web component for a course/enrollment card.
 				</div>
 				<div hidden$="[[!_imageLoading]]" class="d2l-enrollment-card-overlay">
 					<d2l-loading-spinner hidden$="[[!_imageLoadingProgress]]" size="85"></d2l-loading-spinner>
-					<div class="icon-container" hidden$="[[_imageLoadingProgress]]">
+					<div class="d2l-enrollment-card-icon-container" hidden$="[[_imageLoadingProgress]]">
 						<d2l-icon></d2l-icon>
 					</div>
 				</div>
@@ -276,7 +276,7 @@ Polymer-based web component for a course/enrollment card.
 				on-keypress="_pinPressHandler">
 			</d2l-button-icon>
 
-			<div slot="content" class="alert-colour-circle" hidden$="[[!_newEnrollment]]"></div>
+			<div slot="content" class="d2l-enrollment-card-alert-colour-circle" hidden$="[[!_newEnrollment]]"></div>
 
 			<d2l-enrollment-updates
 				slot="footer"
