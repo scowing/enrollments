@@ -3,7 +3,7 @@
    "closed" : "Fechado",
    "completed" : "Concluído",
    "courseOfferingInformation" : "Informações de Oferta de Curso",
-   "coursePinButton" : "{curso} está fixado. Desafixar curso",
+   "coursePinButton" : "{course} está fixado. Desafixar curso",
    "courseSettings" : "Configurações de curso de {course}",
    "disabled" : "Desabilitado",
    "inactive" : "Inativo",
