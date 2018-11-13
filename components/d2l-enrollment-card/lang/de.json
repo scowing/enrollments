@@ -1,7 +1,7 @@
 {
    "changeImage" : "Bild ändern",
    "closed" : "Geschlossen",
-   "completed" : "Abgeschlossen",
+   "completed": "Complete",
    "courseOfferingInformation" : "Informationen zum Kursangebot",
    "coursePinButton" : "{course} ist angeheftet. Kurs lösen",
    "courseSettings" : "Kurseinstellungen für {course}",
