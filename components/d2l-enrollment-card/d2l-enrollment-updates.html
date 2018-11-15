@@ -1,6 +1,7 @@
 <link rel="import" href="../../../polymer/polymer.html">
 <link rel="import" href="../../../d2l-organizations/d2l-organization-updates.html">
 <link rel="import" href="../../../d2l-card/d2l-card-footer-link.html">
+<link rel="import" href="../../../d2l-tooltip/d2l-tooltip.html">
 
 <!--
 `d2l-enrollment-updates`
@@ -39,6 +40,17 @@ Polymer-based web component for a enrollment updates.
 					href$="[[item.link]]"
 					secondary-text="[[_toString(item.updateCount)]]">
 				</d2l-card-footer-link>
+				<d2l-tooltip
+					class="d2l-enrollment-card-updates-tooltip"
+					for="[[item.key]]"
+					position="top"
+					disabled$="[[item.isDisabled]]">
+					<ul>
+						<template is="dom-repeat" items="[[item.toolTip]]">
+							<li>[[item]]</li>
+						</template>
+					</ul>
+				</d2l-tooltip>
 			</template>
 		</template>
 	</template>
