@@ -19,7 +19,7 @@
   "dependencies": {
     "d2l-course-image": "Brightspace/course-image#^2.1.4",
     "d2l-button": "^4.7.3",
-    "d2l-card": "^4.1.15",
+    "d2l-card": "^4.1.17",
     "d2l-dropdown": "^6.6.1",
     "d2l-fetch": "Brightspace/d2l-fetch#^1.8.0",
     "d2l-hm-constants-behavior": "Brightspace/d2l-hm-constants-behavior#^5.24.0",
@@ -30,9 +30,9 @@
     "d2l-menu": "^1.1.0",
     "d2l-offscreen": "^3.0.3",
     "d2l-organization-hm-behavior": "Brightspace/organization-hm-behavior#^2.0.1",
-    "d2l-organizations": "BrightspaceHypermediaComponents/organizations#^0.1.8-hybrid",
+    "d2l-organizations": "BrightspaceHypermediaComponents/organizations#^0.1.14-hybrid",
     "d2l-status-indicator": "^2.0.0",
-    "d2l-tooltip": "^2.0.4",
+    "d2l-tooltip": "^2.0.5",
     "iron-a11y-announcer": "^2.0.0",
     "polymer": "1 - 2",
     "siren-parser-import": "Brightspace/siren-parser-import#^7.0.0"
