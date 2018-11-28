@@ -417,7 +417,7 @@ Polymer-based web component for a course/enrollment card.
 			],
 			observers: [
 				'_fetchEnrollment(_load, href)',
-				'_startedInactive(_beforeStartDate, inactive)'
+				'_startedInactive(_beforeStartDate, closed, inactive)'
 			],
 			listeners: {
 				'd2l-enrollment-status': '_onD2lEnrollmentStatus',
@@ -871,8 +871,8 @@ Polymer-based web component for a course/enrollment card.
 				this._badgeText = null;
 				this._badgeState = null;
 			},
-			_startedInactive: function(beforeStartDate, inactive) {
-				if (!beforeStartDate && inactive) {
+			_startedInactive: function(beforeStartDate, closed, inactive) {
+				if (!beforeStartDate && !closed && inactive) {
 					this.setAttribute('started-inactive', '');
 					this.fire('started-inactive');
 				} else {
