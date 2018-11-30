@@ -1,7 +1,7 @@
 {
    "changeImage" : "تغيير الصورة",
    "closed" : "مغلق",
-   "completed": "Complete",
+   "completed" : "Complete",
    "courseOfferingInformation" : "معلومات مضمون المقرر التعليمي",
    "coursePinButton" : "{course} is pinned. إلغاء تثبيت المقرر التعليمي",
    "courseSettings" : "إعدادات المقرر التعليمي {course}",
