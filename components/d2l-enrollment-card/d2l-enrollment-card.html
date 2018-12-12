@@ -453,7 +453,7 @@ Polymer-based web component for a course/enrollment card.
 								break;
 							}
 						}
-					};
+					}.bind(this);
 
 					// Small shim for Edge/IE/Safari
 					var delayFunction = window.requestIdleCallback || setTimeout;
@@ -470,7 +470,7 @@ Polymer-based web component for a course/enrollment card.
 
 					var observer = new IntersectionObserver(observerCallback.bind(this));
 					observer.observe(imageTile);
-				});
+				}.bind(this));
 			},
 			detached: function() {
 				window.removeEventListener('set-course-image', this._boundOnSetCourseImage);
@@ -635,7 +635,7 @@ Polymer-based web component for a course/enrollment card.
 				Polymer.RenderStatus.afterNextRender(this, function() {
 					// Telemetry event for organization loaded, meaning tile is interactive
 					this.fire('course-tile-organization');
-				});
+				}.bind(this));
 
 				if (organization.hasLinkByRel(this.HypermediaRels.courseOfferingInfoPage)) {
 					this._courseInfoUrl = organization.getLinkByRel(this.HypermediaRels.courseOfferingInfoPage).href;
