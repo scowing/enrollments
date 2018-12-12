@@ -174,12 +174,6 @@ $_documentContainer.innerHTML = `<dom-module id="d2l-enrollment-card">
 				right: -0.375rem;
 			}
 
-			/* P2-shadow */
-			:host-context([dir="rtl"]) .d2l-enrollment-card-alert-colour-circle {
-				right: auto;
-				left: -0.375rem;
-			}
-			/* P1-shady, P2-shady */
 			:host(:dir(rtl)) .d2l-enrollment-card-alert-colour-circle {
 				right: auto;
 				left: -0.375rem;
