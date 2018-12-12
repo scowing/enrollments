@@ -17,7 +17,9 @@ import 'd2l-course-image/d2l-course-image.js';
 import 'd2l-dropdown/d2l-dropdown-menu.js';
 import 'd2l-dropdown/d2l-dropdown-more.js';
 import 'd2l-fetch/d2l-fetch.js';
-import 'd2l-hypermedia-constants/d2l-hm-constants-behavior.js';
+import { Actions } from 'd2l-hypermedia-constants';
+import { Classes } from 'd2l-hypermedia-constants';
+import { Rels } from 'd2l-hypermedia-constants';
 import 'd2l-icons/d2l-icon.js';
 import 'd2l-icons/tier1-icons.js';
 import 'd2l-loading-spinner/d2l-loading-spinner.js';
@@ -33,7 +35,7 @@ import 'd2l-card/d2l-card.js';
 import 'd2l-card/d2l-card-content-meta.js';
 import 'd2l-button/d2l-button-icon.js';
 import 'd2l-status-indicator/d2l-status-indicator.js';
-import 'siren-parser/siren-parser.js';
+import SirenParse from 'siren-parser';
 import '../d2l-user-activity-usage/d2l-user-activity-usage.js';
 import './d2l-enrollment-updates.js';
 import './localize-behavior.js';
@@ -385,7 +387,6 @@ Polymer({
 		_notifications: Array
 	},
 	behaviors: [
-		window.D2L.Hypermedia.HMConstantsBehavior,
 		D2L.PolymerBehaviors.Hypermedia.OrganizationHMBehavior,
 		D2L.PolymerBehaviors.Enrollment.Card.LocalizeBehavior
 	],
@@ -468,11 +469,11 @@ Polymer({
 
 	_computeCanAccessCourseInfo: function(organization) {
 		return organization
-			&& organization.hasLinkByRel(this.HypermediaRels.courseOfferingInfoPage);
+			&& organization.hasLinkByRel(Rels.courseOfferingInfoPage);
 	},
 	_computeCanChangeCourseImage: function(organization) {
 		return organization
-			&& organization.hasActionByName(this.HypermediaActions.organizations.setCatalogImage);
+			&& organization.hasActionByName(Actions.organizations.setCatalogImage);
 	},
 	_computeCourseSettingsLabel: function(organization) {
 		return organization
@@ -567,21 +568,21 @@ Polymer({
 		if (
 			!enrollment
 			|| !enrollment.hasLinkByRel
-			|| !enrollment.hasLinkByRel(this.HypermediaRels.organization)
+			|| !enrollment.hasLinkByRel(Rels.organization)
 		) {
 			return;
 		}
 
 		this._enrollment = enrollment;
-		this._pinned = enrollment.hasClass(this.HypermediaClasses.enrollments.pinned);
-		this._organizationUrl = enrollment.getLinkByRel(this.HypermediaRels.organization).href;
+		this._pinned = enrollment.hasClass(Classes.enrollments.pinned);
+		this._organizationUrl = enrollment.getLinkByRel(Rels.organization).href;
 
 		this.fire('d2l-enrollment-card-fetched', {
 			organizationUrl: this._organizationUrl,
 			enrollmentUrl: this._getEntityIdentifier(this._enrollment)
 		});
-		if (enrollment.hasLinkByRel(this.HypermediaRels.Activities.userActivityUsage)) {
-			this._userActivityUsageUrl = enrollment.getLinkByRel(this.HypermediaRels.Activities.userActivityUsage).href;
+		if (enrollment.hasLinkByRel(Rels.Activities.userActivityUsage)) {
+			this._userActivityUsageUrl = enrollment.getLinkByRel(Rels.Activities.userActivityUsage).href;
 		}
 
 		return this._fetchSirenEntity(this._organizationUrl)
@@ -611,14 +612,14 @@ Polymer({
 			this.fire('course-tile-organization');
 		}.bind(this));
 
-		if (organization.hasLinkByRel(this.HypermediaRels.courseOfferingInfoPage)) {
-			this._courseInfoUrl = organization.getLinkByRel(this.HypermediaRels.courseOfferingInfoPage).href;
+		if (organization.hasLinkByRel(Rels.courseOfferingInfoPage)) {
+			this._courseInfoUrl = organization.getLinkByRel(Rels.courseOfferingInfoPage).href;
 		}
-		if (organization.hasLinkByRel(this.HypermediaRels.Notifications.organizationNotifications)) {
-			this._notificationsUrl = organization.getLinkByRel(this.HypermediaRels.Notifications.organizationNotifications).href;
+		if (organization.hasLinkByRel(Rels.Notifications.organizationNotifications)) {
+			this._notificationsUrl = organization.getLinkByRel(Rels.Notifications.organizationNotifications).href;
 		}
-		if (organization.hasSubEntityByClass(this.HypermediaClasses.courseImage.courseImage)) {
-			var imageEntity = organization.getSubEntityByClass(this.HypermediaClasses.courseImage.courseImage);
+		if (organization.hasSubEntityByClass(Classes.courseImage.courseImage)) {
+			var imageEntity = organization.getSubEntityByClass(Classes.courseImage.courseImage);
 			if (imageEntity.href) {
 				this._fetchSirenEntity(imageEntity.href)
 					.then(function(hydratedImageEntity) {
@@ -628,8 +629,8 @@ Polymer({
 				this._image = imageEntity;
 			}
 		}
-		if (organization.hasSubEntityByRel(this.HypermediaRels.organizationHomepage)) {
-			var homepageEntity = organization.getSubEntityByRel(this.HypermediaRels.organizationHomepage);
+		if (organization.hasSubEntityByRel(Rels.organizationHomepage)) {
+			var homepageEntity = organization.getSubEntityByRel(Rels.organizationHomepage);
 			this._organizationHomepageUrl = homepageEntity
 				&& homepageEntity.properties
 				&& homepageEntity.properties.path;
@@ -741,8 +742,8 @@ Polymer({
 	},
 	_pinClickHandler: function() {
 		var pinAction = this._pinned
-			? this._enrollment.getActionByName(this.HypermediaActions.enrollments.unpinCourse)
-			: this._enrollment.getActionByName(this.HypermediaActions.enrollments.pinCourse);
+			? this._enrollment.getActionByName(Actions.enrollments.unpinCourse)
+			: this._enrollment.getActionByName(Actions.enrollments.pinCourse);
 
 		var body = '';
 		var fields = pinAction.fields || [];
@@ -799,7 +800,7 @@ Polymer({
 			return response
 				.json()
 				.then(function(json) {
-					return window.D2L.Hypermedia.Siren.Parse(json);
+					return SirenParse(json);
 				});
 		}
 		return Promise.reject(response.status + ' ' + response.statusText);

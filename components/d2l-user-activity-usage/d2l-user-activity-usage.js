@@ -13,7 +13,7 @@ Polymer-based web component for a organization due and completion dates.
 import '@polymer/polymer/polymer-legacy.js';
 
 import 'd2l-fetch/d2l-fetch.js';
-import 'siren-parser/siren-parser.js';
+import SirenParser from 'siren-parser';
 import './localize-behavior.js';
 import { Polymer } from '@polymer/polymer/lib/legacy/polymer-fn.js';
 const $_documentContainer = document.createElement('template');
@@ -167,7 +167,7 @@ Polymer({
 				}
 				return Promise.reject(response.status + ' ' + response.statusText);
 			})
-			.then(window.D2L.Hypermedia.Siren.Parse);
+			.then(SirenParser);
 	},
 	_hideDefaultSlot: function(date, overrideToDefault) {
 		return date && !overrideToDefault;
