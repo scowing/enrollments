@@ -2,11 +2,12 @@
 	<head>
 		<meta charset="utf-8">
 		<meta name="viewport" content="width=device-width, minimum-scale=1.0, initial-scale=1.0, user-scalable=yes">
-		<script src="../../../webcomponentsjs/webcomponents-lite.js"></script>
-		<script src="../../../web-component-tester/browser.js"></script>
+		<script src="../../@babel/polyfill/browser.js"></script>
+		<script src="../../../@webcomponents/webcomponentsjs/webcomponents-bundle.js"></script>
+		<script src="../../../wct-browser-legacy/browser.js"></script>
 		<script src="https://s.brightspace.com/lib/d2lfetch/1.2.0/d2lfetch.js"></script>
 
-		<link rel="import" href="../../components/d2l-user-activity-usage/d2l-user-activity-usage.html">
+		<script type="module" src="../../components/d2l-user-activity-usage/d2l-user-activity-usage.js"></script>
 	</head>
 	<body>
 		<test-fixture id="d2l-user-activity-usage-fixture">
@@ -31,6 +32,6 @@
 			</template>
 		</test-fixture>
 
-		<script src="d2l-user-activity-usage.js"></script>
+		<script src="./d2l-user-activity-usage.js"></script>
 	</body>
 </html>
