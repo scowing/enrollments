@@ -1,0 +1,12 @@
+{
+   "completedDaysAgo" : "Slutfört för {number} dagar sedan",
+   "completedOn" : "Slutfört {dateTime}",
+   "completedToday" : "Slutfört idag",
+   "completedTomorrow" : "Slutförs imorgon",
+   "completedYesterday" : "Slutfördes igår",
+   "dueDaysAgo" : "Förföll för {number} dagar sedan",
+   "dueOn" : "Förföll {dateTime}",
+   "dueToday" : "Förfaller idag",
+   "dueTomorrow" : "Förfaller imorgon",
+   "dueYesterday" : "Förföll igår"
+}

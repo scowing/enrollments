@@ -1,0 +1,47 @@
+{
+  "class": [
+      "activity",
+      "user-course-offering-activity-usage",
+      "attended"
+  ],
+  "entities": [
+      {
+          "class": [
+              "date",
+              "due-date"
+          ],
+          "rel": [
+              "https://api.brightspace.com/rels/date"
+          ],
+          "properties": {
+              "date": "1970-02-01T04:00:00.000Z"
+          }
+      },
+      {
+        "class": [
+            "completion",
+            "complete"
+        ],
+        "entities": [
+          {
+            "class": [
+              "date",
+              "completion-date"
+            ],
+            "rel": [
+              "https://api.brightspace.com/rels/date"
+            ],
+            "properties": {
+              "date": ""
+            }
+          }
+        ],
+        "rel": [
+            "item"
+        ]
+      }
+  ],
+  "links": []
+}
+
+

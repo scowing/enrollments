@@ -1,0 +1,29 @@
+{
+  "class":["enrollment"],
+  "links":[
+    {
+      "rel":["self"],
+      "href":"../data/base/enrollment.json"
+    },{
+      "rel":["https://api.brightspace.com/rels/organization"],
+      "href":"../data/base/organization.json"
+    },{
+      "rel":["https://activities.api.brightspace.com/rels/user-activity-usage"],
+      "href":"../data/enrollments/badges/userActivityUsage/2.json"
+    }
+  ],
+  "actions":[
+    {
+      "href":"#pinned",
+      "name":"unpin-course",
+      "method":"PUT",
+      "fields":[
+        {
+          "type":"hidden",
+          "name":"pinned",
+          "value":true
+        }
+      ]
+    }
+  ]
+}

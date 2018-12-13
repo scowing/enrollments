@@ -1,0 +1,16 @@
+{
+   "changeImage" : "Bild ändern",
+   "closed" : "Geschlossen",
+   "completed" : "Complete",
+   "courseOfferingInformation" : "Informationen zum Kursangebot",
+   "coursePinButton" : "{course} ist angeheftet. Kurs lösen",
+   "courseSettings" : "Kurseinstellungen für {course}",
+   "disabled" : "Deaktiviert",
+   "inactive" : "Inaktiv",
+   "new" : "Neu",
+   "overdue" : "Überfällig",
+   "pin" : "Anheften",
+   "pinActionResult" : "{course} wurde angeheftet",
+   "unpin" : "Lösen",
+   "unpinActionResult" : "{course} wurde gelöst"
+}

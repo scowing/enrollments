@@ -1,0 +1,16 @@
+{
+   "changeImage" : "Afbeelding wijzigen",
+   "closed" : "Gesloten",
+   "completed" : "Complete",
+   "courseOfferingInformation" : "Informatie cursuseditie",
+   "coursePinButton" : "{course} is vastgepind. Cursus losmaken",
+   "courseSettings" : "{course}-cursusinstellingen",
+   "disabled" : "Uitgeschakeld",
+   "inactive" : "Inactief",
+   "new" : "Nieuw",
+   "overdue" : "Achterstallig",
+   "pin" : "Vastpinnen",
+   "pinActionResult" : "{course} is vastgepind",
+   "unpin" : "Losmaken",
+   "unpinActionResult" : "{course} is losgemaakt"
+}

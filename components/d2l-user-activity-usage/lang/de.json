@@ -1,0 +1,12 @@
+{
+   "completedDaysAgo" : "Vor {number} abgeschlossen",
+   "completedOn" : "Am {dateTime} abgeschlossen",
+   "completedToday" : "Heute abgeschlossen",
+   "completedTomorrow" : "Morgen abgeschlossen",
+   "completedYesterday" : "Gestern abgeschlossen",
+   "dueDaysAgo" : "Vor {number} Tagen fällig",
+   "dueOn" : "Fällig am {dateTime}",
+   "dueToday" : "Heute fällig",
+   "dueTomorrow" : "Morgen fällig",
+   "dueYesterday" : "Gestern fällig"
+}

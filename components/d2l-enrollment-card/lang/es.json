@@ -1,0 +1,16 @@
+{
+   "changeImage" : "Cambiar imagen",
+   "closed" : "Cerrado",
+   "completed" : "Complete",
+   "courseOfferingInformation" : "Información de oferta de cursos",
+   "coursePinButton" : "{course} está anclado. Desanclar curso",
+   "courseSettings" : "Configuración del curso {course}",
+   "disabled" : "Deshabilitado",
+   "inactive" : "Inactivo",
+   "new" : "Nuevo",
+   "overdue" : "Plazo vencido",
+   "pin" : "Anclar",
+   "pinActionResult" : "{course} se ancló",
+   "unpin" : "Desanclar",
+   "unpinActionResult" : "{course} se desancló"
+}

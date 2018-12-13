@@ -1,0 +1,16 @@
+{
+   "changeImage" : "Alterar imagem",
+   "closed" : "Fechado",
+   "completed" : "Complete",
+   "courseOfferingInformation" : "Informações de Oferta de Curso",
+   "coursePinButton" : "{course} está fixado. Desafixar curso",
+   "courseSettings" : "Configurações de curso de {course}",
+   "disabled" : "Desabilitado",
+   "inactive" : "Inativo",
+   "new" : "Novo",
+   "overdue" : "Atraso",
+   "pin" : "Fixar",
+   "pinActionResult" : "{course} foi fixado",
+   "unpin" : "Desafixar",
+   "unpinActionResult" : "{course} foi desafixado"
+}
