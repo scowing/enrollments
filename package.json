@@ -4,7 +4,7 @@
     "url": "https://github.com/BrightspaceHypermediaComponents/enrollments.git"
   },
   "homepage": "https://github.com/BrightspaceHypermediaComponents/enrollments",
-  "name": "enrollments",
+  "name": "d2l-enrollments",
   "scripts": {
     "build": "gulp build",
     "gulp": "gulp build",
