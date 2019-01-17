@@ -222,7 +222,7 @@ $_documentContainer.innerHTML = `<dom-module id="d2l-enrollment-card">
 					<d2l-organization-info class="enrollment-content-block" href="[[_organizationUrl]]" presentation-href="[[presentationHref]]">
 					</d2l-organization-info>
 					<d2l-user-activity-usage class="enrollment-content-block" href="[[_userActivityUsageUrl]]" override-to-default$="[[_orgDateSlot]]">
-						<d2l-organization-date slot="default" href="[[_organizationUrl]]"></d2l-organization-date>
+						<d2l-organization-date slot="default" href="[[_organizationUrl]]" presentation-href="[[presentationHref]]"></d2l-organization-date>
 					</d2l-user-activity-usage>
 				</d2l-card-content-meta>
 			</div>
