@@ -18,7 +18,7 @@ D2L.PolymerBehaviors.Enrollment.Card.LangEnBehavior = {
 		"pinActionResult": "{course} has been pinned",
 		"unpin": "Unpin",
 		"unpinActionResult": "{course} has been unpinned",
-		"completed": "Complete",
+		"completed": "Completed",
 		"overdue": "Overdue",
 		"new": "New",
 		"disabled": "Disabled",

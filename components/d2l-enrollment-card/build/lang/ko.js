@@ -11,7 +11,7 @@ D2L.PolymerBehaviors.Enrollment.Card.LangKoBehavior = {
 	'ko': {
 		"changeImage": "이미지 변경",
 		"closed": "닫힘",
-		"completed": "완료",
+		"completed": "완료됨",
 		"courseOfferingInformation": "개설 강의 정보",
 		"coursePinButton": "{course} 강의가 고정되었습니다. 강의 고정 취소",
 		"courseSettings": "{course} 강의 설정",

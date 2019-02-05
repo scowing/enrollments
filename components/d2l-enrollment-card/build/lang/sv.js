@@ -11,7 +11,7 @@ D2L.PolymerBehaviors.Enrollment.Card.LangSvBehavior = {
 	'sv': {
 		"changeImage": "Ändra bild",
 		"closed": "Stängd",
-		"completed": "Klart",
+		"completed": "Slutförd",
 		"courseOfferingInformation": "Information om kursutbud",
 		"coursePinButton": "{course} är markerad. Avmarkera kurs",
 		"courseSettings": "Kursinställningar för {course}",

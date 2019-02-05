@@ -11,7 +11,7 @@ D2L.PolymerBehaviors.Enrollment.Card.LangEsBehavior = {
 	'es': {
 		"changeImage": "Cambiar imagen",
 		"closed": "Cerrado",
-		"completed": "Completo",
+		"completed": "Completado",
 		"courseOfferingInformation": "Información de oferta de cursos",
 		"coursePinButton": "{course} está anclado. Desanclar curso",
 		"courseSettings": "Configuración del curso {course}",

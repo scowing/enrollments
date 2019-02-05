@@ -11,7 +11,7 @@ D2L.PolymerBehaviors.Enrollment.Card.LangTrBehavior = {
 	'tr': {
 		"changeImage": "Görüntüyü Değiştir",
 		"closed": "Kapandı",
-		"completed": "Tamamla",
+		"completed": "Tamamlandı",
 		"courseOfferingInformation": "Ders Önerisi Bilgileri",
 		"coursePinButton": "{course} dersi sabitlendi. Dersin sabitlemesini geri al",
 		"courseSettings": "{course} dersi ayarları",

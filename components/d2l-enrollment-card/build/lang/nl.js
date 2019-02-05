@@ -11,7 +11,7 @@ D2L.PolymerBehaviors.Enrollment.Card.LangNlBehavior = {
 	'nl': {
 		"changeImage": "Afbeelding wijzigen",
 		"closed": "Gesloten",
-		"completed": "Voltooien",
+		"completed": "Voltooid",
 		"courseOfferingInformation": "Informatie cursuseditie",
 		"coursePinButton": "{course} is vastgepind. Cursus losmaken",
 		"courseSettings": "{course}-cursusinstellingen",

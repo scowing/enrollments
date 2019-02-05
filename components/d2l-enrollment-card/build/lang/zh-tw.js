@@ -11,7 +11,7 @@ D2L.PolymerBehaviors.Enrollment.Card.LangZhtwBehavior = {
 	'zh-tw': {
 		"changeImage": "變更影像",
 		"closed": "已關閉",
-		"completed": "完成",
+		"completed": "已完成",
 		"courseOfferingInformation": "開課項目資訊",
 		"coursePinButton": "{course} 已置頂。將課程取消置頂",
 		"courseSettings": "{course} 課程設定",
