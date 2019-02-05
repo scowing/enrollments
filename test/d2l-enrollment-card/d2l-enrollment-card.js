@@ -528,16 +528,16 @@ describe('d2l-enrollment-card', () => {
 				},
 			].forEach((testCase) => {
 				it(testCase.name, (done) => {
-					Polymer.dom.flush();
-					testCase.methods.forEach((method) => method());
+					flush(() => {
+						testCase.methods.forEach((method) => method());
 
-					setTimeout(() => {
-						expect(component._badgeText).to.equal(testCase.badge);
-						var badge = component.$$('d2l-status-indicator');
-						expect(badge.hasAttribute('hidden')).to.be.false;
-						done();
+						setTimeout(() => {
+							expect(component._badgeText).to.equal(testCase.badge);
+							var badge = component.$$('d2l-status-indicator');
+							expect(badge.hasAttribute('hidden')).to.be.false;
+							done();
+						});
 					});
-
 				});
 
 			});
