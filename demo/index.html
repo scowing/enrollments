@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, minimum-scale=1, initial-scale=1, user-scalable=yes">
+
+		<title>d2l-activities demos</title>
+
+		<script src="../node_modules/@webcomponents/webcomponentsjs/webcomponents-loader.js"></script>
+
+		<script type="module">
+			import '@polymer/iron-demo-helpers/demo-pages-shared-styles';
+			import '@polymer/iron-demo-helpers/demo-snippet';
+
+			const $_documentContainer = document.createElement('template');
+			$_documentContainer.innerHTML = `
+				<custom-style>
+					<style is="custom-style" include="demo-pages-shared-styles"></style>
+					<style is="custom-style" include="d2l-typography">
+							html {
+								font-size: 20px;
+							}
+							.fixedSize {
+								max-width: 1600px;
+							}
+					</style>
+				</custom-style>
+			`;
+			document.body.appendChild($_documentContainer.content);
+		</script>
+	</head>
+	<body class="d2l-typography">
+		<div class="vertical-section-container fixedSize">
+			<h3>Demos</h3>
+			<ul>
+				<h4>Enrollment Card</h4>
+				<li><a href="d2l-enrollment-card/d2l-enrollment-card-demo.html">d2l-enrollment-card</a></li>
+				<li><a href="d2l-enrollment-detail-card/d2l-enrollment-detail-card-demo.html">d2l-enrollment-detail-card</a></li>
+			</ul>
+		</div>
+	</body>
+</html>
