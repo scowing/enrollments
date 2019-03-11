@@ -25,7 +25,7 @@
 						html {
 							font-size: 20px;
 						}
-						.fixedSize {
+						.fixed-size {
 							display:flex;
 							align-items: stretch;
 							flex-direction: column;
@@ -37,6 +37,11 @@
 						h3 {
 							text-align: center;
 						}
+						.demo {
+							align-items: center;
+  							background-image: linear-gradient(to bottom, #f6f7f8, #f6f7f8), linear-gradient(to top, #ffffff, #f9fafb);
+							padding: 50px;
+						}
 					</style>
 				</custom-style>
 			`;
@@ -44,11 +49,13 @@
 		</script>
 	</head>
 	<body class="d2l-typography">
-		<div class="vertical-section-container fixedSize">
+		<div class="vertical-section-container fixed-size">
 			<h3>Basic d2l-enrollment-detail-card demo</h3>
 			<demo-snippet>
 				<template>
-					<d2l-enrollment-detail-card></d2l-enrollment-detail-card>
+					<div class="demo">
+						<d2l-enrollment-detail-card></d2l-enrollment-detail-card>
+					</div>
 				</template>
 			</demo-snippet>
 		</div>
