@@ -24,12 +24,12 @@ class D2lEnrollmentDetailCard extends mixinBehaviors([D2L.PolymerBehaviors.Siren
 					box-sizing: border-box;
 					display: inline-block;
 					height: 190px;
+					overflow: hidden;
 					position: relative;
 					width: 746px;
 					z-index: 0;
-					--d2l-enrollemt-detail-card-text-placeholder-display: none;
-					--d2l-enrollemt-detail-card-image-shimmer-display: none;
-					overflow: hidden;
+					--d2l-enrollment-detail-card-text-placeholder-display: none;
+					--d2l-enrollment-detail-card-image-shimmer-display: none;
 				}
 				.dedc-base-container {
 					align-items: stretch;
@@ -68,14 +68,14 @@ class D2lEnrollmentDetailCard extends mixinBehaviors([D2L.PolymerBehaviors.Siren
 					background-color: var(--d2l-color-regolith);
 					flex-shrink: 0;
 					height: 190px;
-					line-height:0;
-					overflow:hidden;
-					position:relative;
+					line-height: 0;
+					overflow: hidden;
+					position: relative;
 					width: 220px;
 				}
 				.dedc-image-shimmer {
 					background-color: var(--d2l-color-regolith);
-					display: var(--d2l-enrollemt-detail-card-image-shimmer-display);
+					display: var(--d2l-enrollment-detail-card-image-shimmer-display);
 					height: 100%;
 					left: 0;
 					position: absolute;
@@ -99,10 +99,10 @@ class D2lEnrollmentDetailCard extends mixinBehaviors([D2L.PolymerBehaviors.Siren
 					width: 100%;
 				}
 				.dedc-base-info-container {
-					flex-grow:1;
-					position: relative;
+					flex-grow: 1;
 					margin: 1.2rem 1rem;
 					overflow: hidden;
+					position: relative;
 				}
 				.dedc-base-info {
 					display: flex;
@@ -112,11 +112,11 @@ class D2lEnrollmentDetailCard extends mixinBehaviors([D2L.PolymerBehaviors.Siren
 				}
 				.dedc-base-info-placeholder {
 					background-color: #ffffff;
-					display: var(--d2l-enrollemt-detail-card-text-placeholder-display);
+					display: var(--d2l-enrollment-detail-card-text-placeholder-display);
 					height: 100%;
 					position: absolute;
 					width: 100%;
-					z-index:5;
+					z-index: 5;
 				}
 				.dedc-tag-container,
 				.dedc-tag-container span d2l-icon {
@@ -126,9 +126,9 @@ class D2lEnrollmentDetailCard extends mixinBehaviors([D2L.PolymerBehaviors.Siren
 				}
 				.dedc-tag-container {
 					@apply --d2l-body-small-text;
+					margin: 0.7rem 0px;
 					letter-spacing: 0.4px;
 					line-height: 0.86;
-					margin: 0.7rem 0px;
 				}
 				.dedc-tag-container span d2l-icon {
 					--d2l-icon-width: 18px;
@@ -176,42 +176,30 @@ class D2lEnrollmentDetailCard extends mixinBehaviors([D2L.PolymerBehaviors.Siren
 						<!-- Skeleton for text -->
 						<div class="dedc-base-info-placeholder">
 							<div class="dedc-base-info">
-								<div>
-									<div class="dedc-title dedc-text-placeholder dedc-title-placeholder"></div>
+								<div class="dedc-title dedc-text-placeholder dedc-title-placeholder"></div>
+								<div class="dedc-tag-container dedc-tag-placeholder-container">
+									<div class="dedc-text-placeholder dedc-tag-placeholder"></div>
+									<div class="dedc-text-placeholder dedc-tag-placeholder"></div>
 								</div>
-								<div>
-									<div class="dedc-tag-container dedc-tag-placeholder-container">
-										<div class="dedc-text-placeholder dedc-tag-placeholder"></div>
-										<div class="dedc-text-placeholder dedc-tag-placeholder"></div>
-									</div>
-								</div>
-								<div>
-									<div class="dedc-description-container">
-										<div class="dedc-text-placeholder dedc-description-placeholder"></div>
-										<div class="dedc-text-placeholder dedc-description-placeholder"></div>
-									</div>
+								<div class="dedc-description-container">
+									<div class="dedc-text-placeholder dedc-description-placeholder"></div>
+									<div class="dedc-text-placeholder dedc-description-placeholder"></div>
 								</div>
 							</div>
 						</div>
 						<!-- Real text part -->
 						<div class="dedc-base-info">
-							<div>
-								<h3 class="dedc-title"><d2l-organization-name href="[[_organizationUrl]]"></d2l-organization-name></h3>
+							<h3 class="dedc-title"><d2l-organization-name href="[[_organizationUrl]]"></d2l-organization-name></h3>
+							<div class="dedc-tag-container" hidden$="[[!_userActivityUsageUrl]]">
+									<span>
+										<d2l-icon icon="d2l-tier1:bullet"></d2l-icon>
+										<d2l-user-activity-usage href="[[_userActivityUsageUrl]]">
+											<d2l-organization-date slot="default" href="[[_organizationUrl]]"></d2l-organization-date>
+										</d2l-user-activity-usage>
+									</span>
 							</div>
-							<div>
-								<div class="dedc-tag-container" hidden$="[[!_userActivityUsageUrl]]">
-										<span>
-											<d2l-icon icon="d2l-tier1:bullet"></d2l-icon>
-											<d2l-user-activity-usage href="[[_userActivityUsageUrl]]">
-												<d2l-organization-date slot="default" href="[[_organizationUrl]]"></d2l-organization-date>
-											</d2l-user-activity-usage>
-										</span>
-								</div>
-							</div>
-							<div>
-								<div class="dedc-description-container">
-									<p>[[_description]]</p>
-								</div>
+							<div class="dedc-description-container">
+								<p>[[_description]]</p>
 							</div>
 						</div>
 					</div>
