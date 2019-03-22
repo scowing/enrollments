@@ -13,11 +13,6 @@ describe('d2l-enrollment-detail-card', () => {
 			.returns(Promise.resolve({entity: window.D2L.Hypermedia.Siren.Parse(entity)}));
 	}
 
-	function loadEnrollment(fixtureText, done) {
-		component = fixture(fixtureText);
-		afterNextRender(component, done);
-	}
-
 	beforeEach(() => {
 		sandbox = sinon.sandbox.create();
 		enrollmentEntity = {
@@ -105,25 +100,12 @@ describe('d2l-enrollment-detail-card', () => {
 		sandbox.restore();
 	});
 
-	it('loads element', () => {
+	it('should fetch the organization', done => {
 		component = fixture('d2l-enrollment-detail-card-fixture');
-		expect(component).to.exist;
-	});
-
-	describe('Setting the enrollment attribute', () => {
-
-		beforeEach(done => loadEnrollment('d2l-enrollment-detail-card-href-fixture', done));
-
-		it('should set the enrollment href', () => {
-			expect(component.href).to.equal('/enrollments/1');
-		});
-
-		it('should fetch the organization', () => {
+		component.entity = window.D2L.Hypermedia.Siren.Parse(enrollmentEntity);
+		afterNextRender(component, () => {
 			expect(component._organizationUrl).to.equal('/organizations/1');
-		});
-
-		it('should set the image entity', () => {
-			expect(JSON.stringify(component._image)).to.equal(JSON.stringify(window.D2L.Hypermedia.Siren.Parse(organizationEntity).entities[0]));
+			done();
 		});
 
 	});
