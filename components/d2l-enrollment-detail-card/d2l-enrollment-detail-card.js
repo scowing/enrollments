@@ -1,19 +1,18 @@
 import {html, PolymerElement} from '@polymer/polymer/polymer-element.js';
-import 'd2l-course-image/d2l-course-image.js';
-import { Classes, Rels } from 'd2l-hypermedia-constants';
+import { mixinBehaviors } from '@polymer/polymer/lib/legacy/class.js';
+import { Rels } from 'd2l-hypermedia-constants';
 import 'd2l-organizations/components/d2l-organization-date/d2l-organization-date.js';
+import 'd2l-organizations/components/d2l-organization-image/d2l-organization-image.js';
 import 'd2l-organizations/components/d2l-organization-name/d2l-organization-name.js';
 import 'd2l-polymer-siren-behaviors/store/entity-behavior.js';
-import 'd2l-polymer-siren-behaviors/store/siren-action-behavior.js';
 import 'd2l-typography/d2l-typography-shared-styles.js';
 import '../d2l-user-activity-usage/d2l-user-activity-usage.js';
-import {mixinBehaviors} from '@polymer/polymer/lib/legacy/class.js';
 
 /**
  * @customElement
  * @polymer
  */
-class D2lEnrollmentDetailCard extends mixinBehaviors([D2L.PolymerBehaviors.Siren.EntityBehavior, D2L.PolymerBehaviors.Siren.SirenActionBehavior ], PolymerElement) {
+class D2lEnrollmentDetailCard extends mixinBehaviors([D2L.PolymerBehaviors.Siren.EntityBehavior ], PolymerElement) {
 	static get template() {
 		return html`
 			<style include="d2l-typography-shared-styles">
@@ -170,7 +169,7 @@ class D2lEnrollmentDetailCard extends mixinBehaviors([D2L.PolymerBehaviors.Siren
 				<div class="dedc-base-container">
 					<div class="dedc-image">
 						<div class="dedc-image-shimmer"></div>
-						<d2l-course-image image="[[_image]]" sizes="[[_tileSizes]]" type="tile"></d2l-course-image>
+						<d2l-organization-image href="[[_organizationUrl]]" token="[[token]]"></d2l-organization-image>
 					</div>
 					<div  class="dedc-base-info-container">
 						<!-- Skeleton for text -->
@@ -210,48 +209,21 @@ class D2lEnrollmentDetailCard extends mixinBehaviors([D2L.PolymerBehaviors.Siren
 
 	static get properties() {
 		return {
-			href: {
-				type: String,
-				observer: '_fetchEnrollment'
-			},
 			_title: String,
 			_description: String,
 			_tags: String,
 			_image: String,
 			_userActivityUsageUrl: String,
-			_organizationUrl: String,
-			_tileSizes: {
-				type: Object,
-				value: function() {
-					return {
-						mobile: {
-							maxwidth: 767,
-							size: 100
-						},
-						tablet: {
-							maxwidth: 1243,
-							size: 67
-						},
-						desktop: {
-							size: 25
-						}
-					};
-				}
-			},
+			_organizationUrl: String
 		};
 	}
-
-	_fetchEnrollment(enrollmentUrl) {
-		if (!enrollmentUrl) {
-			return Promise.resolve();
-		}
-
-		return this._myEntityStoreFetch(enrollmentUrl)
-			.then(this._handleEnrollmentData.bind(this));
+	static get observers() {
+		return [
+			'_handleEnrollmentData(entity)'
+		];
 	}
 
 	_handleEnrollmentData(enrollment) {
-		enrollment = enrollment && enrollment.entity;
 		if (
 			!enrollment
 			|| !enrollment.hasLinkByRel
@@ -265,6 +237,7 @@ class D2lEnrollmentDetailCard extends mixinBehaviors([D2L.PolymerBehaviors.Siren
 			this._userActivityUsageUrl = enrollment.getLinkByRel(Rels.Activities.userActivityUsage).href;
 		}
 
+		// this will require an update as well. I am hoping this can happen when the new POC comes out.
 		return this._myEntityStoreFetch(this._organizationUrl)
 			.then(this._handleOrganizationResponse.bind(this));
 	}
@@ -277,18 +250,6 @@ class D2lEnrollmentDetailCard extends mixinBehaviors([D2L.PolymerBehaviors.Siren
 			description = description.replace(/<[^>]*>/g, '');
 		}
 		this._description = description;
-
-		if (organization.hasSubEntityByClass(Classes.courseImage.courseImage)) {
-			const imageEntity = organization.getSubEntityByClass(Classes.courseImage.courseImage);
-			if (imageEntity.href) {
-				this._myEntityStoreFetch(imageEntity.href)
-					.then(function(hydratedImageEntity) {
-						this._image = hydratedImageEntity && hydratedImageEntity.entity;
-					}.bind(this));
-			} else {
-				this._image = imageEntity;
-			}
-		}
 
 		return Promise.resolve();
 	}
