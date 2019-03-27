@@ -100,7 +100,7 @@ class EnrollmentUpdates extends mixinBehaviors([
 			'ShowUnreadDropboxSubmissions': this.showUnreadDropboxSubmissions,
 		};
 
-		var notification = this._orgUpdates_fetch(this.entity, presentationAttributes);
+		var notification = this._orgUpdates_fetch(entity, presentationAttributes);
 		this._notifications = this._orgUpdates_notifications(notification);
 	}
 
