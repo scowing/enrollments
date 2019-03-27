@@ -83,10 +83,24 @@ $_documentContainer.innerHTML = `<div class="vertical-section-container centered
 				<template>
 					<div class="subtle-demo grid">
 
-						<d2l-enrollment-card href="../data/enrollments/pin/1.json" presentation-href="../data/base/presentation.json">
-						</d2l-enrollment-card>
-						<d2l-enrollment-card href="../data/enrollments/pin/2.json" presentation-href="../data/base/presentation.json">
-						</d2l-enrollment-card>
+						<d2l-enrollment-card href="../data/enrollments/pin/1.json" token="abc"
+							show-organization-code
+							show-semester-name
+							show-unattempted-quizzes
+							show-dropbox-unread-feedback
+							show-ungraded-quiz-attempts
+							show-unread-discussion-messages
+							show-unread-dropbox-submissions
+						></d2l-enrollment-card>
+						<d2l-enrollment-card href="../data/enrollments/pin/2.json" token="abc"
+							show-organization-code
+							show-semester-name
+							show-unattempted-quizzes
+							show-dropbox-unread-feedback
+							show-ungraded-quiz-attempts
+							show-unread-discussion-messages
+							show-unread-dropbox-submissions
+						></d2l-enrollment-card>
 
 					</div>
 				</template>
@@ -97,10 +111,24 @@ $_documentContainer.innerHTML = `<div class="vertical-section-container centered
 			<demo-snippet class="d2l-typography">
 				<template>
 					<div class="subtle-demo grid">
-						<d2l-enrollment-card href="../data/enrollments/inactive/1.json" presentation-href="../data/base/presentation.json">
-						</d2l-enrollment-card>
-						<d2l-enrollment-card href="../data/enrollments/inactive/2.json" presentation-href="../data/base/presentation.json">
-						</d2l-enrollment-card>
+						<d2l-enrollment-card href="../data/enrollments/inactive/1.json" token="abc"
+							show-organization-code
+							show-semester-name
+							show-unattempted-quizzes
+							show-dropbox-unread-feedback
+							show-ungraded-quiz-attempts
+							show-unread-discussion-messages
+							show-unread-dropbox-submissions
+						></d2l-enrollment-card>
+						<d2l-enrollment-card href="../data/enrollments/inactive/2.json" token="abc"
+							show-organization-code
+							show-semester-name
+							show-unattempted-quizzes
+							show-dropbox-unread-feedback
+							show-ungraded-quiz-attempts
+							show-unread-discussion-messages
+							show-unread-dropbox-submissions
+						></d2l-enrollment-card>
 					</div>
 				</template>
 			</demo-snippet>
@@ -110,12 +138,33 @@ $_documentContainer.innerHTML = `<div class="vertical-section-container centered
 				<template>
 					<div class="subtle-demo grid">
 
-						<d2l-enrollment-card href="../data/enrollments/new-enrollment/1.json" presentation-href="../data/base/presentation.json">
-						</d2l-enrollment-card>
-						<d2l-enrollment-card href="../data/enrollments/new-enrollment/2.json" presentation-href="../data/base/presentation.json">
-						</d2l-enrollment-card>
-						<d2l-enrollment-card href="../data/enrollments/new-enrollment/3.json" presentation-href="../data/base/presentation.json">
-						</d2l-enrollment-card>
+						<d2l-enrollment-card href="../data/enrollments/new-enrollment/1.json" token="abc"
+							show-organization-code
+							show-semester-name
+							show-unattempted-quizzes
+							show-dropbox-unread-feedback
+							show-ungraded-quiz-attempts
+							show-unread-discussion-messages
+							show-unread-dropbox-submissions
+						></d2l-enrollment-card>
+						<d2l-enrollment-card href="../data/enrollments/new-enrollment/2.json" token="abc"
+							show-organization-code
+							show-semester-name
+							show-unattempted-quizzes
+							show-dropbox-unread-feedback
+							show-ungraded-quiz-attempts
+							show-unread-discussion-messages
+							show-unread-dropbox-submissions
+						></d2l-enrollment-card>
+						<d2l-enrollment-card href="../data/enrollments/new-enrollment/3.json" token="abc"
+							show-organization-code
+							show-semester-name
+							show-unattempted-quizzes
+							show-dropbox-unread-feedback
+							show-ungraded-quiz-attempts
+							show-unread-discussion-messages
+							show-unread-dropbox-submissions
+						></d2l-enrollment-card>
 					</div>
 				</template>
 			</demo-snippet>
@@ -124,14 +173,10 @@ $_documentContainer.innerHTML = `<div class="vertical-section-container centered
 			<demo-snippet class="d2l-typography">
 				<template>
 					<div class="subtle-demo grid">
-						<d2l-enrollment-card href="../data/base/enrollment.json" presentation-href="../data/presentation/organization-info/1.json">
-						</d2l-enrollment-card>
-						<d2l-enrollment-card href="../data/base/enrollment.json" presentation-href="../data/presentation/organization-info/2.json">
-						</d2l-enrollment-card>
-						<d2l-enrollment-card href="../data/base/enrollment.json" presentation-href="../data/presentation/organization-info/3.json">
-						</d2l-enrollment-card>
-						<d2l-enrollment-card href="../data/base/enrollment.json" presentation-href="../data/presentation/organization-info/4.json">
-						</d2l-enrollment-card>
+						<d2l-enrollment-card href="../data/base/enrollment.json" token="abc" show-organization-code show-semester-name></d2l-enrollment-card>
+						<d2l-enrollment-card href="../data/base/enrollment.json" token="abc" show-organization-code></d2l-enrollment-card>
+						<d2l-enrollment-card href="../data/base/enrollment.json" token="abc" show-semester-name></d2l-enrollment-card>
+						<d2l-enrollment-card href="../data/base/enrollment.json" token="abc"></d2l-enrollment-card>
 					</div>
 				</template>
 			</demo-snippet>
@@ -141,14 +186,34 @@ $_documentContainer.innerHTML = `<div class="vertical-section-container centered
 				<template>
 					<div class="subtle-demo grid">
 
-						<d2l-enrollment-card href="../data/enrollments/update/1.json" presentation-href="../data/presentation/update/1.json">
-						</d2l-enrollment-card>
-						<d2l-enrollment-card href="../data/enrollments/update/2.json" presentation-href="../data/base/presentation.json">
-						</d2l-enrollment-card>
-						<d2l-enrollment-card href="../data/enrollments/update/1.json" presentation-href="../data/base/presentation.json">
-						</d2l-enrollment-card>
-						<d2l-enrollment-card href="../data/enrollments/update/3.json" presentation-href="../data/base/presentation.json">
-						</d2l-enrollment-card>
+						<d2l-enrollment-card href="../data/enrollments/update/1.json" token="abc" show-organization-code show-semester-name></d2l-enrollment-card>
+						<d2l-enrollment-card href="../data/enrollments/update/2.json" token="abc"
+							show-organization-code
+							show-semester-name
+							show-unattempted-quizzes
+							show-dropbox-unread-feedback
+							show-ungraded-quiz-attempts
+							show-unread-discussion-messages
+							show-unread-dropbox-submissions
+						></d2l-enrollment-card>
+						<d2l-enrollment-card href="../data/enrollments/update/1.json" token="abc"
+							show-organization-code
+							show-semester-name
+							show-unattempted-quizzes
+							show-dropbox-unread-feedback
+							show-ungraded-quiz-attempts
+							show-unread-discussion-messages
+							show-unread-dropbox-submissions
+						></d2l-enrollment-card>
+						<d2l-enrollment-card href="../data/enrollments/update/3.json" token="abc"
+							show-organization-code
+							show-semester-name
+							show-unattempted-quizzes
+							show-dropbox-unread-feedback
+							show-ungraded-quiz-attempts
+							show-unread-discussion-messages
+							show-unread-dropbox-submissions
+						></d2l-enrollment-card>
 
 					</div>
 				</template>
@@ -159,19 +224,60 @@ $_documentContainer.innerHTML = `<div class="vertical-section-container centered
 				<template>
 					<div class="subtle-demo grid">
 
-						<d2l-enrollment-card href="../data/enrollments/badges/1.json" presentation-href="../data/base/presentation.json">
-						</d2l-enrollment-card>
-						<d2l-enrollment-card href="../data/enrollments/badges/2.json" presentation-href="../data/base/presentation.json">
-						</d2l-enrollment-card>
-						<d2l-enrollment-card href="../data/enrollments/badges/3.json" presentation-href="../data/base/presentation.json">
-						</d2l-enrollment-card>
-						<d2l-enrollment-card href="../data/enrollments/badges/4.json" presentation-href="../data/base/presentation.json">
-						</d2l-enrollment-card>
-						<d2l-enrollment-card href="../data/enrollments/badges/5.json" presentation-href="../data/base/presentation.json">
-						</d2l-enrollment-card>
-						<d2l-enrollment-card href="../data/enrollments/badges/6.json" presentation-href="../data/base/presentation.json">
-						</d2l-enrollment-card>
-
+						<d2l-enrollment-card href="../data/enrollments/badges/1.json" token="abc"
+							show-organization-code
+							show-semester-name
+							show-unattempted-quizzes
+							show-dropbox-unread-feedback
+							show-ungraded-quiz-attempts
+							show-unread-discussion-messages
+							show-unread-dropbox-submissions
+						></d2l-enrollment-card>
+						<d2l-enrollment-card href="../data/enrollments/badges/2.json" token="abc"
+							show-organization-code
+							show-semester-name
+							show-unattempted-quizzes
+							show-dropbox-unread-feedback
+							show-ungraded-quiz-attempts
+							show-unread-discussion-messages
+							show-unread-dropbox-submissions
+						></d2l-enrollment-card>
+						<d2l-enrollment-card href="../data/enrollments/badges/3.json" token="abc"
+							show-organization-code
+							show-semester-name
+							show-unattempted-quizzes
+							show-dropbox-unread-feedback
+							show-ungraded-quiz-attempts
+							show-unread-discussion-messages
+							show-unread-dropbox-submissions
+						></d2l-enrollment-card>
+						<d2l-enrollment-card href="../data/enrollments/badges/4.json" token="abc"
+							show-organization-code
+							show-semester-name
+							show-unattempted-quizzes
+							show-dropbox-unread-feedback
+							show-ungraded-quiz-attempts
+							show-unread-discussion-messages
+							show-unread-dropbox-submissions
+						></d2l-enrollment-card>
+						<d2l-enrollment-card href="../data/enrollments/badges/5.json" token="abc"
+							show-organization-code
+							show-semester-name
+							show-unattempted-quizzes
+							show-dropbox-unread-feedback
+							show-ungraded-quiz-attempts
+							show-unread-discussion-messages
+							show-unread-dropbox-submissions
+						></d2l-enrollment-card>
+						<d2l-enrollment-card href="../data/enrollments/badges/6.json" token="abc"
+							show-organization-code
+							show-semester-name
+							show-unattempted-quizzes
+							show-dropbox-unread-feedback
+							show-ungraded-quiz-attempts
+							show-unread-discussion-messages
+							show-unread-dropbox-submissions
+						></d2l-enrollment-card>
 					</div>
 				</template>
 			</demo-snippet>
@@ -181,20 +287,69 @@ $_documentContainer.innerHTML = `<div class="vertical-section-container centered
 				<template>
 					<div class="subtle-demo grid">
 
-						<d2l-enrollment-card href="../data/enrollments/relative-dates/1.json" presentation-href="../data/base/presentation.json">
-						</d2l-enrollment-card>
-						<d2l-enrollment-card href="../data/enrollments/relative-dates/2.json" presentation-href="../data/base/presentation.json">
-						</d2l-enrollment-card>
-						<d2l-enrollment-card href="../data/enrollments/relative-dates/3.json" presentation-href="../data/base/presentation.json">
-						</d2l-enrollment-card>
-						<d2l-enrollment-card href="../data/enrollments/relative-dates/4.json" presentation-href="../data/base/presentation.json">
-						</d2l-enrollment-card>
-						<d2l-enrollment-card href="../data/enrollments/relative-dates/5.json" presentation-href="../data/base/presentation.json">
-						</d2l-enrollment-card>
-						<d2l-enrollment-card href="../data/enrollments/relative-dates/6.json" presentation-href="../data/base/presentation.json">
-						</d2l-enrollment-card>
-						<d2l-enrollment-card href="../data/enrollments/relative-dates/7.json" presentation-href="../data/base/presentation.json">
-						</d2l-enrollment-card>
+						<d2l-enrollment-card href="../data/enrollments/relative-dates/1.json" token="abc"
+							show-organization-code
+							show-semester-name
+							show-unattempted-quizzes
+							show-dropbox-unread-feedback
+							show-ungraded-quiz-attempts
+							show-unread-discussion-messages
+							show-unread-dropbox-submissions
+						></d2l-enrollment-card>
+						<d2l-enrollment-card href="../data/enrollments/relative-dates/2.json" token="abc"
+							show-organization-code
+							show-semester-name
+							show-unattempted-quizzes
+							show-dropbox-unread-feedback
+							show-ungraded-quiz-attempts
+							show-unread-discussion-messages
+							show-unread-dropbox-submissions
+						></d2l-enrollment-card>
+						<d2l-enrollment-card href="../data/enrollments/relative-dates/3.json" token="abc"
+							show-organization-code
+							show-semester-name
+							show-unattempted-quizzes
+							show-dropbox-unread-feedback
+							show-ungraded-quiz-attempts
+							show-unread-discussion-messages
+							show-unread-dropbox-submissions
+						></d2l-enrollment-card>
+						<d2l-enrollment-card href="../data/enrollments/relative-dates/4.json" token="abc"
+							show-organization-code
+							show-semester-name
+							show-unattempted-quizzes
+							show-dropbox-unread-feedback
+							show-ungraded-quiz-attempts
+							show-unread-discussion-messages
+							show-unread-dropbox-submissions
+						></d2l-enrollment-card>
+						<d2l-enrollment-card href="../data/enrollments/relative-dates/5.json" token="abc"
+							show-organization-code
+							show-semester-name
+							show-unattempted-quizzes
+							show-dropbox-unread-feedback
+							show-ungraded-quiz-attempts
+							show-unread-discussion-messages
+							show-unread-dropbox-submissions
+						></d2l-enrollment-card>
+						<d2l-enrollment-card href="../data/enrollments/relative-dates/6.json" token="abc"
+							show-organization-code
+							show-semester-name
+							show-unattempted-quizzes
+							show-dropbox-unread-feedback
+							show-ungraded-quiz-attempts
+							show-unread-discussion-messages
+							show-unread-dropbox-submissions
+						></d2l-enrollment-card>
+						<d2l-enrollment-card href="../data/enrollments/relative-dates/7.json" token="abc"
+							show-organization-code
+							show-semester-name
+							show-unattempted-quizzes
+							show-dropbox-unread-feedback
+							show-ungraded-quiz-attempts
+							show-unread-discussion-messages
+							show-unread-dropbox-submissions
+						></d2l-enrollment-card>
 
 					</div>
 				</template>
@@ -204,8 +359,15 @@ $_documentContainer.innerHTML = `<div class="vertical-section-container centered
 
 			<demo-snippet class="d2l-typography">
 				<template>
-					<d2l-enrollment-card href="../data/enrollments/long-name/1.json" presentation-href="../data/base/presentation.json">
-					</d2l-enrollment-card>
+					<d2l-enrollment-card href="../data/enrollments/long-name/1.json" token="abc"
+						show-organization-code
+						show-semester-name
+						show-unattempted-quizzes
+						show-dropbox-unread-feedback
+						show-ungraded-quiz-attempts
+						show-unread-discussion-messages
+						show-unread-dropbox-submissions
+					></d2l-enrollment-card>
 				</template>
 			</demo-snippet>
 
@@ -213,8 +375,15 @@ $_documentContainer.innerHTML = `<div class="vertical-section-container centered
 
 			<demo-snippet class="d2l-typography">
 				<template>
-					<d2l-enrollment-card href="../data/enrollments/short-name/1.json" presentation-href="../data/base/presentation.json">
-					</d2l-enrollment-card>
+					<d2l-enrollment-card href="../data/enrollments/short-name/1.json" token="abc"
+						show-organization-code
+						show-semester-name
+						show-unattempted-quizzes
+						show-dropbox-unread-feedback
+						show-ungraded-quiz-attempts
+						show-unread-discussion-messages
+						show-unread-dropbox-submissions
+					></d2l-enrollment-card>
 				</template>
 			</demo-snippet>
 
