@@ -35,7 +35,8 @@ import 'd2l-card/d2l-card.js';
 import 'd2l-card/d2l-card-content-meta.js';
 import 'd2l-button/d2l-button-icon.js';
 import 'd2l-status-indicator/d2l-status-indicator.js';
-import SirenParse from 'siren-parser';
+import 'd2l-polymer-siren-behaviors/store/entity-behavior.js';
+import 'd2l-polymer-siren-behaviors/store/siren-action-behavior.js';
 import '../d2l-user-activity-usage/d2l-user-activity-usage.js';
 import './d2l-enrollment-updates.js';
 import './localize-behavior.js';
@@ -306,7 +307,6 @@ Polymer({
 			readOnly: true
 		},
 
-		token: String,
 		showOrganizationCode: {
 			type: Boolean,
 			value: false
@@ -426,10 +426,12 @@ Polymer({
 	},
 	behaviors: [
 		D2L.PolymerBehaviors.Hypermedia.OrganizationHMBehavior,
-		D2L.PolymerBehaviors.Enrollment.Card.LocalizeBehavior
+		D2L.PolymerBehaviors.Enrollment.Card.LocalizeBehavior,
+		D2L.PolymerBehaviors.Siren.EntityBehavior,
+		D2L.PolymerBehaviors.Siren.SirenActionBehaviorImpl
 	],
 	observers: [
-		'_fetchEnrollment(_load, href)',
+		'_loadEnrollmentData(_load, entity)',
 		'_startedInactive(_beforeStartDate, closed, inactive)'
 	],
 	listeners: {
@@ -499,7 +501,7 @@ Polymer({
 
 		this._organizationUrl = organization.getLinkByRel('self').href;
 
-		return this._fetchSirenEntity(this._organizationUrl)
+		return this._entityStoreFetch(this._organizationUrl)
 			.then(this._handleOrganizationResponse.bind(this))
 			.then(this._displaySetImageResult.bind(this, true, true))
 			.catch(this._displaySetImageResult.bind(this, false));
@@ -593,19 +595,14 @@ Polymer({
 			}.bind(this), 1000);
 		}.bind(this), 1000);
 	},
-	_fetchEnrollment: function(load, enrollmentUrl) {
+	_loadEnrollmentData: function(load, enrollment) {
 		this._resetState();
-		if (!load || !enrollmentUrl) {
-			return Promise.resolve();
+		if (!load || !enrollment) {
+			return;
 		}
 
-		return this._fetchSirenEntity(enrollmentUrl)
-			.then(this._handleEnrollmentData.bind(this));
-	},
-	_handleEnrollmentData: function(enrollment) {
 		if (
-			!enrollment
-			|| !enrollment.hasLinkByRel
+			!enrollment.hasLinkByRel
 			|| !enrollment.hasLinkByRel(Rels.organization)
 		) {
 			return;
@@ -623,19 +620,11 @@ Polymer({
 			this._userActivityUsageUrl = enrollment.getLinkByRel(Rels.Activities.userActivityUsage).href;
 		}
 
-		return this._fetchSirenEntity(this._organizationUrl)
+		return this._entityStoreFetch(this._organizationUrl)
 			.then(this._handleOrganizationResponse.bind(this));
 	},
-	_fetchSirenEntity: function(url) {
-		if (!url) {
-			return;
-		}
-
-		return window.d2lfetch
-			.fetch(new Request(url, {
-				headers: { Accept: 'application/vnd.siren+json' },
-			}))
-			.then(this._responseToSirenEntity.bind(this));
+	_entityStoreFetch: function(url) {
+		return window.D2L.Siren.EntityStore.fetch(url, this.token);
 	},
 	_getEntityIdentifier: function(entity) {
 		// An entity's self href should be unique, so use it as an identifier
@@ -643,6 +632,7 @@ Polymer({
 		return selfLink.href;
 	},
 	_handleOrganizationResponse: function(organization) {
+		organization = organization && organization.entity;
 		this._organization = organization;
 
 		afterNextRender(this, function() {
@@ -659,9 +649,9 @@ Polymer({
 		if (organization.hasSubEntityByClass(Classes.courseImage.courseImage)) {
 			var imageEntity = organization.getSubEntityByClass(Classes.courseImage.courseImage);
 			if (imageEntity.href) {
-				this._fetchSirenEntity(imageEntity.href)
-					.then(function(hydratedImageEntity) {
-						this._image = hydratedImageEntity;
+				this._entityStoreFetch(imageEntity.href)
+					.then(function(hydratedImage) {
+						this._image = hydratedImage && hydratedImage.entity;
 					}.bind(this));
 			} else {
 				this._image = imageEntity;
@@ -783,12 +773,6 @@ Polymer({
 			? this._enrollment.getActionByName(Actions.enrollments.unpinCourse)
 			: this._enrollment.getActionByName(Actions.enrollments.pinCourse);
 
-		var body = '';
-		var fields = pinAction.fields || [];
-		fields.forEach(function(field) {
-			body = body + encodeURIComponent(field.name) + '=' + encodeURIComponent(field.value) + '&';
-		});
-
 		this.fire(this._pinned ? 'enrollment-pinned' : 'enrollment-unpinned', {
 			enrollment: this._enrollment,
 			organization: this._organization
@@ -799,49 +783,19 @@ Polymer({
 			text: this.localize(localizeKey, 'course', this._organization.properties.name)
 		}, { bubbles: true });
 
-		return window.d2lfetch
-			.fetch(new Request(pinAction.href, {
-				method: pinAction.method,
-				body: body,
-				headers: {
-					'accept':'application/vnd.siren+json',
-					'content-type':'application/x-www-form-urlencoded'
-				}
-			}))
-			.then(function() {
-				return window.d2lfetch.fetch(new Request(this.href, {
-					headers: {
-						accept: 'application/vnd.siren+json',
-						'cache-control': 'no-cache',
-						pragma: 'no-cache'
-					}
-				}));
-			}.bind(this))
-			.then(this._responseToSirenEntity.bind(this))
-			.then(this._handleEnrollmentData.bind(this))
-			.then(function() {
-				// Wait until after PUT has finished to fire, so that
-				// listeners are guaranteed to fetch updated entity
-				this.fire('d2l-course-pinned-change', {
-					enrollment: this._enrollment,
-					isPinned: this._pinned
-				});
-			}.bind(this));
+		return this.performSirenAction(pinAction).then(this._loadEnrollmentData.bind(this)).then(function() {
+			// Wait until after PUT has finished to fire, so that
+			// listeners are guaranteed to fetch updated entity
+			this.fire('d2l-course-pinned-change', {
+				enrollment: this._enrollment,
+				isPinned: this._pinned
+			});
+		}.bind(this));
 	},
 	_pinPressHandler: function(e) {
 		if (e.code === 'Space' || e.code === 'Enter') {
 			this._pinClickHandler();
 		}
-	},
-	_responseToSirenEntity: function(response) {
-		if (response.ok) {
-			return response
-				.json()
-				.then(function(json) {
-					return SirenParse(json);
-				});
-		}
-		return Promise.reject(response.status + ' ' + response.statusText);
 	},
 	_accessibilityDataToString: function(accessibility) {
 		if (!accessibility || !accessibility.organizationName) {
