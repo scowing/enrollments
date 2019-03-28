@@ -194,7 +194,6 @@ describe('d2l-enrollment-card', () => {
 
 		it('should implement all properties', () => {
 			expect(component.href).to.equal(null);
-			expect(component.presentationHref).to.equal(null);
 		});
 
 		it('should implement refreshImage', () => {

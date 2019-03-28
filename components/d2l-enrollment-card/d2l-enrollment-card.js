@@ -217,12 +217,17 @@ $_documentContainer.innerHTML = `<dom-module id="d2l-enrollment-card">
 			</d2l-status-indicator>
 
 			<div badge$="[[_badgeText]]" class="d2l-enrollment-card-content-flex" slot="content" aria-hidden="true">
-				<d2l-organization-name href="[[_organizationUrl]]"></d2l-organization-name>
+				<d2l-organization-name href="[[_organizationUrl]]" token="[[token]]"></d2l-organization-name>
 				<d2l-card-content-meta>
-					<d2l-organization-info class="enrollment-content-block" href="[[_organizationUrl]]" presentation-href="[[presentationHref]]">
-					</d2l-organization-info>
+					<d2l-organization-info class="enrollment-content-block" href="[[_organizationUrl]]" token="[[token]]"
+						show-organization-code="[[showOrganizationCode]]"
+						show-semester-name="[[showSemesterName]]"
+					></d2l-organization-info>
 					<d2l-user-activity-usage class="enrollment-content-block" href="[[_userActivityUsageUrl]]" override-to-default$="[[_orgDateSlot]]">
-						<d2l-organization-date slot="default" href="[[_organizationUrl]]" presentation-href="[[presentationHref]]"></d2l-organization-date>
+						<d2l-organization-date slot="default" href="[[_organizationUrl]]" token="[[token]]"
+							hide-course-start-date="[[hideCourseStartDate]]"
+							hide-course-end-date="[[hideCourseEndDate]]"
+						></d2l-organization-date>
 					</d2l-user-activity-usage>
 				</d2l-card-content-meta>
 			</div>
@@ -247,8 +252,13 @@ $_documentContainer.innerHTML = `<dom-module id="d2l-enrollment-card">
 
 			<div slot="content" class="d2l-enrollment-card-alert-colour-circle" hidden$="[[!_newEnrollment]]"></div>
 
-			<d2l-enrollment-updates slot="footer" href="[[_notificationsUrl]]" presentation-href="[[presentationHref]]">
-			</d2l-enrollment-updates>
+			<d2l-enrollment-updates slot="footer" href="[[_notificationsUrl]]" token="[[token]]"
+				show-dropbox-unread-feedback="[[showDropboxUnreadFeedback]]"
+				show-unattempted-quizzes="[[showUnattemptedQuizzes]]"
+				show-ungraded-quiz-attempts="[[showUngradedQuizAttempts]]"
+				show-unread-discussion-messages="[[showUnreadDiscussionMessages]]"
+				show-unread-dropbox-submissions="[[showUnreadDropboxSubmissions]]"
+			></d2l-enrollment-updates>
 		</d2l-card>
 	</template>
 	
@@ -260,10 +270,6 @@ Polymer({
 
 	properties: {
 		href: {
-			type: String,
-			value: null
-		},
-		presentationHref: {
 			type: String,
 			value: null
 		},
@@ -298,6 +304,44 @@ Polymer({
 			reflectToAttribute: true,
 			value: false,
 			readOnly: true
+		},
+
+		token: String,
+		showOrganizationCode: {
+			type: Boolean,
+			value: false
+		},
+		showSemesterName: {
+			type: Boolean,
+			value: false
+		},
+		hideCourseStartDate: {
+			type: Boolean,
+			value: false
+		},
+		hideCourseEndDate: {
+			type: Boolean,
+			value: false
+		},
+		showDropboxUnreadFeedback: {
+			type: Boolean,
+			value: false
+		},
+		showUnattemptedQuizzes: {
+			type: Boolean,
+			value: false
+		},
+		showUngradedQuizAttempts: {
+			type: Boolean,
+			value: false
+		},
+		showUnreadDiscussionMessages: {
+			type: Boolean,
+			value: false
+		},
+		showUnreadDropboxSubmissions: {
+			type: Boolean,
+			value: false
 		},
 
 		_enrollment: {
