@@ -223,7 +223,7 @@ $_documentContainer.innerHTML = `<dom-module id="d2l-enrollment-card">
 						show-organization-code="[[showOrganizationCode]]"
 						show-semester-name="[[showSemesterName]]"
 					></d2l-organization-info>
-					<d2l-user-activity-usage class="enrollment-content-block" href="[[_userActivityUsageUrl]]" override-to-default$="[[_orgDateSlot]]">
+					<d2l-user-activity-usage class="enrollment-content-block" href="[[_userActivityUsageUrl]]" override-to-default$="[[_orgDateSlot]]" token="[[token]]">
 						<d2l-organization-date slot="default" href="[[_organizationUrl]]" token="[[token]]"
 							hide-course-start-date="[[hideCourseStartDate]]"
 							hide-course-end-date="[[hideCourseEndDate]]"

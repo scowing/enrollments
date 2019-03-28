@@ -3,7 +3,7 @@
 	<head>
 		<meta charset="utf-8">
 		<meta name="viewport" content="width=device-width, minimum-scale=1, initial-scale=1, user-scalable=yes">
-		<title>d2l-card demo</title>
+		<title>d2l-user-activity-usage</title>
 		<script src="../../../@webcomponents/webcomponentsjs/webcomponents-bundle.js"></script>
 		<script type="module" src="../../../@polymer/polymer/polymer-legacy.js"></script>
 		<script type="module" src="../../../@polymer/iron-demo-helpers/demo-pages-shared-styles.js"></script>
@@ -58,15 +58,65 @@ import '../../components/d2l-user-activity-usage/d2l-user-activity-usage.js';
 	<body unresolved class="d2l-typography">
 		<script type="module">
 const $_documentContainer = document.createElement('template');
+Date.now = function() { return 5 * 3600000; };
 
 $_documentContainer.innerHTML = `<div class="vertical-section-container centered">
 
-			<h3>User activity usage</h3>
+			<h3>User activity usage Due Date</h3>
 			<demo-snippet>
 				<template>
-                    <d2l-user-activity-usage  href="../data/usage.json" token="a1"></d2l-user-activity-usage>
+                    <d2l-user-activity-usage  href="../data/enrollments/badges/userActivityUsage/1.json" token="a1"></d2l-user-activity-usage>
 				</template>
-			</demo-snippet>
+            </demo-snippet>
+
+            <h3>User activity usage Completed Date</h3>
+			<demo-snippet>
+				<template>
+                    <d2l-user-activity-usage  href="../data/enrollments/badges/userActivityUsage/3.json" token="a1"></d2l-user-activity-usage>
+				</template>
+            </demo-snippet>
+
+            <h3>User activity usage Due Today</h3>
+			<demo-snippet>
+				<template>
+                    <d2l-user-activity-usage  href="../data/enrollments/relative-dates/userActivityUsage/1.json" token="a1"></d2l-user-activity-usage>
+				</template>
+            </demo-snippet>
+
+            <h3>User activity usage Due Tomorrow</h3>
+			<demo-snippet>
+				<template>
+                    <d2l-user-activity-usage  href="../data/enrollments/relative-dates/userActivityUsage/2.json" token="a1"></d2l-user-activity-usage>
+				</template>
+            </demo-snippet>
+
+            <h3>User activity usage Due Sunday</h3>
+			<demo-snippet>
+				<template>
+                    <d2l-user-activity-usage  href="../data/enrollments/relative-dates/userActivityUsage/3.json" token="a1"></d2l-user-activity-usage>
+				</template>
+            </demo-snippet>
+
+            <h3>User activity usage Due Date No Year</h3>
+			<demo-snippet>
+				<template>
+                    <d2l-user-activity-usage  href="../data/enrollments/relative-dates/userActivityUsage/4.json" token="a1"></d2l-user-activity-usage>
+				</template>
+            </demo-snippet>
+
+            <h3>User activity usage Due Yesterday</h3>
+			<demo-snippet>
+				<template>
+                    <d2l-user-activity-usage  href="../data/enrollments/relative-dates/userActivityUsage/6.json" token="a1"></d2l-user-activity-usage>
+				</template>
+            </demo-snippet>
+
+            <h3>User activity usage Due 5 Days Ago</h3>
+			<demo-snippet>
+				<template>
+                    <d2l-user-activity-usage  href="../data/enrollments/relative-dates/userActivityUsage/7.json" token="a1"></d2l-user-activity-usage>
+				</template>
+            </demo-snippet>
 
 		</div>`;
 
