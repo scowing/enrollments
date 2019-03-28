@@ -10,11 +10,8 @@ import {html, PolymerElement} from '@polymer/polymer/polymer-element.js';
 import { mixinBehaviors } from '@polymer/polymer/lib/legacy/class.js';
 import 'd2l-fetch/d2l-fetch.js';
 import './localize-behavior.js';
-import 'd2l-polymer-siren-behaviors/store/entity-behavior.js';
-import 'd2l-polymer-siren-behaviors/store/siren-action-behavior.js';
 
 class EnrollmentUserActivityUsage extends mixinBehaviors([
-	D2L.PolymerBehaviors.Siren.EntityBehavior,
 	D2L.PolymerBehaviors.Enrollment.UserActivityUsage.LocalizeBehavior
 ], PolymerElement) {
 	static get template() {
