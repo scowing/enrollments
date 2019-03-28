@@ -11,46 +11,46 @@ const requireDir = require('require-dir');
 
 const buildDirectory = '/../build';
 const sergeDirectories = require('./enrollments.serge.json');
-
-var buildSeries = ['clean'];
-var cleanSeries = [];
+const template = './templates/lang-behavior.ejs';
+const buildSeries = ['clean'];
+const cleanSeries = [];
 
 sergeDirectories.forEach((sergeComponent) => {
-	var localeResources = requireDir(sergeComponent.source_dir);
-	var config = {
+	const localeResources = requireDir(sergeComponent.source_dir);
+	const config = {
 		dest: sergeComponent.source_dir + buildDirectory,
 		localeFiles: Object.keys(localeResources).map((lang) => ({
 			filename: lang,
 			data: {
-				lang: lang,
+				lang: lang.replace('-', ''),
 				name: sergeComponent.name,
 				properLang: lang.charAt(0).toUpperCase() + lang.slice(1).replace('-', ''),
-				resources: JSON.stringify(localeResources[lang], null, '\t\t\t\t'),
+				resources: JSON.stringify(localeResources[lang], null, '\t\t\t').replace(/'/g, '\\\'').replace(/"/g, '\'').replace(/\n\}/g, '\n\t\t}'),
 				comment: 'This file is auto-generated. Do not modify.'
 			}
 		}))
 	};
 
-	buildSeries.push(() => {
-		const options = {
-			client: true,
-			strict: true,
-			root: sergeComponent.source_dir + buildDirectory + '/lang',
-			localsName: 'data'
-		};
+	const options = {
+		client: true,
+		strict: true,
+		root: sergeComponent.source_dir + buildDirectory + '/lang',
+		localsName: 'data'
+	};
 
+	buildSeries.push(() => {
 		return mergeStream(config.localeFiles.map(({ filename, data }) =>
-			gulp.src('./templates/lang-behavior.ejs')
+			gulp.src(template)
 				.pipe(ejs(data, options))
 				.pipe(rename({
 					basename: filename,
-					extname: '.html'
+					extname: '.js'
 				}))
 				.pipe(gulp.dest(options.root)))
 		);
 	});
 
-	cleanSeries.push(() => del([sergeComponent.source_dir + buildDirectory  + '/lang']));
+	cleanSeries.push(() => del([options.root]));
 
 });
 
