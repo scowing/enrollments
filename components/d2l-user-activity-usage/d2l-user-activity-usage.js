@@ -34,10 +34,6 @@ class EnrollmentUserActivityUsage extends mixinBehaviors([
 
 	static get properties() {
 		return {
-			entity: {
-				type: Object,
-				observer: '_entityChange'
-			},
 			overrideToDefault: {
 				type: Boolean,
 				value: false
@@ -53,6 +49,12 @@ class EnrollmentUserActivityUsage extends mixinBehaviors([
 				computed: '_computeDateText(_date, _isCompletionDate)'
 			}
 		};
+	}
+
+	static get observers() {
+		return [
+			'_entityChange(entity)'
+		];
 	}
 
 	_entityChange(entity) {
