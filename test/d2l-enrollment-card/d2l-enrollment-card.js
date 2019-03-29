@@ -2,25 +2,21 @@ describe('d2l-enrollment-card', () => {
 
 	var component,
 		fetchStub,
+		pinActionStub,
 		sandbox,
 		enrollmentEntity,
 		organizationEntity,
-		presentationEntity,
 		semesterOrganizationEntity;
 
 	function SetupFetchStub(url, entity) {
-		fetchStub.withArgs(sinon.match.has('url', sinon.match(url)))
-			.returns(Promise.resolve({
-				ok: true,
-				json: () => { return Promise.resolve(entity); }
-			}));
+		fetchStub.withArgs(sinon.match(url), sinon.match.string)
+			.returns(Promise.resolve({entity: entity}));
 	}
 
 	function loadEnrollment(done) {
 		var spy = sandbox.spy(component, '_handleOrganizationResponse');
 
-		component.href = '/enrollments/users/169/organizations/1';
-		component.presentationHref = '/d2l/le/manageCourses/homepage-component/1';
+		component.entity = enrollmentEntity;
 
 		setTimeout(() => {
 			expect(spy).to.have.been.calledOnce;
@@ -151,35 +147,17 @@ describe('d2l-enrollment-card', () => {
 				}
 			}]
 		});
-		presentationEntity = window.D2L.Hypermedia.Siren.Parse({
-			properties: {
-				ShowCourseCode: false,
-				ShowSemester: false,
-				ShowUnattemptedQuizzes: false,
-				ShowDropboxUnreadFeedback: false,
-				ShowUngradedQuizAttempts: false,
-				ShowUnreadDiscussionMessages: false,
-				ShowUnreadDropboxSubmissions: false
-			},
-			links: [{
-				rel: ['https://api.brightspace.com/rels/user-settings'],
-				href: ''
-			}, {
-				rel: ['self'],
-				href: '/d2l/le/manageCourses/homepage-component/1'
-			}]
-		});
 
-		fetchStub = sandbox.stub(window.d2lfetch, 'fetch');
-		SetupFetchStub(/\/enrollments\/users\/169\/organizations\/1$/, enrollmentEntity);
+		fetchStub = sandbox.stub(window.D2L.Siren.EntityStore, 'fetch');
 		SetupFetchStub(/\/organizations\/1$/, organizationEntity);
 		SetupFetchStub(/\/organizations\/2$/, semesterOrganizationEntity);
 		SetupFetchStub(/\/organizations\/1\/image/, {});
-		SetupFetchStub(/\/organizations\/1\/my-notifications$/, { properties: {} });
-		SetupFetchStub(/\/d2l\/le\/manageCourses\/homepage-component\/1/, presentationEntity);
 
 		component = fixture('d2l-enrollment-card-fixture');
 		component._load = true;
+		component.token = 'fake';
+		pinActionStub = sandbox.stub(component, 'performSirenAction');
+		pinActionStub.withArgs(sinon.match.defined).returns(Promise.resolve(enrollmentEntity));
 	});
 
 	afterEach(() => {
@@ -205,14 +183,6 @@ describe('d2l-enrollment-card', () => {
 	describe('Setting the enrollment attribute', () => {
 
 		beforeEach(done => loadEnrollment(done));
-
-		it('should set the enrollment href', () => {
-			expect(component.href).to.equal('/enrollments/users/169/organizations/1');
-		});
-
-		it('should set presentation href', () => {
-			expect(component.presentationHref).to.equal('/d2l/le/manageCourses/homepage-component/1');
-		});
 
 		it('should fetch the organization', () => {
 			expect(component._organization).to.equal(organizationEntity);
@@ -316,20 +286,20 @@ describe('d2l-enrollment-card', () => {
 		});
 
 		it('should set the update action parameters correctly and call the pinning API', done => {
-			SetupFetchStub('/enrollments/users/169/organizations/1', enrollmentEntity);
-
+			component.entity = enrollmentEntity;
 			component._pinClickHandler();
 
 			setTimeout(() => {
-				expect(fetchStub).to.have.been
-					.calledWith(sinon.match.has('url', sinon.match('/enrollments/users/169/organizations/1'))
+				expect(pinActionStub).to.have.been
+					.calledWith(sinon.match.has('name', sinon.match('unpin-course'))
+						.and(sinon.match.has('href', sinon.match('/enrollments/users/169/organizations/1')))
 						.and(sinon.match.has('method', 'PUT')));
 				done();
 			});
 		});
 
 		it('should aria-announce the change in pin state', done => {
-			SetupFetchStub('/enrollments/users/169/organizations/1', enrollmentEntity);
+			component.entity = enrollmentEntity;
 
 			component.addEventListener('iron-announce', function(e) {
 				expect(e.detail.text).to.equal('Course name has been unpinned');
