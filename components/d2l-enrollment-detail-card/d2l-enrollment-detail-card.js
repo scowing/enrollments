@@ -192,7 +192,7 @@ class D2lEnrollmentDetailCard extends mixinBehaviors([D2L.PolymerBehaviors.Siren
 							<div class="dedc-tag-container" hidden$="[[!_userActivityUsageUrl]]">
 									<span>
 										<d2l-icon icon="d2l-tier1:bullet"></d2l-icon>
-										<d2l-user-activity-usage href="[[_userActivityUsageUrl]]">
+										<d2l-user-activity-usage href="[[_userActivityUsageUrl]]" token="[[token]]">
 											<d2l-organization-date slot="default" href="[[_organizationUrl]]"></d2l-organization-date>
 										</d2l-user-activity-usage>
 									</span>

@@ -5,74 +5,90 @@ Polymer-based web component for a organization due and completion dates.
 
 @demo demo/d2l-user-activity-usage/d2l-user-activity-usage-demo.html Organization Updates
 */
-/*
-  FIXME(polymer-modulizer): the above comments were extracted
-  from HTML and may be out of place here. Review them and
-  then delete this comment!
-*/
-import '@polymer/polymer/polymer-legacy.js';
 
+import {html, PolymerElement} from '@polymer/polymer/polymer-element.js';
+import { mixinBehaviors } from '@polymer/polymer/lib/legacy/class.js';
 import 'd2l-fetch/d2l-fetch.js';
-import SirenParser from 'siren-parser';
 import './localize-behavior.js';
-import { Polymer } from '@polymer/polymer/lib/legacy/polymer-fn.js';
-const $_documentContainer = document.createElement('template');
+import 'd2l-polymer-siren-behaviors/store/entity-behavior.js';
 
-$_documentContainer.innerHTML = `<dom-module id="d2l-user-activity-usage">
-	<template strip-whitespace="">
-		<span hidden$="[[overrideToDefault]]">
-			[[_dateText]]
-		</span>
-		<span hidden$="[[_hideDefaultSlot(_date, overrideToDefault)]]"><slot name="default"></slot></span>
-	</template>
-	
-</dom-module>`;
+class EnrollmentUserActivityUsage extends mixinBehaviors([
+	D2L.PolymerBehaviors.Siren.EntityBehavior,
+	D2L.PolymerBehaviors.Enrollment.UserActivityUsage.LocalizeBehavior
+], PolymerElement) {
+	static get template() {
+		return html`
+			<span hidden$="[[overrideToDefault]]">
+				[[_dateText]]
+			</span>
+			<span hidden$="[[_hideDefaultSlot(_date, overrideToDefault)]]">
+				<slot name="default"></slot>
+			</span>
+		`;
+	}
 
-document.head.appendChild($_documentContainer.content);
-Polymer({
-	is: 'd2l-user-activity-usage',
+	static get is() {
+		return 'd2l-user-activity-usage';
+	}
 
-	properties: {
-		href: {
-			type: String,
-			observer: '_hrefChange'
-		},
-		overrideToDefault: {
-			type: Boolean,
-			value: false
-		},
+	static get properties() {
+		return {
+			overrideToDefault: {
+				type: Boolean,
+				value: false
+			},
 
-		_date: {
-			type: String,
-			value: null
-		},
-		_isCompletionDate: Boolean,
-		_dateText: {
-			type: String,
-			computed: '_computeDateText(_date, _isCompletionDate)'
+			_date: {
+				type: String,
+				value: null
+			},
+			_isCompletionDate: Boolean,
+			_dateText: {
+				type: String,
+				computed: '_computeDateText(_date, _isCompletionDate)'
+			}
+		};
+	}
+
+	static get observers() {
+		return [
+			'_entityChange(entity)'
+		];
+	}
+
+	_entityChange(entity) {
+		this._date = null;
+		if (!entity) {
+			return;
 		}
-	},
+		var completionDate = this._sirenClassProperty(entity, 'completion');
+		var dueDate = this._sirenClassProperty(entity, 'due-date');
 
-	behaviors: [
-		D2L.PolymerBehaviors.Enrollment.UserActivityUsage.LocalizeBehavior
-	],
-	_msInDay: 86400000,
-	_msInAWeek: 604800000,
-	_computeDateText: function(date, isCompletionDate) {
+		this._isCompletionDate = !!completionDate;
+		this._date = this._isCompletionDate ? completionDate : dueDate;
+
+		if (!entity.hasClass('attended')) {
+			this.fire('d2l-enrollment-new');
+		}
+	}
+
+	_computeDateText(date, isCompletionDate) {
 		if (!date || typeof isCompletionDate !== 'boolean') {
 			return null;
 		}
 
+		var msInDay = 86400000;
+		var msInAWeek = 604800000;
 		var nowDate = new Date(Date.now());
 		nowDate.setHours(0, 0, 0, 0);
 
-		var tomorrowDate = new Date(Date.now() + this._msInDay);
+		var tomorrowDate = new Date(Date.now() + msInDay);
 		tomorrowDate.setHours(0, 0, 0, 0);
 
-		var yesterdayDate = new Date(Date.now() - this._msInDay);
+		var yesterdayDate = new Date(Date.now() - msInDay);
 		yesterdayDate.setHours(0, 0, 0, 0);
 
-		var pastWeekFromNow = new Date(Date.now() - this._msInAWeek);
+		var pastWeekFromNow = new Date(Date.now() - msInAWeek);
 		pastWeekFromNow.setHours(0, 0, 0, 0);
 
 		date = new Date(Date.parse(date));
@@ -87,7 +103,7 @@ Polymer({
 		} else if (this._compareDate(date, yesterdayDate)) {
 			dateText = this.localize(dateTypeText + 'Yesterday');
 		} else if (date >= pastWeekFromNow && date <= nowDate) {
-			var daysAgo = Math.ceil((nowDate - date) / this._msInDay);
+			var daysAgo = Math.ceil((nowDate - date) / msInDay);
 			dateText = this.localize(dateTypeText + 'DaysAgo', 'number', daysAgo.toString());
 		} else {
 			dateText = this.localize(dateTypeText + 'On', 'dateTime', this.formatDate(date, {format: this._dateFormat(date, nowDate)}));
@@ -102,27 +118,8 @@ Polymer({
 		}
 
 		return dateText;
-	},
-	_hrefChange: function(href) {
-		this._date = null;
-		if (!href) {
-			return;
-		}
-		return this._fetchSirenEntity(href)
-			.then(function(userActivityUsageEntity) {
-				var completionDate = this._sirenClassProperty(userActivityUsageEntity, 'completion');
-				var dueDate = this._sirenClassProperty(userActivityUsageEntity, 'due-date');
-
-				this._isCompletionDate = !!completionDate;
-				this._date = this._isCompletionDate ? completionDate : dueDate;
-
-				if (!userActivityUsageEntity.hasClass('attended')) {
-					this.fire('d2l-enrollment-new');
-				}
-
-			}.bind(this));
-	},
-	_sirenClassProperty: function(entity, sirenClass) {
+	}
+	_sirenClassProperty(entity, sirenClass) {
 		if (!entity.hasSubEntityByClass(sirenClass)) {
 			return;
 		}
@@ -135,9 +132,10 @@ Polymer({
 		} else if (subEntity.hasClass('completion')) {
 			return this._sirenClassProperty(subEntity,  'completion-date');
 		}
-	},
-	_dateFormat: function(date, nowDate) {
-		var weekFromNow = new Date(Date.now() + this._msInAWeek);
+	}
+	_dateFormat(date, nowDate) {
+		var msInAWeek = 604800000;
+		var weekFromNow = new Date(Date.now() + msInAWeek);
 		weekFromNow.setHours(0, 0, 0, 0);
 
 		if (date < weekFromNow && date > nowDate) {
@@ -147,29 +145,16 @@ Polymer({
 		}
 
 		return 'MMM d, yyyy';
-	},
-	_compareDate: function(dateOne, dateTwo) {
+	}
+	_compareDate(dateOne, dateTwo) {
 		return dateOne.getFullYear() === dateTwo.getFullYear() &&
 			dateOne.getMonth() === dateTwo.getMonth() &&
 			dateOne.getDate() === dateTwo.getDate();
-	},
-	_fetchSirenEntity: function(url) {
-		if (!url) {
-			return;
-		}
-		return window.d2lfetch
-			.fetch(new Request(url, {
-				headers: { Accept: 'application/vnd.siren+json' },
-			}))
-			.then(function(response) {
-				if (response.ok) {
-					return response.json();
-				}
-				return Promise.reject(response.status + ' ' + response.statusText);
-			})
-			.then(SirenParser);
-	},
-	_hideDefaultSlot: function(date, overrideToDefault) {
+	}
+	_hideDefaultSlot(date, overrideToDefault) {
 		return date && !overrideToDefault;
 	}
-});
+}
+
+window.customElements.define(EnrollmentUserActivityUsage.is, EnrollmentUserActivityUsage);
+

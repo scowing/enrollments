@@ -1,17 +1,8 @@
 describe('d2l-user-activity-usage', () => {
 
 	var component,
-		fetchStub,
 		sandbox,
 		userActivityUsageEntity;
-
-	function SetupFetchStub(url, entity) {
-		fetchStub.withArgs(sinon.match.has('url', sinon.match(url)))
-			.returns(Promise.resolve({
-				ok: true,
-				json: () => { return Promise.resolve(entity); }
-			}));
-	}
 
 	function loadUserActivityUsage(entities, classes) {
 		userActivityUsageEntity = window.D2L.Hypermedia.Siren.Parse({
@@ -19,10 +10,7 @@ describe('d2l-user-activity-usage', () => {
 			'entities': entities
 		});
 
-		fetchStub = sandbox.stub(window.d2lfetch, 'fetch');
-		SetupFetchStub(/\/userActivityUsage$/, userActivityUsageEntity);
-
-		component.href = '/userActivityUsage';
+		component.entity = userActivityUsageEntity;
 	}
 
 	beforeEach(() => {
