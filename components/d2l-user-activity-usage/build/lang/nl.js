@@ -1,4 +1,3 @@
-<script>
 	'use strict';
 	(function() {
 		/* eslint-disable quotes, indent */
@@ -25,4 +24,3 @@
 		}
 		};
 	})();
-</script>
