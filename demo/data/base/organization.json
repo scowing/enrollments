@@ -48,6 +48,10 @@
            "self"
         ],
         "href":"../data/base/organizations.json"
+     },
+     {
+        "href": "../data/base/top-level-activity-sequence.json",
+        "rel": ["https://api.brightspace.com/rels/sequence"]
      }
   ]
 }

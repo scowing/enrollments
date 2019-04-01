@@ -1,0 +1,31 @@
+{
+	"properties": {
+    "title": "Course"
+	},
+	"rel": ["item"],
+	"entities": [
+		{
+			"class": ["sequence", "sequenced-activity"],
+			"rel": ["https://api.brightspace.com/rels/sequenced-activity"],
+			"href": "../data/base/module1.json"
+		},
+		{
+			"class": ["sequence", "sequenced-activity"],
+			"rel": ["https://api.brightspace.com/rels/sequenced-activity"],
+			"href": "../data/base/module2.json"
+		},
+		{
+			"class": ["sequence", "sequenced-activity"],
+			"rel": ["https://api.brightspace.com/rels/sequenced-activity"],
+			"href": "../data/base/module3.json"
+		}
+	],
+	"links": [{
+		"rel": ["self", "describes"],
+		"href": "data/l2-module1.json"
+	},{
+		"rel": ["https://api.brightspace.com/rels/organization"],
+		"href": "../data/base/organization.json"
+	}],
+	"class": ["sequence", "sequence-description"]
+}

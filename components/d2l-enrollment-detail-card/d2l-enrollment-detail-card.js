@@ -7,6 +7,7 @@ import 'd2l-organizations/components/d2l-organization-name/d2l-organization-name
 import 'd2l-polymer-siren-behaviors/store/entity-behavior.js';
 import 'd2l-typography/d2l-typography-shared-styles.js';
 import '../d2l-user-activity-usage/d2l-user-activity-usage.js';
+import 'd2l-sequences/components/d2l-sequences-module-list.js';
 
 /**
  * @customElement
@@ -17,22 +18,21 @@ class D2lEnrollmentDetailCard extends mixinBehaviors([D2L.PolymerBehaviors.Siren
 		return html`
 			<style include="d2l-typography-shared-styles">
 				:host {
+					--d2l-enrollment-detail-card-image-shimmer-display: none;
+					--d2l-enrollment-detail-card-module-list-display: block;
+					--d2l-enrollment-detail-card-text-placeholder-display: none;
 					background-color: #ffffff;
-					box-shadow: 0 4px 8px 2px rgba(0, 0, 0, 0.03);
 					border-radius: 8px;
+					box-shadow: 0 4px 8px 2px rgba(0, 0, 0, 0.03);
 					box-sizing: border-box;
 					display: inline-block;
-					height: 190px;
 					overflow: hidden;
 					position: relative;
 					width: 746px;
 					z-index: 0;
-					--d2l-enrollment-detail-card-text-placeholder-display: none;
-					--d2l-enrollment-detail-card-image-shimmer-display: none;
 				}
 				.dedc-base-container {
 					align-items: stretch;
-					border-radius: 6px;
 					display: flex;
 					flex-direction: row;
 					height: 100%;
@@ -40,6 +40,7 @@ class D2lEnrollmentDetailCard extends mixinBehaviors([D2L.PolymerBehaviors.Siren
 					position: relative;
 				}
 				.dedc-container {
+					border-radius: 6px;
 					height: 100%;
 					overflow: hidden;
 				}
@@ -164,6 +165,9 @@ class D2lEnrollmentDetailCard extends mixinBehaviors([D2L.PolymerBehaviors.Siren
 					margin: 0.075rem 0;
 					width: 75%;
 				}
+				.dedc-module-list {
+					display: var(--d2l-enrollment-detail-card-module-list-display);
+				}
 			</style>
 			<div class="dedc-container">
 				<div class="dedc-base-container">
@@ -188,7 +192,7 @@ class D2lEnrollmentDetailCard extends mixinBehaviors([D2L.PolymerBehaviors.Siren
 						</div>
 						<!-- Real text part -->
 						<div class="dedc-base-info">
-							<h3 class="dedc-title"><d2l-organization-name href="[[_organizationUrl]]"></d2l-organization-name></h3>
+							<h3 class="dedc-title"><d2l-organization-name href="[[_organizationUrl]]"  token="[[token]]"></d2l-organization-name></h3>
 							<div class="dedc-tag-container" hidden$="[[!_userActivityUsageUrl]]">
 									<span>
 										<d2l-icon icon="d2l-tier1:bullet"></d2l-icon>
@@ -203,18 +207,20 @@ class D2lEnrollmentDetailCard extends mixinBehaviors([D2L.PolymerBehaviors.Siren
 						</div>
 					</div>
 				</div>
+				<d2l-sequences-module-list class="dedc-module-list" href="[[_sequenceLink]]" token="[[token]]"></d2l-sequences-module-list>
 			</div>
 		`;
 	}
 
 	static get properties() {
 		return {
-			_title: String,
 			_description: String,
-			_tags: String,
 			_image: String,
-			_userActivityUsageUrl: String,
-			_organizationUrl: String
+			_organizationUrl: String,
+			_sequenceLink: String,
+			_tags: String,
+			_title: String,
+			_userActivityUsageUrl: String
 		};
 	}
 	static get observers() {
@@ -250,6 +256,7 @@ class D2lEnrollmentDetailCard extends mixinBehaviors([D2L.PolymerBehaviors.Siren
 			description = description.replace(/<[^>]*>/g, '');
 		}
 		this._description = description;
+		this._sequenceLink = organization.getLinkByRel('https://api.brightspace.com/rels/sequence').href;
 
 		return Promise.resolve();
 	}
@@ -260,3 +267,22 @@ class D2lEnrollmentDetailCard extends mixinBehaviors([D2L.PolymerBehaviors.Siren
 }
 
 window.customElements.define('d2l-enrollment-detail-card', D2lEnrollmentDetailCard);
+
+// Make shared style
+const $_documentContainer = document.createElement('template');
+
+$_documentContainer.innerHTML = `<custom-style>
+	<style is="custom-style">
+		html {
+
+			--d2l-enrollment-detail-card-loading: {
+				--d2l-enrollment-detail-card-image-shimmer-display: block;
+				--d2l-enrollment-detail-card-module-list-display: none;
+				--d2l-enrollment-detail-card-text-placeholder-display: block;
+			};
+
+		}
+	</style>
+</custom-style>`;
+
+document.head.appendChild($_documentContainer.content);
