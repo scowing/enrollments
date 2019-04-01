@@ -44,13 +44,12 @@
   							background-image: linear-gradient(to bottom, #f6f7f8, #f6f7f8), linear-gradient(to top, #ffffff, #f9fafb);
 							padding: 50px;
 						}
-						d2l-enrollment-detail-card {
-							--d2l-enrollment-detail-card-text-placeholder-display: none;
-							--d2l-enrollment-detail-card-image-shimmer-display: none;
-						}
-						.loading {
-							--d2l-enrollment-detail-card-text-placeholder-display: block;
-							--d2l-enrollment-detail-card-image-shimmer-display: block;
+					</style>
+				</custom-style>
+				<custom-style include="d2l-enrollment-detail-card">
+					<style>
+						.demo d2l-enrollment-detail-card[loading] {
+							@apply --d2l-enrollment-detail-card-loading;
 						}
 					</style>
 				</custom-style>
@@ -65,7 +64,7 @@
 				<template>
 					<div class="demo">
 						<d2l-enrollment-detail-card href="../data/base/enrollment.json" token="whatever"></d2l-enrollment-detail-card>
-						<d2l-enrollment-detail-card class="loading" href="../data/base/enrollment.json" token="whatever"></d2l-enrollment-detail-card>
+						<d2l-enrollment-detail-card loading href="../data/base/enrollment.json" token="whatever"></d2l-enrollment-detail-card>
 					</div>
 				</template>
 			</demo-snippet>

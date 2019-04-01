@@ -37,7 +37,9 @@
     "merge-stream": "^1.0.1",
     "polymer-cli": "^1.9.5",
     "require-dir": "^1.0.0",
-    "wct-browser-legacy": "^1.0.1"
+    "wct-browser-legacy": "^1.0.1",
+    "siren-parser": "^8.0.0",
+    "whatwg-fetch": "^3.0.0"
   },
   "version": "",
   "resolutions": {
@@ -63,10 +65,9 @@
     "d2l-organization-hm-behavior": "Brightspace/organization-hm-behavior#semver:^3",
     "d2l-organizations": "BrightspaceHypermediaComponents/organizations#semver:^3",
     "d2l-polymer-siren-behaviors": "Brightspace/polymer-siren-behaviors#semver:^1",
+    "d2l-sequences": "github:brightspaceHypermediaComponents/sequences",
     "d2l-status-indicator": "BrightspaceUI/status-indicator#semver:^3",
     "d2l-tooltip": "BrightspaceUI/tooltip#semver:^3",
-    "intersection-observer": "^0.5.1",
-    "siren-parser": "^8.0.0",
-    "whatwg-fetch": "^3.0.0"
+    "intersection-observer": "^0.5.1"
   }
 }
