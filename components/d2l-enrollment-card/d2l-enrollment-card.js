@@ -428,7 +428,7 @@ Polymer({
 		D2L.PolymerBehaviors.Hypermedia.OrganizationHMBehavior,
 		D2L.PolymerBehaviors.Enrollment.Card.LocalizeBehavior,
 		D2L.PolymerBehaviors.Siren.EntityBehavior,
-		D2L.PolymerBehaviors.Siren.SirenActionBehaviorImpl
+		D2L.PolymerBehaviors.Siren.SirenActionBehavior
 	],
 	observers: [
 		'_loadEnrollmentData(_load, entity)',
