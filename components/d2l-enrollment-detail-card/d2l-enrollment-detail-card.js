@@ -268,7 +268,7 @@ class D2lEnrollmentDetailCard extends mixinBehaviors([D2L.PolymerBehaviors.Siren
 
 window.customElements.define('d2l-enrollment-detail-card', D2lEnrollmentDetailCard);
 
-// Make shared style
+// Make shared style so it is easy to mass hide loading.
 const $_documentContainer = document.createElement('template');
 
 $_documentContainer.innerHTML = `<custom-style>
@@ -279,6 +279,15 @@ $_documentContainer.innerHTML = `<custom-style>
 				--d2l-enrollment-detail-card-image-shimmer-display: block;
 				--d2l-enrollment-detail-card-module-list-display: none;
 				--d2l-enrollment-detail-card-text-placeholder-display: block;
+			};
+
+			--d2l-enrollment-detail-card-loading-text: {
+				--d2l-enrollment-detail-card-module-list-display: none;
+				--d2l-enrollment-detail-card-text-placeholder-display: block;
+			};
+
+			--d2l-enrollment-detail-card-loading-image: {
+				--d2l-enrollment-detail-card-image-shimmer-display: block;
 			};
 
 		}
