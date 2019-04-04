@@ -96,12 +96,12 @@ class D2lEnrollmentSummaryView extends mixinBehaviors([ D2L.PolymerBehaviors.Sir
 					<d2l-enrollment-summary-view-tag-list list=[[_tags]]></d2l-enrollment-summary-view-tag-list>
 				</div>
 				<d2l-enrollment-summary-view-layout>
-					<div slot="first-coloumn">Completion Bar</div>
-					<div slot="second-coloumn">Continue</div>
+					<div slot="first-column">Completion Bar</div>
+					<div slot="second-column">Continue</div>
 				</d2l-enrollment-summary-view-layout>
 			</div>
 			<d2l-enrollment-summary-view-layout>
-				<div slot="first-coloumn">
+				<div slot="first-column">
 					<ul class="desv-course-list">
 						<template is="dom-repeat" items="[[_courses]]">
 							<li>
@@ -110,7 +110,7 @@ class D2lEnrollmentSummaryView extends mixinBehaviors([ D2L.PolymerBehaviors.Sir
 						</template>
 					</ul>
 				</div>
-				<div slot="second-coloumn" class="desv-side-bar">
+				<div slot="second-column" class="desv-side-bar">
 					<h3>Description</h3>
 					<p>[[_description]]</p>
 				</div>

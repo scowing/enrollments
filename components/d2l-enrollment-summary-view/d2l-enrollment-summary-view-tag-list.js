@@ -13,26 +13,26 @@ class D2lEnrollmentSummaryViewTagList extends PolymerElement {
 					@apply --d2l-body-small-text;
 					color: var(--d2l-color-tungsten);
 				}
-				.desvtl-contianer {
+				.desvtl-container {
 					height: 1rem;
 					margin: 0;
 					overflow: hidden;
 					padding: 0;
 				}
-				.desvtl-contianer li d2l-icon {
+				.desvtl-container li d2l-icon {
 					--d2l-icon-height: 18px;
 					--d2l-icon-width: 18px;
 				}
-				.desvtl-contianer li:first-child d2l-icon {
+				.desvtl-container li:first-child d2l-icon {
 					display: none;
 				}
-				.desvtl-contianer li {
+				.desvtl-container li {
 					display: inline-block;
 					list-style-type: none;
 					white-space: nowrap;
 				}
 			</style>
-			<ul class="desvtl-contianer" hidden$="[[!list]]">
+			<ul class="desvtl-container" hidden$="[[!list]]">
 				<template is="dom-repeat" items="[[list]]">
 					<li>
 						<d2l-icon icon="d2l-tier1:bullet"></d2l-icon>

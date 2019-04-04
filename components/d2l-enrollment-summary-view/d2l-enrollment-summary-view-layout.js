@@ -61,10 +61,10 @@ class D2lEnrollmentSummaryViewLayout extends PolymerElement {
 			<div class="desvl-center">
 				<div class="desvl-flex">
 					<span class="desvl-first-column">
-						<slot name="first-coloumn"></slot>
+						<slot name="first-column"></slot>
 					</span>
 					<span class="desvl-second-column">
-						<slot name="second-coloumn"></slot>
+						<slot name="second-column"></slot>
 					</span>
 				</div>
 			</div>
