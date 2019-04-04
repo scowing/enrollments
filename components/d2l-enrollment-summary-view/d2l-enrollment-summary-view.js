@@ -54,6 +54,7 @@ class D2lEnrollmentSummaryView extends mixinBehaviors([ D2L.PolymerBehaviors.Sir
 				.desv-course-list li {
 					list-style-type: none;
 					margin: 1.5rem 0;
+					line-height: 0;
 				}
 				.desv-side-bar {
 					padding: 2.5rem 0 0 0;
@@ -74,19 +75,47 @@ class D2lEnrollmentSummaryView extends mixinBehaviors([ D2L.PolymerBehaviors.Sir
 					margin-bottom: 0.6rem;
 				}
 				@media only screen and (max-width: 929px) {
-					.desv-title {
-						flex-direction: column;
-						max-width: 680px;
-						padding: 0 0.9rem;
-					}
 					.desv-header d2l-enrollment-summary-view-layout div {
 						line-height: 2.6rem;
 					}
+					.desv-title-bar {
+						flex-direction: column;
+						max-width: 680px;
+						padding-bottom: 0.8rem;
+						padding-top: 1.5rem;
+						padding: 0.9rem;
+					}
+					.desv-title-bar h1 {
+						font-size: 1.6rem;
+						letter-spacing: 0.2px;
+					}
+					.desv-side-bar {
+						display: none;
+					}
+					.desv-header d2l-enrollment-summary-view-layout {
+						box-shadow: none;
+						padding: 0.45rem 0;
+					}
+					.desv-header d2l-enrollment-summary-view-layout div {
+						font-size: 0.8rem;
+					}
+					.desv-header d2l-enrollment-summary-view-layout div[slot="first-column"] {
+						line-height: 1.3rem;
+					}
+					.desv-header d2l-enrollment-summary-view-layout div[slot="second-column"] {
+						line-height: 2.6rem;
+					}
+					.desv-course-list {
+						margin-top: 1.6rem;
+					}
+					.desv-course-list li {
+						margin-top: 1.6rem;
+					}
 				}
 				@media only screen and (max-width: 420px) {
-					.desv-title {
-						margin: 0;
-						padding: 0 0.9rem;
+					.desv-title-bar d2l-enrollment-summary-view-tag-list {
+						font-size: 0.6rem;
+						letter-spacing: 0.1px;
 					}
 				}
 			</style>
