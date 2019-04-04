@@ -3,7 +3,7 @@
   "links":[
     {
       "rel":["self"],
-      "href":"../data/enrollments/1.json"
+      "href":"../data/enrollments/new-enrollment/1.json"
     },{
       "rel":["https://api.brightspace.com/rels/organization"],
       "href":"../data/base/organization.json"

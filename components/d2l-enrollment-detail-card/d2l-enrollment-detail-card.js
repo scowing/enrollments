@@ -244,7 +244,7 @@ class D2lEnrollmentDetailCard extends mixinBehaviors([D2L.PolymerBehaviors.Siren
 		}
 
 		// this will require an update as well. I am hoping this can happen when the new POC comes out.
-		return this._myEntityStoreFetch(this._organizationUrl)
+		return this._organizationUrl && this._myEntityStoreFetch(this._organizationUrl)
 			.then(this._handleOrganizationResponse.bind(this));
 	}
 
@@ -256,7 +256,8 @@ class D2lEnrollmentDetailCard extends mixinBehaviors([D2L.PolymerBehaviors.Siren
 			description = description.replace(/<[^>]*>/g, '');
 		}
 		this._description = description;
-		this._sequenceLink = organization.getLinkByRel('https://api.brightspace.com/rels/sequence').href;
+		this._sequenceLink = organization.hasLinkByRel('https://api.brightspace.com/rels/sequence') &&
+			organization.getLinkByRel('https://api.brightspace.com/rels/sequence').href;
 
 		return Promise.resolve();
 	}
