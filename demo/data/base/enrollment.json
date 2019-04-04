@@ -1,5 +1,22 @@
 {
   "class":["enrollment"],
+  "entities": [
+    {
+			"class": ["enrollment"],
+			"rel": ["https://api.brightspace.com/rels/enrollment"],
+			"href": "../data/enrollments/badges/1.json"
+    },
+    {
+			"class": ["enrollment"],
+			"rel": ["https://api.brightspace.com/rels/enrollment"],
+			"href": "../data/enrollments/long-name/1.json"
+    },
+    {
+			"class": ["enrollment"],
+			"rel": ["https://api.brightspace.com/rels/enrollment"],
+			"href": "../data/enrollments/new-enrollment/1.json"
+		}
+  ],
   "links":[
     {
       "rel":["self"],

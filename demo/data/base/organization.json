@@ -47,7 +47,7 @@
         "rel":[
            "self"
         ],
-        "href":"../data/base/organizations.json"
+        "href":"../data/base/organization.json"
      },
      {
         "href": "../data/base/top-level-activity-sequence.json",
