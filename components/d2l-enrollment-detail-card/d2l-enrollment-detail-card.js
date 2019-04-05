@@ -1,6 +1,7 @@
 import {html, PolymerElement} from '@polymer/polymer/polymer-element.js';
 import { mixinBehaviors } from '@polymer/polymer/lib/legacy/class.js';
 import { Rels } from 'd2l-hypermedia-constants';
+import {afterNextRender} from '@polymer/polymer/lib/utils/render-status.js';
 import 'd2l-organizations/components/d2l-organization-date/d2l-organization-date.js';
 import 'd2l-organizations/components/d2l-organization-image/d2l-organization-image.js';
 import 'd2l-organizations/components/d2l-organization-name/d2l-organization-name.js';
@@ -8,6 +9,7 @@ import 'd2l-polymer-siren-behaviors/store/entity-behavior.js';
 import 'd2l-typography/d2l-typography-shared-styles.js';
 import '../d2l-user-activity-usage/d2l-user-activity-usage.js';
 import 'd2l-sequences/components/d2l-sequences-module-list.js';
+import 'd2l-resize-aware/d2l-resize-aware.js';
 
 /**
  * @customElement
@@ -26,9 +28,10 @@ class D2lEnrollmentDetailCard extends mixinBehaviors([D2L.PolymerBehaviors.Siren
 					box-shadow: 0 4px 8px 2px rgba(0, 0, 0, 0.03);
 					box-sizing: border-box;
 					display: inline-block;
+					max-width: 780px;
 					overflow: hidden;
 					position: relative;
-					width: 746px;
+					width: 100%;
 					z-index: 0;
 				}
 				.dedc-base-container {
@@ -41,6 +44,7 @@ class D2lEnrollmentDetailCard extends mixinBehaviors([D2L.PolymerBehaviors.Siren
 				}
 				.dedc-container {
 					border-radius: 6px;
+					display: block;
 					height: 100%;
 					overflow: hidden;
 				}
@@ -49,9 +53,11 @@ class D2lEnrollmentDetailCard extends mixinBehaviors([D2L.PolymerBehaviors.Siren
 				}
 				.dedc-description-container p {
 					@apply --d2l-body-small-text;
+					height: 3.15rem;
 					letter-spacing: 0.4px;
 					line-height: 1.5;
 					margin: 0;
+					overflow: hidden;
 					padding: 0;
 				}
 				.dedc-description-placeholder {
@@ -103,6 +109,7 @@ class D2lEnrollmentDetailCard extends mixinBehaviors([D2L.PolymerBehaviors.Siren
 					margin: 1.2rem 1rem;
 					overflow: hidden;
 					position: relative;
+					max-height: 142px;
 				}
 				.dedc-base-info {
 					display: flex;
@@ -125,7 +132,6 @@ class D2lEnrollmentDetailCard extends mixinBehaviors([D2L.PolymerBehaviors.Siren
 					flex-shrink: 0;
 				}
 				.dedc-tag-container {
-					@apply --d2l-body-small-text;
 					margin: 0.7rem 0px;
 					letter-spacing: 0.4px;
 					line-height: 0.86;
@@ -169,7 +175,50 @@ class D2lEnrollmentDetailCard extends mixinBehaviors([D2L.PolymerBehaviors.Siren
 					display: var(--d2l-enrollment-detail-card-module-list-display);
 				}
 			</style>
-			<div class="dedc-container">
+			<!-- Mobile styles here -->
+			<style include="d2l-typography-shared-styles">
+				.dedc-container[mobile] .dedc-base-container {
+					flex-direction: column;
+					height: 100%;
+				}
+				.dedc-container[mobile] .dedc-description-container {
+					margin: 0.1rem 0;
+				}
+				.dedc-container[mobile] .dedc-image {
+					height: 100%;
+					width: 100%;
+				}
+				.dedc-container[mobile] .dedc-base-info-container {
+					margin: 0.6rem 0.7rem 0.5rem 0.7rem;
+				}
+				.dedc-container[mobile] .dedc-title {
+					font-size: 0.8rem;
+					line-height: 1.19;
+				}
+				.dedc-container[mobile] .dedc-title-placeholder {
+					height: 0.7rem;
+				}
+				.dedc-container[mobile] .dedc-tag-container {
+					margin: 0.3rem 0 0.6rem 0;
+				}
+				.dedc-container[mobile] .dedc-tag-container,
+				.dedc-container[mobile] .dedc-description-container p {
+					font-size: 0.6rem;
+					letter-spacing: 0.4px;
+					line-height: 1;
+				}
+				.dedc-container[mobile] .dedc-tag-placeholder,
+				.dedc-container[mobile] .dedc-description-placeholder {
+					height: 0.5rem;
+				}
+				.dedc-container[mobile] .dedc-description-container {
+					margin: 0;
+				}
+				.dedc-container[mobile] .dedc-description-container p {
+					line-height: 1.75;
+				}
+			</style>
+			<d2l-resize-aware class="dedc-container" mobile$="[[_mobile]]">
 				<div class="dedc-base-container">
 					<div class="dedc-image">
 						<div class="dedc-image-shimmer"></div>
@@ -185,6 +234,7 @@ class D2lEnrollmentDetailCard extends mixinBehaviors([D2L.PolymerBehaviors.Siren
 									<div class="dedc-text-placeholder dedc-tag-placeholder"></div>
 								</div>
 								<div class="dedc-description-container">
+									<div class="dedc-text-placeholder dedc-description-placeholder"></div>
 									<div class="dedc-text-placeholder dedc-description-placeholder"></div>
 									<div class="dedc-text-placeholder dedc-description-placeholder"></div>
 								</div>
@@ -208,7 +258,7 @@ class D2lEnrollmentDetailCard extends mixinBehaviors([D2L.PolymerBehaviors.Siren
 					</div>
 				</div>
 				<d2l-sequences-module-list class="dedc-module-list" href="[[_sequenceLink]]" token="[[token]]"></d2l-sequences-module-list>
-			</div>
+			</d2l-resize-aware>
 		`;
 	}
 
@@ -220,13 +270,31 @@ class D2lEnrollmentDetailCard extends mixinBehaviors([D2L.PolymerBehaviors.Siren
 			_sequenceLink: String,
 			_tags: String,
 			_title: String,
-			_userActivityUsageUrl: String
+			_userActivityUsageUrl: String,
+			_mobile: {
+				type: Boolean,
+				value: false
+			}
 		};
 	}
 	static get observers() {
 		return [
 			'_handleEnrollmentData(entity)'
 		];
+	}
+	attached() {
+		super.attached();
+		const resizeAware = this.shadowRoot.querySelector('d2l-resize-aware');
+		resizeAware.addEventListener('d2l-resize-aware-resized', this._onResize.bind(this));
+		resizeAware._onResize();
+	}
+
+	detached() {
+		super.detached();
+		afterNextRender(this, () => {
+			const resizeAware = this.shadowRoot.querySelector('d2l-resize-aware');
+			resizeAware.removeEventListener('d2l-resize-aware-resized', this._onResize.bind(this));
+		});
 	}
 
 	_handleEnrollmentData(enrollment) {
@@ -265,6 +333,10 @@ class D2lEnrollmentDetailCard extends mixinBehaviors([D2L.PolymerBehaviors.Siren
 	_myEntityStoreFetch(url) {
 		return window.D2L.Siren.EntityStore.fetch(url, this.token);
 	}
+
+	_onResize(e) {
+		this._mobile = e.detail.current.width <= 389;
+	}
 }
 
 window.customElements.define('d2l-enrollment-detail-card', D2lEnrollmentDetailCard);
@@ -272,7 +344,8 @@ window.customElements.define('d2l-enrollment-detail-card', D2lEnrollmentDetailCa
 // Make shared style so it is easy to mass hide loading.
 const $_documentContainer = document.createElement('template');
 
-$_documentContainer.innerHTML = `<custom-style>
+$_documentContainer.innerHTML = `
+<custom-style>
 	<style is="custom-style">
 		html {
 
