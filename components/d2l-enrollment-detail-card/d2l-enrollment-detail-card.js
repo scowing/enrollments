@@ -335,7 +335,7 @@ class D2lEnrollmentDetailCard extends mixinBehaviors([D2L.PolymerBehaviors.Siren
 	}
 
 	_onResize(e) {
-		this._mobile = e.detail.current.width <= 384;
+		this._mobile = e.detail.current.width <= 389;
 	}
 }
 
