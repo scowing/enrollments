@@ -183,7 +183,7 @@ class D2lEnrollmentDetailCard extends mixinBehaviors(behaviors, PolymerElement) 
 				}
 				.dedc-title {
 					@apply --d2l-body-standard-text;
-					color: var(--d2l-color-ferrite);
+					color: var(--d2l-color-celestine);
 					letter-spacing: 0.4px;
 					line-height: 1;
 					margin: 0 0 0.1rem 0;
