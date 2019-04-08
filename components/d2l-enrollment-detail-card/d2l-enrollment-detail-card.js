@@ -74,6 +74,7 @@ class D2lEnrollmentDetailCard extends mixinBehaviors(behaviors, PolymerElement) 
 				}
 				.dedc-description-container p {
 					@apply --d2l-body-small-text;
+					color: var(--d2l-color-ferrite);
 					height: 3.15rem;
 					letter-spacing: 0.4px;
 					line-height: 1.5;
@@ -149,7 +150,7 @@ class D2lEnrollmentDetailCard extends mixinBehaviors(behaviors, PolymerElement) 
 				.dedc-tag-container,
 				.dedc-tag-container span d2l-icon {
 					@apply --d2l-body-small-text;
-					color: var(--d2l-color-tungsten);
+					color: var(--d2l-color-ferrite);
 					flex-shrink: 0;
 				}
 				.dedc-tag-container {
