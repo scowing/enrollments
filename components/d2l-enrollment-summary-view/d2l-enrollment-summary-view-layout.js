@@ -22,7 +22,6 @@ class D2lEnrollmentSummaryViewLayout extends PolymerElement {
 					border-right: var(--d2l-enrollment-summary-view-tag-layout-inner-border, none);
 					flex-basis: 0;
 					flex-grow: 2;
-					overflow: hidden;
 					padding: 0 1.5rem 0 0;
 				}
 				.desvl-second-column {
