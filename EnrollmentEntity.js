@@ -19,10 +19,44 @@ export class EnrollmentEntity extends Entity {
 		return this._entity.getLinkByRel(Rels.organization).href;
 	}
 
+	completionDate() {
+		if (!this._entity) {
+			return;
+		}
+		return this._sirenClassProperty(this._entity, 'completion');
+	}
+
+	dueDate() {
+		if (!this._entity) {
+			return;
+		}
+		return this._sirenClassProperty(this._entity, 'due-date');
+	}
+
+	isAttended() {
+		return this._entity && this._entity.hasClass('attended');
+	}
+
 	onOrganizationChange(onChange) {
 		const organizationHref = this.organizationHref();
 		// _subEntity builds new sub entity and allows this object to track it.
 		// So all sub entities are dispose when this object is disposed.
 		organizationHref && this._subEntity(OrganizationEntity, organizationHref, onChange);
 	}
+
+	_sirenClassProperty(entity, sirenClass) {
+		if (!entity.hasSubEntityByClass(sirenClass)) {
+			return;
+		}
+		var subEntity = entity.getSubEntityByClass(sirenClass);
+
+		if (subEntity.hasClass('date')) {
+			return subEntity.properties ? subEntity.properties.date : null;
+		} else if (subEntity.hasClass('duration')) {
+			return subEntity.properties ? subEntity.properties.seconds : null;
+		} else if (subEntity.hasClass('completion')) {
+			return this._sirenClassProperty(subEntity,  'completion-date');
+		}
+	}
+
 }
