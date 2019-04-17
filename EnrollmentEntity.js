@@ -34,7 +34,7 @@ export class EnrollmentEntity extends Entity {
 	}
 
 	isAttended() {
-		return this._entity && this._entity.hasClass('attended');
+		return this.hasClass('attended');
 	}
 
 	onOrganizationChange(onChange) {
