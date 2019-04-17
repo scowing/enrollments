@@ -49,6 +49,10 @@ export class EnrollmentEntity extends Entity {
 		return this._entity.getLinkByRel(Rels.Activities.userActivityUsage).href;
 	}
 
+	entity() {
+		return this._entity;
+	}
+
 	onOrganizationChange(onChange) {
 		const organizationHref = this.organizationHref();
 		// _subEntity builds new sub entity and allows this object to track it.

@@ -3,9 +3,10 @@
 
 Polymer-based web component for a enrollment updates.
 */
-import {html, PolymerElement} from '@polymer/polymer/polymer-element.js';
+import { html, PolymerElement } from '@polymer/polymer/polymer-element.js';
+import { EntityMixin } from 'siren-sdk/mixin/entity-mixin.js';
+import { EnrollmentEntity } from '../../EnrollmentEntity.js';
 import { mixinBehaviors } from '@polymer/polymer/lib/legacy/class.js';
-import 'd2l-polymer-siren-behaviors/store/entity-behavior.js';
 import 'd2l-organizations/components/d2l-organization-updates/d2l-organization-updates.js';
 import 'd2l-card/d2l-card-footer-link.js';
 import 'd2l-tooltip/d2l-tooltip.js';
@@ -15,9 +16,13 @@ import 'd2l-tooltip/d2l-tooltip.js';
  * @polymer
  */
 class EnrollmentUpdates extends mixinBehaviors([
-	D2L.PolymerBehaviors.Siren.EntityBehavior,
 	D2L.PolymerBehaviors.Organization.Updates.Behavior
-], PolymerElement) {
+], EntityMixin(PolymerElement)) {
+	constructor() {
+		super();
+		this._setEntityType(EnrollmentEntity);
+	}
+
 	static get template() {
 		return html`
 			<style>
@@ -85,13 +90,13 @@ class EnrollmentUpdates extends mixinBehaviors([
 
 	static get observers() {
 		return [
-			'_loadData(entity)'
+			'_loadData(_entity)'
 		];
 	}
 
 	static get is() { return 'd2l-enrollment-updates'; }
 
-	_loadData(entity) {
+	_loadData(enrollment) {
 		var presentationAttributes = {
 			'ShowDropboxUnreadFeedback': this.showDropboxUnreadFeedback,
 			'ShowUnattemptedQuizzes': this.showUnattemptedQuizzes,
@@ -100,7 +105,7 @@ class EnrollmentUpdates extends mixinBehaviors([
 			'ShowUnreadDropboxSubmissions': this.showUnreadDropboxSubmissions,
 		};
 
-		var notification = this._orgUpdates_fetch(entity, presentationAttributes);
+		var notification = this._orgUpdates_fetch(enrollment.entity(), presentationAttributes);
 		this._notifications = this._orgUpdates_notifications(notification);
 	}
 
