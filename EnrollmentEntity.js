@@ -37,6 +37,10 @@ export class EnrollmentEntity extends Entity {
 		return this.hasClass('attended');
 	}
 
+	enrollments() {
+		return this._entity && this._entity.getSubEntities('https://api.brightspace.com/rels/enrollment');
+	}
+
 	onOrganizationChange(onChange) {
 		const organizationHref = this.organizationHref();
 		// _subEntity builds new sub entity and allows this object to track it.
