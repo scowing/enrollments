@@ -1,7 +1,7 @@
-import {html, PolymerElement} from '@polymer/polymer/polymer-element.js';
+import { html, PolymerElement } from '@polymer/polymer/polymer-element.js';
+import { EntityMixin } from 'siren-sdk/mixin/entity-mixin.js';
+import { EnrollmentEntity } from '../../EnrollmentEntity.js';
 import { mixinBehaviors } from '@polymer/polymer/lib/legacy/class.js';
-import { Rels } from 'd2l-hypermedia-constants';
-import 'd2l-polymer-siren-behaviors/store/entity-behavior.js';
 import 'd2l-typography/d2l-typography-shared-styles.js';
 import '../d2l-enrollment-detail-card/d2l-enrollment-detail-card.js';
 import './d2l-enrollment-summary-view-layout.js';
@@ -11,7 +11,14 @@ import './d2l-enrollment-summary-view-tag-list.js';
  * @customElement
  * @polymer
  */
-class D2lEnrollmentSummaryView extends mixinBehaviors([ D2L.PolymerBehaviors.Siren.EntityBehavior ], PolymerElement) {
+class D2lEnrollmentSummaryView extends mixinBehaviors([
+	D2L.PolymerBehaviors.Enrollment.UserActivityUsage.LocalizeBehavior
+], EntityMixin(PolymerElement)) {
+	constructor() {
+		super();
+		this._setEntityType(EnrollmentEntity);
+	}
+
 	static get template() {
 		return html`
 			<style include="d2l-typography-shared-styles">
@@ -165,7 +172,7 @@ class D2lEnrollmentSummaryView extends mixinBehaviors([ D2L.PolymerBehaviors.Sir
 	}
 	static get observers() {
 		return [
-			'_handleEnrollmentResponse(entity)'
+			'_onEnrollmentChange(_entity)'
 		];
 	}
 	_computeTags(courses) {
@@ -176,37 +183,11 @@ class D2lEnrollmentSummaryView extends mixinBehaviors([ D2L.PolymerBehaviors.Sir
 		tags.push('About 2 hour 30 minutes');
 		return tags;
 	}
-	_handleEnrollmentResponse(enrollment) {
-		if (
-			!enrollment
-			|| !enrollment.hasLinkByRel
-			|| !enrollment.getSubEntities
-		) {
-			return;
-		}
-		this._organizationUrl = enrollment.hasLinkByRel(Rels.organization) && enrollment.getLinkByRel(Rels.organization).href;
-
-		this._courses = enrollment.getSubEntities('https://api.brightspace.com/rels/enrollment').map(e => e.href);
-
-		// this will require an update as well. I am hoping this can happen when the new POC comes out.
-		return this._organizationUrl && this._myEntityStoreFetch(this._organizationUrl)
-			.then(this._handleOrganizationResponse.bind(this));
-	}
-
-	_handleOrganizationResponse(organization) {
-		organization = organization && organization.entity;
-
-		let description = organization.properties && organization.properties.description;
-		if (description) {
-			description = description.replace(/<[^>]*>/g, '');
-		}
-		this._description = description;
-
-		return Promise.resolve();
-	}
-
-	_myEntityStoreFetch(url) {
-		return window.D2L.Siren.EntityStore.fetch(url, this.token);
+	_onEnrollmentChange(enrollment) {
+		this._courses = enrollment.enrollments().map(e => e.href);
+		enrollment.onOrganizationChange((org) => {
+			this._description = org.description();
+		});
 	}
 }
 
