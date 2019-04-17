@@ -1,11 +1,11 @@
-import {html, PolymerElement} from '@polymer/polymer/polymer-element.js';
+import { html, PolymerElement } from '@polymer/polymer/polymer-element.js';
+import { EntityMixin } from 'siren-sdk/mixin/entity-mixin.js';
+import { EnrollmentEntity } from '../../EnrollmentEntity.js';
 import { mixinBehaviors } from '@polymer/polymer/lib/legacy/class.js';
-import { Rels } from 'd2l-hypermedia-constants';
-import {afterNextRender} from '@polymer/polymer/lib/utils/render-status.js';
+import { afterNextRender } from '@polymer/polymer/lib/utils/render-status.js';
 import 'd2l-organizations/components/d2l-organization-date/d2l-organization-date.js';
 import 'd2l-organizations/components/d2l-organization-image/d2l-organization-image.js';
 import 'd2l-organizations/components/d2l-organization-name/d2l-organization-name.js';
-import 'd2l-polymer-siren-behaviors/store/entity-behavior.js';
 import 'd2l-typography/d2l-typography-shared-styles.js';
 import '../d2l-user-activity-usage/d2l-user-activity-usage.js';
 import 'd2l-sequences/components/d2l-sequences-module-list.js';
@@ -13,15 +13,18 @@ import 'd2l-resize-aware/d2l-resize-aware.js';
 import 'd2l-polymer-behaviors/d2l-focusable-behavior.js';
 import 'fastdom/fastdom.min.js';
 
-const behaviors = [
-	D2L.PolymerBehaviors.Siren.EntityBehavior,
-	D2L.PolymerBehaviors.FocusableBehavior
-];
 /**
  * @customElement
  * @polymer
  */
-class D2lEnrollmentDetailCard extends mixinBehaviors(behaviors, PolymerElement) {
+class D2lEnrollmentDetailCard extends mixinBehaviors([
+	D2L.PolymerBehaviors.FocusableBehavior
+], EntityMixin(PolymerElement)) {
+	constructor() {
+		super();
+		this._setEntityType(EnrollmentEntity);
+	}
+
 	static get template() {
 		return html`
 			<style include="d2l-offscreen-shared-styles"></style>
@@ -357,7 +360,7 @@ class D2lEnrollmentDetailCard extends mixinBehaviors(behaviors, PolymerElement) 
 	}
 	static get observers() {
 		return [
-			'_handleEnrollmentData(entity)'
+			'_onEnrollmentChange(_entity)'
 		];
 	}
 	connectedCallback() {
@@ -405,53 +408,15 @@ class D2lEnrollmentDetailCard extends mixinBehaviors(behaviors, PolymerElement) 
 	_onLinkBlurModuleList() {
 		this.moduleListFocus = false;
 	}
-	_handleEnrollmentData(enrollment) {
-		if (
-			!enrollment
-			|| !enrollment.hasLinkByRel
-			|| !enrollment.hasLinkByRel(Rels.organization)
-		) {
-			return;
-		}
-		this._organizationUrl = enrollment.getLinkByRel(Rels.organization).href;
-
-		if (enrollment.hasLinkByRel(Rels.Activities.userActivityUsage)) {
-			this._userActivityUsageUrl = enrollment.getLinkByRel(Rels.Activities.userActivityUsage).href;
-		}
-
-		// this will require an update as well. I am hoping this can happen when the new POC comes out.
-		return this._organizationUrl && this._myEntityStoreFetch(this._organizationUrl)
-			.then(this._handleOrganizationResponse.bind(this));
+	_onEnrollmentChange(enrollment) {
+		this._organizationUrl = enrollment.organizationHref();
+		this._userActivityUsageUrl = enrollment.userActivityUsageUrl();
+		enrollment.onOrganizationChange((org) => {
+			this._description = org.description();
+			this._sequenceLink = org.sequenceLink();
+			this._organizationHomepageUrl = org.organizationHomepageUrl();
+		});
 	}
-
-	_handleOrganizationResponse(organization) {
-		organization = organization && organization.entity;
-
-		let description = organization.properties && organization.properties.description;
-		if (description) {
-			description = description.replace(/<[^>]*>/g, '');
-		}
-		this._description = description;
-		this._sequenceLink = organization.hasLinkByRel('https://api.brightspace.com/rels/sequence') &&
-			organization.getLinkByRel('https://api.brightspace.com/rels/sequence').href;
-
-		if (organization.hasSubEntityByRel(Rels.organizationHomepage)) {
-			var homepageEntity = organization.getSubEntityByRel(Rels.organizationHomepage);
-			this._organizationHomepageUrl = homepageEntity
-				&& homepageEntity.properties
-				&& homepageEntity.properties.path;
-		} else {
-			// If the user doesn't have access, don't animate image/show menu/underline on hover
-			this._organizationHomepageUrl = null;
-		}
-
-		return Promise.resolve();
-	}
-
-	_myEntityStoreFetch(url) {
-		return window.D2L.Siren.EntityStore.fetch(url, this.token);
-	}
-
 	_onResize(e) {
 		this._mobile = e.detail.current.width <= 389;
 	}
