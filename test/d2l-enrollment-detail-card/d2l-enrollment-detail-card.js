@@ -15,15 +15,15 @@ describe('d2l-enrollment-detail-card', () => {
 		onOrganizationChangeStub = sinon.stub();
 
 		enrollmentEntity = {
-			organizationHref: function() { return 'organizationHref' },
-			userActivityUsageUrl: function() { return 'userActivityUsageUrl' },
+			organizationHref: function() { return 'organizationHref'; },
+			userActivityUsageUrl: function() { return 'userActivityUsageUrl'; },
 			onOrganizationChange: onOrganizationChangeStub
 		};
 
 		organizationEntity = {
-			description: function() { return 'description' },
-			sequenceLink: function() { return 'sequenceLink' },
-			organizationHomepageUrl: function() { return 'organizationHomepageUrl' },
+			description: function() { return 'description'; },
+			sequenceLink: function() { return 'sequenceLink'; },
+			organizationHomepageUrl: function() { return 'organizationHomepageUrl'; }
 		};
 
 		onOrganizationChangeStub.callsArgWith(0, organizationEntity);
