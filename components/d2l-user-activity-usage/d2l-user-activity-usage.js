@@ -6,16 +6,20 @@ Polymer-based web component for a organization due and completion dates.
 @demo demo/d2l-user-activity-usage/d2l-user-activity-usage-demo.html Organization Updates
 */
 
-import {html, PolymerElement} from '@polymer/polymer/polymer-element.js';
+import { html, PolymerElement } from '@polymer/polymer/polymer-element.js';
+import { EntityMixin } from 'siren-sdk/mixin/entity-mixin.js';
+import { EnrollmentEntity } from '../../EnrollmentEntity.js';
 import { mixinBehaviors } from '@polymer/polymer/lib/legacy/class.js';
-import 'd2l-fetch/d2l-fetch.js';
 import './localize-behavior.js';
-import 'd2l-polymer-siren-behaviors/store/entity-behavior.js';
 
 class EnrollmentUserActivityUsage extends mixinBehaviors([
-	D2L.PolymerBehaviors.Siren.EntityBehavior,
 	D2L.PolymerBehaviors.Enrollment.UserActivityUsage.LocalizeBehavior
-], PolymerElement) {
+], EntityMixin(PolymerElement)) {
+	constructor() {
+		super();
+		this._setEntityType(EnrollmentEntity);
+	}
+
 	static get template() {
 		return html`
 			<span hidden$="[[overrideToDefault]]">
@@ -52,22 +56,18 @@ class EnrollmentUserActivityUsage extends mixinBehaviors([
 
 	static get observers() {
 		return [
-			'_entityChange(entity)'
+			'_onEnrollmentChange(_entity)',
 		];
 	}
 
-	_entityChange(entity) {
-		this._date = null;
-		if (!entity) {
-			return;
-		}
-		var completionDate = this._sirenClassProperty(entity, 'completion');
-		var dueDate = this._sirenClassProperty(entity, 'due-date');
+	_onEnrollmentChange(enrollment) {
+		var completionDate = enrollment.completionDate();
+		var dueDate = enrollment.dueDate();
 
 		this._isCompletionDate = !!completionDate;
 		this._date = this._isCompletionDate ? completionDate : dueDate;
 
-		if (!entity.hasClass('attended')) {
+		if (!enrollment.isAttended()) {
 			this.fire('d2l-enrollment-new');
 		}
 	}
@@ -119,20 +119,6 @@ class EnrollmentUserActivityUsage extends mixinBehaviors([
 
 		return dateText;
 	}
-	_sirenClassProperty(entity, sirenClass) {
-		if (!entity.hasSubEntityByClass(sirenClass)) {
-			return;
-		}
-		var subEntity = entity.getSubEntityByClass(sirenClass);
-
-		if (subEntity.hasClass('date')) {
-			return subEntity.properties ? subEntity.properties.date : null;
-		} else if (subEntity.hasClass('duration')) {
-			return subEntity.properties ? subEntity.properties.seconds : null;
-		} else if (subEntity.hasClass('completion')) {
-			return this._sirenClassProperty(subEntity,  'completion-date');
-		}
-	}
 	_dateFormat(date, nowDate) {
 		var msInAWeek = 604800000;
 		var weekFromNow = new Date(Date.now() + msInAWeek);
@@ -157,4 +143,3 @@ class EnrollmentUserActivityUsage extends mixinBehaviors([
 }
 
 window.customElements.define(EnrollmentUserActivityUsage.is, EnrollmentUserActivityUsage);
-
