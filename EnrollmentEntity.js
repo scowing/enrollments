@@ -41,6 +41,14 @@ export class EnrollmentEntity extends Entity {
 		return this._entity && this._entity.getSubEntities('https://api.brightspace.com/rels/enrollment');
 	}
 
+	userActivityUsageUrl() {
+		if (!this._entity || !this._entity.hasLinkByRel(Rels.Activities.userActivityUsage)) {
+			return;
+		}
+
+		return this._entity.getLinkByRel(Rels.Activities.userActivityUsage).href;
+	}
+
 	onOrganizationChange(onChange) {
 		const organizationHref = this.organizationHref();
 		// _subEntity builds new sub entity and allows this object to track it.
