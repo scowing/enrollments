@@ -9,7 +9,7 @@ describe('d2l-enrollment-detail-card', () => {
 		onOrganizationChangeStub;
 
 	beforeEach(() => {
-		sandbox = sinon.sandbox.create();		
+		sandbox = sinon.sandbox.create();
 
 		component = fixture('d2l-enrollment-detail-card-fixture');
 		onOrganizationChangeStub = sinon.stub();
