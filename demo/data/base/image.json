@@ -1,25 +1,290 @@
 {
-  "class":[
-     "course-image"
+  "class": [
+    "course-image"
   ],
-  "links":[
-     {
-        "rel":[
-           "self"
-        ],
-        "href":"../data/image.json"
-     },
-     {
-        "class":[
-           "tile",
-           "low-density",
-           "max"
-        ],
-        "rel":[
-           "alternate"
-        ],
-        "type":"image/jpeg",
-        "href":"../images/tile-low-density-max-size.jpg"
-     }
+  "properties": {
+    "name": "nature(growth)_0014",
+    "categories": [
+      "default",
+      "nature (growth)"
+    ],
+    "tags": [
+      "sun",
+      "grass",
+      "dawn",
+      "landscape",
+      "nature",
+      "sky",
+      "field",
+      "summer",
+      "sunset",
+      "fair weather",
+      "rural",
+      "countryside",
+      "outdoors",
+      "light",
+      "pasture",
+      "tree",
+      "farm"
+    ],
+    "lastModified": 1505858296013
+  },
+  "entities": [
+    {
+      "rel": [
+        "https://api.brightspace.com/rels/color"
+      ],
+      "class": [
+        "color"
+      ],
+      "properties": {
+        "description": "vibrant",
+        "r": 130,
+        "b": 53,
+        "g": 130
+      }
+    }
+  ],
+  "links": [
+    {
+      "rel": [
+        "self"
+      ],
+      "href": "https://course-image-catalog.api.brightspace.com/images/46639dd2-a02e-4cf2-8ab5-e388c932164a"
+    },
+    {
+      "rel": [
+        "via"
+      ],
+      "href": "https://www.pexels.com/photo/nature-sky-summer-sun-34066/"
+    },
+    {
+      "rel": [
+        "alternate"
+      ],
+      "href": "https://s.brightspace.com/course-images/images/46639dd2-a02e-4cf2-8ab5-e388c932164a/tile-low-density-max-size.jpg",
+      "class": [
+        "tile",
+        "low-density",
+        "max"
+      ],
+      "type": "image/jpeg"
+    },
+    {
+      "rel": [
+        "alternate"
+      ],
+      "href": "https://s.brightspace.com/course-images/images/46639dd2-a02e-4cf2-8ab5-e388c932164a/tile-high-density-max-size.jpg",
+      "class": [
+        "tile",
+        "high-density",
+        "max"
+      ],
+      "type": "image/jpeg"
+    },
+    {
+      "rel": [
+        "alternate"
+      ],
+      "href": "https://s.brightspace.com/course-images/images/46639dd2-a02e-4cf2-8ab5-e388c932164a/tile-low-density-mid-size.jpg",
+      "class": [
+        "tile",
+        "low-density",
+        "mid"
+      ],
+      "type": "image/jpeg"
+    },
+    {
+      "rel": [
+        "alternate"
+      ],
+      "href": "https://s.brightspace.com/course-images/images/46639dd2-a02e-4cf2-8ab5-e388c932164a/tile-high-density-mid-size.jpg",
+      "class": [
+        "tile",
+        "high-density",
+        "mid"
+      ],
+      "type": "image/jpeg"
+    },
+    {
+      "rel": [
+        "alternate"
+      ],
+      "href": "https://s.brightspace.com/course-images/images/46639dd2-a02e-4cf2-8ab5-e388c932164a/tile-low-density-min-size.jpg",
+      "class": [
+        "tile",
+        "low-density",
+        "min"
+      ],
+      "type": "image/jpeg"
+    },
+    {
+      "rel": [
+        "alternate"
+      ],
+      "href": "https://s.brightspace.com/course-images/images/46639dd2-a02e-4cf2-8ab5-e388c932164a/tile-high-density-min-size.jpg",
+      "class": [
+        "tile",
+        "high-density",
+        "min"
+      ],
+      "type": "image/jpeg"
+    },
+    {
+      "rel": [
+        "alternate"
+      ],
+      "href": "https://s.brightspace.com/course-images/images/46639dd2-a02e-4cf2-8ab5-e388c932164a/banner-wide-low-density-max-size.jpg",
+      "class": [
+        "banner",
+        "wide",
+        "low-density",
+        "max"
+      ],
+      "type": "image/jpeg"
+    },
+    {
+      "rel": [
+        "alternate"
+      ],
+      "href": "https://s.brightspace.com/course-images/images/46639dd2-a02e-4cf2-8ab5-e388c932164a/banner-wide-high-density-max-size.jpg",
+      "class": [
+        "banner",
+        "wide",
+        "high-density",
+        "max"
+      ],
+      "type": "image/jpeg"
+    },
+    {
+      "rel": [
+        "alternate"
+      ],
+      "href": "https://s.brightspace.com/course-images/images/46639dd2-a02e-4cf2-8ab5-e388c932164a/banner-wide-low-density-mid-size.jpg",
+      "class": [
+        "banner",
+        "wide",
+        "low-density",
+        "mid"
+      ],
+      "type": "image/jpeg"
+    },
+    {
+      "rel": [
+        "alternate"
+      ],
+      "href": "https://s.brightspace.com/course-images/images/46639dd2-a02e-4cf2-8ab5-e388c932164a/banner-wide-high-density-mid-size.jpg",
+      "class": [
+        "banner",
+        "wide",
+        "high-density",
+        "mid"
+      ],
+      "type": "image/jpeg"
+    },
+    {
+      "rel": [
+        "alternate"
+      ],
+      "href": "https://s.brightspace.com/course-images/images/46639dd2-a02e-4cf2-8ab5-e388c932164a/banner-wide-low-density-min-size.jpg",
+      "class": [
+        "banner",
+        "wide",
+        "low-density",
+        "min"
+      ],
+      "type": "image/jpeg"
+    },
+    {
+      "rel": [
+        "alternate"
+      ],
+      "href": "https://s.brightspace.com/course-images/images/46639dd2-a02e-4cf2-8ab5-e388c932164a/banner-wide-high-density-min-size.jpg",
+      "class": [
+        "banner",
+        "wide",
+        "high-density",
+        "min"
+      ],
+      "type": "image/jpeg"
+    },
+    {
+      "rel": [
+        "alternate"
+      ],
+      "href": "https://s.brightspace.com/course-images/images/46639dd2-a02e-4cf2-8ab5-e388c932164a/banner-narrow-low-density-max-size.jpg",
+      "class": [
+        "banner",
+        "narrow",
+        "low-density",
+        "max"
+      ],
+      "type": "image/jpeg"
+    },
+    {
+      "rel": [
+        "alternate"
+      ],
+      "href": "https://s.brightspace.com/course-images/images/46639dd2-a02e-4cf2-8ab5-e388c932164a/banner-narrow-high-density-max-size.jpg",
+      "class": [
+        "banner",
+        "narrow",
+        "high-density",
+        "max"
+      ],
+      "type": "image/jpeg"
+    },
+    {
+      "rel": [
+        "alternate"
+      ],
+      "href": "https://s.brightspace.com/course-images/images/46639dd2-a02e-4cf2-8ab5-e388c932164a/banner-narrow-low-density-mid-size.jpg",
+      "class": [
+        "banner",
+        "narrow",
+        "low-density",
+        "mid"
+      ],
+      "type": "image/jpeg"
+    },
+    {
+      "rel": [
+        "alternate"
+      ],
+      "href": "https://s.brightspace.com/course-images/images/46639dd2-a02e-4cf2-8ab5-e388c932164a/banner-narrow-high-density-mid-size.jpg",
+      "class": [
+        "banner",
+        "narrow",
+        "high-density",
+        "mid"
+      ],
+      "type": "image/jpeg"
+    },
+    {
+      "rel": [
+        "alternate"
+      ],
+      "href": "https://s.brightspace.com/course-images/images/46639dd2-a02e-4cf2-8ab5-e388c932164a/banner-narrow-low-density-min-size.jpg",
+      "class": [
+        "banner",
+        "narrow",
+        "low-density",
+        "min"
+      ],
+      "type": "image/jpeg"
+    },
+    {
+      "rel": [
+        "alternate"
+      ],
+      "href": "https://s.brightspace.com/course-images/images/46639dd2-a02e-4cf2-8ab5-e388c932164a/banner-narrow-high-density-min-size.jpg",
+      "class": [
+        "banner",
+        "narrow",
+        "high-density",
+        "min"
+      ],
+      "type": "image/jpeg"
+    }
   ]
 }
