@@ -5,8 +5,8 @@ Polymer-based web component for a enrollment updates.
 */
 import { html, PolymerElement } from '@polymer/polymer/polymer-element.js';
 import { EntityMixin } from 'siren-sdk/mixin/entity-mixin.js';
-import { EnrollmentEntity } from '../../EnrollmentEntity.js';
 import { mixinBehaviors } from '@polymer/polymer/lib/legacy/class.js';
+import { OrganizationEntity } from 'd2l-organizations/OrganizationEntity.js';
 import 'd2l-organizations/components/d2l-organization-updates/d2l-organization-updates.js';
 import 'd2l-card/d2l-card-footer-link.js';
 import 'd2l-tooltip/d2l-tooltip.js';
@@ -20,7 +20,7 @@ class EnrollmentUpdates extends mixinBehaviors([
 ], EntityMixin(PolymerElement)) {
 	constructor() {
 		super();
-		this._setEntityType(EnrollmentEntity);
+		this._setEntityType(OrganizationEntity);
 	}
 
 	static get template() {
@@ -96,17 +96,23 @@ class EnrollmentUpdates extends mixinBehaviors([
 
 	static get is() { return 'd2l-enrollment-updates'; }
 
-	_loadData(enrollment) {
-		var presentationAttributes = {
-			'ShowDropboxUnreadFeedback': this.showDropboxUnreadFeedback,
-			'ShowUnattemptedQuizzes': this.showUnattemptedQuizzes,
-			'ShowUngradedQuizAttempts': this.showUngradedQuizAttempts,
-			'ShowUnreadDiscussionMessages': this.showUnreadDiscussionMessages,
-			'ShowUnreadDropboxSubmissions': this.showUnreadDropboxSubmissions,
-		};
+	_loadData(organizationEntity) {
+		organizationEntity.onNotificationsChange(
+			(notificationCollection) => {
+				const notificationList = notificationCollection.getNotifications();
 
-		var notification = this._orgUpdates_fetch(enrollment.entity(), presentationAttributes);
-		this._notifications = this._orgUpdates_notifications(notification);
+				var presentationAttributes = {
+					'ShowDropboxUnreadFeedback': this.showDropboxUnreadFeedback,
+					'ShowUnattemptedQuizzes': this.showUnattemptedQuizzes,
+					'ShowUngradedQuizAttempts': this.showUngradedQuizAttempts,
+					'ShowUnreadDiscussionMessages': this.showUnreadDiscussionMessages,
+					'ShowUnreadDropboxSubmissions': this.showUnreadDropboxSubmissions,
+				};
+
+				var notification = this._orgUpdates_fetch(notificationList, presentationAttributes);
+				this._notifications = this._orgUpdates_notifications(notification);
+			}
+		);
 	}
 
 	_toString(a) {
