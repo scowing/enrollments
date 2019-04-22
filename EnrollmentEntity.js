@@ -10,7 +10,6 @@ export const classes = {
 };
 
 export class EnrollmentEntity extends Entity {
-	// Entity has a constructor that is called from the factory to keep track of what is required to be cleaned.
 	organizationHref() {
 		if (!this._entity || !this._entity.hasLinkByRel(Rels.organization)) {
 			return;
@@ -51,8 +50,6 @@ export class EnrollmentEntity extends Entity {
 
 	onOrganizationChange(onChange) {
 		const organizationHref = this.organizationHref();
-		// _subEntity builds new sub entity and allows this object to track it.
-		// So all sub entities are dispose when this object is disposed.
 		organizationHref && this._subEntity(OrganizationEntity, organizationHref, onChange);
 	}
 
