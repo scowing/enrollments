@@ -6,13 +6,16 @@ Polymer-based web component for a organization name.
 @demo demo/d2l-enrollment-hero-banner/d2l-enrollment-hero-banner-demo.html Organization Name
 */
 import { html, PolymerElement } from '@polymer/polymer/polymer-element.js';
-import { EntityMixin } from 'siren-sdk/mixin/entity-mixin.js';
-import 'd2l-organizations/components/d2l-organization-image/d2l-organization-image.js';
-import '../d2l-enrollment-card/d2l-enrollment-updates.js';
-import 'd2l-typography/d2l-typography-shared-styles.js';
-import { EnrollmentEntity } from '../../EnrollmentEntity.js';
 import { Rels } from 'd2l-hypermedia-constants';
+import 'd2l-link/d2l-link-behavior.js';
+import 'd2l-offscreen/d2l-offscreen-shared-styles.js';
+import 'd2l-polymer-behaviors/d2l-focusable-behavior.js';
+import 'd2l-organizations/components/d2l-organization-image/d2l-organization-image.js';
+import 'd2l-typography/d2l-typography-shared-styles.js';
+import { EntityMixin } from 'siren-sdk/mixin/entity-mixin.js';
+import '../d2l-enrollment-card/d2l-enrollment-updates.js';
 import '../d2l-enrollment-summary-view/d2l-enrollment-summary-view-tag-list.js';
+import { EnrollmentEntity } from '../../EnrollmentEntity.js';
 
 /**
  * @customElement
@@ -26,12 +29,45 @@ class EnrollmentHeroBanner extends EntityMixin(PolymerElement) {
 
 	static get template() {
 		return html`
+			<style include="d2l-offscreen-shared-styles"></style>
 			<style include="d2l-typography-shared-styles">
 				:host {
+					border-radius: 8px;
+					box-shadow: 0 4px 8px 0 rgba(0,0,0,0.03);
 					display: block;
 					max-width: 1170px;
 					position: relative;
+					-webkit-transition: transform 300ms ease-out;
+					transition: transform 300ms ease-out 50ms;
 					z-index: 0;
+				}
+				:host(:hover) {
+					transform: translateY(-4px);
+				}
+				:host(:hover) .dehb-image {
+					box-shadow: 0 4px 18px 2px rgba(0,0,0,0.06);
+				}
+				:host([disabled]),
+				:host([disabled]) .dehb-image {
+					box-shadow: none;
+					transform: none;
+				}
+
+				:host([active]) .dehb-image {
+					border-color: rgba(0, 111, 191, 0.4);
+					box-shadow: 0 0 0 4px rgba(0, 111, 191, 0.3);
+				}
+				:host([active]:hover) .dehb-image {
+					border-color: rgba(0, 111, 191, 0.4);
+					box-shadow: 0 0 0 4px rgba(0, 111, 191, 0.3);
+				}
+				a.d2l-focusable {
+					display: block;
+					position: absolute;
+					height: 100%;
+					outline: none;
+					width: 100%;
+					z-index: 1;
 				}
 				.dehb-container {
 					padding: 0.9rem;
@@ -93,6 +129,14 @@ class EnrollmentHeroBanner extends EntityMixin(PolymerElement) {
 					display: flex;
 					max-height: 2.8em; /* not a typo meant em */
 					min-height: 2.26em; /* not a typo meant em */
+				}
+				.dehb-link-text {
+					@apply --d2l-offscreen;
+					display: inline-block;
+				}
+
+				:host(:dir(rtl)) .dehb-link-text {
+					@apply --d2l-offscreen-rtl
 				}
 			</style>
 			<!-- Loading Skeleton Styles -->
@@ -167,6 +211,9 @@ class EnrollmentHeroBanner extends EntityMixin(PolymerElement) {
 					width: 18px;
 				}
 			</style>
+			<a class="d2l-focusable" href$="[[_organizationHomepageUrl]]" on-focus="_onFocus" on-blur="_onBlur">
+				<span class="d2l-card-link-text">[[_title]]</span>
+			</a>
 			<div class="dehb-container">
 				<div class="dehb-image">
 					<div class="dehb-image-shimmer"></div>
@@ -221,7 +268,21 @@ class EnrollmentHeroBanner extends EntityMixin(PolymerElement) {
 	}
 	static get properties() {
 		return {
+			active: {
+				type: Boolean,
+				value: false,
+				reflectToAttribute: true,
+				readOnly: true
+			},
+			disabled: {
+				type: Boolean,
+				value: true,
+				computed: '_computeDisabled(_organizationHomepageUrl)',
+				reflectToAttribute: true,
+				readOnly: true
+			},
 			_organizationName: String,
+			_organizationHomepageUrl: String,
 			_organizationUrl: String,
 			_notificationsUrl: String,
 			_tags: {
@@ -246,9 +307,22 @@ class EnrollmentHeroBanner extends EntityMixin(PolymerElement) {
 
 	_onOrganizationChange(organization) {
 		this._organizationName = organization.name();
+		this._organizationHomepageUrl = organization.organizationHomepageUrl();
 
 		// temp waiting on the notifications to get entities.
 		this._notificationsUrl = organization._entity && organization._entity.getLinkByRel(Rels.Notifications.organizationNotifications).href;
+	}
+
+	_computeDisabled(organizationHomepage) {
+		return !organizationHomepage;
+	}
+
+	_onFocus() {
+		this._setActive(true);
+	}
+
+	_onBlur() {
+		this._setActive(false);
 	}
 }
 
