@@ -1,0 +1,16 @@
+{
+   "changeImage" : "Skift billede",
+   "closed" : "Lukket",
+   "completed" : "Fuldført",
+   "courseOfferingInformation" : "Oplysninger om kursustilbud",
+   "coursePinButton" : "{course} er fastgjort. Frigør kursus",
+   "courseSettings" : "Kursusindstillinger for {course}",
+   "disabled" : "Deaktiveret",
+   "inactive" : "Inaktiv",
+   "new" : "Ny",
+   "overdue" : "Forsinket",
+   "pin" : "Fastgør",
+   "pinActionResult" : "{course} er blevet fastgjort",
+   "unpin" : "Frigør",
+   "unpinActionResult" : "{course} er blevet frigjort"
+}

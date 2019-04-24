@@ -1,0 +1,16 @@
+{
+   "changeImage" : "Modifier l’image",
+   "closed" : "Fermé",
+   "completed" : "Terminé",
+   "courseOfferingInformation" : "Informations sur l’offre de cours",
+   "coursePinButton" : "{course} est épinglé. Désépingler le cours",
+   "courseSettings" : "Paramètres du cours {course}",
+   "disabled" : "Désactivé",
+   "inactive" : "Inactif",
+   "new" : "Nouveau",
+   "overdue" : "En retard",
+   "pin" : "Épingler",
+   "pinActionResult" : "{course} a été épinglé",
+   "unpin" : "Désépingler",
+   "unpinActionResult" : "{course} a été désépinglé"
+}
