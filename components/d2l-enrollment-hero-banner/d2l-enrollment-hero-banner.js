@@ -52,11 +52,7 @@ class EnrollmentHeroBanner extends EntityMixin(PolymerElement) {
 					box-shadow: none;
 					transform: none;
 				}
-
-				:host([active]) .dehb-image {
-					border-color: rgba(0, 111, 191, 0.4);
-					box-shadow: 0 0 0 4px rgba(0, 111, 191, 0.3);
-				}
+				:host([active]) .dehb-image,
 				:host([active]:hover) .dehb-image {
 					border-color: rgba(0, 111, 191, 0.4);
 					box-shadow: 0 0 0 4px rgba(0, 111, 191, 0.3);
@@ -212,7 +208,7 @@ class EnrollmentHeroBanner extends EntityMixin(PolymerElement) {
 				}
 			</style>
 			<a class="d2l-focusable" href$="[[_organizationHomepageUrl]]" on-focus="_onFocus" on-blur="_onBlur">
-				<span class="d2l-card-link-text">[[_title]]</span>
+				<span class="dehb-link-text">[[_title]]</span>
 			</a>
 			<div class="dehb-container">
 				<div class="dehb-image">
