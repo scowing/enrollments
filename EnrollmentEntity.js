@@ -48,10 +48,6 @@ export class EnrollmentEntity extends Entity {
 		return this._entity.getLinkByRel(Rels.Activities.userActivityUsage).href;
 	}
 
-	entity() {
-		return this._entity;
-	}
-
 	onOrganizationChange(onChange) {
 		const organizationHref = this.organizationHref();
 		organizationHref && this._subEntity(OrganizationEntity, organizationHref, onChange);
