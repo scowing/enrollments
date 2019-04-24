@@ -6,7 +6,6 @@ Polymer-based web component for a organization name.
 @demo demo/d2l-enrollment-hero-banner/d2l-enrollment-hero-banner-demo.html Organization Name
 */
 import { html, PolymerElement } from '@polymer/polymer/polymer-element.js';
-import { Rels } from 'd2l-hypermedia-constants';
 import 'd2l-link/d2l-link-behavior.js';
 import 'd2l-offscreen/d2l-offscreen-shared-styles.js';
 import 'd2l-polymer-behaviors/d2l-focusable-behavior.js';
@@ -248,7 +247,7 @@ class EnrollmentHeroBanner extends EntityMixin(PolymerElement) {
 						</div>
 						<div class="dehb-updates-container">
 							<d2l-enrollment-updates
-								href="[[_notificationsUrl]]"
+								href="[[_organizationUrl]]"
 								token$=[[token]]
 								show-unattempted-quizzes
 								show-dropbox-unread-feedback
@@ -304,9 +303,6 @@ class EnrollmentHeroBanner extends EntityMixin(PolymerElement) {
 	_onOrganizationChange(organization) {
 		this._organizationName = organization.name();
 		this._organizationHomepageUrl = organization.organizationHomepageUrl();
-
-		// temp waiting on the notifications to get entities.
-		this._notificationsUrl = organization._entity && organization._entity.getLinkByRel(Rels.Notifications.organizationNotifications).href;
 	}
 
 	_computeDisabled(organizationHomepage) {
