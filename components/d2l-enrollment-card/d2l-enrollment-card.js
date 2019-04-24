@@ -253,7 +253,7 @@ $_documentContainer.innerHTML = `<dom-module id="d2l-enrollment-card">
 
 			<div slot="content" class="d2l-enrollment-card-alert-colour-circle" hidden$="[[!_newEnrollment]]"></div>
 
-			<d2l-enrollment-updates slot="footer" href="[[_notificationsUrl]]" token="[[token]]"
+			<d2l-enrollment-updates slot="footer" href="[[_organizationUrl]]" token="[[token]]"
 				show-dropbox-unread-feedback="[[showDropboxUnreadFeedback]]"
 				show-unattempted-quizzes="[[showUnattemptedQuizzes]]"
 				show-ungraded-quiz-attempts="[[showUngradedQuizAttempts]]"
@@ -262,7 +262,7 @@ $_documentContainer.innerHTML = `<dom-module id="d2l-enrollment-card">
 			></d2l-enrollment-updates>
 		</d2l-card>
 	</template>
-	
+
 </dom-module>`;
 
 document.head.appendChild($_documentContainer.content);
