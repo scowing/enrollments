@@ -18,5 +18,8 @@
             }
         }
     ],
-    "links": []
+    "links": [{
+      "rel": ["self"],
+      "href": "../data/base/userActivityUsage.json"
+    }]
 }

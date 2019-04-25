@@ -4,6 +4,6 @@
   },
   "links": [{
     "rel": ["self"],
-    "href": "data/semester.json"
+    "href": "../data/base/semester.json"
   }]
 }

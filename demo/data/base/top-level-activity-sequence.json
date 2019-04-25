@@ -22,7 +22,7 @@
 	],
 	"links": [{
 		"rel": ["self", "describes"],
-		"href": "data/l2-module1.json"
+		"href": "../data/base/top-level-activity-sequence.json"
 	},{
 		"rel": ["https://api.brightspace.com/rels/organization"],
 		"href": "../data/base/organization.json"
