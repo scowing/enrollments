@@ -9,6 +9,6 @@ export class EnrollmentCollectionEntity extends Entity {
 			return;
 		}
 		const enrollmentEntities = this._entity.getSubEntitiesByRel(Rels.userEnrollment);
-		return enrollmentEntities.map(e => e.href || undefined).filter(href => href);
+		return enrollmentEntities.map(e => e.href).filter(href => href);
 	}
 }
