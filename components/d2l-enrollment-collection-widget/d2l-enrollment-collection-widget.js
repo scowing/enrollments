@@ -33,26 +33,52 @@ class EnrollmentCollectionWidget extends EntityMixin(PolymerElement) {
 					justify-content: space-between;
 				}
 				.decw-flex d2l-enrollment-card {
+					--course-image-height: 136px;
 					flex-grow: 1;
 					margin-top: 30px;
 				}
 				.decw-flex d2l-enrollment-card ~ d2l-enrollment-card {
 					margin-left: 30px;
 				}
+				.decw-flex-two {
+					display: flex;
+					justify-content: space-between;
+				}
+				.decw-flex-two d2l-enrollment-card {
+					--course-image-height: 150px;
+					margin-left: 30px;
+					max-width: 307px;
+				}
+				.decw-flex-two d2l-enrollment-hero-banner{
+					flex-grow: 1;
+				}
 			</style>
-			<d2l-enrollment-hero-banner href="[[_enrollmentHeroHref]]" token="[[token]]"></d2l-enrollment-hero-banner>
-			<div class="decw-flex">
-				<template is="dom-repeat"  items="[[_enrollmentsHref]]">
-					<d2l-enrollment-card href="[[item]]" token="[[token]]"
-							show-organization-code
-							show-semester-name
+			<template is="dom-if" if="[[!_hasTwoEnrollments]]">
+				<d2l-enrollment-hero-banner href="[[_enrollmentHeroHref]]" token="[[token]]"></d2l-enrollment-hero-banner>
+				<div class="decw-flex">
+					<template is="dom-repeat"  items="[[_enrollmentsHref]]">
+						<d2l-enrollment-card href="[[item]]" token="[[token]]"
+								show-unattempted-quizzes
+								show-dropbox-unread-feedback
+								show-ungraded-quiz-attempts
+								show-unread-discussion-messages
+								show-unread-dropbox-submissions>
+						</d2l-enrollment-card>
+					</template>
+				</div>
+			</template>
+			<template is="dom-if" if="[[_hasTwoEnrollments]]">
+				<div class="decw-flex-two">
+					<d2l-enrollment-hero-banner href="[[_enrollmentHeroHref]]" token="[[token]]"></d2l-enrollment-hero-banner>
+					<d2l-enrollment-card href="[[_enrollmentsHref.0]]" token="[[token]]"
 							show-unattempted-quizzes
 							show-dropbox-unread-feedback
 							show-ungraded-quiz-attempts
 							show-unread-discussion-messages
-							show-unread-dropbox-submissions></d2l-enrollment-card>
-				</template>
-			</div>
+							show-unread-dropbox-submissions>
+					</d2l-enrollment-card>
+				</div>
+			</template>
 		`;
 	}
 	static get properties() {
@@ -61,6 +87,10 @@ class EnrollmentCollectionWidget extends EntityMixin(PolymerElement) {
 			_enrollmentsHref: {
 				type: Array,
 				value: () => []
+			},
+			_hasTwoEnrollments: {
+				type: Boolean,
+				value: false
 			}
 		};
 	}
@@ -74,8 +104,10 @@ class EnrollmentCollectionWidget extends EntityMixin(PolymerElement) {
 	static get is() { return 'd2l-enrollment-collection-widget'; }
 
 	_onEnrollmentCollectionChange(enrollmentCollection) {
-		this._enrollmentsHref = enrollmentCollection.enrollmentsHref();
-		this._enrollmentHeroHref = this._enrollmentsHref.shift();
+		const enrollments = enrollmentCollection.enrollmentsHref();
+		this._hasTwoEnrollments = enrollments.length === 2;
+		this._enrollmentHeroHref = enrollments.shift();
+		this._enrollmentsHref = enrollments;
 	}
 }
 

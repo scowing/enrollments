@@ -1,0 +1,26 @@
+{
+  "entities": [
+    {
+      "class": [
+        "enrollment"
+      ],
+      "rel": [
+        "https://api.brightspace.com/rels/user-enrollment"
+      ],
+      "href": "../data/base/enrollment.json"
+    },
+    {
+      "class": [
+        "enrollment"
+      ],
+      "rel": [
+        "https://api.brightspace.com/rels/user-enrollment"
+      ],
+      "href": "../data/base/enrollment.json"
+    }
+  ],
+  "links": [{
+    "rel": ["self"],
+    "href": "../data/base/enrollmentCollection2json"
+  }]
+}
