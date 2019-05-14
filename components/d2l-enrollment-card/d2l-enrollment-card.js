@@ -595,6 +595,9 @@ Polymer({
 			}.bind(this), 1000);
 		}.bind(this), 1000);
 	},
+	_loadEnrollmentForPinning: function(enrollment) {
+		return this._loadEnrollmentData(true, enrollment);
+	},
 	_loadEnrollmentData: function(load, enrollment) {
 		this._resetState();
 		if (!load || !enrollment) {
@@ -783,7 +786,7 @@ Polymer({
 			text: this.localize(localizeKey, 'course', this._organization.properties.name)
 		}, { bubbles: true });
 
-		return this.performSirenAction(pinAction).then(this._loadEnrollmentData.bind(this)).then(function() {
+		return this.performSirenAction(pinAction).then(this._loadEnrollmentForPinning.bind(this)).then(function() {
 			// Wait until after PUT has finished to fire, so that
 			// listeners are guaranteed to fetch updated entity
 			this.fire('d2l-course-pinned-change', {
