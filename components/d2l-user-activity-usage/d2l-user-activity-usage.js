@@ -10,10 +10,10 @@ import { html, PolymerElement } from '@polymer/polymer/polymer-element.js';
 import { EntityMixin } from 'siren-sdk/mixin/entity-mixin.js';
 import { EnrollmentEntity } from '../../EnrollmentEntity.js';
 import { mixinBehaviors } from '@polymer/polymer/lib/legacy/class.js';
-import './localize-behavior.js';
+import '../localize-behavior.js';
 
 class EnrollmentUserActivityUsage extends mixinBehaviors([
-	D2L.PolymerBehaviors.Enrollment.UserActivityUsage.LocalizeBehavior
+	D2L.PolymerBehaviors.Enrollment.LocalizeBehavior
 ], EntityMixin(PolymerElement)) {
 	constructor() {
 		super();

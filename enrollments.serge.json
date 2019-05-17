@@ -1,27 +1,8 @@
 [
   {
-    "name": "Card",
-    "source_dir": "components/d2l-enrollment-card/lang",
-    "output_file_path": "components/d2l-enrollment-card/lang/%LANG%.json",
-    "output_lang_rewrite": [
-      "ar-sa ar",
-      "de-de de",
-      "es-mx es",
-      "fi-FI fi",
-      "fr-ca fr",
-      "ja-jp ja",
-      "ko-kr ko",
-      "nl-nl nl",
-      "pt-br pt",
-      "sv-se sv",
-      "tr-tr tr",
-      "zh-cn zh",
-      "zh-tw zh-tw"
-    ]
-  },{
-    "name": "UserActivityUsage",
-    "source_dir": "components/d2l-user-activity-usage/lang",
-    "output_file_path": "components/d2l-user-activity-usage/lang/%LANG%.json",
+    "name": "Enrollment",
+    "source_dir": "components/lang",
+    "output_file_path": "components/lang/%LANG%.json",
     "output_lang_rewrite": [
       "ar-sa ar",
       "de-de de",
