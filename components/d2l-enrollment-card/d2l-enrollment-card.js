@@ -39,7 +39,7 @@ import 'd2l-polymer-siren-behaviors/store/entity-behavior.js';
 import 'd2l-polymer-siren-behaviors/store/siren-action-behavior.js';
 import '../d2l-user-activity-usage/d2l-user-activity-usage.js';
 import './d2l-enrollment-updates.js';
-import './localize-behavior.js';
+import '../localize-behavior.js';
 import { Polymer } from '@polymer/polymer/lib/legacy/polymer-fn.js';
 import { afterNextRender } from '@polymer/polymer/lib/utils/render-status.js';
 const $_documentContainer = document.createElement('template');
@@ -426,7 +426,7 @@ Polymer({
 	},
 	behaviors: [
 		D2L.PolymerBehaviors.Hypermedia.OrganizationHMBehavior,
-		D2L.PolymerBehaviors.Enrollment.Card.LocalizeBehavior,
+		D2L.PolymerBehaviors.Enrollment.LocalizeBehavior,
 		D2L.PolymerBehaviors.Siren.EntityBehavior,
 		D2L.PolymerBehaviors.Siren.SirenActionBehavior
 	],
