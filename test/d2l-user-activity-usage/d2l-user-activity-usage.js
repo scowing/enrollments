@@ -3,8 +3,8 @@ describe('d2l-user-activity-usage', () => {
 	var component,
 		sandbox,
 		userActivityUsageEntity,
-		completionDateStub,
-		dueDateStub,
+		isCompletionDateStub,
+		dateStub,
 		isAttendedStub;
 
 	beforeEach(() => {
