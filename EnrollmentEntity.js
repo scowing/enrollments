@@ -1,8 +1,9 @@
 'use strict';
 
 import { Entity } from 'siren-sdk/es6/Entity.js';
-import { Rels } from 'd2l-hypermedia-constants';
+import { Actions, Rels } from 'd2l-hypermedia-constants';
 import { OrganizationEntity } from 'd2l-organizations/OrganizationEntity.js';
+import { UserActivityUsageEntity  } from './UserActivityUsageEntity.js';
 
 export const classes = {
 	pinned: 'pinned',
@@ -18,24 +19,6 @@ export class EnrollmentEntity extends Entity {
 		return this._entity.getLinkByRel(Rels.organization).href;
 	}
 
-	completionDate() {
-		if (!this._entity) {
-			return;
-		}
-		return this._sirenClassProperty(this._entity, 'completion');
-	}
-
-	dueDate() {
-		if (!this._entity) {
-			return;
-		}
-		return this._sirenClassProperty(this._entity, 'due-date');
-	}
-
-	isAttended() {
-		return this.hasClass('attended');
-	}
-
 	enrollments() {
 		return this._entity && this._entity.getSubEntities('https://api.brightspace.com/rels/enrollment');
 	}
@@ -48,24 +31,35 @@ export class EnrollmentEntity extends Entity {
 		return this._entity.getLinkByRel(Rels.Activities.userActivityUsage).href;
 	}
 
+	self() {
+		if (!this._entity || !this._entity.hasLinkByRel('self')) {
+			return;
+		}
+
+		return this._entity.getLinkByRel('self').href;
+	}
+
+	pinned() {
+		return this.hasClass(classes.pinned);
+	}
+
+	pinActionName() {
+		if (!this._entity || !this._entity.getActionByName) {
+			return;
+		}
+
+		return this.pinned()
+			? this._entity.getActionByName(Actions.enrollments.unpinCourse)
+			: this._entity.getActionByName(Actions.enrollments.pinCourse);
+	}
+
 	onOrganizationChange(onChange) {
 		const organizationHref = this.organizationHref();
 		organizationHref && this._subEntity(OrganizationEntity, organizationHref, onChange);
 	}
 
-	_sirenClassProperty(entity, sirenClass) {
-		if (!entity.hasSubEntityByClass(sirenClass)) {
-			return;
-		}
-		var subEntity = entity.getSubEntityByClass(sirenClass);
-
-		if (subEntity.hasClass('date')) {
-			return subEntity.properties ? subEntity.properties.date : null;
-		} else if (subEntity.hasClass('duration')) {
-			return subEntity.properties ? subEntity.properties.seconds : null;
-		} else if (subEntity.hasClass('completion')) {
-			return this._sirenClassProperty(subEntity,  'completion-date');
-		}
+	onUserActivityUsageChange(onChange) {
+		const userActivityUsageUrl = this.userActivityUsageUrl();
+		userActivityUsageUrl && this._subEntity(UserActivityUsageEntity, userActivityUsageUrl, onChange);
 	}
-
 }
