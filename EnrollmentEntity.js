@@ -49,8 +49,8 @@ export class EnrollmentEntity extends Entity {
 		}
 
 		return this.pinned()
-		? this._entity.getActionByName(Actions.enrollments.unpinCourse)
-		: this._entity.getActionByName(Actions.enrollments.pinCourse);
+			? this._entity.getActionByName(Actions.enrollments.unpinCourse)
+			: this._entity.getActionByName(Actions.enrollments.pinCourse);
 	}
 
 	onOrganizationChange(onChange) {
