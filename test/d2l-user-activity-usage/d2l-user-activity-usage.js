@@ -11,13 +11,13 @@ describe('d2l-user-activity-usage', () => {
 		sandbox = sinon.sandbox.create();
 		component = fixture('d2l-user-activity-usage-fixture');
 
-		completionDateStub = sinon.stub();
-		dueDateStub = sinon.stub();
+		isCompletionDateStub = sinon.stub();
+		dateStub = sinon.stub();
 		isAttendedStub = sinon.stub();
 
 		userActivityUsageEntity = {
-			completionDate: completionDateStub,
-			dueDate: dueDateStub,
+			isCompletionDate: isCompletionDateStub,
+			date: dateStub,
 			isAttended: isAttendedStub
 		};
 	});
@@ -29,7 +29,8 @@ describe('d2l-user-activity-usage', () => {
 	describe('Due Date correctly displayed', () => {
 
 		it('Show year if not in the same year.', done => {
-			dueDateStub.returns('2017-08-01T04:00:00.000Z');
+			isCompletionDateStub.returns(false);
+			dateStub.returns('2017-08-01T04:00:00.000Z');
 			component._entity = userActivityUsageEntity;
 			setTimeout(() => {
 				expect(component._dateText).to.equal('Due Aug 1, 2017');
@@ -39,7 +40,8 @@ describe('d2l-user-activity-usage', () => {
 		});
 
 		it('Show completed.', done => {
-			completionDateStub.returns('2017-08-01T04:00:00.000Z');
+			isCompletionDateStub.returns(true);
+			dateStub.returns('2017-08-01T04:00:00.000Z');
 			component._entity = userActivityUsageEntity;
 			setTimeout(() => {
 				expect(component._dateText).to.equal('Completed Aug 1, 2017');
@@ -138,7 +140,8 @@ describe('d2l-user-activity-usage', () => {
 				},
 			].forEach((testCase) => {
 				it(testCase.display, (done) => {
-					dueDateStub.returns(testCase.date.toISOString());
+					isCompletionDateStub.returns(false);
+					dateStub.returns(testCase.date.toISOString());
 					component._entity = userActivityUsageEntity;
 
 					setTimeout(() => {
@@ -152,7 +155,8 @@ describe('d2l-user-activity-usage', () => {
 
 	describe('Check if events fire.', () => {
 		it('Overdue', (done) => {
-			dueDateStub.returns('2017-08-01T04:00:00.000Z');
+			isCompletionDateStub.returns(false);
+			dateStub.returns('2017-08-01T04:00:00.000Z');
 			component.addEventListener('d2l-enrollment-status', function(e) {
 				expect(e.detail.status).to.equal('overdue');
 				done();
@@ -162,7 +166,8 @@ describe('d2l-user-activity-usage', () => {
 		});
 
 		it('Completed', (done) => {
-			completionDateStub.returns('2017-08-01T04:00:00.000Z');
+			isCompletionDateStub.returns(true);
+			dateStub.returns('2017-08-01T04:00:00.000Z');
 
 			component.addEventListener('d2l-enrollment-status', function(e) {
 				expect(e.detail.status).to.equal('completed');
@@ -173,7 +178,8 @@ describe('d2l-user-activity-usage', () => {
 		});
 
 		it('New Enrollment', (done) => {
-			dueDateStub.returns('2017-08-01T04:00:00.000Z');
+			isCompletionDateStub.returns(false);
+			dateStub.returns('2017-08-01T04:00:00.000Z');
 
 			var eventSpy = sandbox.spy();
 			component.addEventListener('d2l-enrollment-new', eventSpy);
@@ -188,7 +194,8 @@ describe('d2l-user-activity-usage', () => {
 		});
 
 		it('No event fires', (done) => {
-			dueDateStub.returns('2100-08-01T04:00:00.000Z');
+			isCompletionDateStub.returns(false);
+			dateStub.returns('2100-08-01T04:00:00.000Z');
 			isAttendedStub.returns(true);
 
 			var eventSpy = sandbox.spy();
