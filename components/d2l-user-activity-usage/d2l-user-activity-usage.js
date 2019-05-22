@@ -46,11 +46,11 @@ class EnrollmentUserActivityUsage extends DateTextAndStatusMixin(EntityMixin(Pol
 
 	static get observers() {
 		return [
-			'_onEnrollmentChange(_entity)'
+			'_onUserActivityUsageChange(_entity)'
 		];
 	}
 
-	_onEnrollmentChange(userActivityUsage) {
+	_onUserActivityUsageChange(userActivityUsage) {
 		this._date = userActivityUsage.date();
 		const dateTextAndStatus = this.dateTextAndStatus(userActivityUsage.isCompletionDate(), this._date);
 		this._dateText = dateTextAndStatus && dateTextAndStatus.dateText;

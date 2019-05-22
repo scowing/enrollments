@@ -1,7 +1,7 @@
 'use strict';
 
 import { Entity } from 'siren-sdk/es6/Entity.js';
-import { Rels } from 'd2l-hypermedia-constants';
+import { Actions, Rels } from 'd2l-hypermedia-constants';
 import { OrganizationEntity } from 'd2l-organizations/OrganizationEntity.js';
 import { UserActivityUsageEntity  } from './UserActivityUsageEntity.js';
 
@@ -31,7 +31,7 @@ export class EnrollmentEntity extends Entity {
 		return this._entity.getLinkByRel(Rels.Activities.userActivityUsage).href;
 	}
 
-	selfHref() {
+	self() {
 		if (!this._entity || !this._entity.hasLinkByRel('self')) {
 			return;
 		}
@@ -41,6 +41,16 @@ export class EnrollmentEntity extends Entity {
 
 	pinned() {
 		return this.hasClass(classes.pinned);
+	}
+
+	pinActionName() {
+		if (!this._entity || !this._entity.getActionByName) {
+			return;
+		}
+
+		return this.pinned()
+		? this._entity.getActionByName(Actions.enrollments.unpinCourse)
+		: this._entity.getActionByName(Actions.enrollments.pinCourse);
 	}
 
 	onOrganizationChange(onChange) {
