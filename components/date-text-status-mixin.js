@@ -19,19 +19,19 @@ export const interalDateTextAndStatusMixin = function(superClass) {
 			var msInAWeek = 604800000;
 			var nowDate = new Date(Date.now());
 			nowDate.setHours(0, 0, 0, 0);
-	
+
 			var tomorrowDate = new Date(Date.now() + msInDay);
 			tomorrowDate.setHours(0, 0, 0, 0);
-	
+
 			var yesterdayDate = new Date(Date.now() - msInDay);
 			yesterdayDate.setHours(0, 0, 0, 0);
-	
+
 			var pastWeekFromNow = new Date(Date.now() - msInAWeek);
 			pastWeekFromNow.setHours(0, 0, 0, 0);
-	
+
 			var parsedDate = new Date(Date.parse(date));
 			var dateTypeText = isCompletionDate ? 'completed' : 'due';
-	
+
 			var dateText;
 			if (this._compareDate(parsedDate, nowDate)) {
 				dateText = this.localize(dateTypeText + 'Today');
@@ -45,7 +45,7 @@ export const interalDateTextAndStatusMixin = function(superClass) {
 			} else {
 				dateText = this.localize(dateTypeText + 'On', 'dateTime', this.formatDate(parsedDate, {format: this._dateFormat(parsedDate, nowDate)}));
 			}
-	
+
 			var status = null;
 			if (isCompletionDate && parsedDate < tomorrowDate) {
 				status = 'completed';
@@ -54,7 +54,7 @@ export const interalDateTextAndStatusMixin = function(superClass) {
 				status = 'overdue';
 				this.fire('d2l-enrollment-status', {status: 'overdue'});
 			}
-	
+
 			var dateTextAndStatus = {
 				dateText: dateText,
 				status: status
