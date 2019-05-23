@@ -54,6 +54,7 @@ class EnrollmentUserActivityUsage extends DateTextAndStatusMixin(EntityMixin(Pol
 		this._date = userActivityUsage.date();
 		const dateTextAndStatus = this.dateTextAndStatus(userActivityUsage.isCompletionDate(), this._date);
 		this._dateText = dateTextAndStatus && dateTextAndStatus.dateText;
+		this.fire('d2l-user-activity-usage-accessible', this._dateText);
 
 		if (!userActivityUsage.isAttended()) {
 			this.fire('d2l-enrollment-new');

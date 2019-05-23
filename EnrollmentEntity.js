@@ -43,7 +43,7 @@ export class EnrollmentEntity extends Entity {
 		return this.hasClass(classes.pinned);
 	}
 
-	pinActionName() {
+	pinAction() {
 		if (!this._entity || !this._entity.getActionByName) {
 			return;
 		}
