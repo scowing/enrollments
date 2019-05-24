@@ -27,11 +27,14 @@
 			'dueTomorrow': '明天过期',
 			'dueYesterday': '昨天过期',
 			'disabled': '已禁用',
+			'ended': '{date} {time} 已结束',
+			'endsAt': '{date} {time} 结束',
 			'inactive': '非活动',
 			'new': '新',
 			'overdue': '过期',
 			'pin': '锁定',
 			'pinActionResult': '{course} 已锁定',
+			'startsAt': '{date} {time} 开始',
 			'unpin': '取消锁定',
 			'unpinActionResult': '{course} 已取消锁定'
 		}

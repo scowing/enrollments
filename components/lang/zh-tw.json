@@ -16,11 +16,14 @@
    "dueTomorrow" : "截止時間：明天",
    "dueYesterday" : "截止時間：昨天",
    "disabled" : "已停用",
+   "ended" : "已結束於 {date} 的 {time}",
+   "endsAt" : "結束於 {date} 的 {time}",
    "inactive" : "停用",
    "new" : "新",
    "overdue" : "逾期",
    "pin" : "置頂",
    "pinActionResult" : "已將 {course} 置頂",
+   "startsAt" : "開始於 {date} 的 {time}",
    "unpin" : "取消置頂",
    "unpinActionResult" : "已將 {course} 取消置頂"
 }

@@ -16,11 +16,14 @@
    "dueTomorrow" : "Son Teslim Tarihi Yarın",
    "dueYesterday" : "Son Teslim Tarihi Dün",
    "disabled" : "Devre Dışı Bırakıldı",
+   "ended" : "{date} tarihinde, şu saatte sona erdi: {time}",
+   "endsAt" : "{date} tarihinde, şu saatte sona erecek: {time}",
    "inactive" : "Etkin Değil",
    "new" : "Yeni",
    "overdue" : "Süresi Dolmuş",
    "pin" : "Sabitle",
    "pinActionResult" : "{course} dersi sabitlendi",
+   "startsAt" : "{date} tarihinde, şu saatte başlayacak: {time}",
    "unpin" : "Sabitlemeyi Geri Al",
    "unpinActionResult" : "{course} dersinin sabitlemesi geri alındı"
 }

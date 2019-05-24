@@ -26,12 +26,15 @@
 			'dueToday': 'Entrega hoy',
 			'dueTomorrow': 'Entrega mañana',
 			'dueYesterday': 'Entrega ayer',
+			'ended': 'Finalizado {date} a la(s) {time}',
+			'endsAt': 'Finaliza {date} a la(s) {time}',
 			'disabled': 'Deshabilitado',
 			'inactive': 'Inactivo',
 			'new': 'Nuevo',
 			'overdue': 'Plazo vencido',
 			'pin': 'Anclar',
 			'pinActionResult': '{course} se ancló',
+			'startsAt': 'Comienza {date} a la(s) {time}',
 			'unpin': 'Desanclar',
 			'unpinActionResult': '{course} se desancló'
 		}

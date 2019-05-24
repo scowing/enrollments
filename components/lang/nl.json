@@ -16,11 +16,14 @@
    "dueTomorrow" : "Uiterste datum morgen",
    "dueYesterday" : "Uiterste datum gisteren",
    "disabled" : "Uitgeschakeld",
+   "ended" : "Geëindigd op {date} om {time}",
+   "endsAt" : "Eindigt op {date} om {time}",
    "inactive" : "Inactief",
    "new" : "Nieuw",
    "overdue" : "Achterstallig",
    "pin" : "Vastpinnen",
    "pinActionResult" : "{course} is vastgepind",
+   "startsAt" : "Start op {date} om {time}",
    "unpin" : "Losmaken",
    "unpinActionResult" : "{course} is losgemaakt"
 }

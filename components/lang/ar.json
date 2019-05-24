@@ -16,11 +16,14 @@
    "dueTomorrow" : "تاريخ الاستحقاق غدًا",
    "dueYesterday" : "كان تاريخ الاستحقاق بالأمس",
    "disabled" : "تم التعطيل",
+   "ended" : "Ended {date} at {time}",
+   "endsAt" : "Ends {date} at {time}",
    "inactive" : "غير نشط",
    "new" : "جديد",
    "overdue" : "تم تجاوز تاريخ الاستحقاق",
    "pin" : "تثبيت",
    "pinActionResult" : "تم تثبيت {course}",
+   "startsAt" : "Starts {date} at {time}",
    "unpin" : "إلغاء التثبيت",
    "unpinActionResult" : "تم إلغاء تثبيت {course}"
 }
