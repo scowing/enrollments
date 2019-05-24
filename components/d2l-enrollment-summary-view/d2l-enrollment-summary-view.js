@@ -1,9 +1,8 @@
 import { html, PolymerElement } from '@polymer/polymer/polymer-element.js';
 import { EntityMixin } from 'siren-sdk/src/mixin/entity-mixin.js';
 import { EnrollmentEntity } from 'siren-sdk/src/enrollments/EnrollmentEntity.js';
-import { mixinBehaviors } from '@polymer/polymer/lib/legacy/class.js';
 import 'd2l-typography/d2l-typography-shared-styles.js';
-import '../d2l-enrollment-detail-card/d2l-enrollment-detail-card.js';
+import 'd2l-organizations/components/d2l-organization-detail-card/d2l-organization-detail-card.js';
 import './d2l-enrollment-summary-view-layout.js';
 import './d2l-enrollment-summary-view-tag-list.js';
 
@@ -11,9 +10,7 @@ import './d2l-enrollment-summary-view-tag-list.js';
  * @customElement
  * @polymer
  */
-class D2lEnrollmentSummaryView extends mixinBehaviors([
-	D2L.PolymerBehaviors.Enrollment.UserActivityUsage.LocalizeBehavior
-], EntityMixin(PolymerElement)) {
+class D2lEnrollmentSummaryView extends EntityMixin(PolymerElement) {
 	constructor() {
 		super();
 		this._setEntityType(EnrollmentEntity);
@@ -141,7 +138,7 @@ class D2lEnrollmentSummaryView extends mixinBehaviors([
 					<ul class="desv-course-list">
 						<template is="dom-repeat" items="[[_courses]]">
 							<li>
-								<d2l-enrollment-detail-card href="[[item]]" token="whatever"></d2l-enrollment-detail-card>
+								<d2l-organization-detail-card href="[[item]]" token="whatever"></d2l-organization-detail-card>
 							</li>
 						</template>
 					</ul>
@@ -184,9 +181,15 @@ class D2lEnrollmentSummaryView extends mixinBehaviors([
 		return tags;
 	}
 	_onEnrollmentChange(enrollment) {
-		this._courses = enrollment.enrollments().map(e => e.href);
 		enrollment.onOrganizationChange((org) => {
 			this._description = org.description();
+			org.onSequenceChange((rootSequence) => {
+				rootSequence.onSubSequencesChange((subSequence) => {
+					subSequence.onSequencedActivityChange((activity) => {
+						this._courses = this._courses.concat(activity.organizationHrefs());
+					});
+				});
+			});
 		});
 	}
 }
