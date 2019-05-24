@@ -27,11 +27,14 @@
 			'dueTomorrow': 'Vence amanhã',
 			'dueYesterday': 'Venceu ontem',
 			'disabled': 'Desabilitado',
+			'ended': 'Encerrado em {date} às {time}',
+			'endsAt': 'Encerra em {date} às {time}',
 			'inactive': 'Inativo',
 			'new': 'Novo',
 			'overdue': 'Atraso',
 			'pin': 'Fixar',
 			'pinActionResult': '{course} foi fixado',
+			'startsAt': 'Inicia em {date} às {time}',
 			'unpin': 'Desafixar',
 			'unpinActionResult': '{course} foi desafixado'
 		}

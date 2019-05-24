@@ -27,11 +27,14 @@
 			'dueTomorrow': 'À remettre demain',
 			'dueYesterday': 'À remettre hier',
 			'disabled': 'Désactivé(e)',
+			'ended': 'S’est terminé le {date} à {time}',
+			'endsAt': 'Se termine le {date} à {time}',
 			'inactive': 'Inactif',
 			'new': 'Nouvelle',
 			'overdue': 'En retard',
 			'pin': 'Épingler',
 			'pinActionResult': 'Le cours {course} a été épinglé',
+			'startsAt': 'Commence le {date} à {time}',
 			'unpin': 'Annuler l\'épinglage',
 			'unpinActionResult': 'L\'épinglage du cours {course} a été annulé'
 		}

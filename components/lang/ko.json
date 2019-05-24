@@ -16,11 +16,14 @@
    "dueTomorrow" : "내일 마감",
    "dueYesterday" : "어제 마감",
    "disabled" : "비활성화됨",
+   "ended" : "{date}일 {time}에 종료됨",
+   "endsAt" : "{date}일 {time}에 종료",
    "inactive" : "비활성",
    "new" : "신규",
    "overdue" : "기한 경과",
    "pin" : "고정",
    "pinActionResult" : "{course} 고정됨",
+   "startsAt" : "{date}일 {time}에 시작",
    "unpin" : "고정 취소",
    "unpinActionResult" : "{course} 고정 취소됨"
 }

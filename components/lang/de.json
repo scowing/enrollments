@@ -16,11 +16,14 @@
    "dueTomorrow" : "Morgen fällig",
    "dueYesterday" : "Gestern fällig",
    "disabled" : "Deaktiviert",
+   "ended" : "Beendet am {date} um {time}",
+   "endsAt" : "Endet am {date} um {time}",
    "inactive" : "Inaktiv",
    "new" : "Neu",
    "overdue" : "Überfällig",
    "pin" : "Anheften",
    "pinActionResult" : "{course} wurde angeheftet",
+   "startsAt" : "Beginnt am {date} um {time}",
    "unpin" : "Lösen",
    "unpinActionResult" : "{course} wurde gelöst"
 }

@@ -16,11 +16,14 @@
    "dueTomorrow" : "期限は明日",
    "dueYesterday" : "期限は昨日",
    "disabled" : "無効",
+   "ended" : "{date} {time} に終了済み",
+   "endsAt" : "{date} {time} に終了",
    "inactive" : "非アクティブ",
    "new" : "新規",
    "overdue" : "期限切れ",
    "pin" : "固定",
    "pinActionResult" : "{course} は固定されました",
+   "startsAt" : "{date} {time} に開始",
    "unpin" : "固定解除",
    "unpinActionResult" : "{course} は固定解除されました"
 }

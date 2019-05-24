@@ -27,11 +27,14 @@
 			'dueTomorrow': 'Förfaller imorgon',
 			'dueYesterday': 'Förföll igår',
 			'disabled': 'Avaktiverad',
+			'ended': 'Slutade {date} kl. {time}',
+			'endsAt': 'Slutar {date} kl. {time}',
 			'inactive': 'Inaktiv',
 			'new': 'Ny',
 			'overdue': 'Försenad',
 			'pin': 'Markera',
 			'pinActionResult': '{course} har markerats',
+			'startsAt': 'Startar {date} kl. {time}',
 			'unpin': 'Avmarkera',
 			'unpinActionResult': '{course} har avmarkerats'
 		}
