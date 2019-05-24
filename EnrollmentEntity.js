@@ -1,8 +1,8 @@
 'use strict';
 
-import { Entity } from 'siren-sdk/es6/Entity.js';
+import { Entity } from 'siren-sdk/src/es6/Entity.js';
 import { Actions, Rels } from 'd2l-hypermedia-constants';
-import { OrganizationEntity } from 'd2l-organizations/OrganizationEntity.js';
+import { OrganizationEntity } from 'siren-sdk/src/organizations/OrganizationEntity.js';
 import { UserActivityUsageEntity  } from './UserActivityUsageEntity.js';
 
 export const classes = {

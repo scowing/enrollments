@@ -6,7 +6,7 @@ Polymer-based web component for a organization name.
 @demo demo/d2l-enrollment-hero-banner/d2l-enrollment-hero-banner-demo.html Organization Name
 */
 import { html, PolymerElement } from '@polymer/polymer/polymer-element.js';
-import { EntityMixin } from 'siren-sdk/mixin/entity-mixin.js';
+import { EntityMixin } from 'siren-sdk/src/mixin/entity-mixin.js';
 import 'd2l-typography/d2l-typography-shared-styles.js';
 import { EnrollmentCollectionEntity } from '../../EnrollmentCollectionEntity.js';
 import '../d2l-enrollment-card/d2l-enrollment-card.js';

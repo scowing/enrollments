@@ -4,9 +4,9 @@
 Polymer-based web component for a enrollment updates.
 */
 import { html, PolymerElement } from '@polymer/polymer/polymer-element.js';
-import { EntityMixin } from 'siren-sdk/mixin/entity-mixin.js';
+import { EntityMixin } from 'siren-sdk/src/mixin/entity-mixin.js';
 import { mixinBehaviors } from '@polymer/polymer/lib/legacy/class.js';
-import { OrganizationEntity } from 'd2l-organizations/OrganizationEntity.js';
+import { OrganizationEntity } from 'siren-sdk/src/organizations/OrganizationEntity.js';
 import 'd2l-organizations/components/d2l-organization-updates/d2l-organization-updates.js';
 import 'd2l-card/d2l-card-footer-link.js';
 import 'd2l-tooltip/d2l-tooltip.js';

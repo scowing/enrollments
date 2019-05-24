@@ -7,7 +7,7 @@ Polymer-based web component for a organization due and completion dates.
 */
 
 import { html, PolymerElement } from '@polymer/polymer/polymer-element.js';
-import { EntityMixin } from 'siren-sdk/mixin/entity-mixin.js';
+import { EntityMixin } from 'siren-sdk/src/mixin/entity-mixin.js';
 import { UserActivityUsageEntity  } from '../../UserActivityUsageEntity.js';
 import { DateTextAndStatusMixin } from '../date-text-status-mixin.js';
 

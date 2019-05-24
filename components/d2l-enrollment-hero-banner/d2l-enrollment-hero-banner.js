@@ -11,7 +11,7 @@ import 'd2l-offscreen/d2l-offscreen-shared-styles.js';
 import 'd2l-polymer-behaviors/d2l-focusable-behavior.js';
 import 'd2l-organizations/components/d2l-organization-image/d2l-organization-image.js';
 import 'd2l-typography/d2l-typography-shared-styles.js';
-import { EntityMixin } from 'siren-sdk/mixin/entity-mixin.js';
+import { EntityMixin } from 'siren-sdk/src/mixin/entity-mixin.js';
 import '../d2l-enrollment-card/d2l-enrollment-updates.js';
 import '../d2l-enrollment-summary-view/d2l-enrollment-summary-view-tag-list.js';
 import { EnrollmentEntity } from '../../EnrollmentEntity.js';
