@@ -1,6 +1,6 @@
 'use strict';
 
-import { Entity } from 'siren-sdk/es6/Entity.js';
+import { Entity } from 'siren-sdk/src/es6/Entity.js';
 import { Rels } from 'd2l-hypermedia-constants';
 
 export class EnrollmentCollectionEntity extends Entity {
