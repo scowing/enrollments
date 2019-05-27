@@ -41,11 +41,11 @@ describe('d2l-enrollment-card', () => {
 			organizationHref: function() { return 'organizationHref'; },
 			self: function() { return 'self'; },
 			userActivityUsageUrl: function() { return 'userActivityUsageUrl'; },
-			pinAction: function() { 
+			pinAction: function() {
 				return {
-					"href":"#pinned",
-					"name":"unpin-course",
-					"method":"PUT"
+					'href':'#pinned',
+					'name':'unpin-course',
+					'method':'PUT'
 				};
 			},
 			onOrganizationChange: onOrganizationChangeStub,
@@ -53,17 +53,13 @@ describe('d2l-enrollment-card', () => {
 		};
 
 		imageEntity = {
-			"class": [
-				"course-image"
+			'class': [
+				'course-image'
 			],
-			"properties": {
-				"name": "nature(growth)_0014",
-				"categories": [
-				"default",
-				"nature (growth)"
-			  ]
+			'properties': {
+				'name': 'nature(growth)_0014'
 			}
-		}
+		};
 
 		organizationEntity = {
 			_entity: {
@@ -82,17 +78,17 @@ describe('d2l-enrollment-card', () => {
 			isActive: isActiveStub,
 			processedDate: processedDateStub,
 			onSemesterChange: onSemesterChangeStub
-		}
+		};
 
 		userActivityUsageEntity = {
 			isAttended: isAttendedStub,
 			isCompletionDate: isCompletionDateStub,
 			date: dateStub
-		}
+		};
 
 		semesterEntity = {
 			name: function() { return 'Semester Name'; },
-		}
+		};
 
 		onOrganizationChangeStub.callsArgWith(0, organizationEntity);
 		onUserActivityUsageChangeStub.callsArgWith(0, userActivityUsageEntity);

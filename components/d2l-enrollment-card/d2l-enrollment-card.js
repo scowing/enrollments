@@ -16,7 +16,6 @@ import 'd2l-dropdown/d2l-dropdown-menu.js';
 import 'd2l-dropdown/d2l-dropdown-more.js';
 import 'd2l-fetch/d2l-fetch.js';
 import { Actions } from 'd2l-hypermedia-constants';
-import { Rels } from 'd2l-hypermedia-constants';
 import 'd2l-icons/d2l-icon.js';
 import 'd2l-icons/tier1-icons.js';
 import 'd2l-loading-spinner/d2l-loading-spinner.js';
@@ -315,7 +314,7 @@ class EnrollmentCard extends mixinBehaviors([
 				value: false,
 				readOnly: true
 			},
-	
+
 			showOrganizationCode: {
 				type: Boolean,
 				value: false
@@ -352,7 +351,7 @@ class EnrollmentCard extends mixinBehaviors([
 				type: Boolean,
 				value: false
 			},
-	
+
 			_enrollment: {
 				type: Object,
 				value: function() { return {}; }
@@ -474,7 +473,7 @@ class EnrollmentCard extends mixinBehaviors([
 			observer.observe(imageTile);
 		}.bind(this));
 	}
-	
+
 	disconnectedCallback() {
 		super.disconnectedCallback();
 		window.removeEventListener('set-course-image', this._boundOnSetCourseImage);
