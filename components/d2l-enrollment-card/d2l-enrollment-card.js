@@ -496,8 +496,11 @@ class EnrollmentCard extends mixinBehaviors([
 
 		this._organizationUrl = organization.getLinkByRel('self').href;
 
-		return this._entityStoreFetch(this._organizationUrl)
-			.then(this._handleOrganizationResponse.bind(this))
+		if(!this._entity) {
+			return;
+		}
+
+		return this._entity.onOrganizationChange(this.onOrganizationChange.bind(this))
 			.then(this._displaySetImageResult.bind(this, true, true))
 			.catch(this._displaySetImageResult.bind(this, false));
 	}
@@ -607,50 +610,52 @@ class EnrollmentCard extends mixinBehaviors([
 			}
 		});
 
-		enrollment.onOrganizationChange((org) => {
-			this._organization = org._entity;
+		enrollment.onOrganizationChange(this.onOrganizationChange.bind(this));
+	}
 
-			afterNextRender(this, function() {
-				// Telemetry event for organization loaded, meaning tile is interactive
-				this.fire('course-tile-organization');
-			}.bind(this));
+	onOrganizationChange(org) {
+		this._organization = org._entity;
 
-			this._courseInfoUrl = org.courseInfoUrl();
-			this._canAccessCourseInfo = !!this._courseInfoUrl;
-			const orgName = org.name();
-			this._courseSettingsLabel = orgName && this.localize('courseSettings', 'course', orgName);
-			this._pinButtonLabel = orgName && this.localize('coursePinButton', 'course', orgName);
-			this._canChangeCourseImage = org._entity && org._entity.hasActionByName(Actions.organizations.setCatalogImage);
-			const processedDate = org.processedDate(this.hideCourseStartDate, this.hideCourseEndDate);
-			this._setOrganizationDate(processedDate, org.isActive());
+		afterNextRender(this, function() {
+			// Telemetry event for organization loaded, meaning tile is interactive
+			this.fire('course-tile-organization');
+		}.bind(this));
 
-			org.onSemesterChange(function(semester) {
-				const dateText = processedDate && this.localize(
-					processedDate.type,
-					'date', this.formatDate(processedDate.date, {format: 'MMMM d, yyyy'}),
-					'time', this.formatTime(processedDate.date)
-				);
-				this._setOrganizationAccessibleData(org.name(), org.code(), semester.name(), dateText);
-			}.bind(this));
+		this._courseInfoUrl = org.courseInfoUrl();
+		this._canAccessCourseInfo = !!this._courseInfoUrl;
+		const orgName = org.name();
+		this._courseSettingsLabel = orgName && this.localize('courseSettings', 'course', orgName);
+		this._pinButtonLabel = orgName && this.localize('coursePinButton', 'course', orgName);
+		this._canChangeCourseImage = org._entity && org._entity.hasActionByName(Actions.organizations.setCatalogImage);
+		const processedDate = org.processedDate(this.hideCourseStartDate, this.hideCourseEndDate);
+		this._setOrganizationDate(processedDate, org.isActive());
 
-			const imageEntity = org.imageEntity();
-			if (imageEntity && imageEntity.href) {
-				org.onImageChange((image) => {
-					this._image = image.entity();
-				});
-			} else {
-				this._image = imageEntity;
-			}
+		org.onSemesterChange(function(semester) {
+			const dateText = processedDate && this.localize(
+				processedDate.type,
+				'date', this.formatDate(processedDate.date, {format: 'MMMM d, yyyy'}),
+				'time', this.formatTime(processedDate.date)
+			);
+			this._setOrganizationAccessibleData(org.name(), org.code(), semester.name(), dateText);
+		}.bind(this));
 
-			this._organizationHomepageUrl = org.organizationHomepageUrl();
-			if (!this._organizationHomepageUrl) {
-				// If the user doesn't have access, don't animate image/show menu/underline on hover
-				this._organizationHomepageUrl = null;
-				this._setDisabled(true);
-			}
+		const imageEntity = org.imageEntity();
+		if (imageEntity && imageEntity.href) {
+			org.onImageChange((image) => {
+				this._image = image.entity();
+			});
+		} else {
+			this._image = imageEntity;
+		}
 
-			return Promise.resolve();
-		});
+		this._organizationHomepageUrl = org.organizationHomepageUrl();
+		if (!this._organizationHomepageUrl) {
+			// If the user doesn't have access, don't animate image/show menu/underline on hover
+			this._organizationHomepageUrl = null;
+			this._setDisabled(true);
+		}
+
+		return Promise.resolve();
 	}
 
 	_setOrganizationAccessibleData(name, code, semesterName, dateText) {
