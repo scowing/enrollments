@@ -496,7 +496,7 @@ class EnrollmentCard extends mixinBehaviors([
 
 		this._organizationUrl = organization.getLinkByRel('self').href;
 
-		if(!this._entity) {
+		if (!this._entity) {
 			return;
 		}
 
