@@ -486,6 +486,22 @@ class EnrollmentCard extends mixinBehaviors([
 		this._boundOnSetCourseImage = this._onSetCourseImage.bind(this);
 	}
 
+	refreshImage(organization) {
+		if (this._getEntityIdentifier(organization) !== this._getEntityIdentifier(this._organization)) {
+			return;
+		}
+
+		this._imageLoading = true;
+		this._imageLoadingProgress = true;
+
+		this._organizationUrl = organization.getLinkByRel('self').href;
+
+		return this._entityStoreFetch(this._organizationUrl)
+			.then(this._handleOrganizationResponse.bind(this))
+			.then(this._displaySetImageResult.bind(this, true, true))
+			.catch(this._displaySetImageResult.bind(this, false));
+	}
+
 	_handlePinnedChange(pinned) {
 		if (pinned) {
 			this.setAttribute('pinned', '');
