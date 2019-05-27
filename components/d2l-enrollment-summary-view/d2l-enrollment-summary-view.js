@@ -138,7 +138,7 @@ class D2lEnrollmentSummaryView extends EntityMixin(PolymerElement) {
 					<ul class="desv-course-list">
 						<template is="dom-repeat" items="[[_courses]]">
 							<li>
-								<d2l-organization-detail-card href="[[item]]" token="whatever"></d2l-organization-detail-card>
+								<d2l-organization-detail-card href="[[item]]" token="[[token]]"></d2l-organization-detail-card>
 							</li>
 						</template>
 					</ul>
