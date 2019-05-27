@@ -49,10 +49,8 @@ export const interalDateTextAndStatusMixin = function(superClass) {
 			var status = null;
 			if (isCompletionDate && parsedDate < tomorrowDate) {
 				status = 'completed';
-				this.fire('d2l-enrollment-status', {status: 'completed'});
 			} else if (parsedDate < nowDate) {
 				status = 'overdue';
-				this.fire('d2l-enrollment-status', {status: 'overdue'});
 			}
 
 			var dateTextAndStatus = {

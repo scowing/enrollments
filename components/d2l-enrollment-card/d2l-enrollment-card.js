@@ -16,7 +16,6 @@ import 'd2l-dropdown/d2l-dropdown-menu.js';
 import 'd2l-dropdown/d2l-dropdown-more.js';
 import 'd2l-fetch/d2l-fetch.js';
 import { Actions } from 'd2l-hypermedia-constants';
-import { Classes } from 'd2l-hypermedia-constants';
 import { Rels } from 'd2l-hypermedia-constants';
 import 'd2l-icons/d2l-icon.js';
 import 'd2l-icons/tier1-icons.js';
@@ -33,17 +32,15 @@ import 'd2l-card/d2l-card.js';
 import 'd2l-card/d2l-card-content-meta.js';
 import 'd2l-button/d2l-button-icon.js';
 import 'd2l-status-indicator/d2l-status-indicator.js';
-import 'd2l-polymer-siren-behaviors/store/entity-behavior.js';
 import 'd2l-polymer-siren-behaviors/store/siren-action-behavior.js';
 import '../d2l-user-activity-usage/d2l-user-activity-usage.js';
 import './d2l-enrollment-updates.js';
-import './localize-behavior.js';
 import { afterNextRender } from '@polymer/polymer/lib/utils/render-status.js';
 import { html, PolymerElement } from '@polymer/polymer/polymer-element.js';
-import { EntityMixin } from 'siren-sdk/mixin/entity-mixin.js';
+import { EntityMixin } from 'siren-sdk/src/mixin/entity-mixin.js';
 import { EnrollmentEntity } from '../../EnrollmentEntity.js';
 import { mixinBehaviors } from '@polymer/polymer/lib/legacy/class.js';
-
+import { DateTextAndStatusMixin } from '../date-text-status-mixin.js';
 
 /**
  * @customElement
@@ -51,10 +48,8 @@ import { mixinBehaviors } from '@polymer/polymer/lib/legacy/class.js';
  */
 class EnrollmentCard extends mixinBehaviors([
 	D2L.PolymerBehaviors.Hypermedia.OrganizationHMBehavior,
-	D2L.PolymerBehaviors.Enrollment.Card.LocalizeBehavior,
-	D2L.PolymerBehaviors.Siren.EntityBehavior,
 	D2L.PolymerBehaviors.Siren.SirenActionBehavior,
-], EntityMixin(PolymerElement)) {
+], DateTextAndStatusMixin(EntityMixin(PolymerElement))) {
 	constructor() {
 		super();
 		this._setEntityType(EnrollmentEntity);
@@ -362,6 +357,8 @@ class EnrollmentCard extends mixinBehaviors([
 				type: Object,
 				value: function() { return {}; }
 			},
+			_selfHref: String,
+			_pinAction: String,
 			_pinned: {
 				type: Boolean,
 				value: false,
@@ -385,19 +382,10 @@ class EnrollmentCard extends mixinBehaviors([
 					};
 				}
 			},
-			_canAccessCourseInfo: {
-				type: Boolean,
-				computed: '_computeCanAccessCourseInfo(_organization)'
-			},
-			_canChangeCourseImage: {
-				type: Boolean,
-				computed: '_computeCanChangeCourseImage(_organization)'
-			},
+			_canAccessCourseInfo: Boolean,
+			_canChangeCourseImage: Boolean,
 			_courseInfoUrl: String,
-			_courseSettingsLabel: {
-				type: String,
-				computed: '_computeCourseSettingsLabel(_organization)'
-			},
+			_courseSettingsLabel: String,
 			_image: Object,
 			_imageLoading: {
 				type: Boolean,
@@ -411,11 +399,7 @@ class EnrollmentCard extends mixinBehaviors([
 			_organization: Object,
 			_organizationUrl: String,
 			_organizationHomepageUrl: String,
-			_pinButtonLabel: {
-				type: String,
-				computed: '_computePinButtonLabel(_organization)'
-			},
-			_notificationsUrl: String,
+			_pinButtonLabel: String,
 			_badgeText: {
 				type: String,
 				value: null,
@@ -442,7 +426,7 @@ class EnrollmentCard extends mixinBehaviors([
 
 	static get observers() {
 		return [
-			'_loadEnrollmentData(_load, entity)',
+			'_loadEnrollmentData(_load, _entity)',
 			'_startedInactive(_beforeStartDate, closed, inactive)'
 		];
 	}
@@ -499,52 +483,8 @@ class EnrollmentCard extends mixinBehaviors([
 	ready() {
 		super.ready();
 
-		window.addEventListener('d2l-enrollment-status', this._onD2lEnrollmentStatus.bind(this));
-		window.addEventListener('d2l-organization-accessible', this._onD2lOrganizationAccessible.bind(this));
-		window.addEventListener('d2l-user-activity-usage-accessible', this._onD2lUserActivityUsageAccessible.bind(this));
-		window.addEventListener('d2l-enrollment-new', this._onD2lEnrollmentNew.bind(this));
-		window.addEventListener('d2l-organization-date', this._onD2lOrganizationDate.bind(this));
-
 		IronA11yAnnouncer.requestAvailability();
 		this._boundOnSetCourseImage = this._onSetCourseImage.bind(this);
-	}
-
-	refreshImage(organization) {
-		if (this._getEntityIdentifier(organization) !== this._getEntityIdentifier(this._organization)) {
-			return;
-		}
-
-		this._imageLoading = true;
-		this._imageLoadingProgress = true;
-
-		this._organizationUrl = organization.getLinkByRel('self').href;
-
-		return this._entityStoreFetch(this._organizationUrl)
-			.then(this._handleOrganizationResponse.bind(this))
-			.then(this._displaySetImageResult.bind(this, true, true))
-			.catch(this._displaySetImageResult.bind(this, false));
-	}
-
-	_computeCanAccessCourseInfo(organization) {
-		return organization
-			&& organization.hasLinkByRel(Rels.courseOfferingInfoPage);
-	}
-
-	_computeCanChangeCourseImage(organization) {
-		return organization
-			&& organization.hasActionByName(Actions.organizations.setCatalogImage);
-	}
-
-	_computeCourseSettingsLabel(organization) {
-		return organization
-			&& organization.properties
-			&& this.localize('courseSettings', 'course', organization.properties.name);
-	}
-
-	_computePinButtonLabel(organization) {
-		return organization
-			&& organization.properties
-			&& this.localize('coursePinButton', 'course', organization.properties.name);
 	}
 
 	_handlePinnedChange(pinned) {
@@ -568,24 +508,22 @@ class EnrollmentCard extends mixinBehaviors([
 	}
 
 	_handleCompletedChange(completed) {
-		if (!this._enrollment
-			|| !this._enrollment.hasLinkByRel) {
+		if (!this._selfHref) {
 			return;
 		}
 		this.fire('d2l-enrollment-card-status', {
 			status: { completed: completed },
-			enrollmentUrl: this._getEntityIdentifier(this._enrollment)
+			enrollmentUrl: this._selfHref
 		});
 	}
 
 	_handleClosedChange(closed) {
-		if (!this._enrollment
-			|| !this._enrollment.hasLinkByRel) {
+		if (!this._selfHref) {
 			return;
 		}
 		this.fire('d2l-enrollment-card-status', {
 			status: { closed: closed },
-			enrollmentUrl: this._getEntityIdentifier(this._enrollment)
+			enrollmentUrl: this._selfHref
 		});
 	}
 
@@ -623,7 +561,8 @@ class EnrollmentCard extends mixinBehaviors([
 	}
 
 	_loadEnrollmentForPinning(enrollment) {
-		return this._loadEnrollmentData(true, enrollment);
+		this._entity._entity = enrollment;
+		return this._loadEnrollmentData(true, this._entity);
 	}
 
 	_loadEnrollmentData(load, enrollment) {
@@ -632,77 +571,133 @@ class EnrollmentCard extends mixinBehaviors([
 			return;
 		}
 
-		if (
-			!enrollment.hasLinkByRel
-			|| !enrollment.hasLinkByRel(Rels.organization)
-		) {
-			return;
-		}
-
-		this._enrollment = enrollment;
-		this._pinned = enrollment.hasClass(Classes.enrollments.pinned);
-		this._organizationUrl = enrollment.getLinkByRel(Rels.organization).href;
+		this._enrollment = enrollment._entity;
+		this._pinned = enrollment.pinned();
+		this._organizationUrl = enrollment.organizationHref();
+		this._selfHref = enrollment.self();
+		this._pinAction = enrollment.pinAction();
+		this._userActivityUsageUrl = enrollment.userActivityUsageUrl();
 
 		this.fire('d2l-enrollment-card-fetched', {
 			organizationUrl: this._organizationUrl,
-			enrollmentUrl: this._getEntityIdentifier(this._enrollment)
+			enrollmentUrl: this._selfHref
 		});
-		if (enrollment.hasLinkByRel(Rels.Activities.userActivityUsage)) {
-			this._userActivityUsageUrl = enrollment.getLinkByRel(Rels.Activities.userActivityUsage).href;
-		}
 
-		return this._entityStoreFetch(this._organizationUrl)
-			.then(this._handleOrganizationResponse.bind(this));
+		enrollment.onUserActivityUsageChange((userActivityUsage) => {
+			const dateTextAndStatus = this.dateTextAndStatus(userActivityUsage.isCompletionDate(), userActivityUsage.date());
+			this._setEnrollmentStatus(dateTextAndStatus && dateTextAndStatus.status);
+			this._setUserActivityUsageAccessible(dateTextAndStatus && dateTextAndStatus.dateText);
+			if (!userActivityUsage.isAttended()) {
+				this._handleEnrollmentNew();
+			}
+		});
+
+		enrollment.onOrganizationChange((org) => {
+			this._organization = org._entity;
+
+			afterNextRender(this, function() {
+				// Telemetry event for organization loaded, meaning tile is interactive
+				this.fire('course-tile-organization');
+			}.bind(this));
+
+			this._courseInfoUrl = org.courseInfoUrl();
+			this._canAccessCourseInfo = !!this._courseInfoUrl;
+			const orgName = org.name();
+			this._courseSettingsLabel = orgName && this.localize('courseSettings', 'course', orgName);
+			this._pinButtonLabel = orgName && this.localize('coursePinButton', 'course', orgName);
+			this._canChangeCourseImage = org._entity && org._entity.hasActionByName(Actions.organizations.setCatalogImage);
+			const processedDate = org.processedDate(this.hideCourseStartDate, this.hideCourseEndDate);
+			this._setOrganizationDate(processedDate, org.isActive());
+
+			org.onSemesterChange(function(semester) {
+				const dateText = processedDate && this.localize(
+					processedDate.type,
+					'date', this.formatDate(processedDate.date, {format: 'MMMM d, yyyy'}),
+					'time', this.formatTime(processedDate.date)
+				);
+				this._setOrganizationAccessibleData(org.name(), org.code(), semester.name(), dateText);
+			}.bind(this));
+
+			const imageEntity = org.imageEntity();
+			if (imageEntity && imageEntity.href) {
+				org.onImageChange((image) => {
+					this._image = image.entity();
+				});
+			} else {
+				this._image = imageEntity;
+			}
+
+			this._organizationHomepageUrl = org.organizationHomepageUrl();
+			if (!this._organizationHomepageUrl) {
+				// If the user doesn't have access, don't animate image/show menu/underline on hover
+				this._organizationHomepageUrl = null;
+				this._setDisabled(true);
+			}
+
+			return Promise.resolve();
+		});
 	}
 
-	_entityStoreFetch(url) {
-		return window.D2L.Siren.EntityStore.fetch(url, this.token);
+	_setOrganizationAccessibleData(name, code, semesterName, dateText) {
+		if (name) {
+			this._accessibilityData.organizationName = name;
+		}
+		if (code) {
+			this._accessibilityData.organizationCode = code;
+		}
+		if (dateText) {
+			this._accessibilityData.organizationDate = dateText;
+		}
+		if (semesterName) {
+			this._accessibilityData.semesterName = semesterName;
+		}
+		this._accessibilityDataReset();
+	}
+
+	_setOrganizationDate(date, isActive) {
+		this._setInactive(!isActive);
+		const afterEndDate = date && date.afterEndDate;
+		this._setClosed(afterEndDate);
+		this._beforeStartDate = date && date.beforeStartDate;
+		if (this._beforeStartDate || (afterEndDate && !this.completed)) {
+			this._orgDateSlot = true;
+		}
+
+		this._setBadgeText();
+	}
+
+	_handleEnrollmentNew() {
+		this._newEnrollment = true;
+		this._accessibilityData.new = this.localize('new');
+		this._accessibilityDataReset();
+	}
+
+	_setEnrollmentStatus(status) {
+		switch (status) {
+			case 'completed':
+				this._setCompleted(true);
+				break;
+			case 'overdue':
+				this._setOverdue(true);
+				break;
+			default:
+				this._setCompleted(false);
+				this._setOverdue(false);
+				break;
+		}
+
+		this._setBadgeText();
+	}
+
+	_setUserActivityUsageAccessible(dateText) {
+		this._accessibilityData.userActivityUsageInfo = dateText;
+		this._accessibilityDataReset();
 	}
 
 	_getEntityIdentifier(entity) {
 		// An entity's self href should be unique, so use it as an identifier
 		var selfLink = entity.getLinkByRel('self');
 		return selfLink.href;
-	}
-
-	_handleOrganizationResponse(organization) {
-		organization = organization && organization.entity;
-		this._organization = organization;
-
-		afterNextRender(this, function() {
-			// Telemetry event for organization loaded, meaning tile is interactive
-			this.fire('course-tile-organization');
-		}.bind(this));
-
-		if (organization.hasLinkByRel(Rels.courseOfferingInfoPage)) {
-			this._courseInfoUrl = organization.getLinkByRel(Rels.courseOfferingInfoPage).href;
-		}
-		if (organization.hasLinkByRel(Rels.Notifications.organizationNotifications)) {
-			this._notificationsUrl = organization.getLinkByRel(Rels.Notifications.organizationNotifications).href;
-		}
-		if (organization.hasSubEntityByClass(Classes.courseImage.courseImage)) {
-			var imageEntity = organization.getSubEntityByClass(Classes.courseImage.courseImage);
-			if (imageEntity.href) {
-				this._entityStoreFetch(imageEntity.href)
-					.then(function(hydratedImage) {
-						this._image = hydratedImage && hydratedImage.entity;
-					}.bind(this));
-			} else {
-				this._image = imageEntity;
-			}
-		}
-		if (organization.hasSubEntityByRel(Rels.organizationHomepage)) {
-			var homepageEntity = organization.getSubEntityByRel(Rels.organizationHomepage);
-			this._organizationHomepageUrl = homepageEntity
-				&& homepageEntity.properties
-				&& homepageEntity.properties.path;
-		} else {
-			// If the user doesn't have access, don't animate image/show menu/underline on hover
-			this._organizationHomepageUrl = null;
-			this._setDisabled(true);
-		}
-
-		return Promise.resolve();
 	}
 
 	_launchCourseImageSelector() {
@@ -749,73 +744,12 @@ class EnrollmentCard extends mixinBehaviors([
 		}
 	}
 
-	_onD2lEnrollmentStatus(e) {
-		switch (e.detail.status) {
-			case 'completed':
-				this._setCompleted(true);
-				break;
-			case 'overdue':
-				this._setOverdue(true);
-				break;
-			default:
-				this._setCompleted(false);
-				this._setOverdue(false);
-				break;
-		}
-
-		this._setBadgeText();
-	}
-
-	_onD2lOrganizationDate(e) {
-		this._setInactive(!e.detail.active);
-		this._setClosed(e.detail.afterEndDate);
-		this._beforeStartDate = e.detail.beforeStartDate;
-		if (e.detail.beforeStartDate || (e.detail.afterEndDate && !this.completed)) {
-			this._orgDateSlot = true;
-		}
-
-		this._setBadgeText();
-	}
-
-	_onD2lOrganizationAccessible(e) {
-		if (e.detail.organization) {
-			if (e.detail.organization.name) {
-				this._accessibilityData.organizationName = e.detail.organization.name;
-			}
-			if (e.detail.organization.code) {
-				this._accessibilityData.organizationCode = e.detail.organization.code;
-			}
-			if (e.detail.organization.date) {
-				this._accessibilityData.organizationDate = e.detail.organization.date;
-			}
-		}
-		if (e.detail.semesterName) {
-			this._accessibilityData.semesterName = e.detail.semesterName;
-		}
-		this._accessibilityDataReset();
-	}
-
-	_onD2lUserActivityUsageAccessible(e) {
-		this._accessibilityData.userActivityUsageInfo = e.detail;
-		this._accessibilityDataReset();
-	}
-
 	_badgeTextChange(badgeText) {
 		this._accessibilityData.badge = badgeText;
 		this._accessibilityDataReset();
 	}
 
-	_onD2lEnrollmentNew() {
-		this._newEnrollment = true;
-		this._accessibilityData.new = this.localize('new');
-		this._accessibilityDataReset();
-	}
-
 	_pinClickHandler() {
-		var pinAction = this._pinned
-			? this._enrollment.getActionByName(Actions.enrollments.unpinCourse)
-			: this._enrollment.getActionByName(Actions.enrollments.pinCourse);
-
 		this.fire(this._pinned ? 'enrollment-pinned' : 'enrollment-unpinned', {
 			enrollment: this._enrollment,
 			organization: this._organization
@@ -826,7 +760,7 @@ class EnrollmentCard extends mixinBehaviors([
 			text: this.localize(localizeKey, 'course', this._organization.properties.name)
 		}, { bubbles: true });
 
-		return this.performSirenAction(pinAction).then(this._loadEnrollmentForPinning.bind(this)).then(function() {
+		return this.performSirenAction(this._pinAction).then(this._loadEnrollmentForPinning.bind(this)).then(function() {
 			// Wait until after PUT has finished to fire, so that
 			// listeners are guaranteed to fetch updated entity
 			this.fire('d2l-course-pinned-change', {
