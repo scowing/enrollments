@@ -117,7 +117,7 @@ describe('d2l-enrollment-card', () => {
 	describe('Public API', () => {
 
 		it('should implement all properties', () => {
-			expect(component.href).to.equal(null);
+			expect(component.href).to.equal(undefined);
 		});
 
 	});

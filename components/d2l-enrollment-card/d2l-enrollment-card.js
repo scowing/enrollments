@@ -278,10 +278,6 @@ class EnrollmentCard extends mixinBehaviors([
 
 	static get properties() {
 		return {
-			href: {
-				type: String,
-				value: null
-			},
 			disabled: {
 				type: Boolean,
 				reflectToAttribute: true,
@@ -356,7 +352,6 @@ class EnrollmentCard extends mixinBehaviors([
 				type: Object,
 				value: function() { return {}; }
 			},
-			_selfHref: String,
 			_pinAction: String,
 			_pinned: {
 				type: Boolean,
@@ -526,22 +521,22 @@ class EnrollmentCard extends mixinBehaviors([
 	}
 
 	_handleCompletedChange(completed) {
-		if (!this._selfHref) {
+		if (!this._href) {
 			return;
 		}
 		this.fire('d2l-enrollment-card-status', {
 			status: { completed: completed },
-			enrollmentUrl: this._selfHref
+			enrollmentUrl: this._href
 		});
 	}
 
 	_handleClosedChange(closed) {
-		if (!this._selfHref) {
+		if (!this._href) {
 			return;
 		}
 		this.fire('d2l-enrollment-card-status', {
 			status: { closed: closed },
-			enrollmentUrl: this._selfHref
+			enrollmentUrl: this._href
 		});
 	}
 
@@ -592,13 +587,12 @@ class EnrollmentCard extends mixinBehaviors([
 		this._enrollment = enrollment._entity;
 		this._pinned = enrollment.pinned();
 		this._organizationUrl = enrollment.organizationHref();
-		this._selfHref = enrollment.self();
 		this._pinAction = enrollment.pinAction();
 		this._userActivityUsageUrl = enrollment.userActivityUsageUrl();
 
 		this.fire('d2l-enrollment-card-fetched', {
 			organizationUrl: this._organizationUrl,
-			enrollmentUrl: this._selfHref
+			enrollmentUrl: this._href
 		});
 
 		enrollment.onUserActivityUsageChange((userActivityUsage) => {
