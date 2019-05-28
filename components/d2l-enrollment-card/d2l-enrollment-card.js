@@ -489,13 +489,15 @@ class EnrollmentCard extends mixinBehaviors([
 		this._imageLoading = true;
 		this._imageLoadingProgress = true;
 
-		this._organizationUrl = organization.getLinkByRel('self').href;
-
 		if (!this._entity) {
 			return;
 		}
 
-		return this._entity.onOrganizationChange(this.onOrganizationChange.bind(this))
+		this._entity.onOrganizationChange(this.onImageChange.bind(this));
+	}
+
+	onImageChange() {
+		this.onOrganizationChange
 			.then(this._displaySetImageResult.bind(this, true, true))
 			.catch(this._displaySetImageResult.bind(this, false));
 	}
