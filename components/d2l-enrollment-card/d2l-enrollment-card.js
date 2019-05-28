@@ -10,16 +10,12 @@ Polymer-based web component for a course/enrollment card.
   from HTML and may be out of place here. Review them and
   then delete this comment!
 */
-import '@polymer/polymer/polymer-legacy.js';
-
 import { IronA11yAnnouncer } from '@polymer/iron-a11y-announcer/iron-a11y-announcer.js';
 import 'd2l-course-image/d2l-course-image.js';
 import 'd2l-dropdown/d2l-dropdown-menu.js';
 import 'd2l-dropdown/d2l-dropdown-more.js';
 import 'd2l-fetch/d2l-fetch.js';
 import { Actions } from 'd2l-hypermedia-constants';
-import { Classes } from 'd2l-hypermedia-constants';
-import { Rels } from 'd2l-hypermedia-constants';
 import 'd2l-icons/d2l-icon.js';
 import 'd2l-icons/tier1-icons.js';
 import 'd2l-loading-spinner/d2l-loading-spinner.js';
@@ -35,417 +31,402 @@ import 'd2l-card/d2l-card.js';
 import 'd2l-card/d2l-card-content-meta.js';
 import 'd2l-button/d2l-button-icon.js';
 import 'd2l-status-indicator/d2l-status-indicator.js';
-import 'd2l-polymer-siren-behaviors/store/entity-behavior.js';
 import 'd2l-polymer-siren-behaviors/store/siren-action-behavior.js';
 import '../d2l-user-activity-usage/d2l-user-activity-usage.js';
 import './d2l-enrollment-updates.js';
-import '../localize-behavior.js';
-import { Polymer } from '@polymer/polymer/lib/legacy/polymer-fn.js';
 import { afterNextRender } from '@polymer/polymer/lib/utils/render-status.js';
-const $_documentContainer = document.createElement('template');
+import { html, PolymerElement } from '@polymer/polymer/polymer-element.js';
+import { EntityMixin } from 'siren-sdk/src/mixin/entity-mixin.js';
+import { EnrollmentEntity } from '../../EnrollmentEntity.js';
+import { mixinBehaviors } from '@polymer/polymer/lib/legacy/class.js';
+import { DateTextAndStatusMixin } from '../date-text-status-mixin.js';
 
-$_documentContainer.innerHTML = `<dom-module id="d2l-enrollment-card">
-	<template strip-whitespace="">
-		<style>
-			:host {
-				display: block;
-				position: relative;
-			}
+/**
+ * @customElement
+ * @polymer
+ */
+class EnrollmentCard extends mixinBehaviors([
+	D2L.PolymerBehaviors.Hypermedia.OrganizationHMBehavior,
+	D2L.PolymerBehaviors.Siren.SirenActionBehavior,
+], DateTextAndStatusMixin(EntityMixin(PolymerElement))) {
+	constructor() {
+		super();
+		this._setEntityType(EnrollmentEntity);
+	}
 
-			d2l-card {
-				height: 100%;
-				/* Prevents long, non-breaking course names from overflowing */
-				width: 100%;
-			}
-			d2l-card[disabled] .d2l-enrollment-card-image-container {
-				/*
-				Chrome 19+,
-				Safari 6+,
-				Safari 6+ iOS,
-				Opera 15+
-				*/
-				-webkit-filter: grayscale(1);
+	static get template() {
+		return html`
+			<style>
+				:host {
+					display: block;
+					position: relative;
+				}
 
-				/* Firefox 35+ */
-				filter: grayscale(1);
+				d2l-card {
+					height: 100%;
+					/* Prevents long, non-breaking course names from overflowing */
+					width: 100%;
+				}
+				d2l-card[disabled] .d2l-enrollment-card-image-container {
+					/*
+					Chrome 19+,
+					Safari 6+,
+					Safari 6+ iOS,
+					Opera 15+
+					*/
+					-webkit-filter: grayscale(1);
 
-				opacity: 0.5;
-				position: relative;
-				z-index: -1;
-			}
-			d2l-card[disabled]:hover,
-			d2l-card[disabled]:focus {
-				cursor: not-allowed;
-			}
+					/* Firefox 35+ */
+					filter: grayscale(1);
 
-			d2l-card[disabled] d2l-enrollment-updates {
-				display: none;
-			}
+					opacity: 0.5;
+					position: relative;
+					z-index: -1;
+				}
+				d2l-card[disabled]:hover,
+				d2l-card[disabled]:focus {
+					cursor: not-allowed;
+				}
 
-			d2l-icon {
-				color: white;
-				--d2l-icon-width: 18px;
-				--d2l-icon-height: 18px;
-			}
+				d2l-card[disabled] d2l-enrollment-updates {
+					display: none;
+				}
 
-			.enrollment-content-block {
-				display: block;
-			}
+				d2l-icon {
+					color: white;
+					--d2l-icon-width: 18px;
+					--d2l-icon-height: 18px;
+				}
 
-			.d2l-enrollment-card-overlay {
-				box-sizing: border-box;
-				display: flex;
-				flex-direction: column;
-				justify-content: center;
-				position: absolute;
-				top: 1px;
-				height: var(--course-image-height);
-				width: calc(100% - 2px);
-				border-top-left-radius: 5px;
-				border-top-right-radius: 5px;
-				color: white;
-				padding: 10px;
-				text-align: center;
-				background-color: rgba(0,0,0,0.7);
-			}
-			.d2l-enrollment-card-overlay[hidden] {
-				display: none;
-			}
+				.enrollment-content-block {
+					display: block;
+				}
 
-			.d2l-enrollment-card-image-container {
-				height: var(--course-image-height);
-				line-height:0;
-			}
+				.d2l-enrollment-card-overlay {
+					box-sizing: border-box;
+					display: flex;
+					flex-direction: column;
+					justify-content: center;
+					position: absolute;
+					top: 1px;
+					height: var(--course-image-height);
+					width: calc(100% - 2px);
+					border-top-left-radius: 5px;
+					border-top-right-radius: 5px;
+					color: white;
+					padding: 10px;
+					text-align: center;
+					background-color: rgba(0,0,0,0.7);
+				}
+				.d2l-enrollment-card-overlay[hidden] {
+					display: none;
+				}
 
-			.d2l-enrollment-card-icon-container {
-				height: 64px;
-				width: 64px;
-				display: flex;
-				justify-content: center;
-				align-items: center;
-				border-style: none;
-				border-radius: 100px;
-				background-color: white;
-				overflow: hidden;
-				position: absolute;
-				top: 0;
-				left: 0;
-				right: 0;
-				bottom: 0;
-				margin: auto;
-				animation-name: container;
-				animation-duration: 1s;
-				animation-fill-mode: forwards;
-			}
-			@keyframes container {
-				0% { height: 64px; width: 64px; }
-				70% { height: 64px; width: 64px; opacity: 1; }
-				90% { height: 80px; width: 80px; opacity: 0.4 }
-				100% { height: 20px; width: 20px; opacity: 0; }
-			}
+				.d2l-enrollment-card-image-container {
+					height: var(--course-image-height);
+					line-height:0;
+				}
 
-			.d2l-enrollment-card-checkmark {
-				color: var(--d2l-color-olivine);
-			}
-			.d2l-enrollment-card-fail-icon {
-				color: #ffce51;
-			}
-			.d2l-enrollment-card-checkmark,
-			.d2l-enrollment-card-fail-icon {
-				display: flex;
-				animation-name: inner;
-				animation-duration: 1s;
-				animation-fill-mode: forwards;
-			}
-			@keyframes inner {
-				0% { transform: scale(1); }
-				15% { transform: scale(2.30); }
-				20% { transform: scale(2.0); }
-				100% { transform: scale(2.0); }
-			}
+				.d2l-enrollment-card-icon-container {
+					height: 64px;
+					width: 64px;
+					display: flex;
+					justify-content: center;
+					align-items: center;
+					border-style: none;
+					border-radius: 100px;
+					background-color: white;
+					overflow: hidden;
+					position: absolute;
+					top: 0;
+					left: 0;
+					right: 0;
+					bottom: 0;
+					margin: auto;
+					animation-name: container;
+					animation-duration: 1s;
+					animation-fill-mode: forwards;
+				}
+				@keyframes container {
+					0% { height: 64px; width: 64px; }
+					70% { height: 64px; width: 64px; opacity: 1; }
+					90% { height: 80px; width: 80px; opacity: 0.4 }
+					100% { height: 20px; width: 20px; opacity: 0; }
+				}
 
-			.d2l-enrollment-card-alert-colour-circle {
-				height: .75rem;
-				width: .75rem;
-				border-radius: 50%;
-				border: 1px solid #f6f7f8;
-				background-color: var(--d2l-color-celestine);
-				position: absolute;
-				top: -0.375rem;
-				right: -0.375rem;
-			}
+				.d2l-enrollment-card-checkmark {
+					color: var(--d2l-color-olivine);
+				}
+				.d2l-enrollment-card-fail-icon {
+					color: #ffce51;
+				}
+				.d2l-enrollment-card-checkmark,
+				.d2l-enrollment-card-fail-icon {
+					display: flex;
+					animation-name: inner;
+					animation-duration: 1s;
+					animation-fill-mode: forwards;
+				}
+				@keyframes inner {
+					0% { transform: scale(1); }
+					15% { transform: scale(2.30); }
+					20% { transform: scale(2.0); }
+					100% { transform: scale(2.0); }
+				}
 
-			:host(:dir(rtl)) .d2l-enrollment-card-alert-colour-circle {
-				right: auto;
-				left: -0.375rem;
-			}
+				.d2l-enrollment-card-alert-colour-circle {
+					height: .75rem;
+					width: .75rem;
+					border-radius: 50%;
+					border: 1px solid #f6f7f8;
+					background-color: var(--d2l-color-celestine);
+					position: absolute;
+					top: -0.375rem;
+					right: -0.375rem;
+				}
 
-			.d2l-enrollment-card-content-flex {
-				overflow: hidden;
-				word-wrap: break-word; /* IE/Edge */
-				overflow-wrap: break-word; /* replaces 'word-wrap' in Firefox, Chrome, Safari */
-				display: flex;
-				flex-direction: column;
-				margin: -0.35rem 0 -0.1rem -0.05rem;
-			}
-			.d2l-enrollment-card-content-flex[badge] {
-				margin-top: -0.855rem;
-			}
-			.d2l-enrollment-card-status-indicator {
-				background-color: #FFFFFF;
-				box-shadow: 0 0 0 2px #FFFFFF;
-				padding: 0.2rem 0.5rem 0.15rem 0.5rem;
-				filter: grayscale(0);
-				opacity: 1;
-			}
-		</style>
+				:host(:dir(rtl)) .d2l-enrollment-card-alert-colour-circle {
+					right: auto;
+					left: -0.375rem;
+				}
 
-		<d2l-card disabled$="[[disabled]]" href="[[_organizationHomepageUrl]]" text="[[_accessibilityDataToString(_accessibilityData)]]">
-			<div slot="header" aria-hidden="true">
-				<div class="d2l-enrollment-card-image-container">
-					<d2l-course-image image="[[_image]]" sizes="[[_tileSizes]]" type="tile">
-					</d2l-course-image>
-				</div>
-				<div hidden$="[[!_imageLoading]]" class="d2l-enrollment-card-overlay">
-					<d2l-loading-spinner hidden$="[[!_imageLoadingProgress]]" size="85"></d2l-loading-spinner>
-					<div class="d2l-enrollment-card-icon-container" hidden$="[[_imageLoadingProgress]]">
-						<d2l-icon></d2l-icon>
+				.d2l-enrollment-card-content-flex {
+					overflow: hidden;
+					word-wrap: break-word; /* IE/Edge */
+					overflow-wrap: break-word; /* replaces 'word-wrap' in Firefox, Chrome, Safari */
+					display: flex;
+					flex-direction: column;
+					margin: -0.35rem 0 -0.1rem -0.05rem;
+				}
+				.d2l-enrollment-card-content-flex[badge] {
+					margin-top: -0.855rem;
+				}
+				.d2l-enrollment-card-status-indicator {
+					background-color: #FFFFFF;
+					box-shadow: 0 0 0 2px #FFFFFF;
+					padding: 0.2rem 0.5rem 0.15rem 0.5rem;
+					filter: grayscale(0);
+					opacity: 1;
+				}
+			</style>
+
+			<d2l-card disabled$="[[disabled]]" href="[[_organizationHomepageUrl]]" text="[[_accessibilityDataToString(_accessibilityData)]]">
+				<div slot="header" aria-hidden="true">
+					<div class="d2l-enrollment-card-image-container">
+						<d2l-course-image image="[[_image]]" sizes="[[_tileSizes]]" type="tile">
+						</d2l-course-image>
+					</div>
+					<div hidden$="[[!_imageLoading]]" class="d2l-enrollment-card-overlay">
+						<d2l-loading-spinner hidden$="[[!_imageLoadingProgress]]" size="85"></d2l-loading-spinner>
+						<div class="d2l-enrollment-card-icon-container" hidden$="[[_imageLoadingProgress]]">
+							<d2l-icon></d2l-icon>
+						</div>
 					</div>
 				</div>
-			</div>
 
-			<d2l-status-indicator aria-hidden="true" class="d2l-enrollment-card-status-indicator" slot="badge" state="[[_badgeState]]" text="[[localize(_badgeText)]]" hidden$="[[!_badgeText]]">
-			</d2l-status-indicator>
+				<d2l-status-indicator aria-hidden="true" class="d2l-enrollment-card-status-indicator" slot="badge" state="[[_badgeState]]" text="[[localize(_badgeText)]]" hidden$="[[!_badgeText]]">
+				</d2l-status-indicator>
 
-			<div badge$="[[_badgeText]]" class="d2l-enrollment-card-content-flex" slot="content" aria-hidden="true">
-				<d2l-organization-name href="[[_organizationUrl]]" token="[[token]]"></d2l-organization-name>
-				<d2l-card-content-meta>
-					<d2l-organization-info class="enrollment-content-block" href="[[_organizationUrl]]" token="[[token]]"
-						show-organization-code="[[showOrganizationCode]]"
-						show-semester-name="[[showSemesterName]]"
-					></d2l-organization-info>
-					<d2l-user-activity-usage class="enrollment-content-block" href="[[_userActivityUsageUrl]]" override-to-default$="[[_orgDateSlot]]" token="[[token]]">
-						<d2l-organization-date slot="default" href="[[_organizationUrl]]" token="[[token]]"
-							hide-course-start-date="[[hideCourseStartDate]]"
-							hide-course-end-date="[[hideCourseEndDate]]"
-						></d2l-organization-date>
-					</d2l-user-activity-usage>
-				</d2l-card-content-meta>
-			</div>
+				<div badge$="[[_badgeText]]" class="d2l-enrollment-card-content-flex" slot="content" aria-hidden="true">
+					<d2l-organization-name href="[[_organizationUrl]]" token="[[token]]"></d2l-organization-name>
+					<d2l-card-content-meta>
+						<d2l-organization-info class="enrollment-content-block" href="[[_organizationUrl]]" token="[[token]]"
+							show-organization-code="[[showOrganizationCode]]"
+							show-semester-name="[[showSemesterName]]"
+						></d2l-organization-info>
+						<d2l-user-activity-usage class="enrollment-content-block" href="[[_userActivityUsageUrl]]" override-to-default$="[[_orgDateSlot]]" token="[[token]]">
+							<d2l-organization-date slot="default" href="[[_organizationUrl]]" token="[[token]]"
+								hide-course-start-date="[[hideCourseStartDate]]"
+								hide-course-end-date="[[hideCourseEndDate]]"
+							></d2l-organization-date>
+						</d2l-user-activity-usage>
+					</d2l-card-content-meta>
+				</div>
 
-			<d2l-dropdown-more slot="actions" text="[[_courseSettingsLabel]]" translucent="" visible-on-ancestor="">
-				<d2l-dropdown-menu>
-					<d2l-menu>
-						<d2l-menu-item-link hidden$="[[!_canAccessCourseInfo]]" text="[[localize('courseOfferingInformation')]]" href="[[_courseInfoUrl]]">
-						</d2l-menu-item-link>
-						<d2l-menu-item on-d2l-menu-item-select="_launchCourseImageSelector" hidden$="[[!_canChangeCourseImage]]" text="[[localize('changeImage')]]">
-						</d2l-menu-item>
-						<d2l-menu-item on-d2l-menu-item-select="_pinClickHandler" hidden$="[[_pinned]]" text="[[localize('pin')]]">
-						</d2l-menu-item>
-						<d2l-menu-item on-d2l-menu-item-select="_pinClickHandler" hidden$="[[!_pinned]]" text="[[localize('unpin')]]">
-						</d2l-menu-item>
-					</d2l-menu>
-				</d2l-dropdown-menu>
-			</d2l-dropdown-more>
+				<d2l-dropdown-more slot="actions" text="[[_courseSettingsLabel]]" translucent="" visible-on-ancestor="">
+					<d2l-dropdown-menu>
+						<d2l-menu>
+							<d2l-menu-item-link hidden$="[[!_canAccessCourseInfo]]" text="[[localize('courseOfferingInformation')]]" href="[[_courseInfoUrl]]">
+							</d2l-menu-item-link>
+							<d2l-menu-item on-d2l-menu-item-select="_launchCourseImageSelector" hidden$="[[!_canChangeCourseImage]]" text="[[localize('changeImage')]]">
+							</d2l-menu-item>
+							<d2l-menu-item on-d2l-menu-item-select="_pinClickHandler" hidden$="[[_pinned]]" text="[[localize('pin')]]">
+							</d2l-menu-item>
+							<d2l-menu-item on-d2l-menu-item-select="_pinClickHandler" hidden$="[[!_pinned]]" text="[[localize('unpin')]]">
+							</d2l-menu-item>
+						</d2l-menu>
+					</d2l-dropdown-menu>
+				</d2l-dropdown-more>
 
-			<d2l-button-icon slot="actions" translucent="" hidden$="[[!_pinned]]" text="[[_pinButtonLabel]]" icon="d2l-tier1:pin-filled" on-tap="_pinClickHandler" on-keypress="_pinPressHandler">
-			</d2l-button-icon>
+				<d2l-button-icon slot="actions" translucent="" hidden$="[[!_pinned]]" text="[[_pinButtonLabel]]" icon="d2l-tier1:pin-filled" on-tap="_pinClickHandler" on-keypress="_pinPressHandler">
+				</d2l-button-icon>
 
-			<div slot="content" class="d2l-enrollment-card-alert-colour-circle" hidden$="[[!_newEnrollment]]"></div>
+				<div slot="content" class="d2l-enrollment-card-alert-colour-circle" hidden$="[[!_newEnrollment]]"></div>
 
-			<d2l-enrollment-updates slot="footer" href="[[_organizationUrl]]" token="[[token]]"
-				show-dropbox-unread-feedback="[[showDropboxUnreadFeedback]]"
-				show-unattempted-quizzes="[[showUnattemptedQuizzes]]"
-				show-ungraded-quiz-attempts="[[showUngradedQuizAttempts]]"
-				show-unread-discussion-messages="[[showUnreadDiscussionMessages]]"
-				show-unread-dropbox-submissions="[[showUnreadDropboxSubmissions]]"
-			></d2l-enrollment-updates>
-		</d2l-card>
-	</template>
+				<d2l-enrollment-updates slot="footer" href="[[_organizationUrl]]" token="[[token]]"
+					show-dropbox-unread-feedback="[[showDropboxUnreadFeedback]]"
+					show-unattempted-quizzes="[[showUnattemptedQuizzes]]"
+					show-ungraded-quiz-attempts="[[showUngradedQuizAttempts]]"
+					show-unread-discussion-messages="[[showUnreadDiscussionMessages]]"
+					show-unread-dropbox-submissions="[[showUnreadDropboxSubmissions]]"
+				></d2l-enrollment-updates>
+			</d2l-card>
+		`;
+	}
 
-</dom-module>`;
+	static get is() { return 'd2l-enrollment-card'; }
 
-document.head.appendChild($_documentContainer.content);
-Polymer({
-	is: 'd2l-enrollment-card',
+	static get properties() {
+		return {
+			disabled: {
+				type: Boolean,
+				reflectToAttribute: true,
+				value: false,
+				readOnly: true,
+				observer: '_handleDisabledChange'
+			},
+			overdue: {
+				type: Boolean,
+				reflectToAttribute: true,
+				value: false,
+				readOnly: true
+			},
+			completed: {
+				type: Boolean,
+				reflectToAttribute: true,
+				readOnly: true,
+				observer: '_handleCompletedChange'
+			},
+			closed: {
+				type: Boolean,
+				reflectToAttribute: true,
+				value: false,
+				readOnly: true,
+				observer: '_handleClosedChange'
+			},
+			inactive: {
+				type: Boolean,
+				reflectToAttribute: true,
+				value: false,
+				readOnly: true
+			},
 
-	properties: {
-		href: {
-			type: String,
-			value: null
-		},
-		disabled: {
-			type: Boolean,
-			reflectToAttribute: true,
-			value: false,
-			readOnly: true,
-			observer: '_handleDisabledChange'
-		},
-		overdue: {
-			type: Boolean,
-			reflectToAttribute: true,
-			value: false,
-			readOnly: true
-		},
-		completed: {
-			type: Boolean,
-			reflectToAttribute: true,
-			readOnly: true,
-			observer: '_handleCompletedChange'
-		},
-		closed: {
-			type: Boolean,
-			reflectToAttribute: true,
-			value: false,
-			readOnly: true,
-			observer: '_handleClosedChange'
-		},
-		inactive: {
-			type: Boolean,
-			reflectToAttribute: true,
-			value: false,
-			readOnly: true
-		},
+			showOrganizationCode: {
+				type: Boolean,
+				value: false
+			},
+			showSemesterName: {
+				type: Boolean,
+				value: false
+			},
+			hideCourseStartDate: {
+				type: Boolean,
+				value: false
+			},
+			hideCourseEndDate: {
+				type: Boolean,
+				value: false
+			},
+			showDropboxUnreadFeedback: {
+				type: Boolean,
+				value: false
+			},
+			showUnattemptedQuizzes: {
+				type: Boolean,
+				value: false
+			},
+			showUngradedQuizAttempts: {
+				type: Boolean,
+				value: false
+			},
+			showUnreadDiscussionMessages: {
+				type: Boolean,
+				value: false
+			},
+			showUnreadDropboxSubmissions: {
+				type: Boolean,
+				value: false
+			},
 
-		showOrganizationCode: {
-			type: Boolean,
-			value: false
-		},
-		showSemesterName: {
-			type: Boolean,
-			value: false
-		},
-		hideCourseStartDate: {
-			type: Boolean,
-			value: false
-		},
-		hideCourseEndDate: {
-			type: Boolean,
-			value: false
-		},
-		showDropboxUnreadFeedback: {
-			type: Boolean,
-			value: false
-		},
-		showUnattemptedQuizzes: {
-			type: Boolean,
-			value: false
-		},
-		showUngradedQuizAttempts: {
-			type: Boolean,
-			value: false
-		},
-		showUnreadDiscussionMessages: {
-			type: Boolean,
-			value: false
-		},
-		showUnreadDropboxSubmissions: {
-			type: Boolean,
-			value: false
-		},
+			_enrollment: {
+				type: Object,
+				value: function() { return {}; }
+			},
+			_pinAction: String,
+			_pinned: {
+				type: Boolean,
+				value: false,
+				observer: '_handlePinnedChange'
+			},
+			_tileSizes: {
+				type: Object,
+				value: function() {
+					return {
+						mobile: {
+							maxwidth: 767,
+							size: 100
+						},
+						tablet: {
+							maxwidth: 1243,
+							size: 67
+						},
+						desktop: {
+							size: 25
+						}
+					};
+				}
+			},
+			_canAccessCourseInfo: Boolean,
+			_canChangeCourseImage: Boolean,
+			_courseInfoUrl: String,
+			_courseSettingsLabel: String,
+			_image: Object,
+			_imageLoading: {
+				type: Boolean,
+				value: false
+			},
+			_imageLoadingProgress: {
+				type: Boolean,
+				value: false
+			},
+			_load: Boolean,
+			_organization: Object,
+			_organizationUrl: String,
+			_organizationHomepageUrl: String,
+			_pinButtonLabel: String,
+			_badgeText: {
+				type: String,
+				value: null,
+				observer: '_handleBadgeTextChange'
+			},
+			_badgeState: String,
+			_beforeStartDate: Boolean,
+			_orgDateSlot: {
+				type: Boolean,
+				value: false
+			},
+			_userActivityUsageUrl: String,
+			_accessibilityData: {
+				type: Object,
+				value: function() { return {}; }
+			},
+			_newEnrollment: {
+				type: Boolean,
+				value: false
+			},
+			_notifications: Array
+		};
+	}
 
-		_enrollment: {
-			type: Object,
-			value: function() { return {}; }
-		},
-		_pinned: {
-			type: Boolean,
-			value: false,
-			observer: '_handlePinnedChange'
-		},
-		_tileSizes: {
-			type: Object,
-			value: function() {
-				return {
-					mobile: {
-						maxwidth: 767,
-						size: 100
-					},
-					tablet: {
-						maxwidth: 1243,
-						size: 67
-					},
-					desktop: {
-						size: 25
-					}
-				};
-			}
-		},
-		_canAccessCourseInfo: {
-			type: Boolean,
-			computed: '_computeCanAccessCourseInfo(_organization)'
-		},
-		_canChangeCourseImage: {
-			type: Boolean,
-			computed: '_computeCanChangeCourseImage(_organization)'
-		},
-		_courseInfoUrl: String,
-		_courseSettingsLabel: {
-			type: String,
-			computed: '_computeCourseSettingsLabel(_organization)'
-		},
-		_image: Object,
-		_imageLoading: {
-			type: Boolean,
-			value: false
-		},
-		_imageLoadingProgress: {
-			type: Boolean,
-			value: false
-		},
-		_load: Boolean,
-		_organization: Object,
-		_organizationUrl: String,
-		_organizationHomepageUrl: String,
-		_pinButtonLabel: {
-			type: String,
-			computed: '_computePinButtonLabel(_organization)'
-		},
-		_notificationsUrl: String,
-		_badgeText: {
-			type: String,
-			value: null,
-			observer: '_handleBadgeTextChange'
-		},
-		_badgeState: String,
-		_beforeStartDate: Boolean,
-		_orgDateSlot: {
-			type: Boolean,
-			value: false
-		},
-		_userActivityUsageUrl: String,
-		_accessibilityData: {
-			type: Object,
-			value: function() { return {}; }
-		},
-		_newEnrollment: {
-			type: Boolean,
-			value: false
-		},
-		_notifications: Array
-	},
-	behaviors: [
-		D2L.PolymerBehaviors.Hypermedia.OrganizationHMBehavior,
-		D2L.PolymerBehaviors.Enrollment.LocalizeBehavior,
-		D2L.PolymerBehaviors.Siren.EntityBehavior,
-		D2L.PolymerBehaviors.Siren.SirenActionBehavior
-	],
-	observers: [
-		'_loadEnrollmentData(_load, entity)',
-		'_startedInactive(_beforeStartDate, closed, inactive)'
-	],
-	listeners: {
-		'd2l-enrollment-status': '_onD2lEnrollmentStatus',
-		'd2l-organization-accessible': '_onD2lOrganizationAccessible',
-		'd2l-user-activity-usage-accessible': '_onD2lUserActivityUsageAccessible',
-		'd2l-enrollment-new': '_onD2lEnrollmentNew',
-		'd2l-organization-date': '_onD2lOrganizationDate'
-	},
-	ready: function() {
-		IronA11yAnnouncer.requestAvailability();
-		this._boundOnSetCourseImage = this._onSetCourseImage.bind(this);
-	},
-	attached: function() {
+	static get observers() {
+		return [
+			'_loadEnrollmentData(_load, _entity)',
+			'_startedInactive(_beforeStartDate, closed, inactive)'
+		];
+	}
+
+	connectedCallback() {
+		super.connectedCallback();
 		window.addEventListener('set-course-image', this._boundOnSetCourseImage);
 
 		afterNextRender(this, function() {
@@ -486,12 +467,21 @@ Polymer({
 			var observer = new IntersectionObserver(observerCallback.bind(this));
 			observer.observe(imageTile);
 		}.bind(this));
-	},
-	detached: function() {
-		window.removeEventListener('set-course-image', this._boundOnSetCourseImage);
-	},
+	}
 
-	refreshImage: function(organization) {
+	disconnectedCallback() {
+		super.disconnectedCallback();
+		window.removeEventListener('set-course-image', this._boundOnSetCourseImage);
+	}
+
+	ready() {
+		super.ready();
+
+		IronA11yAnnouncer.requestAvailability();
+		this._boundOnSetCourseImage = this._onSetCourseImage.bind(this);
+	}
+
+	refreshImage(organization) {
 		if (this._getEntityIdentifier(organization) !== this._getEntityIdentifier(this._organization)) {
 			return;
 		}
@@ -499,40 +489,28 @@ Polymer({
 		this._imageLoading = true;
 		this._imageLoadingProgress = true;
 
-		this._organizationUrl = organization.getLinkByRel('self').href;
+		if (!this._entity) {
+			return;
+		}
 
-		return this._entityStoreFetch(this._organizationUrl)
-			.then(this._handleOrganizationResponse.bind(this))
+		this._entity.onOrganizationChange(this.onImageChange.bind(this));
+	}
+
+	onImageChange() {
+		this.onOrganizationChange
 			.then(this._displaySetImageResult.bind(this, true, true))
 			.catch(this._displaySetImageResult.bind(this, false));
-	},
+	}
 
-	_computeCanAccessCourseInfo: function(organization) {
-		return organization
-			&& organization.hasLinkByRel(Rels.courseOfferingInfoPage);
-	},
-	_computeCanChangeCourseImage: function(organization) {
-		return organization
-			&& organization.hasActionByName(Actions.organizations.setCatalogImage);
-	},
-	_computeCourseSettingsLabel: function(organization) {
-		return organization
-			&& organization.properties
-			&& this.localize('courseSettings', 'course', organization.properties.name);
-	},
-	_computePinButtonLabel: function(organization) {
-		return organization
-			&& organization.properties
-			&& this.localize('coursePinButton', 'course', organization.properties.name);
-	},
-	_handlePinnedChange: function(pinned) {
+	_handlePinnedChange(pinned) {
 		if (pinned) {
 			this.setAttribute('pinned', '');
 		} else {
 			this.removeAttribute('pinned');
 		}
-	},
-	_handleDisabledChange: function(disabled) {
+	}
+
+	_handleDisabledChange(disabled) {
 		if (disabled) {
 			this._accessibilityData.disabled = this.localize('disabled');
 		} else {
@@ -542,37 +520,38 @@ Polymer({
 		}
 
 		this._accessibilityDataReset();
-	},
-	_handleCompletedChange: function(completed) {
-		if (!this._enrollment
-			|| !this._enrollment.hasLinkByRel) {
+	}
+
+	_handleCompletedChange(completed) {
+		if (!this._href) {
 			return;
 		}
 		this.fire('d2l-enrollment-card-status', {
 			status: { completed: completed },
-			enrollmentUrl: this._getEntityIdentifier(this._enrollment)
+			enrollmentUrl: this._href
 		});
-	},
-	_handleClosedChange: function(closed) {
-		if (!this._enrollment
-			|| !this._enrollment.hasLinkByRel) {
+	}
+
+	_handleClosedChange(closed) {
+		if (!this._href) {
 			return;
 		}
 		this.fire('d2l-enrollment-card-status', {
 			status: { closed: closed },
-			enrollmentUrl: this._getEntityIdentifier(this._enrollment)
+			enrollmentUrl: this._href
 		});
-	},
-	_handleBadgeTextChange: function(badgeText) {
+	}
+
+	_handleBadgeTextChange(badgeText) {
 		if (!badgeText) {
 			return;
 		}
 
 		this._accessibilityData.badge = this.localize(badgeText);
 		this._accessibilityDataReset();
-	},
+	}
 
-	_displaySetImageResult: function(success, skipSetImage) {
+	_displaySetImageResult(success, skipSetImage) {
 		setTimeout(function() {
 			var icon = this.$$('.d2l-enrollment-card-icon-container d2l-icon');
 			this.toggleClass('d2l-enrollment-card-checkmark', false, icon);
@@ -594,91 +573,156 @@ Polymer({
 				this._imageLoading = false;
 			}.bind(this), 1000);
 		}.bind(this), 1000);
-	},
-	_loadEnrollmentForPinning: function(enrollment) {
-		return this._loadEnrollmentData(true, enrollment);
-	},
-	_loadEnrollmentData: function(load, enrollment) {
+	}
+
+	_loadEnrollmentForPinning(enrollment) {
+		this._entity._entity = enrollment;
+		return this._loadEnrollmentData(true, this._entity);
+	}
+
+	_loadEnrollmentData(load, enrollment) {
 		this._resetState();
 		if (!load || !enrollment) {
 			return;
 		}
 
-		if (
-			!enrollment.hasLinkByRel
-			|| !enrollment.hasLinkByRel(Rels.organization)
-		) {
-			return;
-		}
-
-		this._enrollment = enrollment;
-		this._pinned = enrollment.hasClass(Classes.enrollments.pinned);
-		this._organizationUrl = enrollment.getLinkByRel(Rels.organization).href;
+		this._enrollment = enrollment._entity;
+		this._pinned = enrollment.pinned();
+		this._organizationUrl = enrollment.organizationHref();
+		this._pinAction = enrollment.pinAction();
+		this._userActivityUsageUrl = enrollment.userActivityUsageUrl();
 
 		this.fire('d2l-enrollment-card-fetched', {
 			organizationUrl: this._organizationUrl,
-			enrollmentUrl: this._getEntityIdentifier(this._enrollment)
+			enrollmentUrl: this._href
 		});
-		if (enrollment.hasLinkByRel(Rels.Activities.userActivityUsage)) {
-			this._userActivityUsageUrl = enrollment.getLinkByRel(Rels.Activities.userActivityUsage).href;
-		}
 
-		return this._entityStoreFetch(this._organizationUrl)
-			.then(this._handleOrganizationResponse.bind(this));
-	},
-	_entityStoreFetch: function(url) {
-		return window.D2L.Siren.EntityStore.fetch(url, this.token);
-	},
-	_getEntityIdentifier: function(entity) {
-		// An entity's self href should be unique, so use it as an identifier
-		var selfLink = entity.getLinkByRel('self');
-		return selfLink.href;
-	},
-	_handleOrganizationResponse: function(organization) {
-		organization = organization && organization.entity;
-		this._organization = organization;
+		enrollment.onUserActivityUsageChange((userActivityUsage) => {
+			const dateTextAndStatus = this.dateTextAndStatus(userActivityUsage.isCompletionDate(), userActivityUsage.date());
+			this._setEnrollmentStatus(dateTextAndStatus && dateTextAndStatus.status);
+			this._setUserActivityUsageAccessible(dateTextAndStatus && dateTextAndStatus.dateText);
+			if (!userActivityUsage.isAttended()) {
+				this._handleEnrollmentNew();
+			}
+		});
+
+		enrollment.onOrganizationChange(this.onOrganizationChange.bind(this));
+	}
+
+	onOrganizationChange(org) {
+		this._organization = org._entity;
 
 		afterNextRender(this, function() {
 			// Telemetry event for organization loaded, meaning tile is interactive
 			this.fire('course-tile-organization');
 		}.bind(this));
 
-		if (organization.hasLinkByRel(Rels.courseOfferingInfoPage)) {
-			this._courseInfoUrl = organization.getLinkByRel(Rels.courseOfferingInfoPage).href;
-		}
-		if (organization.hasLinkByRel(Rels.Notifications.organizationNotifications)) {
-			this._notificationsUrl = organization.getLinkByRel(Rels.Notifications.organizationNotifications).href;
-		}
-		if (organization.hasSubEntityByClass(Classes.courseImage.courseImage)) {
-			var imageEntity = organization.getSubEntityByClass(Classes.courseImage.courseImage);
-			if (imageEntity.href) {
-				this._entityStoreFetch(imageEntity.href)
-					.then(function(hydratedImage) {
-						this._image = hydratedImage && hydratedImage.entity;
-					}.bind(this));
-			} else {
-				this._image = imageEntity;
-			}
-		}
-		if (organization.hasSubEntityByRel(Rels.organizationHomepage)) {
-			var homepageEntity = organization.getSubEntityByRel(Rels.organizationHomepage);
-			this._organizationHomepageUrl = homepageEntity
-				&& homepageEntity.properties
-				&& homepageEntity.properties.path;
+		this._courseInfoUrl = org.courseInfoUrl();
+		this._canAccessCourseInfo = !!this._courseInfoUrl;
+		const orgName = org.name();
+		this._courseSettingsLabel = orgName && this.localize('courseSettings', 'course', orgName);
+		this._pinButtonLabel = orgName && this.localize('coursePinButton', 'course', orgName);
+		this._canChangeCourseImage = org._entity && org._entity.hasActionByName(Actions.organizations.setCatalogImage);
+		const processedDate = org.processedDate(this.hideCourseStartDate, this.hideCourseEndDate);
+		this._setOrganizationDate(processedDate, org.isActive());
+
+		org.onSemesterChange(function(semester) {
+			const dateText = processedDate && this.localize(
+				processedDate.type,
+				'date', this.formatDate(processedDate.date, {format: 'MMMM d, yyyy'}),
+				'time', this.formatTime(processedDate.date)
+			);
+			this._setOrganizationAccessibleData(org.name(), org.code(), semester.name(), dateText);
+		}.bind(this));
+
+		const imageEntity = org.imageEntity();
+		if (imageEntity && imageEntity.href) {
+			org.onImageChange((image) => {
+				this._image = image.entity();
+			});
 		} else {
+			this._image = imageEntity;
+		}
+
+		this._organizationHomepageUrl = org.organizationHomepageUrl();
+		if (!this._organizationHomepageUrl) {
 			// If the user doesn't have access, don't animate image/show menu/underline on hover
 			this._organizationHomepageUrl = null;
 			this._setDisabled(true);
 		}
 
 		return Promise.resolve();
-	},
-	_launchCourseImageSelector: function() {
+	}
+
+	_setOrganizationAccessibleData(name, code, semesterName, dateText) {
+		if (name) {
+			this._accessibilityData.organizationName = name;
+		}
+		if (code) {
+			this._accessibilityData.organizationCode = code;
+		}
+		if (dateText) {
+			this._accessibilityData.organizationDate = dateText;
+		}
+		if (semesterName) {
+			this._accessibilityData.semesterName = semesterName;
+		}
+		this._accessibilityDataReset();
+	}
+
+	_setOrganizationDate(date, isActive) {
+		this._setInactive(!isActive);
+		const afterEndDate = date && date.afterEndDate;
+		this._setClosed(afterEndDate);
+		this._beforeStartDate = date && date.beforeStartDate;
+		if (this._beforeStartDate || (afterEndDate && !this.completed)) {
+			this._orgDateSlot = true;
+		}
+
+		this._setBadgeText();
+	}
+
+	_handleEnrollmentNew() {
+		this._newEnrollment = true;
+		this._accessibilityData.new = this.localize('new');
+		this._accessibilityDataReset();
+	}
+
+	_setEnrollmentStatus(status) {
+		switch (status) {
+			case 'completed':
+				this._setCompleted(true);
+				break;
+			case 'overdue':
+				this._setOverdue(true);
+				break;
+			default:
+				this._setCompleted(false);
+				this._setOverdue(false);
+				break;
+		}
+
+		this._setBadgeText();
+	}
+
+	_setUserActivityUsageAccessible(dateText) {
+		this._accessibilityData.userActivityUsageInfo = dateText;
+		this._accessibilityDataReset();
+	}
+
+	_getEntityIdentifier(entity) {
+		// An entity's self href should be unique, so use it as an identifier
+		var selfLink = entity.getLinkByRel('self');
+		return selfLink.href;
+	}
+
+	_launchCourseImageSelector() {
 		this.fire('open-change-image-view', {
 			organization: this._organization
 		});
-	},
-	_onSetCourseImage: function(e) {
+	}
+
+	_onSetCourseImage(e) {
 		if (this._getEntityIdentifier(e.detail.organization) !== this._getEntityIdentifier(this._organization)) {
 			return;
 		}
@@ -714,68 +758,14 @@ Polymer({
 				this._displaySetImageResult(false);
 				break;
 		}
-	},
-	_onD2lEnrollmentStatus: function(e) {
-		switch (e.detail.status) {
-			case 'completed':
-				this._setCompleted(true);
-				break;
-			case 'overdue':
-				this._setOverdue(true);
-				break;
-			default:
-				this._setCompleted(false);
-				this._setOverdue(false);
-				break;
-		}
+	}
 
-		this._setBadgeText();
-	},
-	_onD2lOrganizationDate: function(e) {
-		this._setInactive(!e.detail.active);
-		this._setClosed(e.detail.afterEndDate);
-		this._beforeStartDate = e.detail.beforeStartDate;
-		if (e.detail.beforeStartDate || (e.detail.afterEndDate && !this.completed)) {
-			this._orgDateSlot = true;
-		}
-
-		this._setBadgeText();
-	},
-	_onD2lOrganizationAccessible: function(e) {
-		if (e.detail.organization) {
-			if (e.detail.organization.name) {
-				this._accessibilityData.organizationName = e.detail.organization.name;
-			}
-			if (e.detail.organization.code) {
-				this._accessibilityData.organizationCode = e.detail.organization.code;
-			}
-			if (e.detail.organization.date) {
-				this._accessibilityData.organizationDate = e.detail.organization.date;
-			}
-		}
-		if (e.detail.semesterName) {
-			this._accessibilityData.semesterName = e.detail.semesterName;
-		}
-		this._accessibilityDataReset();
-	},
-	_onD2lUserActivityUsageAccessible: function(e) {
-		this._accessibilityData.userActivityUsageInfo = e.detail;
-		this._accessibilityDataReset();
-	},
-	_badgeTextChange: function(badgeText) {
+	_badgeTextChange(badgeText) {
 		this._accessibilityData.badge = badgeText;
 		this._accessibilityDataReset();
-	},
-	_onD2lEnrollmentNew: function() {
-		this._newEnrollment = true;
-		this._accessibilityData.new = this.localize('new');
-		this._accessibilityDataReset();
-	},
-	_pinClickHandler: function() {
-		var pinAction = this._pinned
-			? this._enrollment.getActionByName(Actions.enrollments.unpinCourse)
-			: this._enrollment.getActionByName(Actions.enrollments.pinCourse);
+	}
 
+	_pinClickHandler() {
 		this.fire(this._pinned ? 'enrollment-pinned' : 'enrollment-unpinned', {
 			enrollment: this._enrollment,
 			organization: this._organization
@@ -786,7 +776,7 @@ Polymer({
 			text: this.localize(localizeKey, 'course', this._organization.properties.name)
 		}, { bubbles: true });
 
-		return this.performSirenAction(pinAction).then(this._loadEnrollmentForPinning.bind(this)).then(function() {
+		return this.performSirenAction(this._pinAction).then(this._loadEnrollmentForPinning.bind(this)).then(function() {
 			// Wait until after PUT has finished to fire, so that
 			// listeners are guaranteed to fetch updated entity
 			this.fire('d2l-course-pinned-change', {
@@ -794,13 +784,15 @@ Polymer({
 				isPinned: this._pinned
 			});
 		}.bind(this));
-	},
-	_pinPressHandler: function(e) {
+	}
+
+	_pinPressHandler(e) {
 		if (e.code === 'Space' || e.code === 'Enter') {
 			this._pinClickHandler();
 		}
-	},
-	_accessibilityDataToString: function(accessibility) {
+	}
+
+	_accessibilityDataToString(accessibility) {
 		if (!accessibility || !accessibility.organizationName) {
 			return this.localize('closed');
 		}
@@ -816,13 +808,15 @@ Polymer({
 		return textData.filter(function(text) {
 			return text && typeof text === 'string';
 		}).join(', ');
-	},
-	_accessibilityDataReset: function() {
+	}
+
+	_accessibilityDataReset() {
 		var accessiblity = this._accessibilityData;
 		this._accessibilityData = {};
 		this._accessibilityData = accessiblity;
-	},
-	_setBadgeText: function() {
+	}
+
+	_setBadgeText() {
 		var priorityOrder = [
 			[this.completed, 'completed', 'success'],
 			[this._beforeStartDate && !this.inactive, null, null],
@@ -840,16 +834,18 @@ Polymer({
 
 		this._badgeText = null;
 		this._badgeState = null;
-	},
-	_startedInactive: function(beforeStartDate, closed, inactive) {
+	}
+
+	_startedInactive(beforeStartDate, closed, inactive) {
 		if (!beforeStartDate && !closed && inactive) {
 			this.setAttribute('started-inactive', '');
 			this.fire('started-inactive');
 		} else {
 			this.removeAttribute('started-inactive');
 		}
-	},
-	_resetState: function() {
+	}
+
+	_resetState() {
 		this._beforeStartDate = undefined;
 		this._setDisabled(false);
 		this._setCompleted(false);
@@ -861,4 +857,6 @@ Polymer({
 		this._orgDateSlot = false;
 		this._setBadgeText();
 	}
-});
+}
+
+window.customElements.define(EnrollmentCard.is, EnrollmentCard);

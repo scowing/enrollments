@@ -154,29 +154,6 @@ describe('d2l-user-activity-usage', () => {
 	});
 
 	describe('Check if events fire.', () => {
-		it('Overdue', (done) => {
-			isCompletionDateStub.returns(false);
-			dateStub.returns('2017-08-01T04:00:00.000Z');
-			component.addEventListener('d2l-enrollment-status', function(e) {
-				expect(e.detail.status).to.equal('overdue');
-				done();
-			});
-
-			component._entity = userActivityUsageEntity;
-		});
-
-		it('Completed', (done) => {
-			isCompletionDateStub.returns(true);
-			dateStub.returns('2017-08-01T04:00:00.000Z');
-
-			component.addEventListener('d2l-enrollment-status', function(e) {
-				expect(e.detail.status).to.equal('completed');
-				done();
-			});
-
-			component._entity = userActivityUsageEntity;
-		});
-
 		it('New Enrollment', (done) => {
 			isCompletionDateStub.returns(false);
 			dateStub.returns('2017-08-01T04:00:00.000Z');
@@ -199,7 +176,6 @@ describe('d2l-user-activity-usage', () => {
 			isAttendedStub.returns(true);
 
 			var eventSpy = sandbox.spy();
-			component.addEventListener('d2l-enrollment-status', eventSpy);
 			component.addEventListener('d2l-enrollment-new', eventSpy);
 
 			component._entity = userActivityUsageEntity;
