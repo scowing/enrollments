@@ -125,7 +125,7 @@ class D2lEnrollmentSummaryView extends EntityMixin(PolymerElement) {
 			</style>
 			<div class="desv-header">
 				<div class="desv-title-bar">
-					<h1> Introduction to User Experience Design </h1>
+					<h1> [[_title]] </h1>
 					<d2l-enrollment-summary-view-tag-list list=[[_tags]]></d2l-enrollment-summary-view-tag-list>
 				</div>
 				<d2l-enrollment-summary-view-layout>
@@ -160,6 +160,7 @@ class D2lEnrollmentSummaryView extends EntityMixin(PolymerElement) {
 				value: () => [],
 				computed: '_computeTags(_courses)'
 			},
+			_title: String,
 			_courses: {
 				type: Array,
 				value: () => []
@@ -182,6 +183,7 @@ class D2lEnrollmentSummaryView extends EntityMixin(PolymerElement) {
 	}
 	_onEnrollmentChange(enrollment) {
 		enrollment.onOrganizationChange((org) => {
+			this._title = org.title();
 			this._description = org.description();
 			org.onSequenceChange((rootSequence) => {
 				rootSequence.onSubSequencesChange((subSequence) => {
