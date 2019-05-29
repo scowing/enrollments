@@ -63,18 +63,14 @@ describe('d2l-enrollment-card', () => {
 
 		organizationEntity = {
 			_entity: {
-				properties: {
-					name: 'Course Name'
-				},
-				hasLinkByRel: function() { return true; },
-				getLinkByRel: function() { return 'fake link'; },
-				hasActionByName: organizationHasActionByNameStub,
+				getLinkByRel: function() { return { href: 'organizationHref' }; }
 			},
 			imageEntity: function() { return imageEntity; },
 			courseInfoUrl: function() { return 'courseInfoUrl'; },
 			organizationHomepageUrl: function() { return 'organizationHomepageUrl'; },
 			name: function() { return 'Course Name'; },
 			code: function() { return 'Course Code'; },
+			canChangeCourseImage: organizationHasActionByNameStub,
 			isActive: isActiveStub,
 			processedDate: processedDateStub,
 			onSemesterChange: onSemesterChangeStub
