@@ -15,7 +15,6 @@ import 'd2l-course-image/d2l-course-image.js';
 import 'd2l-dropdown/d2l-dropdown-menu.js';
 import 'd2l-dropdown/d2l-dropdown-more.js';
 import 'd2l-fetch/d2l-fetch.js';
-import { Actions } from 'd2l-hypermedia-constants';
 import 'd2l-icons/d2l-icon.js';
 import 'd2l-icons/tier1-icons.js';
 import 'd2l-loading-spinner/d2l-loading-spinner.js';
@@ -393,6 +392,7 @@ class EnrollmentCard extends mixinBehaviors([
 			_organization: Object,
 			_organizationUrl: String,
 			_organizationHomepageUrl: String,
+			_organizationName: String,
 			_pinButtonLabel: String,
 			_badgeText: {
 				type: String,
@@ -482,7 +482,7 @@ class EnrollmentCard extends mixinBehaviors([
 	}
 
 	refreshImage(organization) {
-		if (this._getEntityIdentifier(organization) !== this._getEntityIdentifier(this._organization)) {
+		if (this._getEntityIdentifier(organization) !== this._organizationUrl) {
 			return;
 		}
 
@@ -619,10 +619,10 @@ class EnrollmentCard extends mixinBehaviors([
 
 		this._courseInfoUrl = org.courseInfoUrl();
 		this._canAccessCourseInfo = !!this._courseInfoUrl;
-		const orgName = org.name();
-		this._courseSettingsLabel = orgName && this.localize('courseSettings', 'course', orgName);
-		this._pinButtonLabel = orgName && this.localize('coursePinButton', 'course', orgName);
-		this._canChangeCourseImage = org._entity && org._entity.hasActionByName(Actions.organizations.setCatalogImage);
+		this._organizationName = org.name();
+		this._courseSettingsLabel = this._organizationName && this.localize('courseSettings', 'course', this._organizationName);
+		this._pinButtonLabel = this._organizationName && this.localize('coursePinButton', 'course', this._organizationName);
+		this._canChangeCourseImage = org._entity && org.canChangeCourseImage();
 		const processedDate = org.processedDate(this.hideCourseStartDate, this.hideCourseEndDate);
 		this._setOrganizationDate(processedDate, org.isActive());
 
@@ -723,7 +723,7 @@ class EnrollmentCard extends mixinBehaviors([
 	}
 
 	_onSetCourseImage(e) {
-		if (this._getEntityIdentifier(e.detail.organization) !== this._getEntityIdentifier(this._organization)) {
+		if (this._getEntityIdentifier(e.detail.organization) !== this._organizationUrl) {
 			return;
 		}
 
@@ -773,7 +773,7 @@ class EnrollmentCard extends mixinBehaviors([
 
 		var localizeKey = this._pinned ? 'unpinActionResult' : 'pinActionResult';
 		this.fire('iron-announce', {
-			text: this.localize(localizeKey, 'course', this._organization.properties.name)
+			text: this.localize(localizeKey, 'course', this._organizationName)
 		}, { bubbles: true });
 
 		return this.performSirenAction(this._pinAction).then(this._loadEnrollmentForPinning.bind(this)).then(function() {
