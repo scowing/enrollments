@@ -1,6 +1,6 @@
 import { html, PolymerElement } from '@polymer/polymer/polymer-element.js';
 import { EntityMixin } from 'siren-sdk/src/mixin/entity-mixin.js';
-import { EnrollmentEntity } from '../../EnrollmentEntity.js';
+import { EnrollmentEntity } from 'siren-sdk/src/enrollments/EnrollmentEntity.js';
 import { mixinBehaviors } from '@polymer/polymer/lib/legacy/class.js';
 import 'd2l-typography/d2l-typography-shared-styles.js';
 import '../d2l-enrollment-detail-card/d2l-enrollment-detail-card.js';

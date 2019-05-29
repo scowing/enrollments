@@ -37,7 +37,7 @@ import './d2l-enrollment-updates.js';
 import { afterNextRender } from '@polymer/polymer/lib/utils/render-status.js';
 import { html, PolymerElement } from '@polymer/polymer/polymer-element.js';
 import { EntityMixin } from 'siren-sdk/src/mixin/entity-mixin.js';
-import { EnrollmentEntity } from '../../EnrollmentEntity.js';
+import { EnrollmentEntity } from 'siren-sdk/src/enrollments/EnrollmentEntity.js';
 import { mixinBehaviors } from '@polymer/polymer/lib/legacy/class.js';
 import { DateTextAndStatusMixin } from '../date-text-status-mixin.js';
 

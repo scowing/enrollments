@@ -8,7 +8,7 @@ Polymer-based web component for a organization name.
 import { html, PolymerElement } from '@polymer/polymer/polymer-element.js';
 import { EntityMixin } from 'siren-sdk/src/mixin/entity-mixin.js';
 import 'd2l-typography/d2l-typography-shared-styles.js';
-import { EnrollmentCollectionEntity } from '../../EnrollmentCollectionEntity.js';
+import { EnrollmentCollectionEntity } from 'siren-sdk/src/enrollments/EnrollmentCollectionEntity.js';
 import '../d2l-enrollment-card/d2l-enrollment-card.js';
 import '../d2l-enrollment-hero-banner/d2l-enrollment-hero-banner.js';
 

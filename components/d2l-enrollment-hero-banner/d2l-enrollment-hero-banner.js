@@ -14,7 +14,7 @@ import 'd2l-typography/d2l-typography-shared-styles.js';
 import { EntityMixin } from 'siren-sdk/src/mixin/entity-mixin.js';
 import '../d2l-enrollment-card/d2l-enrollment-updates.js';
 import '../d2l-enrollment-summary-view/d2l-enrollment-summary-view-tag-list.js';
-import { EnrollmentEntity } from '../../EnrollmentEntity.js';
+import { EnrollmentEntity } from 'siren-sdk/src/enrollments/EnrollmentEntity.js';
 
 /**
  * @customElement

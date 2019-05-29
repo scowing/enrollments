@@ -8,7 +8,7 @@ Polymer-based web component for a organization due and completion dates.
 
 import { html, PolymerElement } from '@polymer/polymer/polymer-element.js';
 import { EntityMixin } from 'siren-sdk/src/mixin/entity-mixin.js';
-import { UserActivityUsageEntity  } from '../../UserActivityUsageEntity.js';
+import { UserActivityUsageEntity  } from 'siren-sdk/src/enrollments/UserActivityUsageEntity.js';
 import { DateTextAndStatusMixin } from '../date-text-status-mixin.js';
 
 class EnrollmentUserActivityUsage extends DateTextAndStatusMixin(EntityMixin(PolymerElement)) {
