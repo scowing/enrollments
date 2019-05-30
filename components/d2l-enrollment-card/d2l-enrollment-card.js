@@ -594,7 +594,7 @@ class EnrollmentCard extends mixinBehaviors([
 
 		this.fire('d2l-enrollment-card-fetched', {
 			organizationUrl: this._organizationUrl,
-			enrollmentUrl: this._href
+			enrollmentUrl: this.href
 		});
 
 		enrollment.onUserActivityUsageChange((userActivityUsage) => {
