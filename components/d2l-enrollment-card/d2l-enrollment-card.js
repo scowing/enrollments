@@ -523,22 +523,22 @@ class EnrollmentCard extends mixinBehaviors([
 	}
 
 	_handleCompletedChange(completed) {
-		if (!this._href) {
+		if (!this.href) {
 			return;
 		}
 		this.fire('d2l-enrollment-card-status', {
 			status: { completed: completed },
-			enrollmentUrl: this._href
+			enrollmentUrl: this.href
 		});
 	}
 
 	_handleClosedChange(closed) {
-		if (!this._href) {
+		if (!this.href) {
 			return;
 		}
 		this.fire('d2l-enrollment-card-status', {
 			status: { closed: closed },
-			enrollmentUrl: this._href
+			enrollmentUrl: this.href
 		});
 	}
 
