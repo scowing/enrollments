@@ -30,7 +30,6 @@ import 'd2l-card/d2l-card.js';
 import 'd2l-card/d2l-card-content-meta.js';
 import 'd2l-button/d2l-button-icon.js';
 import 'd2l-status-indicator/d2l-status-indicator.js';
-import 'd2l-polymer-siren-behaviors/store/siren-action-behavior.js';
 import '../d2l-user-activity-usage/d2l-user-activity-usage.js';
 import './d2l-enrollment-updates.js';
 import { afterNextRender } from '@polymer/polymer/lib/utils/render-status.js';
@@ -45,8 +44,7 @@ import { DateTextAndStatusMixin } from '../date-text-status-mixin.js';
  * @polymer
  */
 class EnrollmentCard extends mixinBehaviors([
-	D2L.PolymerBehaviors.Hypermedia.OrganizationHMBehavior,
-	D2L.PolymerBehaviors.Siren.SirenActionBehavior,
+	D2L.PolymerBehaviors.Hypermedia.OrganizationHMBehavior
 ], DateTextAndStatusMixin(EntityMixin(PolymerElement))) {
 	constructor() {
 		super();
@@ -575,17 +573,11 @@ class EnrollmentCard extends mixinBehaviors([
 		}.bind(this), 1000);
 	}
 
-	_loadEnrollmentForPinning(enrollment) {
-		this._entity._entity = enrollment;
-		return this._loadEnrollmentData(true, this._entity);
-	}
-
 	_loadEnrollmentData(load, enrollment) {
 		this._resetState();
 		if (!load || !enrollment) {
 			return;
 		}
-
 		this._enrollment = enrollment._entity;
 		this._pinned = enrollment.pinned();
 		this._organizationUrl = enrollment.organizationHref();
@@ -776,14 +768,16 @@ class EnrollmentCard extends mixinBehaviors([
 			text: this.localize(localizeKey, 'course', this._organizationName)
 		}, { bubbles: true });
 
-		return this.performSirenAction(this._pinAction).then(this._loadEnrollmentForPinning.bind(this)).then(function() {
-			// Wait until after PUT has finished to fire, so that
-			// listeners are guaranteed to fetch updated entity
+		if (!this._pinAction) {
+			return;
+		}
+
+		return this._performAction(this._pinAction, enrollment => {
 			this.fire('d2l-course-pinned-change', {
-				enrollment: this._enrollment,
-				isPinned: this._pinned
+				enrollment: enrollment._entity,
+				isPinned: enrollment.pinned()
 			});
-		}.bind(this));
+		});
 	}
 
 	_pinPressHandler(e) {
