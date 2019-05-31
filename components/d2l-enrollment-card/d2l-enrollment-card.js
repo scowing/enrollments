@@ -494,8 +494,8 @@ class EnrollmentCard extends mixinBehaviors([
 		this._entity.onOrganizationChange(this.onImageChange.bind(this));
 	}
 
-	onImageChange() {
-		this.onOrganizationChange
+	onImageChange(org) {
+		this.onOrganizationChange(org)
 			.then(this._displaySetImageResult.bind(this, true, true))
 			.catch(this._displaySetImageResult.bind(this, false));
 	}
