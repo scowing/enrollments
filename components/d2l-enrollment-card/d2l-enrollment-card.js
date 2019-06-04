@@ -909,13 +909,13 @@ class EnrollmentCard extends mixinBehaviors([
 		list.forEach(name => {
 			var measure = window.performance.getEntriesByName(name, 'measure');
 			if (measure.length >= 1) {
-				performanceMetrics[name] = measure[measure.length-1].duration;
+				performanceMetrics[name] = measure[measure.length - 1].duration;
 				performanceMetricsDetails[name] = measure;
 			}
 		});
 		performanceMetrics.detail = performanceMetricsDetails;
 
-		return(performanceMetrics);
+		return (performanceMetrics);
 	}
 }
 
