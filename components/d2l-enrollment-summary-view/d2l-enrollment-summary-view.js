@@ -165,6 +165,10 @@ class D2lEnrollmentSummaryView extends EntityMixin(PolymerElement) {
 				type: Array,
 				value: () => []
 			},
+			_coursesIndex: {
+				type: Object,
+				value: () => {}
+			},
 			_description: String
 		};
 	}
@@ -182,13 +186,22 @@ class D2lEnrollmentSummaryView extends EntityMixin(PolymerElement) {
 		return tags;
 	}
 	_onEnrollmentChange(enrollment) {
+		this._coursesIndex || (this._coursesIndex = {});
 		enrollment.onOrganizationChange((org) => {
-			this._title = org.title();
+			this._title = org.name();
 			this._description = org.description();
 			org.onSequenceChange((rootSequence) => {
 				rootSequence.onSubSequencesChange((subSequence) => {
 					subSequence.onSequencedActivityChange((activity) => {
-						this._courses = this._courses.concat(activity.organizationHrefs());
+						const orgHrefs = activity.organizationHrefs();
+						const showingOrgHrefs = this._coursesIndex[activity.self()] ? this._coursesIndex[activity.self()] : [];
+						const addThese = orgHrefs.filter(function(i) {return showingOrgHrefs.indexOf(i) < 0;});
+						const removeThese = showingOrgHrefs.filter(function(i) {return orgHrefs.indexOf(i) < 0;});
+
+						let newCourseList = this._courses.concat(addThese);
+						newCourseList = newCourseList.filter(function(i) {return removeThese.indexOf(i) < 0;});
+						this._courses = newCourseList;
+						this._coursesIndex[activity.self()] = orgHrefs;
 					});
 				});
 			});
