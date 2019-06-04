@@ -425,6 +425,7 @@ class EnrollmentCard extends mixinBehaviors([
 
 	connectedCallback() {
 		super.connectedCallback();
+		this._performanceMark('d2l.enrollment-card.connectedCallback');
 		window.addEventListener('set-course-image', this._boundOnSetCourseImage);
 
 		afterNextRender(this, function() {
@@ -583,6 +584,8 @@ class EnrollmentCard extends mixinBehaviors([
 		this._organizationUrl = enrollment.organizationHref();
 		this._pinAction = enrollment.pinAction();
 		this._userActivityUsageUrl = enrollment.userActivityUsageUrl();
+		this._performanceMark('d2l.enrollment-card.loadEnrollment');
+		this._performanceMeasureSinceAttached('d2l.enrollment-card.enrollmentLoadTime', 'd2l.enrollment-card.loadEnrollment');
 
 		this.fire('d2l-enrollment-card-fetched', {
 			organizationUrl: this._organizationUrl,
@@ -596,6 +599,8 @@ class EnrollmentCard extends mixinBehaviors([
 			if (!userActivityUsage.isAttended()) {
 				this._handleEnrollmentNew();
 			}
+			this._performanceMark('d2l.enrollment-card.loadUserActivityUsage');
+			this._performanceMeasureSinceAttached('d2l.enrollment-card.userActivityUsageLoadTime', 'd2l.enrollment-card.loadUserActivityUsage');
 		});
 
 		enrollment.onOrganizationChange(this.onOrganizationChange.bind(this));
@@ -625,12 +630,16 @@ class EnrollmentCard extends mixinBehaviors([
 				'time', this.formatTime(processedDate.date)
 			);
 			this._setOrganizationAccessibleData(org.name(), org.code(), semester.name(), dateText);
+			this._performanceMark('d2l.enrollment-card.loadSemester');
+			this._performanceMeasureSinceAttached('d2l.enrollment-card.semesterLoadTime', 'd2l.enrollment-card.loadSemester');
 		}.bind(this));
 
 		const imageEntity = org.imageEntity();
 		if (imageEntity && imageEntity.href) {
 			org.onImageChange((image) => {
 				this._image = image.entity();
+				this._performanceMark('d2l.enrollment-card.loadImage');
+				this._performanceMeasureSinceAttached('d2l.enrollment-card.imageLoadTime', 'd2l.enrollment-card.loadImage');
 			});
 		} else {
 			this._image = imageEntity;
@@ -643,6 +652,8 @@ class EnrollmentCard extends mixinBehaviors([
 			this._setDisabled(true);
 		}
 
+		this._performanceMark('d2l.enrollment-card.loadOrganization');
+		this._performanceMeasureSinceAttached('d2l.enrollment-card.organizationLoadTime', 'd2l.enrollment-card.loadOrganization');
 		return Promise.resolve();
 	}
 
@@ -850,6 +861,61 @@ class EnrollmentCard extends mixinBehaviors([
 		this._userActivityUsageUrl = false;
 		this._orgDateSlot = false;
 		this._setBadgeText();
+	}
+
+	_performanceMark(name) {
+		if (window.performance && window.performance.mark) {
+			window.performance.mark(name);
+		}
+	}
+
+	_performanceMeasure(name, startMark, endMark) {
+		if (window.performance && window.performance.measure) {
+			window.performance.measure(name, startMark, endMark);
+		}
+	}
+
+	_performanceMeasureSinceAttached(name, mark) {
+		if (!window.performance) {
+			return;
+		}
+
+		var startMark = 'd2l.enrollment-card.connectedCallback';
+		var startMarkEntries = window.performance.getEntriesByName(startMark, 'mark');
+		if (startMarkEntries && startMarkEntries.length > 0) {
+			this._performanceMeasure(
+				name,
+				startMark,
+				mark
+			);
+		}
+	}
+
+	//Used by console to print the summary of performance metrics
+	_performanceMeasureSummary() {
+		if (!window.performance) {
+			return;
+		}
+
+		var performanceMetrics = new Object();
+		var performanceMetricsDetails = new Object();
+		var list = [
+			'd2l.enrollment-card.enrollmentLoadTime',
+			'd2l.enrollment-card.userActivityUsageLoadTime',
+			'd2l.enrollment-card.semesterLoadTime',
+			'd2l.enrollment-card.imageLoadTime',
+			'd2l.enrollment-card.organizationLoadTime'
+		];
+		list.forEach(name => {
+			var measure = window.performance.getEntriesByName(name, 'measure');
+			if (measure.length >= 1) {
+				performanceMetrics[name] = measure[measure.length-1].duration;
+				performanceMetricsDetails[name] = measure;
+			}
+		});
+		performanceMetrics.detail = performanceMetricsDetails;
+
+		return(performanceMetrics);
 	}
 }
 
