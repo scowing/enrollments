@@ -195,11 +195,11 @@ class D2lEnrollmentSummaryView extends EntityMixin(PolymerElement) {
 					subSequence.onSequencedActivityChange((activity) => {
 						const orgHrefs = activity.organizationHrefs();
 						const showingOrgHrefs = this._coursesIndex[activity.self()] ? this._coursesIndex[activity.self()] : [];
-						const addThese = orgHrefs.filter(function(i) {return showingOrgHrefs.indexOf(i) < 0;});
-						const removeThese = showingOrgHrefs.filter(function(i) {return orgHrefs.indexOf(i) < 0;});
+						const addThese = orgHrefs.filter(i => showingOrgHrefs.indexOf(i) < 0);
+						const removeThese = showingOrgHrefs.filter(i => orgHrefs.indexOf(i) < 0);
 
 						let newCourseList = this._courses.concat(addThese);
-						newCourseList = newCourseList.filter(function(i) {return removeThese.indexOf(i) < 0;});
+						newCourseList = newCourseList.filter(i => removeThese.indexOf(i) < 0);
 						this._courses = newCourseList;
 						this._coursesIndex[activity.self()] = orgHrefs;
 					});
