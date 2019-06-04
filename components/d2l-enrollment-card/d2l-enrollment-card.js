@@ -915,7 +915,7 @@ class EnrollmentCard extends mixinBehaviors([
 		});
 		performanceMetrics.detail = performanceMetricsDetails;
 
-		return (performanceMetrics);
+		return performanceMetrics;
 	}
 }
 
