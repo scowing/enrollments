@@ -157,17 +157,17 @@ class D2lEnrollmentSummaryView extends EntityMixin(PolymerElement) {
 			_courseEnrollment: String,
 			_tags: {
 				type: Array,
-				value: () => [],
+				value: function() { return []; },
 				computed: '_computeTags(_courses)'
 			},
 			_title: String,
 			_orgHrefs: {
 				type: Array,
-				value: () => []
+				value: function() { return []; }
 			},
 			_orgHrefsByActivitySequence: {
 				type: Object,
-				value: () => {}
+				value: function() { return {}; }
 			},
 			_description: String
 		};
@@ -192,20 +192,22 @@ class D2lEnrollmentSummaryView extends EntityMixin(PolymerElement) {
 			this._description = org.description();
 			org.onSequenceChange((rootSequence) => {
 				rootSequence.onSubSequencesChange((subSequence) => {
-					subSequence.onSequencedActivityChange((activity) => {
-						const orgHrefs = activity.organizationHrefs();
-						const showingOrgHrefs = this._orgHrefsByActivitySequence[activity.self()] ? this._orgHrefsByActivitySequence[activity.self()] : [];
-						const addThese = orgHrefs.filter(i => showingOrgHrefs.indexOf(i) < 0);
-						const removeThese = showingOrgHrefs.filter(i => orgHrefs.indexOf(i) < 0);
-
-						let newOrgHrefs = this._orgHrefs.concat(addThese);
-						newOrgHrefs = newOrgHrefs.filter(i => removeThese.indexOf(i) < 0);
-						this._orgHrefs = newOrgHrefs;
-						this._orgHrefsByActivitySequence[activity.self()] = orgHrefs;
-					});
+					subSequence.onSequencedActivityChange(this._onSequencedActivityChange.bind(this));
 				});
 			});
 		});
+	}
+
+	_onSequencedActivityChange(sequencedActivity) {
+		const orgHrefs = sequencedActivity.organizationHrefs();
+		const showingOrgHrefs = this._orgHrefsByActivitySequence[sequencedActivity.self()] ? this._orgHrefsByActivitySequence[sequencedActivity.self()] : [];
+		const addThese = orgHrefs.filter(i => showingOrgHrefs.indexOf(i) < 0);
+		const removeThese = showingOrgHrefs.filter(i => orgHrefs.indexOf(i) < 0);
+
+		let newOrgHrefs = this._orgHrefs.concat(addThese);
+		newOrgHrefs = newOrgHrefs.filter(i => removeThese.indexOf(i) < 0);
+		this._orgHrefs = newOrgHrefs;
+		this._orgHrefsByActivitySequence[sequencedActivity.self()] = orgHrefs;
 	}
 }
 
