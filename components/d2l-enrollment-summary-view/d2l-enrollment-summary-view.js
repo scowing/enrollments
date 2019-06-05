@@ -161,11 +161,11 @@ class D2lEnrollmentSummaryView extends EntityMixin(PolymerElement) {
 				computed: '_computeTags(_courses)'
 			},
 			_title: String,
-			_courses: {
+			_orgHrefs: {
 				type: Array,
 				value: () => []
 			},
-			_coursesIndex: {
+			_orgHrefsByActivitySequence: {
 				type: Object,
 				value: () => {}
 			},
@@ -186,7 +186,7 @@ class D2lEnrollmentSummaryView extends EntityMixin(PolymerElement) {
 		return tags;
 	}
 	_onEnrollmentChange(enrollment) {
-		this._coursesIndex || (this._coursesIndex = {});
+		this._orgHrefsByActivitySequence = this._orgHrefsByActivitySequence || {};
 		enrollment.onOrganizationChange((org) => {
 			this._title = org.name();
 			this._description = org.description();
@@ -194,14 +194,14 @@ class D2lEnrollmentSummaryView extends EntityMixin(PolymerElement) {
 				rootSequence.onSubSequencesChange((subSequence) => {
 					subSequence.onSequencedActivityChange((activity) => {
 						const orgHrefs = activity.organizationHrefs();
-						const showingOrgHrefs = this._coursesIndex[activity.self()] ? this._coursesIndex[activity.self()] : [];
+						const showingOrgHrefs = this._orgHrefsByActivitySequence[activity.self()] ? this._orgHrefsByActivitySequence[activity.self()] : [];
 						const addThese = orgHrefs.filter(i => showingOrgHrefs.indexOf(i) < 0);
 						const removeThese = showingOrgHrefs.filter(i => orgHrefs.indexOf(i) < 0);
 
-						let newCourseList = this._courses.concat(addThese);
-						newCourseList = newCourseList.filter(i => removeThese.indexOf(i) < 0);
-						this._courses = newCourseList;
-						this._coursesIndex[activity.self()] = orgHrefs;
+						let newOrgHrefs = this._orgHrefs.concat(addThese);
+						newOrgHrefs = newOrgHrefs.filter(i => removeThese.indexOf(i) < 0);
+						this._orgHrefs = newOrgHrefs;
+						this._orgHrefsByActivitySequence[activity.self()] = orgHrefs;
 					});
 				});
 			});
