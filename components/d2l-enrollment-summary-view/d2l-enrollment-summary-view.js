@@ -197,7 +197,31 @@ class D2lEnrollmentSummaryView extends EntityMixin(PolymerElement) {
 			});
 		});
 	}
-
+	/**
+	 * Get the organization href from the sequenced activity. Make sure all hrefs from this entity are updated. So add and remove.
+	 * @param {SequencedActivity} sequencedActivity A SequencedActivity object from the siren-sdk
+	 * @example Assume we have 2 Sequenced Activitys:
+	 * 			activityOne = {
+	 * 				self: () => 'activityOne',
+	 * 				organizationHrefs: () => ['/org/1', '/org/2']
+	 * 			}
+	 * 			_onSequencedActivityChange(activityOne) // => _orgHrefsByActivitySequence[activityOne] = ['/org/1', '/org/2']
+	 * 													// _orgHrefs = ['/org/1', '/org/2']
+	 *			// Add a second activity:
+	 * 			activityTwo = {
+	 * 				self: () => 'activityTwo',
+	 * 				organizationHrefs: () => ['/org/3', '/org/4']
+	 * 			}
+	 * 			_onSequencedActivityChange(activityOne) // => _orgHrefsByActivitySequence[activityTwo] = ['/org/3', '/org/4']
+	 * 													// _orgHrefs = ['/org/1', '/org/2', '/org/3', '/org/4']
+	 * 			// What if activityOne changes
+	 *  		activityOne = {
+	 * 				self: () => 'activityOne',
+	 * 				organizationHrefs: () => ['/org/1', '/org/5']
+	 * 			}
+	 * 			_onSequencedActivityChange(activityOne) // => _orgHrefsByActivitySequence[activityOne] = ['/org/1', '/org/5']
+	 * 													// _orgHrefs = ['/org/1', '/org/3', '/org/4', '/org/5']
+	 */
 	_onSequencedActivityChange(sequencedActivity) {
 		const orgHrefs = sequencedActivity.organizationHrefs();
 		const showingOrgHrefs = this._orgHrefsByActivitySequence[sequencedActivity.self()] ? this._orgHrefsByActivitySequence[sequencedActivity.self()] : [];
