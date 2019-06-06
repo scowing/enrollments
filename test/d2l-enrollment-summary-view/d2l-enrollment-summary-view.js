@@ -7,66 +7,31 @@ describe('d2l-enrollment-summary-view', () => {
 	});
 
 	describe('Unit Tests on Methods', () => {
-		it('_onSequencedActivityChange', () => {
+		it('_updateFlattenedOrgHrefs', () => {
 			// Add the first elements
-			expect(component._courses).to.be.empty;
-			const orgListOne = [
-				'/org/1',
-				'/org/2',
-				'/org/3'
-			];
-			const sequenceActivityOne = {
-				self: function() {
-					return 'sequenceActivityOne';
-				},
-				organizationHrefs: function() {
-					return orgListOne;
-				}
-			};
-			component._onSequencedActivityChange(sequenceActivityOne);
-			expect(component._orgHrefs).deep.equal(orgListOne);
-
-			// Add a second one
-			const orgListTwo = ['/org/4'];
-			const orgListTwoResults = [
+			const currentList = [
 				'/org/1',
 				'/org/2',
 				'/org/3',
 				'/org/4'
 			];
-			const sequenceActivityTwo = {
-				self: function() {
-					return 'sequenceActivityTwo';
-				},
-				organizationHrefs: function() {
-					return orgListTwo;
-				}
-			};
-
-			component._onSequencedActivityChange(sequenceActivityTwo);
-			expect(component._orgHrefs).deep.equal(orgListTwoResults);
-
-			// Change the first one
-			const orgListOneChanged = [
+			const oldSet = [
+				'/org/1',
+				'/org/2',
+				'/org/3'
+			];
+			const newSet = [
 				'/org/1',
 				'/org/5'
 			];
-			const orgListOneChangedResults = [
+			const expectedResults = [
 				'/org/1',
 				'/org/4',
 				'/org/5'
 			];
-			const sequenceActivityOneChanged = {
-				self: function() {
-					return 'sequenceActivityOne';
-				},
-				organizationHrefs: function() {
-					return orgListOneChanged;
-				}
-			};
+			const results = component._updateFlattenedOrgHrefs(currentList, oldSet, newSet);
+			expect(results).deep.equal(expectedResults);
 
-			component._onSequencedActivityChange(sequenceActivityOneChanged);
-			expect(component._orgHrefs).deep.equal(orgListOneChangedResults);
 		});
 	});
 

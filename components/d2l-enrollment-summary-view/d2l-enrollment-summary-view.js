@@ -192,50 +192,30 @@ class D2lEnrollmentSummaryView extends EntityMixin(PolymerElement) {
 			this._description = org.description();
 			org.onSequenceChange((rootSequence) => {
 				rootSequence.onSubSequencesChange((subSequence) => {
-					subSequence.onSequencedActivityChange(this._onSequencedActivityChange.bind(this));
+					subSequence.onSequencedActivityChange((sequencedActivity) => {
+						const newSequenceOrgHrefs = sequencedActivity.organizationHrefs();
+						const currentSequenceOrgHrefs = this._orgHrefsByActivitySequence[sequencedActivity.self()] || [];
+						this._orgHrefsByActivitySequence[sequencedActivity.self()] = newSequenceOrgHrefs;
+						this._orgHrefs = this._updateFlattenedOrgHrefs(this._orgHrefs, currentSequenceOrgHrefs, newSequenceOrgHrefs);
+					});
 				});
 			});
 		});
 	}
-	/**
-	 * Get the organization href from the sequenced activity. Make sure all hrefs from this entity are updated. So add and remove.
-	 * @param {SequencedActivity} sequencedActivity A SequencedActivity object from the siren-sdk
-	 * @example Assume we have 2 Sequenced Activitys:
-	 * 			activityOne = {
-	 * 				self: () => 'activityOne',
-	 * 				organizationHrefs: () => ['/org/1', '/org/2']
-	 * 			}
-	 * 			_onSequencedActivityChange(activityOne) // => _orgHrefsByActivitySequence[activityOne] = ['/org/1', '/org/2']
-	 * 													// _orgHrefs = ['/org/1', '/org/2']
-	 *			// Add a second activity:
-	 * 			activityTwo = {
-	 * 				self: () => 'activityTwo',
-	 * 				organizationHrefs: () => ['/org/3', '/org/4']
-	 * 			}
-	 * 			_onSequencedActivityChange(activityOne) // => _orgHrefsByActivitySequence[activityTwo] = ['/org/3', '/org/4']
-	 * 													// _orgHrefs = ['/org/1', '/org/2', '/org/3', '/org/4']
-	 * 			// What if activityOne changes
-	 *  		activityOne = {
-	 * 				self: () => 'activityOne',
-	 * 				organizationHrefs: () => ['/org/1', '/org/5']
-	 * 			}
-	 * 			_onSequencedActivityChange(activityOne) // => _orgHrefsByActivitySequence[activityOne] = ['/org/1', '/org/5']
-	 * 													// _orgHrefs = ['/org/1', '/org/3', '/org/4', '/org/5']
-	 */
-	_onSequencedActivityChange(sequencedActivity) {
-		const newSequenceOrgHrefs = sequencedActivity.organizationHrefs();
-		const currentSequenceOrgHrefs = this._orgHrefsByActivitySequence[sequencedActivity.self()] || [];
-		this._orgHrefsByActivitySequence[sequencedActivity.self()] = newSequenceOrgHrefs;
+	// given the old flattened OrgHrefs for all activities oldOrgHrefs = ['/org/1', '/org/3', '/org/5', '/org/10', '/org/17']
+	//    if the currentSequenceOrgHrefs = ['/org/1', '/org/3', '/org/5']
+	//    if the newSequenceOrgHrefs = ['/org/3', '/org/5', '/org/6']
+	// the updated flattened OrgHrefs returned should be: ['/org/3', '/org/5', '/org/6', '/org/10', '/org/17']
+	_updateFlattenedOrgHrefs(oldOrgHrefs, currentSequenceOrgHrefs, newSequenceOrgHrefs) {
+		// Add new organization hrefs to the new org list.
+		const addThese = newSequenceOrgHrefs.filter(i => currentSequenceOrgHrefs.indexOf(i) < 0);
+		let newOrgHrefs = oldOrgHrefs.concat(addThese);
 
 		// flatten the _orgHrefsByActivitySequence by removing missing organization hrefs
 		const removeThese = currentSequenceOrgHrefs.filter(i => newSequenceOrgHrefs.indexOf(i) < 0);
-		let newOrgHrefs = newOrgHrefs.filter(i => removeThese.indexOf(i) < 0);
+		newOrgHrefs = newOrgHrefs.filter(i => removeThese.indexOf(i) < 0);
 
-		// Add new organization hrefs to the new org list.
-		const addThese = newSequenceOrgHrefs.filter(i => currentSequenceOrgHrefs.indexOf(i) < 0);
-		newOrgHrefs = this._orgHrefs.concat(addThese);
-
-		this._orgHrefs = newOrgHrefs;
+		return newOrgHrefs;
 	}
 }
 
