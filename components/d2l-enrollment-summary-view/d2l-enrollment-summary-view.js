@@ -223,15 +223,19 @@ class D2lEnrollmentSummaryView extends EntityMixin(PolymerElement) {
 	 * 													// _orgHrefs = ['/org/1', '/org/3', '/org/4', '/org/5']
 	 */
 	_onSequencedActivityChange(sequencedActivity) {
-		const orgHrefs = sequencedActivity.organizationHrefs();
-		const showingOrgHrefs = this._orgHrefsByActivitySequence[sequencedActivity.self()] ? this._orgHrefsByActivitySequence[sequencedActivity.self()] : [];
-		const addThese = orgHrefs.filter(i => showingOrgHrefs.indexOf(i) < 0);
-		const removeThese = showingOrgHrefs.filter(i => orgHrefs.indexOf(i) < 0);
+		const newSequenceOrgHrefs = sequencedActivity.organizationHrefs();
+		const currentSequenceOrgHrefs = this._orgHrefsByActivitySequence[sequencedActivity.self()] || [];
+		this._orgHrefsByActivitySequence[sequencedActivity.self()] = newSequenceOrgHrefs;
 
-		let newOrgHrefs = this._orgHrefs.concat(addThese);
-		newOrgHrefs = newOrgHrefs.filter(i => removeThese.indexOf(i) < 0);
+		// flatten the _orgHrefsByActivitySequence by removing missing organization hrefs
+		const removeThese = currentSequenceOrgHrefs.filter(i => newSequenceOrgHrefs.indexOf(i) < 0);
+		let newOrgHrefs = newOrgHrefs.filter(i => removeThese.indexOf(i) < 0);
+
+		// Add new organization hrefs to the new org list.
+		const addThese = newSequenceOrgHrefs.filter(i => currentSequenceOrgHrefs.indexOf(i) < 0);
+		newOrgHrefs = this._orgHrefs.concat(addThese);
+
 		this._orgHrefs = newOrgHrefs;
-		this._orgHrefsByActivitySequence[sequencedActivity.self()] = orgHrefs;
 	}
 }
 
