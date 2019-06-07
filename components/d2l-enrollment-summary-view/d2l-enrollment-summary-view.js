@@ -157,13 +157,17 @@ class D2lEnrollmentSummaryView extends EntityMixin(PolymerElement) {
 			_courseEnrollment: String,
 			_tags: {
 				type: Array,
-				value: () => [],
+				value: function() { return []; },
 				computed: '_computeTags(_courses)'
 			},
 			_title: String,
-			_courses: {
+			_orgHrefs: {
 				type: Array,
-				value: () => []
+				value: function() { return []; }
+			},
+			_orgHrefsByActivitySequence: {
+				type: Object,
+				value: function() { return {}; }
 			},
 			_description: String
 		};
@@ -182,17 +186,36 @@ class D2lEnrollmentSummaryView extends EntityMixin(PolymerElement) {
 		return tags;
 	}
 	_onEnrollmentChange(enrollment) {
+		this._orgHrefsByActivitySequence = this._orgHrefsByActivitySequence || {};
 		enrollment.onOrganizationChange((org) => {
-			this._title = org.title();
+			this._title = org.name();
 			this._description = org.description();
 			org.onSequenceChange((rootSequence) => {
 				rootSequence.onSubSequencesChange((subSequence) => {
-					subSequence.onSequencedActivityChange((activity) => {
-						this._courses = this._courses.concat(activity.organizationHrefs());
+					subSequence.onSequencedActivityChange((sequencedActivity) => {
+						const newSequenceOrgHrefs = sequencedActivity.organizationHrefs();
+						const currentSequenceOrgHrefs = this._orgHrefsByActivitySequence[sequencedActivity.self()] || [];
+						this._orgHrefsByActivitySequence[sequencedActivity.self()] = newSequenceOrgHrefs;
+						this._orgHrefs = this._updateFlattenedOrgHrefs(this._orgHrefs, currentSequenceOrgHrefs, newSequenceOrgHrefs);
 					});
 				});
 			});
 		});
+	}
+	// given the old flattened OrgHrefs for all activities oldOrgHrefs = ['/org/1', '/org/3', '/org/5', '/org/10', '/org/17']
+	//    if the currentSequenceOrgHrefs = ['/org/1', '/org/3', '/org/5']
+	//    if the newSequenceOrgHrefs = ['/org/3', '/org/5', '/org/6']
+	// the updated flattened OrgHrefs returned should be: ['/org/3', '/org/5', '/org/6', '/org/10', '/org/17']
+	_updateFlattenedOrgHrefs(oldOrgHrefs, currentSequenceOrgHrefs, newSequenceOrgHrefs) {
+		// Add new organization hrefs to the new org list.
+		const addThese = newSequenceOrgHrefs.filter(i => currentSequenceOrgHrefs.indexOf(i) < 0);
+		let newOrgHrefs = oldOrgHrefs.concat(addThese);
+
+		// flatten the _orgHrefsByActivitySequence by removing missing organization hrefs
+		const removeThese = currentSequenceOrgHrefs.filter(i => newSequenceOrgHrefs.indexOf(i) < 0);
+		newOrgHrefs = newOrgHrefs.filter(i => removeThese.indexOf(i) < 0);
+
+		return newOrgHrefs;
 	}
 }
 
