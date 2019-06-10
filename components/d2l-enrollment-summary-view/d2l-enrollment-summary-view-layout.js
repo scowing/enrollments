@@ -10,12 +10,12 @@ class D2lEnrollmentSummaryViewLayout extends PolymerElement {
 			<style>
 				.desvl-center {
 					margin: auto;
-					max-width: 1290px;
+					max-width: 1230px;
 				}
 				.desvl-flex {
 					display: flex;
 					justify-content: center;
-					margin: 0 1.5rem;
+					margin: 0 6.75rem;
 					max-width: 1230px;
 				}
 				.desvl-first-column {
@@ -33,12 +33,12 @@ class D2lEnrollmentSummaryViewLayout extends PolymerElement {
 				@media only screen and (max-width: 929px) {
 					.desvl-center {
 						margin: auto;
-						max-width: 716px;
+						max-width: 692px;
 					}
 					.desvl-flex {
 						flex-direction: column;
-						margin: 0 0.9rem;
-						max-width: 680px;
+						margin: 0 1.15rem;
+						max-width: 675px;
 					}
 					.desvl-first-column {
 						border-right: none;
