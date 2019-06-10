@@ -20,6 +20,8 @@ class D2lEnrollmentSummaryView extends EntityMixin(PolymerElement) {
 		return html`
 			<style include="d2l-typography-shared-styles">
 				:host {
+					background: linear-gradient(to bottom, #f6f7f8, #f6f7f8), linear-gradient(to top, #ffffff, #f9fafb);
+					display: block;
 					margin: auto;
 				}
 				.desv-header {
@@ -27,10 +29,11 @@ class D2lEnrollmentSummaryView extends EntityMixin(PolymerElement) {
 					margin: auto;
 				}
 				.desv-title-bar {
+					box-sizing: border-box;
 					margin: auto;
 					max-width: 1230px;
 					overflow: hidden;
-					padding: 2.8rem 1.5rem 1rem 1.5rem;
+					padding: 2.8rem 6.75rem 1rem 6.75rem;
 				}
 				.desv-title-bar h1 {
 					@apply --d2l-heading-1;
@@ -158,7 +161,7 @@ class D2lEnrollmentSummaryView extends EntityMixin(PolymerElement) {
 			_tags: {
 				type: Array,
 				value: function() { return []; },
-				computed: '_computeTags(_courses)'
+				computed: '_computeTags(_orgHrefs)'
 			},
 			_title: String,
 			_orgHrefs: {
