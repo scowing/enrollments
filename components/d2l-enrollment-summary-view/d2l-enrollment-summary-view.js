@@ -33,7 +33,7 @@ class D2lEnrollmentSummaryView extends EntityMixin(PolymerElement) {
 					margin: auto;
 					max-width: 1230px;
 					overflow: hidden;
-					padding: 2.8rem 6.75rem 1rem 6.75rem;
+					padding: 2.45rem 6.75rem 1rem 6.75rem;
 				}
 				.desv-title-bar h1 {
 					@apply --d2l-heading-1;
