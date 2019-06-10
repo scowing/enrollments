@@ -185,7 +185,6 @@ class D2lEnrollmentSummaryView extends EntityMixin(PolymerElement) {
 		if (courses) {
 			tags.push(courses.length > 1 ? courses.length + ' Activities' : '1 Activity');
 		}
-		tags.push('About 2 hour 30 minutes');
 		return tags;
 	}
 	_onEnrollmentChange(enrollment) {
