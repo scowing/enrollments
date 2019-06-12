@@ -2,13 +2,15 @@
 import { dedupingMixin } from '@polymer/polymer/lib/utils/mixin.js';
 import { mixinBehaviors } from '@polymer/polymer/lib/legacy/class.js';
 import './localize-behavior.js';
+import { PolymerElement } from '@polymer/polymer/polymer-element.js';
+
 
 /**
  * @polymerMixin
  */
 
-export const interalStatusMixin = function(superClass) {
-	return class extends superClass {
+export const interalStatusMixin = function(PolymerElement) {
+	return class extends PolymerElement {
 		enrollmentStatus(isCompletionDate, date) {
 			if (!date || typeof isCompletionDate !== 'boolean') {
 				return null;
