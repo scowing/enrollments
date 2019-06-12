@@ -7,8 +7,8 @@ import './localize-behavior.js';
  * @polymerMixin
  */
 
-export const interalStatusMixin = function(superClass) {
-	return class extends superClass {
+export const interalStatusMixin = function(baseClass) {
+	return class extends baseClass {
 		enrollmentStatus(isCompletionDate, date) {
 			if (!date || typeof isCompletionDate !== 'boolean') {
 				return null;
