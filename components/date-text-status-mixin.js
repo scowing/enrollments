@@ -6,11 +6,10 @@ import './localize-behavior.js';
 /**
  * @polymerMixin
  */
-export const interalDateTextAndStatusMixin = function(superClass) {
-	return class extends mixinBehaviors([
-		D2L.PolymerBehaviors.Enrollment.LocalizeBehavior
-	], superClass) {
-		dateTextAndStatus(isCompletionDate, date) {
+
+export const interalStatusMixin = function(baseClass) {
+	return class extends baseClass {
+		enrollmentStatus(isCompletionDate, date) {
 			if (!date || typeof isCompletionDate !== 'boolean') {
 				return null;
 			}
@@ -30,6 +29,47 @@ export const interalDateTextAndStatusMixin = function(superClass) {
 			pastWeekFromNow.setHours(0, 0, 0, 0);
 
 			var parsedDate = new Date(Date.parse(date));
+
+			var status = null;
+			if (isCompletionDate && parsedDate < tomorrowDate) {
+				status = 'completed';
+			} else if (parsedDate < nowDate) {
+				status = 'overdue';
+			}
+
+			var statusAndDateInfo = {
+				status: status,
+				msInDay: msInDay,
+				nowDate: nowDate,
+				tomorrowDate: tomorrowDate,
+				yesterdayDate: yesterdayDate,
+				pastWeekFromNow: pastWeekFromNow,
+				parsedDate:parsedDate
+			};
+			return statusAndDateInfo;
+		}
+	};
+};
+
+export const StatusMixin = dedupingMixin(interalStatusMixin);
+
+export const interalDateTextAndStatusMixin = function(superClass) {
+	return class extends mixinBehaviors([
+		D2L.PolymerBehaviors.Enrollment.LocalizeBehavior
+	], StatusMixin(superClass)) {
+		dateTextAndStatus(isCompletionDate, date) {
+			if (!this.enrollmentStatus(isCompletionDate, date)) {
+				return null;
+			}
+
+			var statusAndDateInfo = this.enrollmentStatus(isCompletionDate, date);
+
+			var msInDay = statusAndDateInfo.msInDay;
+			var nowDate = statusAndDateInfo.nowDate;
+			var tomorrowDate = statusAndDateInfo.tomorrowDate;
+			var yesterdayDate = statusAndDateInfo.yesterdayDate;
+			var pastWeekFromNow = statusAndDateInfo.pastWeekFromNow;
+			var parsedDate = statusAndDateInfo.parsedDate;
 			var dateTypeText = isCompletionDate ? 'completed' : 'due';
 
 			var dateText;
@@ -46,16 +86,9 @@ export const interalDateTextAndStatusMixin = function(superClass) {
 				dateText = this.localize(dateTypeText + 'On', 'dateTime', this.formatDate(parsedDate, {format: this._dateFormat(parsedDate, nowDate)}));
 			}
 
-			var status = null;
-			if (isCompletionDate && parsedDate < tomorrowDate) {
-				status = 'completed';
-			} else if (parsedDate < nowDate) {
-				status = 'overdue';
-			}
-
 			var dateTextAndStatus = {
 				dateText: dateText,
-				status: status
+				status: statusAndDateInfo.status
 			};
 			return dateTextAndStatus;
 		}
