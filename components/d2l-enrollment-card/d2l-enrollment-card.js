@@ -785,7 +785,7 @@ class EnrollmentCard extends mixinBehaviors([
 
 		return this._performAction(this._pinAction, enrollment => {
 			this.fire('d2l-course-pinned-change', {
-				enrollment: enrollment._entity,
+				enrollment: enrollment,
 				isPinned: enrollment.pinned()
 			});
 		});
