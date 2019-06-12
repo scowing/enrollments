@@ -448,14 +448,23 @@ describe('d2l-enrollment-card', () => {
 
 	describe('Accessibility', () => {
 		it('Organization', done => {
-			component._setOrganizationAccessibleData('Course Name', 'Course Code', 'Semester Name', undefined);
+			component._setOrganizationAccessibleData('Course Name', 'Course Code', undefined);
 			setTimeout(() => {
 				expect(component._accessibilityData.organizationName).to.equal('Course Name');
 				expect(component._accessibilityData.organizationCode).to.equal('Course Code');
-				expect(component._accessibilityData.semesterName).to.equal('Semester Name');
 				var cardText = component.$$('d2l-card').getAttribute('text');
 				expect(cardText).to.contain('Course Name');
 				expect(cardText).to.contain('Course Code');
+				done();
+			});
+		});
+
+		it('Semester Name', done => {
+			component._accessibilityData.organizationName = 'Course Name';
+			component._setSemesterAccessibleData('Semester Name');
+			setTimeout(() => {
+				expect(component._accessibilityData.semesterName).to.equal('Semester Name');
+				var cardText = component.$$('d2l-card').getAttribute('text');
 				expect(cardText).to.contain('Semester Name');
 				done();
 			});

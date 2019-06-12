@@ -621,15 +621,16 @@ class EnrollmentCard extends mixinBehaviors([
 		this._pinButtonLabel = this._organizationName && this.localize('coursePinButton', 'course', this._organizationName);
 		this._canChangeCourseImage = org._entity && org.canChangeCourseImage();
 		const processedDate = org.processedDate(this.hideCourseStartDate, this.hideCourseEndDate);
+		const dateText = processedDate && this.localize(
+			processedDate.type,
+			'date', this.formatDate(processedDate.date, {format: 'MMMM d, yyyy'}),
+			'time', this.formatTime(processedDate.date)
+		);
+		this._setOrganizationAccessibleData(org.name(), org.code(), dateText);
 		this._setOrganizationDate(processedDate, org.isActive());
 
 		org.onSemesterChange(function(semester) {
-			const dateText = processedDate && this.localize(
-				processedDate.type,
-				'date', this.formatDate(processedDate.date, {format: 'MMMM d, yyyy'}),
-				'time', this.formatTime(processedDate.date)
-			);
-			this._setOrganizationAccessibleData(org.name(), org.code(), semester.name(), dateText);
+			this._setSemesterAccessibleData(semester.name());
 			this._performanceMark('d2l.enrollment-card.loadSemester');
 			this._performanceMeasureSinceAttached('d2l.enrollment-card.semesterLoadTime', 'd2l.enrollment-card.loadSemester');
 		}.bind(this));
@@ -657,7 +658,7 @@ class EnrollmentCard extends mixinBehaviors([
 		return Promise.resolve();
 	}
 
-	_setOrganizationAccessibleData(name, code, semesterName, dateText) {
+	_setOrganizationAccessibleData(name, code, dateText) {
 		if (name) {
 			this._accessibilityData.organizationName = name;
 		}
@@ -667,6 +668,10 @@ class EnrollmentCard extends mixinBehaviors([
 		if (dateText) {
 			this._accessibilityData.organizationDate = dateText;
 		}
+		this._accessibilityDataReset();
+	}
+
+	_setSemesterAccessibleData(semesterName) {
 		if (semesterName) {
 			this._accessibilityData.semesterName = semesterName;
 		}
@@ -761,11 +766,6 @@ class EnrollmentCard extends mixinBehaviors([
 				this._displaySetImageResult(false);
 				break;
 		}
-	}
-
-	_badgeTextChange(badgeText) {
-		this._accessibilityData.badge = badgeText;
-		this._accessibilityDataReset();
 	}
 
 	_pinClickHandler() {
