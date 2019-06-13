@@ -272,7 +272,7 @@ class D2lEnrollmentSummaryView extends mixinBehaviors([D2L.PolymerBehaviors.Enro
 
 				sequencedActivity.onOrganizationChange((organizationEntity) => {
 					orgHrefsByActivitySequence[subSequence.index()][sequencedActivity.index()].href = organizationEntity.self();
-					this._orgHrefs = orgHrefsByActivitySequence.flat(2)
+					this._orgHrefs = this._flattenDeep(orgHrefsByActivitySequence)
 						.filter(element => typeof(element) !== 'undefined')
 						.map(element => element.href);
 
@@ -304,12 +304,16 @@ class D2lEnrollmentSummaryView extends mixinBehaviors([D2L.PolymerBehaviors.Enro
 						}
 					});
 
-				this._continueModule = orgHrefsByActivitySequence.flat(2)
+				this._continueModule = this._flattenDeep(orgHrefsByActivitySequence)
 					.filter(element => typeof(element) !== 'undefined')
 					.map(element => element.continue)
 					.shift();
 			});
 		});
+	}
+
+	_flattenDeep(arr1) {
+		return arr1.reduce((acc, val) => Array.isArray(val) ? acc.concat(this._flattenDeep(val)) : acc.concat(val), []);
 	}
 }
 
