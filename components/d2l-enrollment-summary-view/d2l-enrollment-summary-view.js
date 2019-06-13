@@ -327,6 +327,7 @@ class D2lEnrollmentSummaryView extends mixinBehaviors([D2L.PolymerBehaviors.Enro
 				};
 				modulesBySequence.filter(element => typeof(element) !== 'undefined')
 					.forEach((orgModule) => {
+						orgHrefsByActivitySequence[subSequenceIndex][sequencedActivityIndex].continue = undefined;
 						if (!orgModule.completion.isCompleted && !foundContinue) {
 							orgHrefsByActivitySequence[subSequenceIndex][sequencedActivityIndex].continue = orgModule;
 							foundContinue = true;
