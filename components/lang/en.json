@@ -20,6 +20,7 @@
   "disabled": "Disabled",
   "endsAt": "Ends {date} at {time}",
   "ended": "Ended {date} at {time}",
+  "enrollmentProgressBar": "Completed {percentage}% of {title}",
   "inactive": "Inactive",
   "pin": "Pin",
   "pinActionResult": "{course} has been pinned",
