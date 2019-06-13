@@ -255,7 +255,6 @@ class D2lEnrollmentSummaryView extends mixinBehaviors([D2L.PolymerBehaviors.Enro
 		return tags;
 	}
 	_onEnrollmentChange(enrollment) {
-		this._orgHrefsByActivitySequence = this._orgHrefsByActivitySequence || {};
 		enrollment.onOrganizationChange((org) => {
 			this._title = org.name();
 			this._description = org.description();
