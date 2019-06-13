@@ -192,7 +192,7 @@ class D2lEnrollmentSummaryView extends mixinBehaviors([D2L.PolymerBehaviors.Enro
 						<a	class="desv-button"
 							primary
 							disabled$="[[!_continueModule.href]]"
-							href="[[_continueModule.href]]"
+							href$="[[_continueModule.href]]"
 							aria-label="[[localize('continueToModule', 'module', _continueModule.title)]]">
 								[[localize('continue')]]
 						</a>
