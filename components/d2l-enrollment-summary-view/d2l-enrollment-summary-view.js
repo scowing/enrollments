@@ -336,7 +336,7 @@ class D2lEnrollmentSummaryView extends mixinBehaviors([D2L.PolymerBehaviors.Enro
 						orgHrefsByActivitySequence[subSequenceIndex][sequencedActivityIndex].completion.max += orgModule.completion.total || 0;
 					});
 
-				const flattenModuleList = orgHrefsByActivitySequence.flat(2).filter(element => typeof(element) !== 'undefined');
+				const flattenModuleList = this._flattenDeep(orgHrefsByActivitySequence).filter(element => typeof(element) !== 'undefined');
 				this._enrollmentCompletion = flattenModuleList.filter(element => element.completion)
 					.reduce((accumulator, activityInfo) => {
 						accumulator.value += activityInfo.completion.value || 0;
