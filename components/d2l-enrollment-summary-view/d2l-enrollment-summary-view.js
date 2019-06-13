@@ -1,16 +1,20 @@
 import { html, PolymerElement } from '@polymer/polymer/polymer-element.js';
 import { EntityMixin } from 'siren-sdk/src/mixin/entity-mixin.js';
 import { EnrollmentEntity } from 'siren-sdk/src/enrollments/EnrollmentEntity.js';
+import { mixinBehaviors } from '@polymer/polymer/lib/legacy/class.js';
+import 'd2l-button/d2l-button.js';
+import 'd2l-link/d2l-link.js';
 import 'd2l-typography/d2l-typography-shared-styles.js';
 import 'd2l-organizations/components/d2l-organization-detail-card/d2l-organization-detail-card.js';
 import './d2l-enrollment-summary-view-layout.js';
 import './d2l-enrollment-summary-view-tag-list.js';
+import '../localize-behavior';
 
 /**
  * @customElement
  * @polymer
  */
-class D2lEnrollmentSummaryView extends EntityMixin(PolymerElement) {
+class D2lEnrollmentSummaryView extends mixinBehaviors([D2L.PolymerBehaviors.Enrollment.LocalizeBehavior], EntityMixin(PolymerElement)) {
 	constructor() {
 		super();
 		this._setEntityType(EnrollmentEntity);
@@ -51,8 +55,12 @@ class D2lEnrollmentSummaryView extends EntityMixin(PolymerElement) {
 					box-shadow: 0 2px 4px -2px var(--d2l-color-mica);
 					display: block;
 				}
-				.desv-header d2l-enrollment-summary-view-layout div {
-					line-height: 3.4rem;
+				.desv-continue d2l-button {
+					margin: 0.5rem 0.6rem 0.6rem 0;
+				}
+				.desv-continue span {
+					@apply --d2l-body-small-text;
+					letter-spacing: 0.3px;
 				}
 				.desv-course-list {
 					margin: 2.5rem 0 0 0;
@@ -133,7 +141,17 @@ class D2lEnrollmentSummaryView extends EntityMixin(PolymerElement) {
 				</div>
 				<d2l-enrollment-summary-view-layout>
 					<div slot="first-column">Completion Bar</div>
-					<div slot="second-column">Continue</div>
+					<div class="desv-continue" slot="second-column">
+						<d2l-button
+							role="link"
+							primary
+							disabled$="[[!_continueModule.href]]"
+							onclick$="window.location.href='[[_continueModule.href]]'"
+							aria-label="[[localize('continueToModule', 'module', _continueModule.title)]]">
+								[[localize('continue')]]
+						</d2l-button>
+						<span>[[_continueModule.title]]</span>
+					</div>
 				</d2l-enrollment-summary-view-layout>
 			</div>
 			<d2l-enrollment-summary-view-layout>
@@ -147,7 +165,7 @@ class D2lEnrollmentSummaryView extends EntityMixin(PolymerElement) {
 					</ul>
 				</div>
 				<div slot="second-column" class="desv-side-bar">
-					<h3>Description</h3>
+					<h3>[[localize('description')]]</h3>
 					<p>[[_description]]</p>
 				</div>
 			</d2l-enrollment-summary-view-layout>
@@ -168,9 +186,12 @@ class D2lEnrollmentSummaryView extends EntityMixin(PolymerElement) {
 				type: Array,
 				value: function() { return []; }
 			},
-			_orgHrefsByActivitySequence: {
+			_continueModule: {
 				type: Object,
-				value: function() { return {}; }
+				value: function() { return {
+					title: undefined,
+					href: undefined
+				}; }
 			},
 			_description: String
 		};
@@ -192,32 +213,58 @@ class D2lEnrollmentSummaryView extends EntityMixin(PolymerElement) {
 		enrollment.onOrganizationChange((org) => {
 			this._title = org.name();
 			this._description = org.description();
-			org.onSequenceChange((rootSequence) => {
-				rootSequence.onSubSequencesChange((subSequence) => {
-					subSequence.onSequencedActivityChange((sequencedActivity) => {
-						const newSequenceOrgHrefs = sequencedActivity.organizationHrefs();
-						const currentSequenceOrgHrefs = this._orgHrefsByActivitySequence[sequencedActivity.self()] || [];
-						this._orgHrefsByActivitySequence[sequencedActivity.self()] = newSequenceOrgHrefs;
-						this._orgHrefs = this._updateFlattenedOrgHrefs(this._orgHrefs, currentSequenceOrgHrefs, newSequenceOrgHrefs);
-					});
+			org.onSequenceChange(this._onRootSequenceChange.bind(this));
+		});
+	}
+	_onRootSequenceChange(rootSequence) {
+		const orgHrefsByActivitySequence = [];
+
+		rootSequence.onSubSequencesChange((subSequence) => {
+			orgHrefsByActivitySequence[subSequence.index()] = [];
+
+			subSequence.onSequencedActivityChange((sequencedActivity) => {
+				orgHrefsByActivitySequence[subSequence.index()][sequencedActivity.index()] = {};
+
+				sequencedActivity.onOrganizationChange((organizationEntity) => {
+					orgHrefsByActivitySequence[subSequence.index()][sequencedActivity.index()].href = organizationEntity.self();
+					this._orgHrefs = orgHrefsByActivitySequence.flat(2)
+						.filter(element => typeof(element) !== 'undefined')
+						.map(element => element.href);
+
+					this._setLearningPathContinue(organizationEntity, orgHrefsByActivitySequence, subSequence.index(), sequencedActivity.index());
 				});
+
 			});
 		});
 	}
-	// given the old flattened OrgHrefs for all activities oldOrgHrefs = ['/org/1', '/org/3', '/org/5', '/org/10', '/org/17']
-	//    if the currentSequenceOrgHrefs = ['/org/1', '/org/3', '/org/5']
-	//    if the newSequenceOrgHrefs = ['/org/3', '/org/5', '/org/6']
-	// the updated flattened OrgHrefs returned should be: ['/org/3', '/org/5', '/org/6', '/org/10', '/org/17']
-	_updateFlattenedOrgHrefs(oldOrgHrefs, currentSequenceOrgHrefs, newSequenceOrgHrefs) {
-		// Add new organization hrefs to the new org list.
-		const addThese = newSequenceOrgHrefs.filter(i => currentSequenceOrgHrefs.indexOf(i) < 0);
-		let newOrgHrefs = oldOrgHrefs.concat(addThese);
 
-		// flatten the _orgHrefsByActivitySequence by removing missing organization hrefs
-		const removeThese = currentSequenceOrgHrefs.filter(i => newSequenceOrgHrefs.indexOf(i) < 0);
-		newOrgHrefs = newOrgHrefs.filter(i => removeThese.indexOf(i) < 0);
+	_setLearningPathContinue(organizationEntity, orgHrefsByActivitySequence, subSequenceIndex, sequencedActivityIndex) {
+		organizationEntity.onSequenceChange((orgSequenceRoot) => {
+			const modulesBySequence = [];
+			orgSequenceRoot.onSubSequencesChange((orgSubSequence) => {
+				const completion = orgSubSequence.completion();
+				const isCompleted = completion && completion.isCompleted;
 
-		return newOrgHrefs;
+				modulesBySequence[orgSubSequence.index()] = {
+					title: orgSubSequence.title(),
+					href: orgSubSequence.sequenceViewerApplicationHref(),
+					isCompleted
+				};
+
+				modulesBySequence.filter(element => typeof(element) !== 'undefined')
+					.some((orgModule) => {
+						if (!orgModule.isCompleted) {
+							orgHrefsByActivitySequence[subSequenceIndex][sequencedActivityIndex].continue = orgModule;
+							return true;
+						}
+					});
+
+				this._continueModule = orgHrefsByActivitySequence.flat(2)
+					.filter(element => typeof(element) !== 'undefined')
+					.map(element => element.continue)
+					.shift();
+			});
+		});
 	}
 }
 
