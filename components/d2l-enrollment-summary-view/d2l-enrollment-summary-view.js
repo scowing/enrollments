@@ -8,6 +8,7 @@ import 'd2l-typography/d2l-typography-shared-styles.js';
 import 'd2l-organizations/components/d2l-organization-detail-card/d2l-organization-detail-card.js';
 import './d2l-enrollment-summary-view-layout.js';
 import './d2l-enrollment-summary-view-tag-list.js';
+import './d2l-enrollment-summary-view-meter.js';
 import '../localize-behavior';
 
 /**
@@ -104,6 +105,16 @@ class D2lEnrollmentSummaryView extends mixinBehaviors([D2L.PolymerBehaviors.Enro
 				.desv-button {
 					margin: 0.5rem 0.6rem 0.6rem 0;
 				}
+				.desv-progress {
+					position: relative;
+					height: 100%;
+				}
+				.desv-progress d2l-enrollment-summary-view-meter {
+					position: absolute;
+					top: 50%;
+					transform: translateY(-50%);
+					width: 100%;
+				}
 				.desv-continue span {
 					@apply --d2l-body-small-text;
 					letter-spacing: 0.3px;
@@ -187,9 +198,16 @@ class D2lEnrollmentSummaryView extends mixinBehaviors([D2L.PolymerBehaviors.Enro
 					<d2l-enrollment-summary-view-tag-list list=[[_tags]]></d2l-enrollment-summary-view-tag-list>
 				</div>
 				<d2l-enrollment-summary-view-layout>
-					<div slot="first-column">Completion Bar</div>
+					<div class="desv-progress" slot="first-column">
+						<d2l-enrollment-summary-view-meter
+							text$="[[_progressBarText(_title, _enrollmentCompletion.value, _enrollmentCompletion.max)]]"
+							value$="[[_enrollmentCompletion.value]]"
+							max$="[[_enrollmentCompletion.max]]">
+						</d2l-enrollment-summary-view-meter>
+					</div>
 					<div class="desv-continue" slot="second-column">
-						<a	class="desv-button"
+						<a
+							class="desv-button"
 							primary
 							disabled$="[[!_continueModule.href]]"
 							href$="[[_continueModule.href]]"
@@ -239,7 +257,14 @@ class D2lEnrollmentSummaryView extends mixinBehaviors([D2L.PolymerBehaviors.Enro
 					href: undefined
 				}; }
 			},
-			_description: String
+			_description: String,
+			_enrollmentCompletion: {
+				type: Object,
+				value: function() { return {
+					value: 0,
+					max: 0
+				}; }
+			}
 		};
 	}
 	static get observers() {
@@ -287,27 +312,41 @@ class D2lEnrollmentSummaryView extends mixinBehaviors([D2L.PolymerBehaviors.Enro
 		organizationEntity.onSequenceChange((orgSequenceRoot) => {
 			const modulesBySequence = [];
 			orgSequenceRoot.onSubSequencesChange((orgSubSequence) => {
-				const completion = orgSubSequence.completion();
-				const isCompleted = completion && completion.isCompleted;
+				const completion = orgSubSequence.completion() || {};
 
 				modulesBySequence[orgSubSequence.index()] = {
 					title: orgSubSequence.title(),
 					href: orgSubSequence.sequenceViewerApplicationHref(),
-					isCompleted
+					completion
 				};
 
+				let foundContinue = false;
+				orgHrefsByActivitySequence[subSequenceIndex][sequencedActivityIndex].completion = {
+					value: 0,
+					max: 0
+				};
 				modulesBySequence.filter(element => typeof(element) !== 'undefined')
-					.some((orgModule) => {
-						if (!orgModule.isCompleted) {
+					.forEach((orgModule) => {
+						if (!orgModule.completion.isCompleted && !foundContinue) {
 							orgHrefsByActivitySequence[subSequenceIndex][sequencedActivityIndex].continue = orgModule;
-							return true;
+							foundContinue = true;
 						}
+
+						orgHrefsByActivitySequence[subSequenceIndex][sequencedActivityIndex].completion.value += orgModule.completion.completed || 0;
+						orgHrefsByActivitySequence[subSequenceIndex][sequencedActivityIndex].completion.max += orgModule.completion.total || 0;
 					});
 
-				this._continueModule = this._flattenDeep(orgHrefsByActivitySequence)
-					.filter(element => typeof(element) !== 'undefined')
-					.map(element => element.continue)
-					.shift();
+				const flattenModuleList = orgHrefsByActivitySequence.flat(2).filter(element => typeof(element) !== 'undefined');
+				this._enrollmentCompletion = flattenModuleList.filter(element => element.completion)
+					.reduce((accumulator, activityInfo) => {
+						accumulator.value += activityInfo.completion.value || 0;
+						accumulator.max += activityInfo.completion.max || 0;
+
+						return accumulator;
+					}, { value: 0, max: 0 });
+
+				this._continueModule = flattenModuleList.filter(element => element.continue).map(element => element.continue).shift();
+
 			});
 		});
 	}
@@ -315,6 +354,11 @@ class D2lEnrollmentSummaryView extends mixinBehaviors([D2L.PolymerBehaviors.Enro
 	// Couldn't use flat so I stole it from https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/flat
 	_flattenDeep(arr1) {
 		return arr1.reduce((acc, val) => Array.isArray(val) ? acc.concat(this._flattenDeep(val)) : acc.concat(val), []);
+	}
+
+	_progressBarText(title, value, max) {
+		const percentage = max > 0 ? Math.floor(value / max * 100) : 0;
+		return this.localize('enrollmentProgressBar', 'title', title, 'percentage', percentage);
 	}
 }
 
