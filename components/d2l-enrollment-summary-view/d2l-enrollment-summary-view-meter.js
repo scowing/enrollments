@@ -51,7 +51,7 @@ class D2lEnrollmentSummaryViewMeter extends PolymerElement {
 		};
 	}
 	_percentage(value, max) {
-		return max > 0 ? Math.floor(value / max * 100) : 0;
+		return max > 0 ? Math.min(Math.floor(value / max * 100), 100) : 0;
 	}
 }
 
