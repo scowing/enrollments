@@ -70,10 +70,25 @@
 				"method": "PUT",
 				"href": "123187/activity/113355/view"
 			}]
+		}, {
+			"class": ["completion", "incomplete"],
+				"properties": {
+					"completed": 0,
+					"optionalTotal": 5,
+					"optionalViewed": 0,
+					"total": 6
+				},
+			"rel": ["item", "https://api.brightspace.com/rels/completion"]
 		}],
 	"links": [{
 		"rel": ["self", "describes"],
-		"href": "data/l2-m1-activity2.json"
+		"href": "data/base/module3.json"
+	},{
+		"rel": [
+			"https://sequences.api.brightspace.com/rels/sequence-viewer-application"
+		],
+		"type": "text/html",
+		"href": "#activity3"
 	},{
 		"rel": ["prev"],
 		"href": "data/l2-m1-activity1.json"
