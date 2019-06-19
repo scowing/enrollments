@@ -1,15 +1,12 @@
 'use strict';
-(function() {
-	/* eslint-disable quotes, indent */
-	window.D2L = window.D2L || {};
-	window.D2L.PolymerBehaviors = window.D2L.PolymerBehaviors || {};
-	window.D2L.PolymerBehaviors.Enrollment = window.D2L.PolymerBehaviors.Enrollment || {};
-	/**
-	 * This file is auto-generated. Do not modify.
-	 * @polymerBehavior D2L.PolymerBehaviors.Enrollment.LangFrBehavior
-	 */
-	D2L.PolymerBehaviors.Enrollment.LangFrBehavior = {
-		'fr': {
+
+import {dedupingMixin} from '@polymer/polymer/lib/utils/mixin.js';
+
+/* @polymerMixin */
+const LangFrImpl = (superClass) => class extends superClass {
+	constructor() {
+		super();
+		this.fr = {
 			'changeImage': 'Modifier l\'image',
 			'closed': 'Fermé',
 			'completed': 'Terminé',
@@ -18,9 +15,12 @@
 			'completedToday': 'Terminé aujourd\'hui',
 			'completedTomorrow': 'Terminé demain',
 			'completedYesterday': 'Terminé hier',
+			'continue': 'Continue',
+			'continueToModule': 'Continue by navigating to module, {module}',
 			'courseOfferingInformation': 'Information sur l\'offre de cours',
 			'coursePinButton': 'Le cours {course} est épinglé. Annuler l\'épinglage du cours',
 			'courseSettings': 'Paramètres du cours {course}',
+			'description': 'Description',
 			'disabled': 'Désactivé(e)',
 			'dueDaysAgo': 'À remettre il y a {number} jours',
 			'dueOn': 'À remettre {dateTime}',
@@ -29,6 +29,7 @@
 			'dueYesterday': 'À remettre hier',
 			'ended': 'S’est terminé le {date} à {time}',
 			'endsAt': 'Se termine le {date} à {time}',
+			'enrollmentProgressBar': 'Completed {percentage}% of {title}',
 			'inactive': 'Inactif',
 			'new': 'Nouvelle',
 			'overdue': 'En retard',
@@ -37,6 +38,9 @@
 			'startsAt': 'Commence le {date} à {time}',
 			'unpin': 'Annuler l\'épinglage',
 			'unpinActionResult': 'L\'épinglage du cours {course} a été annulé'
-		}
-	};
-})();
+		};
+	}
+};
+
+export const LangFr = dedupingMixin(LangFrImpl);
+

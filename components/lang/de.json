@@ -1,29 +1,126 @@
 {
-   "changeImage" : "Bild ändern",
-   "closed" : "Geschlossen",
-   "completed" : "Abgeschlossen",
-   "completedDaysAgo" : "Vor {number} abgeschlossen",
-   "completedOn" : "Am {dateTime} abgeschlossen",
-   "completedToday" : "Heute abgeschlossen",
-   "completedTomorrow" : "Morgen abgeschlossen",
-   "completedYesterday" : "Gestern abgeschlossen",
-   "courseOfferingInformation" : "Informationen zum Kursangebot",
-   "coursePinButton" : "{course} ist angeheftet. Kurs lösen",
-   "courseSettings" : "Kurseinstellungen für {course}",
-   "disabled" : "Deaktiviert",
-   "dueDaysAgo" : "Vor {number} Tagen fällig",
-   "dueOn" : "Fällig am {dateTime}",
-   "dueToday" : "Heute fällig",
-   "dueTomorrow" : "Morgen fällig",
-   "dueYesterday" : "Gestern fällig",
-   "ended" : "Beendet am {date} um {time}",
-   "endsAt" : "Endet am {date} um {time}",
-   "inactive" : "Inaktiv",
-   "new" : "Neu",
-   "overdue" : "Überfällig",
-   "pin" : "Anheften",
-   "pinActionResult" : "{course} wurde angeheftet",
-   "startsAt" : "Beginnt am {date} um {time}",
-   "unpin" : "Lösen",
-   "unpinActionResult" : "{course} wurde gelöst"
+  "changeImage": {
+    "translation": "Bild ändern",
+    "context": "Change the decorative image of an item "
+  },
+  "closed": {
+    "translation": "Geschlossen",
+    "context": "This item has been closed. You can longer access this item"
+  },
+  "completed": {
+    "translation": "Abgeschlossen",
+    "context": "The user has done everything for this item."
+  },
+  "completedDaysAgo": {
+    "translation": "Vor {number} abgeschlossen",
+    "context": "The item was completed x number of days ago in the past."
+  },
+  "completedOn": {
+    "translation": "Am {dateTime} abgeschlossen",
+    "context": "The date at which this item was completed. The date is in the past."
+  },
+  "completedToday": {
+    "translation": "Heute abgeschlossen",
+    "context": "This item was completed today"
+  },
+  "completedTomorrow": {
+    "translation": "Morgen abgeschlossen",
+    "context": "This item was completed tomorrow. In the future."
+  },
+  "completedYesterday": {
+    "translation": "Gestern abgeschlossen",
+    "context": "This item was completed yesterday."
+  },
+  "continue": {
+    "translation": "Continue",
+    "context": "Continue an item where you left off."
+  },
+  "continueToModule": {
+    "translation": "Continue by navigating to module, {module}",
+    "context": "Continue a course by going to the next module."
+  },
+  "courseOfferingInformation": {
+    "translation": "Informationen zum Kursangebot",
+    "context": "Go to the settings page for a course offering information"
+  },
+  "coursePinButton": {
+    "translation": "{course} ist angeheftet. Kurs lösen",
+    "context": "This course is pinned and will be at the top of the list. Click here to unpin the course."
+  },
+  "courseSettings": {
+    "translation": "Kurseinstellungen für {course}",
+    "context": "Go to course setting page"
+  },
+  "description": {
+    "translation": "Description",
+    "context": "A description of an item. A course mainly"
+  },
+  "disabled": {
+    "translation": "Deaktiviert",
+    "context": "This course is current not accessible to the user."
+  },
+  "dueDaysAgo": {
+    "translation": "Vor {number} Tagen fällig",
+    "context": "This course needs to be done and was expected to be done x days ago"
+  },
+  "dueOn": {
+    "translation": "Fällig am {dateTime}",
+    "context": "This course needs to be finished at a future time."
+  },
+  "dueToday": {
+    "translation": "Heute fällig",
+    "context": "This course needs to be finished today."
+  },
+  "dueTomorrow": {
+    "translation": "Morgen fällig",
+    "context": "this course needs to be done tomorrow"
+  },
+  "dueYesterday": {
+    "translation": "Gestern fällig",
+    "context": "The course needs to be done and was expected to be done yesterday"
+  },
+  "ended": {
+    "translation": "Beendet am {date} um {time}",
+    "context": "This course has ended sometime in the past."
+  },
+  "endsAt": {
+    "translation": "Endet am {date} um {time}",
+    "context": "This course will end in a future time."
+  },
+  "enrollmentProgressBar": {
+    "translation": "Completed {percentage}% of {title}",
+    "context": "How many things have you completed in the current item"
+  },
+  "inactive": {
+    "translation": "Inaktiv",
+    "context": "This item is currenlty not accessible to the user."
+  },
+  "new": {
+    "translation": "Neu",
+    "context": "The user has never entered into the course."
+  },
+  "overdue": {
+    "translation": "Überfällig",
+    "context": "The user is expected to finish this course in the past."
+  },
+  "pin": {
+    "translation": "Anheften",
+    "context": "Action to make this course show up first in the list of courses"
+  },
+  "pinActionResult": {
+    "translation": "{course} wurde angeheftet",
+    "context": "This course has just taken the action to be pin"
+  },
+  "startsAt": {
+    "translation": "Beginnt am {date} um {time}",
+    "context": "The course starts at a future date"
+  },
+  "unpin": {
+    "translation": "Lösen",
+    "context": "Action: Stop the course from showing up first in the list of courses"
+  },
+  "unpinActionResult": {
+    "translation": "{course} wurde gelöst",
+    "context": "Response from the Unpin action verifying that this action has been taken place."
+  }
 }
