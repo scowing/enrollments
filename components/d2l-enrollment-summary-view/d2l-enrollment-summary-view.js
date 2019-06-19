@@ -1,6 +1,7 @@
 import { html, PolymerElement } from '@polymer/polymer/polymer-element.js';
 import { EntityMixin } from 'siren-sdk/src/mixin/entity-mixin.js';
 import { EnrollmentEntity } from 'siren-sdk/src/enrollments/EnrollmentEntity.js';
+import { mixinBehaviors } from '@polymer/polymer/lib/legacy/class.js';
 import 'd2l-button/d2l-button-shared-styles.js';
 import 'd2l-link/d2l-link.js';
 import 'd2l-typography/d2l-typography-shared-styles.js';
@@ -8,13 +9,13 @@ import 'd2l-organizations/components/d2l-organization-detail-card/d2l-organizati
 import './d2l-enrollment-summary-view-layout.js';
 import './d2l-enrollment-summary-view-tag-list.js';
 import './d2l-enrollment-summary-view-meter.js';
-import { EnrollmentsLocalize } from '../EnrollmentsLocalize.js';
+import '../localize-behavior';
 
 /**
  * @customElement
  * @polymer
  */
-class D2lEnrollmentSummaryView extends EnrollmentsLocalize(EntityMixin(PolymerElement)) {
+class D2lEnrollmentSummaryView extends mixinBehaviors([D2L.PolymerBehaviors.Enrollment.LocalizeBehavior], EntityMixin(PolymerElement)) {
 	constructor() {
 		super();
 		this._setEntityType(EnrollmentEntity);
