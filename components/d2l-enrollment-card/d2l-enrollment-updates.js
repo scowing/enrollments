@@ -5,9 +5,8 @@ Polymer-based web component for a enrollment updates.
 */
 import { html, PolymerElement } from '@polymer/polymer/polymer-element.js';
 import { EntityMixin } from 'siren-sdk/src/mixin/entity-mixin.js';
-import { mixinBehaviors } from '@polymer/polymer/lib/legacy/class.js';
 import { OrganizationEntity } from 'siren-sdk/src/organizations/OrganizationEntity.js';
-import 'd2l-organizations/components/d2l-organization-updates/d2l-organization-updates.js';
+import { OrganizationUpdatesMixin } from 'd2l-organizations/components/d2l-organization-updates/OrganizationUpdatesMixin.js';
 import 'd2l-card/d2l-card-footer-link.js';
 import 'd2l-tooltip/d2l-tooltip.js';
 
@@ -15,9 +14,7 @@ import 'd2l-tooltip/d2l-tooltip.js';
  * @customElement
  * @polymer
  */
-class EnrollmentUpdates extends mixinBehaviors([
-	D2L.PolymerBehaviors.Organization.Updates.Behavior
-], EntityMixin(PolymerElement)) {
+class EnrollmentUpdates extends OrganizationUpdatesMixin(EntityMixin(PolymerElement)) {
 	constructor() {
 		super();
 		this._setEntityType(OrganizationEntity);
