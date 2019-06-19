@@ -1,15 +1,12 @@
 'use strict';
-(function() {
-	/* eslint-disable quotes, indent */
-	window.D2L = window.D2L || {};
-	window.D2L.PolymerBehaviors = window.D2L.PolymerBehaviors || {};
-	window.D2L.PolymerBehaviors.Enrollment = window.D2L.PolymerBehaviors.Enrollment || {};
-	/**
-	 * This file is auto-generated. Do not modify.
-	 * @polymerBehavior D2L.PolymerBehaviors.Enrollment.LangTrBehavior
-	 */
-	D2L.PolymerBehaviors.Enrollment.LangTrBehavior = {
-		'tr': {
+
+import {dedupingMixin} from '@polymer/polymer/lib/utils/mixin.js';
+
+/* @polymerMixin */
+const LangTrImpl = (superClass) => class extends superClass {
+	constructor() {
+		super();
+		this.tr = {
 			'changeImage': 'Görüntüyü Değiştir',
 			'closed': 'Kapandı',
 			'completed': 'Tamamla',
@@ -18,9 +15,12 @@
 			'completedToday': 'Bugün Tamamlandı',
 			'completedTomorrow': 'Yarın Tamamlanacak',
 			'completedYesterday': 'Dün Tamamlandı',
+			'continue': 'Continue',
+			'continueToModule': 'Continue by navigating to module, {module}',
 			'courseOfferingInformation': 'Ders Önerisi Bilgileri',
 			'coursePinButton': '{course} dersi sabitlendi. Dersin sabitlemesini geri al',
 			'courseSettings': '{course} dersi ayarları',
+			'description': 'Description',
 			'disabled': 'Devre Dışı Bırakıldı',
 			'dueDaysAgo': 'Son Teslim Tarihi {number} Gün Önceydi',
 			'dueOn': 'Son Teslim Tarihi {dateTime}',
@@ -29,6 +29,7 @@
 			'dueYesterday': 'Son Teslim Tarihi Dün',
 			'ended': '{date} tarihinde, şu saatte sona erdi: {time}',
 			'endsAt': '{date} tarihinde, şu saatte sona erecek: {time}',
+			'enrollmentProgressBar': 'Completed {percentage}% of {title}',
 			'inactive': 'Etkin Değil',
 			'new': 'Yeni',
 			'overdue': 'Süresi Dolmuş',
@@ -37,6 +38,9 @@
 			'startsAt': '{date} tarihinde, şu saatte başlayacak: {time}',
 			'unpin': 'Sabitlemeyi Geri Al',
 			'unpinActionResult': '{course} dersinin sabitlemesi geri alındı'
-		}
-	};
-})();
+		};
+	}
+};
+
+export const LangTr = dedupingMixin(LangTrImpl);
+

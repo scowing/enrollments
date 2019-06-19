@@ -1,15 +1,12 @@
 'use strict';
-(function() {
-	/* eslint-disable quotes, indent */
-	window.D2L = window.D2L || {};
-	window.D2L.PolymerBehaviors = window.D2L.PolymerBehaviors || {};
-	window.D2L.PolymerBehaviors.Enrollment = window.D2L.PolymerBehaviors.Enrollment || {};
-	/**
-	 * This file is auto-generated. Do not modify.
-	 * @polymerBehavior D2L.PolymerBehaviors.Enrollment.LangSvBehavior
-	 */
-	D2L.PolymerBehaviors.Enrollment.LangSvBehavior = {
-		'sv': {
+
+import {dedupingMixin} from '@polymer/polymer/lib/utils/mixin.js';
+
+/* @polymerMixin */
+const LangSvImpl = (superClass) => class extends superClass {
+	constructor() {
+		super();
+		this.sv = {
 			'changeImage': 'Ändra bild',
 			'closed': 'Stängd',
 			'completed': 'Klart',
@@ -18,9 +15,12 @@
 			'completedToday': 'Slutfört idag',
 			'completedTomorrow': 'Slutförs imorgon',
 			'completedYesterday': 'Slutfördes igår',
+			'continue': 'Continue',
+			'continueToModule': 'Continue by navigating to module, {module}',
 			'courseOfferingInformation': 'Information om kursutbud',
 			'coursePinButton': '{course} är markerad. Avmarkera kurs',
 			'courseSettings': 'Kursinställningar för {course}',
+			'description': 'Description',
 			'disabled': 'Avaktiverad',
 			'dueDaysAgo': 'Förföll för {number} dagar sedan',
 			'dueOn': 'Förföll {dateTime}',
@@ -29,6 +29,7 @@
 			'dueYesterday': 'Förföll igår',
 			'ended': 'Slutade {date} kl. {time}',
 			'endsAt': 'Slutar {date} kl. {time}',
+			'enrollmentProgressBar': 'Completed {percentage}% of {title}',
 			'inactive': 'Inaktiv',
 			'new': 'Ny',
 			'overdue': 'Försenad',
@@ -37,6 +38,9 @@
 			'startsAt': 'Startar {date} kl. {time}',
 			'unpin': 'Avmarkera',
 			'unpinActionResult': '{course} har avmarkerats'
-		}
-	};
-})();
+		};
+	}
+};
+
+export const LangSv = dedupingMixin(LangSvImpl);
+

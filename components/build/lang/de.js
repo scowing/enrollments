@@ -1,15 +1,12 @@
 'use strict';
-(function() {
-	/* eslint-disable quotes, indent */
-	window.D2L = window.D2L || {};
-	window.D2L.PolymerBehaviors = window.D2L.PolymerBehaviors || {};
-	window.D2L.PolymerBehaviors.Enrollment = window.D2L.PolymerBehaviors.Enrollment || {};
-	/**
-	 * This file is auto-generated. Do not modify.
-	 * @polymerBehavior D2L.PolymerBehaviors.Enrollment.LangDeBehavior
-	 */
-	D2L.PolymerBehaviors.Enrollment.LangDeBehavior = {
-		'de': {
+
+import {dedupingMixin} from '@polymer/polymer/lib/utils/mixin.js';
+
+/* @polymerMixin */
+const LangDeImpl = (superClass) => class extends superClass {
+	constructor() {
+		super();
+		this.de = {
 			'changeImage': 'Bild ändern',
 			'closed': 'Geschlossen',
 			'completed': 'Abgeschlossen',
@@ -18,9 +15,12 @@
 			'completedToday': 'Heute abgeschlossen',
 			'completedTomorrow': 'Morgen abgeschlossen',
 			'completedYesterday': 'Gestern abgeschlossen',
+			'continue': 'Continue',
+			'continueToModule': 'Continue by navigating to module, {module}',
 			'courseOfferingInformation': 'Informationen zum Kursangebot',
 			'coursePinButton': '{course} ist angeheftet. Kurs lösen',
 			'courseSettings': 'Kurseinstellungen für {course}',
+			'description': 'Description',
 			'disabled': 'Deaktiviert',
 			'dueDaysAgo': 'Vor {number} Tagen fällig',
 			'dueOn': 'Fällig am {dateTime}',
@@ -29,6 +29,7 @@
 			'dueYesterday': 'Gestern fällig',
 			'ended': 'Beendet am {date} um {time}',
 			'endsAt': 'Endet am {date} um {time}',
+			'enrollmentProgressBar': 'Completed {percentage}% of {title}',
 			'inactive': 'Inaktiv',
 			'new': 'Neu',
 			'overdue': 'Überfällig',
@@ -37,6 +38,9 @@
 			'startsAt': 'Beginnt am {date} um {time}',
 			'unpin': 'Lösen',
 			'unpinActionResult': '{course} wurde gelöst'
-		}
-	};
-})();
+		};
+	}
+};
+
+export const LangDe = dedupingMixin(LangDeImpl);
+
