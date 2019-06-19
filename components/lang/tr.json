@@ -1,29 +1,126 @@
 {
-   "changeImage" : "Görüntüyü Değiştir",
-   "closed" : "Kapandı",
-   "completed" : "Tamamla",
-   "completedDaysAgo" : "{number} Gün Önce Tamamlandı",
-   "completedOn" : "{dateTime} Tarihinde Tamamlandı",
-   "completedToday" : "Bugün Tamamlandı",
-   "completedTomorrow" : "Yarın Tamamlanacak",
-   "completedYesterday" : "Dün Tamamlandı",
-   "courseOfferingInformation" : "Ders Önerisi Bilgileri",
-   "coursePinButton" : "{course} dersi sabitlendi. Dersin sabitlemesini geri al",
-   "courseSettings" : "{course} dersi ayarları",
-   "disabled" : "Devre Dışı Bırakıldı",
-   "dueDaysAgo" : "Son Teslim Tarihi {number} Gün Önceydi",
-   "dueOn" : "Son Teslim Tarihi {dateTime}",
-   "dueToday" : "Bugün Süresi Doluyor",
-   "dueTomorrow" : "Son Teslim Tarihi Yarın",
-   "dueYesterday" : "Son Teslim Tarihi Dün",
-   "ended" : "{date} tarihinde, şu saatte sona erdi: {time}",
-   "endsAt" : "{date} tarihinde, şu saatte sona erecek: {time}",
-   "inactive" : "Etkin Değil",
-   "new" : "Yeni",
-   "overdue" : "Süresi Dolmuş",
-   "pin" : "Sabitle",
-   "pinActionResult" : "{course} dersi sabitlendi",
-   "startsAt" : "{date} tarihinde, şu saatte başlayacak: {time}",
-   "unpin" : "Sabitlemeyi Geri Al",
-   "unpinActionResult" : "{course} dersinin sabitlemesi geri alındı"
+  "changeImage": {
+    "translation": "Görüntüyü Değiştir",
+    "context": "Change the decorative image of an item "
+  },
+  "closed": {
+    "translation": "Kapandı",
+    "context": "This item has been closed. You can longer access this item"
+  },
+  "completed": {
+    "translation": "Tamamla",
+    "context": "The user has done everything for this item."
+  },
+  "completedDaysAgo": {
+    "translation": "{number} Gün Önce Tamamlandı",
+    "context": "The item was completed x number of days ago in the past."
+  },
+  "completedOn": {
+    "translation": "{dateTime} Tarihinde Tamamlandı",
+    "context": "The date at which this item was completed. The date is in the past."
+  },
+  "completedToday": {
+    "translation": "Bugün Tamamlandı",
+    "context": "This item was completed today"
+  },
+  "completedTomorrow": {
+    "translation": "Yarın Tamamlanacak",
+    "context": "This item was completed tomorrow. In the future."
+  },
+  "completedYesterday": {
+    "translation": "Dün Tamamlandı",
+    "context": "This item was completed yesterday."
+  },
+  "continue": {
+    "translation": "Continue",
+    "context": "Continue an item where you left off."
+  },
+  "continueToModule": {
+    "translation": "Continue by navigating to module, {module}",
+    "context": "Continue a course by going to the next module."
+  },
+  "courseOfferingInformation": {
+    "translation": "Ders Önerisi Bilgileri",
+    "context": "Go to the settings page for a course offering information"
+  },
+  "coursePinButton": {
+    "translation": "{course} dersi sabitlendi. Dersin sabitlemesini geri al",
+    "context": "This course is pinned and will be at the top of the list. Click here to unpin the course."
+  },
+  "courseSettings": {
+    "translation": "{course} dersi ayarları",
+    "context": "Go to course setting page"
+  },
+  "description": {
+    "translation": "Description",
+    "context": "A description of an item. A course mainly"
+  },
+  "disabled": {
+    "translation": "Devre Dışı Bırakıldı",
+    "context": "This course is current not accessible to the user."
+  },
+  "dueDaysAgo": {
+    "translation": "Son Teslim Tarihi {number} Gün Önceydi",
+    "context": "This course needs to be done and was expected to be done x days ago"
+  },
+  "dueOn": {
+    "translation": "Son Teslim Tarihi {dateTime}",
+    "context": "This course needs to be finished at a future time."
+  },
+  "dueToday": {
+    "translation": "Bugün Süresi Doluyor",
+    "context": "This course needs to be finished today."
+  },
+  "dueTomorrow": {
+    "translation": "Son Teslim Tarihi Yarın",
+    "context": "this course needs to be done tomorrow"
+  },
+  "dueYesterday": {
+    "translation": "Son Teslim Tarihi Dün",
+    "context": "The course needs to be done and was expected to be done yesterday"
+  },
+  "ended": {
+    "translation": "{date} tarihinde, şu saatte sona erdi: {time}",
+    "context": "This course has ended sometime in the past."
+  },
+  "endsAt": {
+    "translation": "{date} tarihinde, şu saatte sona erecek: {time}",
+    "context": "This course will end in a future time."
+  },
+  "enrollmentProgressBar": {
+    "translation": "Completed {percentage}% of {title}",
+    "context": "How many things have you completed in the current item"
+  },
+  "inactive": {
+    "translation": "Etkin Değil",
+    "context": "This item is currenlty not accessible to the user."
+  },
+  "new": {
+    "translation": "Yeni",
+    "context": "The user has never entered into the course."
+  },
+  "overdue": {
+    "translation": "Süresi Dolmuş",
+    "context": "The user is expected to finish this course in the past."
+  },
+  "pin": {
+    "translation": "Sabitle",
+    "context": "Action to make this course show up first in the list of courses"
+  },
+  "pinActionResult": {
+    "translation": "{course} dersi sabitlendi",
+    "context": "This course has just taken the action to be pin"
+  },
+  "startsAt": {
+    "translation": "{date} tarihinde, şu saatte başlayacak: {time}",
+    "context": "The course starts at a future date"
+  },
+  "unpin": {
+    "translation": "Sabitlemeyi Geri Al",
+    "context": "Action: Stop the course from showing up first in the list of courses"
+  },
+  "unpinActionResult": {
+    "translation": "{course} dersinin sabitlemesi geri alındı",
+    "context": "Response from the Unpin action verifying that this action has been taken place."
+  }
 }

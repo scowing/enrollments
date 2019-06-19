@@ -11,7 +11,7 @@ const requireDir = require('require-dir');
 
 const buildDirectory = '/../build';
 const sergeDirectories = require('./enrollments.serge.json');
-const template = './templates/lang-behavior.ejs';
+const template = './templates/lang-mixin.ejs';
 const buildSeries = ['clean'];
 const cleanSeries = [];
 
@@ -19,16 +19,22 @@ sergeDirectories.forEach((sergeComponent) => {
 	const localeResources = requireDir(sergeComponent.source_dir);
 	const config = {
 		dest: sergeComponent.source_dir + buildDirectory,
-		localeFiles: Object.keys(localeResources).map((lang) => ({
-			filename: lang,
-			data: {
-				lang: lang.replace('-', ''),
-				name: sergeComponent.name,
-				properLang: lang.charAt(0).toUpperCase() + lang.slice(1).replace('-', ''),
-				resources: JSON.stringify(localeResources[lang], null, '\t\t\t').replace(/'/g, '\\\'').replace(/"/g, '\'').replace(/\n\}/g, '\n\t\t}'),
-				comment: 'This file is auto-generated. Do not modify.'
-			}
-		}))
+		localeFiles: Object.keys(localeResources).map((lang) => {
+			const formattedLangTerms = {};
+			Object.keys(localeResources[lang]).forEach((langTerm) => {
+				formattedLangTerms[langTerm] = localeResources[lang][langTerm].translation;
+			});
+			return {
+				filename: lang,
+				data: {
+					lang: lang.replace('-', ''),
+					name: sergeComponent.name,
+					properLang: lang.charAt(0).toUpperCase() + lang.slice(1).replace('-', ''),
+					resources: JSON.stringify(formattedLangTerms, null, '\t\t\t').replace(/'/g, '\\\'').replace(/"/g, '\'').replace(/\n\}/g, '\n\t\t}'),
+					comment: 'This file is auto-generated. Do not modify.'
+				}
+			};
+		})
 	};
 
 	const options = {
