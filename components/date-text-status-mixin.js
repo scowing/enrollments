@@ -1,7 +1,6 @@
 'use strict';
 import { dedupingMixin } from '@polymer/polymer/lib/utils/mixin.js';
-import { mixinBehaviors } from '@polymer/polymer/lib/legacy/class.js';
-import './localize-behavior.js';
+import { EnrollmentsLocalize } from './EnrollmentsLocalize.js';
 
 /**
  * @polymerMixin
@@ -54,9 +53,7 @@ export const interalStatusMixin = function(baseClass) {
 export const StatusMixin = dedupingMixin(interalStatusMixin);
 
 export const interalDateTextAndStatusMixin = function(superClass) {
-	return class extends mixinBehaviors([
-		D2L.PolymerBehaviors.Enrollment.LocalizeBehavior
-	], StatusMixin(superClass)) {
+	return class extends EnrollmentsLocalize(StatusMixin(superClass)) {
 		dateTextAndStatus(isCompletionDate, date) {
 			if (!this.enrollmentStatus(isCompletionDate, date)) {
 				return null;
