@@ -1,12 +1,15 @@
 'use strict';
-
-import {dedupingMixin} from '@polymer/polymer/lib/utils/mixin.js';
-
-/* @polymerMixin */
-const LangDadkImpl = (superClass) => class extends superClass {
-	constructor() {
-		super();
-		this.dadk = {
+(function() {
+	/* eslint-disable quotes, indent */
+	window.D2L = window.D2L || {};
+	window.D2L.PolymerBehaviors = window.D2L.PolymerBehaviors || {};
+	window.D2L.PolymerBehaviors.Enrollment = window.D2L.PolymerBehaviors.Enrollment || {};
+	/**
+	 * This file is auto-generated. Do not modify.
+	 * @polymerBehavior D2L.PolymerBehaviors.Enrollment.LangDadkBehavior
+	 */
+	D2L.PolymerBehaviors.Enrollment.LangDadkBehavior = {
+		'dadk': {
 			'changeImage': 'Skift billede',
 			'closed': 'Lukket',
 			'completed': 'Fuldført',
@@ -15,12 +18,9 @@ const LangDadkImpl = (superClass) => class extends superClass {
 			'completedToday': 'Fuldført i dag',
 			'completedTomorrow': 'Fuldført i morgen',
 			'completedYesterday': 'Fuldført i går',
-			'continue': 'Continue',
-			'continueToModule': 'Continue by navigating to module, {module}',
 			'courseOfferingInformation': 'Oplysninger om kursustilbud',
 			'coursePinButton': '{course} er fastgjort. Frigør kursus',
 			'courseSettings': 'Kursusindstillinger for {course}',
-			'description': 'Description',
 			'disabled': 'Deaktiveret',
 			'dueDaysAgo': 'Forfalden for {number} dage siden',
 			'dueOn': 'Forfalden den {dateTime}',
@@ -29,7 +29,6 @@ const LangDadkImpl = (superClass) => class extends superClass {
 			'dueYesterday': 'Forfalden i går',
 			'ended': 'Sluttede {date} kl. {time}',
 			'endsAt': 'Slutter {date} kl. {time}',
-			'enrollmentProgressBar': 'Completed {percentage}% of {title}',
 			'inactive': 'Inaktiv',
 			'new': 'Ny',
 			'overdue': 'Forsinket',
@@ -38,9 +37,6 @@ const LangDadkImpl = (superClass) => class extends superClass {
 			'startsAt': 'Begynder {date} kl. {time}',
 			'unpin': 'Frigør',
 			'unpinActionResult': '{course} er blevet frigjort'
-		};
-	}
-};
-
-export const LangDadk = dedupingMixin(LangDadkImpl);
-
+		}
+	};
+})();

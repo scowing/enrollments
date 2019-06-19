@@ -1,12 +1,15 @@
 'use strict';
-
-import {dedupingMixin} from '@polymer/polymer/lib/utils/mixin.js';
-
-/* @polymerMixin */
-const LangJaImpl = (superClass) => class extends superClass {
-	constructor() {
-		super();
-		this.ja = {
+(function() {
+	/* eslint-disable quotes, indent */
+	window.D2L = window.D2L || {};
+	window.D2L.PolymerBehaviors = window.D2L.PolymerBehaviors || {};
+	window.D2L.PolymerBehaviors.Enrollment = window.D2L.PolymerBehaviors.Enrollment || {};
+	/**
+	 * This file is auto-generated. Do not modify.
+	 * @polymerBehavior D2L.PolymerBehaviors.Enrollment.LangJaBehavior
+	 */
+	D2L.PolymerBehaviors.Enrollment.LangJaBehavior = {
+		'ja': {
 			'changeImage': 'イメージの変更',
 			'closed': 'クローズ',
 			'completed': '完了',
@@ -15,12 +18,9 @@ const LangJaImpl = (superClass) => class extends superClass {
 			'completedToday': '本日完了',
 			'completedTomorrow': '明日完了',
 			'completedYesterday': '昨日完了',
-			'continue': 'Continue',
-			'continueToModule': 'Continue by navigating to module, {module}',
 			'courseOfferingInformation': 'コース内容情報',
 			'coursePinButton': '{course} は固定されています。コースの固定解除',
 			'courseSettings': '{course} コースの設定',
-			'description': 'Description',
 			'disabled': '無効',
 			'dueDaysAgo': '期限は {number} 日前',
 			'dueOn': '期限は {dateTime}',
@@ -29,7 +29,6 @@ const LangJaImpl = (superClass) => class extends superClass {
 			'dueYesterday': '期限は昨日',
 			'ended': '{date} {time} に終了済み',
 			'endsAt': '{date} {time} に終了',
-			'enrollmentProgressBar': 'Completed {percentage}% of {title}',
 			'inactive': '非アクティブ',
 			'new': '新規',
 			'overdue': '期限切れ',
@@ -38,9 +37,6 @@ const LangJaImpl = (superClass) => class extends superClass {
 			'startsAt': '{date} {time} に開始',
 			'unpin': '固定解除',
 			'unpinActionResult': '{course} は固定解除されました'
-		};
-	}
-};
-
-export const LangJa = dedupingMixin(LangJaImpl);
-
+		}
+	};
+})();

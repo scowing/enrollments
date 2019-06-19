@@ -1,46 +1,42 @@
 'use strict';
-
-import {dedupingMixin} from '@polymer/polymer/lib/utils/mixin.js';
-
-/* @polymerMixin */
-const LangFiImpl = (superClass) => class extends superClass {
-	constructor() {
-		super();
-		this.fi = {
-			'changeImage': 'Change Image',
-			'closed': 'Closed',
-			'completed': 'Complete',
-			'completedDaysAgo': 'Completed {number} Days Ago',
+(function() {
+	/* eslint-disable quotes, indent */
+	window.D2L = window.D2L || {};
+	window.D2L.PolymerBehaviors = window.D2L.PolymerBehaviors || {};
+	window.D2L.PolymerBehaviors.Enrollment = window.D2L.PolymerBehaviors.Enrollment || {};
+	/**
+	 * This file is auto-generated. Do not modify.
+	 * @polymerBehavior D2L.PolymerBehaviors.Enrollment.LangFiBehavior
+	 */
+	D2L.PolymerBehaviors.Enrollment.LangFiBehavior = {
+		'fi': {
 			'completedOn': 'Completed {dateTime}',
 			'completedToday': 'Completed Today',
 			'completedTomorrow': 'Completed Tomorrow',
 			'completedYesterday': 'Completed Yesterday',
-			'continue': 'Continue',
-			'continueToModule': 'Continue by navigating to module, {module}',
+			'closed': 'Closed',
+			'completedDaysAgo': 'Completed {number} Days Ago',
+			'changeImage': 'Change Image',
 			'courseOfferingInformation': 'Course Offering Information',
 			'coursePinButton': '{course} is pinned. Unpin course',
 			'courseSettings': '{course} course settings',
-			'description': 'Description',
-			'disabled': 'Disabled',
-			'dueDaysAgo': 'Due {number} Days Ago',
+			'completed': 'Complete',
 			'dueOn': 'Due {dateTime}',
 			'dueToday': 'Due Today',
 			'dueTomorrow': 'Due Tomorrow',
 			'dueYesterday': 'Due Yesterday',
-			'ended': 'Ended {date} at {time}',
+			'dueDaysAgo': 'Due {number} Days Ago',
+			'disabled': 'Disabled',
 			'endsAt': 'Ends {date} at {time}',
-			'enrollmentProgressBar': 'Completed {percentage}% of {title}',
+			'ended': 'Ended {date} at {time}',
 			'inactive': 'Inactive',
-			'new': 'New',
-			'overdue': 'Overdue',
 			'pin': 'Pin',
 			'pinActionResult': '{course} has been pinned',
 			'startsAt': 'Starts {date} at {time}',
 			'unpin': 'Unpin',
-			'unpinActionResult': '{course} has been unpinned'
-		};
-	}
-};
-
-export const LangFi = dedupingMixin(LangFiImpl);
-
+			'unpinActionResult': '{course} has been unpinned',
+			'overdue': 'Overdue',
+			'new': 'New'
+		}
+	};
+})();

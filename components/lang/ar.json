@@ -1,126 +1,29 @@
 {
-  "changeImage": {
-    "translation": "تغيير الصورة",
-    "context": "Change the decorative image of an item "
-  },
-  "closed": {
-    "translation": "مغلق",
-    "context": "This item has been closed. You can longer access this item"
-  },
-  "completed": {
-    "translation": "تم الإكمال",
-    "context": "The user has done everything for this item."
-  },
-  "completedDaysAgo": {
-    "translation": "تم الإكمال منذ {number} من الأيام",
-    "context": "The item was completed x number of days ago in the past."
-  },
-  "completedOn": {
-    "translation": "تم الإكمال في {dateTime}",
-    "context": "The date at which this item was completed. The date is in the past."
-  },
-  "completedToday": {
-    "translation": "تم الإكمال اليوم",
-    "context": "This item was completed today"
-  },
-  "completedTomorrow": {
-    "translation": "سيتم الإكمال غدًا",
-    "context": "This item was completed tomorrow. In the future."
-  },
-  "completedYesterday": {
-    "translation": "تم الإكمال بالأمس",
-    "context": "This item was completed yesterday."
-  },
-  "continue": {
-    "translation": "Continue",
-    "context": "Continue an item where you left off."
-  },
-  "continueToModule": {
-    "translation": "Continue by navigating to module, {module}",
-    "context": "Continue a course by going to the next module."
-  },
-  "courseOfferingInformation": {
-    "translation": "معلومات مضمون المقرر التعليمي",
-    "context": "Go to the settings page for a course offering information"
-  },
-  "coursePinButton": {
-    "translation": "{course} is pinned. إلغاء تثبيت المقرر التعليمي",
-    "context": "This course is pinned and will be at the top of the list. Click here to unpin the course."
-  },
-  "courseSettings": {
-    "translation": "إعدادات المقرر التعليمي {course}",
-    "context": "Go to course setting page"
-  },
-  "description": {
-    "translation": "Description",
-    "context": "A description of an item. A course mainly"
-  },
-  "disabled": {
-    "translation": "تم التعطيل",
-    "context": "This course is current not accessible to the user."
-  },
-  "dueDaysAgo": {
-    "translation": "مضى على تاريخ الاستحقاق {number} من الأيام",
-    "context": "This course needs to be done and was expected to be done x days ago"
-  },
-  "dueOn": {
-    "translation": "تاريخ الاستحقاق في {dateTime}",
-    "context": "This course needs to be finished at a future time."
-  },
-  "dueToday": {
-    "translation": "تاريخ الاستحقاق اليوم",
-    "context": "This course needs to be finished today."
-  },
-  "dueTomorrow": {
-    "translation": "تاريخ الاستحقاق غدًا",
-    "context": "this course needs to be done tomorrow"
-  },
-  "dueYesterday": {
-    "translation": "كان تاريخ الاستحقاق بالأمس",
-    "context": "The course needs to be done and was expected to be done yesterday"
-  },
-  "ended": {
-    "translation": "Ended {date} at {time}",
-    "context": "This course has ended sometime in the past."
-  },
-  "endsAt": {
-    "translation": "Ends {date} at {time}",
-    "context": "This course will end in a future time."
-  },
-  "enrollmentProgressBar": {
-    "translation": "Completed {percentage}% of {title}",
-    "context": "How many things have you completed in the current item"
-  },
-  "inactive": {
-    "translation": "غير نشط",
-    "context": "This item is currenlty not accessible to the user."
-  },
-  "new": {
-    "translation": "جديد",
-    "context": "The user has never entered into the course."
-  },
-  "overdue": {
-    "translation": "تم تجاوز تاريخ الاستحقاق",
-    "context": "The user is expected to finish this course in the past."
-  },
-  "pin": {
-    "translation": "تثبيت",
-    "context": "Action to make this course show up first in the list of courses"
-  },
-  "pinActionResult": {
-    "translation": "تم تثبيت {course}",
-    "context": "This course has just taken the action to be pin"
-  },
-  "startsAt": {
-    "translation": "Starts {date} at {time}",
-    "context": "The course starts at a future date"
-  },
-  "unpin": {
-    "translation": "إلغاء التثبيت",
-    "context": "Action: Stop the course from showing up first in the list of courses"
-  },
-  "unpinActionResult": {
-    "translation": "تم إلغاء تثبيت {course}",
-    "context": "Response from the Unpin action verifying that this action has been taken place."
-  }
+   "changeImage" : "تغيير الصورة",
+   "closed" : "مغلق",
+   "completed" : "تم الإكمال",
+   "completedDaysAgo" : "تم الإكمال منذ {number} من الأيام",
+   "completedOn" : "تم الإكمال في {dateTime}",
+   "completedToday" : "تم الإكمال اليوم",
+   "completedTomorrow" : "سيتم الإكمال غدًا",
+   "completedYesterday" : "تم الإكمال بالأمس",
+   "courseOfferingInformation" : "معلومات مضمون المقرر التعليمي",
+   "coursePinButton" : "{course} is pinned. إلغاء تثبيت المقرر التعليمي",
+   "courseSettings" : "إعدادات المقرر التعليمي {course}",
+   "disabled" : "تم التعطيل",
+   "dueDaysAgo" : "مضى على تاريخ الاستحقاق {number} من الأيام",
+   "dueOn" : "تاريخ الاستحقاق في {dateTime}",
+   "dueToday" : "تاريخ الاستحقاق اليوم",
+   "dueTomorrow" : "تاريخ الاستحقاق غدًا",
+   "dueYesterday" : "كان تاريخ الاستحقاق بالأمس",
+   "ended" : "Ended {date} at {time}",
+   "endsAt" : "Ends {date} at {time}",
+   "inactive" : "غير نشط",
+   "new" : "جديد",
+   "overdue" : "تم تجاوز تاريخ الاستحقاق",
+   "pin" : "تثبيت",
+   "pinActionResult" : "تم تثبيت {course}",
+   "startsAt" : "Starts {date} at {time}",
+   "unpin" : "إلغاء التثبيت",
+   "unpinActionResult" : "تم إلغاء تثبيت {course}"
 }

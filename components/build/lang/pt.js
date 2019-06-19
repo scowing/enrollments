@@ -1,12 +1,15 @@
 'use strict';
-
-import {dedupingMixin} from '@polymer/polymer/lib/utils/mixin.js';
-
-/* @polymerMixin */
-const LangPtImpl = (superClass) => class extends superClass {
-	constructor() {
-		super();
-		this.pt = {
+(function() {
+	/* eslint-disable quotes, indent */
+	window.D2L = window.D2L || {};
+	window.D2L.PolymerBehaviors = window.D2L.PolymerBehaviors || {};
+	window.D2L.PolymerBehaviors.Enrollment = window.D2L.PolymerBehaviors.Enrollment || {};
+	/**
+	 * This file is auto-generated. Do not modify.
+	 * @polymerBehavior D2L.PolymerBehaviors.Enrollment.LangPtBehavior
+	 */
+	D2L.PolymerBehaviors.Enrollment.LangPtBehavior = {
+		'pt': {
 			'changeImage': 'Alterar imagem',
 			'closed': 'Fechado',
 			'completed': 'Concluído',
@@ -15,12 +18,9 @@ const LangPtImpl = (superClass) => class extends superClass {
 			'completedToday': 'Concluído hoje',
 			'completedTomorrow': 'Concluído amanhã',
 			'completedYesterday': 'Concluído ontem',
-			'continue': 'Continue',
-			'continueToModule': 'Continue by navigating to module, {module}',
 			'courseOfferingInformation': 'Informações de Oferta de Curso',
 			'coursePinButton': '{course} está fixado. Desafixar curso',
 			'courseSettings': 'Configurações de curso de {course}',
-			'description': 'Description',
 			'disabled': 'Desabilitado',
 			'dueDaysAgo': 'Vencido há {number} dias',
 			'dueOn': 'Vencido em {dateTime}',
@@ -29,7 +29,6 @@ const LangPtImpl = (superClass) => class extends superClass {
 			'dueYesterday': 'Venceu ontem',
 			'ended': 'Encerrado em {date} às {time}',
 			'endsAt': 'Encerra em {date} às {time}',
-			'enrollmentProgressBar': 'Completed {percentage}% of {title}',
 			'inactive': 'Inativo',
 			'new': 'Novo',
 			'overdue': 'Atraso',
@@ -38,9 +37,6 @@ const LangPtImpl = (superClass) => class extends superClass {
 			'startsAt': 'Inicia em {date} às {time}',
 			'unpin': 'Desafixar',
 			'unpinActionResult': '{course} foi desafixado'
-		};
-	}
-};
-
-export const LangPt = dedupingMixin(LangPtImpl);
-
+		}
+	};
+})();
