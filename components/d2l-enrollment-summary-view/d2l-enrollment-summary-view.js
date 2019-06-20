@@ -320,13 +320,13 @@ class D2lEnrollmentSummaryView extends EnrollmentsLocalize(EntityMixin(PolymerEl
 				};
 
 				let foundContinue = false;
+				orgHrefsByActivitySequence[subSequenceIndex][sequencedActivityIndex].continue = undefined;
 				orgHrefsByActivitySequence[subSequenceIndex][sequencedActivityIndex].completion = {
 					value: 0,
 					max: 0
 				};
 				modulesBySequence.filter(element => typeof(element) !== 'undefined')
 					.forEach((orgModule) => {
-						orgHrefsByActivitySequence[subSequenceIndex][sequencedActivityIndex].continue = undefined;
 						if (!orgModule.completion.isCompleted && !foundContinue) {
 							orgHrefsByActivitySequence[subSequenceIndex][sequencedActivityIndex].continue = orgModule;
 							foundContinue = true;
