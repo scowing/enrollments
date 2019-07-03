@@ -38,7 +38,7 @@ class D2lEnrollmentSummaryViewMeter extends PolymerElement {
 				role="img"
 				aria-label$="[[text]]">
 				<div class="desvm-linear-full-bar">
-					<div class="desvm-linear-inner-bar" style="width:[[_percentage(value, max)]]%;"></div>
+					<div class="desvm-linear-inner-bar" style$="width:[[_percentage(value, max)]]%;"></div>
 				</div>
 			</div>
 		`;
