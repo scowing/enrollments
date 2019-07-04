@@ -15,12 +15,17 @@ import { EntityMixin } from 'siren-sdk/src/mixin/entity-mixin.js';
 import '../d2l-enrollment-card/d2l-enrollment-updates.js';
 import '../d2l-enrollment-summary-view/d2l-enrollment-summary-view-tag-list.js';
 import { EnrollmentEntity } from 'siren-sdk/src/enrollments/EnrollmentEntity.js';
+import 'd2l-dropdown/d2l-dropdown-menu.js';
+import 'd2l-dropdown/d2l-dropdown-more.js';
+import 'd2l-menu/d2l-menu-item.js';
+import 'd2l-menu/d2l-menu-item-link.js';
+import { EnrollmentsLocalize } from '../EnrollmentsLocalize.js';
 
 /**
  * @customElement
  * @polymer
  */
-class EnrollmentHeroBanner extends EntityMixin(PolymerElement) {
+class EnrollmentHeroBanner extends EnrollmentsLocalize(EntityMixin(PolymerElement)) {
 	constructor() {
 		super();
 		this._setEntityType(EnrollmentEntity);
@@ -125,6 +130,12 @@ class EnrollmentHeroBanner extends EntityMixin(PolymerElement) {
 					max-height: 2.8em; /* not a typo meant em */
 					min-height: 2.26em; /* not a typo meant em */
 				}
+				.dehb-context-menu {
+					position: absolute;
+					z-index: 3;
+					right: 0.6rem;
+					top: 0.6rem;
+				}
 				.dehb-link-text {
 					@apply --d2l-offscreen;
 					display: inline-block;
@@ -206,21 +217,56 @@ class EnrollmentHeroBanner extends EntityMixin(PolymerElement) {
 					width: 18px;
 				}
 			</style>
-			<a class="d2l-focusable" href$="[[_organizationHomepageUrl]]" on-focus="_onFocus" on-blur="_onBlur">
-				<span class="dehb-link-text">[[_title]]</span>
-			</a>
-			<div class="dehb-container">
-				<div class="dehb-image">
-					<div class="dehb-image-shimmer"></div>
-					<d2l-organization-image type="wide" href="[[_organizationUrl]]" token$=[[token]]></d2l-organization-image>
-				</div>
-				<div class="dehb-info-container">
-					<div class="dehb-info-transparent"></div>
-					<!-- Skeleton for text -->
-					<div class="dehb-base-info-placeholder">
+			<div class="d2l-visible-on-ancestor-target">
+				<a class="d2l-focusable" href$="[[_organizationHomepageUrl]]" on-focus="_onFocus" on-blur="_onBlur">
+					<span class="dehb-link-text">[[_title]]</span>
+				</a>
+				<div class="dehb-container">
+					<div class="dehb-image">
+						<div class="dehb-image-shimmer"></div>
+						<d2l-organization-image type="wide" href="[[_organizationUrl]]" token$=[[token]]></d2l-organization-image>
+					</div>
+					<div class="dehb-info-container">
+						<div class="dehb-info-transparent"></div>
+						<!-- Skeleton for text -->
+						<div class="dehb-base-info-placeholder">
+							<div class="dehb-base-info">
+								<div class="dehb-title">
+									<div class="dehb-text-placeholder dehb-title-placeholder"></div>
+								</div>
+								<div class="dehb-tag-container dehb-tag-placeholder-container">
+									<div class="dehb-text-placeholder dehb-tag-placeholder"></div>
+									<div class="dehb-text-placeholder dehb-tag-placeholder"></div>
+								</div>
+								<div class="dehb-progress-container">
+									<div class="dehb-text-placeholder dehb-progress-placeholder"></div>
+								</div>
+								<div class="dehb-updates-container">
+									<div class="dehb-update dehb-update-placeholder"></div>
+									<div class="dehb-update dehb-update-placeholder"></div>
+									<div class="dehb-update dehb-update-placeholder"></div>
+								</div>
+							</div>
+						</div>
 						<div class="dehb-base-info">
-							<div class="dehb-title">
-								<div class="dehb-text-placeholder dehb-title-placeholder"></div>
+							<div class="dehb-title"><h2>[[_organizationName]]</h2></div>
+							<div class="dehb-context-menu">
+								<d2l-dropdown-more text="[[_courseSettingsLabel]]" visible-on-ancestor>
+									<d2l-dropdown-menu>
+										<d2l-menu label="[[_courseSettingsLabel]]">
+											<d2l-menu-item-link hidden$="[[!_canAccessCourseInfo]]" text="[[localize('courseOfferingInformation')]]" href="[[_courseInfoUrl]]">
+											</d2l-menu-item-link>
+											<d2l-menu-item on-d2l-menu-item-select="_launchCourseImageSelector" hidden$="[[!_canChangeCourseImage]]" text="[[localize('changeImage')]]">
+											</d2l-menu-item>
+											<d2l-menu-item on-d2l-menu-item-select="_pinClickHandler" hidden$="[[_pinned]]" text="[[localize('pin')]]">
+											</d2l-menu-item>
+											<d2l-menu-item on-d2l-menu-item-select="_pinClickHandler" hidden$="[[!_pinned]]" text="[[localize('unpin')]]">
+											</d2l-menu-item>
+									</d2l-dropdown-menu>
+								</d2l-dropdown-more>
+
+								<d2l-button-icon hidden$="[[!_pinned]]" text="[[_pinButtonLabel]]" icon="d2l-tier1:pin-filled" on-tap="_pinClickHandler" on-keypress="_pinPressHandler">
+								</d2l-button-icon>
 							</div>
 							<div class="dehb-tag-container dehb-tag-placeholder-container">
 								<div class="dehb-text-placeholder dehb-tag-placeholder"></div>
@@ -230,31 +276,16 @@ class EnrollmentHeroBanner extends EntityMixin(PolymerElement) {
 								<div class="dehb-text-placeholder dehb-progress-placeholder"></div>
 							</div>
 							<div class="dehb-updates-container">
-								<div class="dehb-update dehb-update-placeholder"></div>
-								<div class="dehb-update dehb-update-placeholder"></div>
-								<div class="dehb-update dehb-update-placeholder"></div>
+								<d2l-enrollment-updates
+									href="[[_organizationUrl]]"
+									token$=[[token]]
+									show-unattempted-quizzes
+									show-dropbox-unread-feedback
+									show-ungraded-quiz-attempts
+									show-unread-discussion-messages
+									show-unread-dropbox-submissions>
+								</d2l-enrollment-updates>
 							</div>
-						</div>
-					</div>
-					<div class="dehb-base-info">
-						<div class="dehb-title"><h2>[[_organizationName]]</h2></div>
-						<div class="dehb-tag-container dehb-tag-placeholder-container">
-							<div class="dehb-text-placeholder dehb-tag-placeholder"></div>
-							<div class="dehb-text-placeholder dehb-tag-placeholder"></div>
-						</div>
-						<div class="dehb-progress-container">
-							<div class="dehb-text-placeholder dehb-progress-placeholder"></div>
-						</div>
-						<div class="dehb-updates-container">
-							<d2l-enrollment-updates
-								href="[[_organizationUrl]]"
-								token$=[[token]]
-								show-unattempted-quizzes
-								show-dropbox-unread-feedback
-								show-ungraded-quiz-attempts
-								show-unread-discussion-messages
-								show-unread-dropbox-submissions>
-							</d2l-enrollment-updates>
 						</div>
 					</div>
 				</div>
@@ -276,10 +307,26 @@ class EnrollmentHeroBanner extends EntityMixin(PolymerElement) {
 				reflectToAttribute: true,
 				readOnly: true
 			},
+			_organization: Object,
 			_organizationName: String,
 			_organizationHomepageUrl: String,
 			_organizationUrl: String,
 			_notificationsUrl: String,
+			_courseInfoUrl: String,
+			_canAccessCourseInfo: Boolean,
+			_canChangeCourseImage: Boolean,
+			_courseSettingsLabel: String,
+			_pinButtonLabel: String,
+			_pinAction: String,
+			_pinned: {
+				type: Boolean,
+				value: false,
+				observer: '_handlePinnedChange'
+			},
+			_enrollment: {
+				type: Object,
+				value: function() { return {}; }
+			},
 			_tags: {
 				type: Array,
 				value: () => ['Due April 25, 2018', '1 hour remaining']
@@ -296,12 +343,24 @@ class EnrollmentHeroBanner extends EntityMixin(PolymerElement) {
 	static get is() { return 'd2l-enrollment-hero-banner'; }
 
 	_onEnrollmentChange(enrollment) {
+		this._enrollment = enrollment._entity;
+		this._pinned = enrollment.pinned();
 		this._organizationUrl = enrollment.organizationHref();
+		this._pinAction = enrollment.pinAction();
+
 		enrollment.onOrganizationChange(this._onOrganizationChange.bind(this));
 	}
 
 	_onOrganizationChange(organization) {
+		this._organization = organization._entity;
+
+		this._courseInfoUrl = organization.courseInfoUrl();
+		this._canAccessCourseInfo = !!this._courseInfoUrl;
 		this._organizationName = organization.name();
+		this._courseSettingsLabel = this._organizationName && this.localize('courseSettings', 'course', this._organizationName);
+		this._pinButtonLabel = this._organizationName && this.localize('coursePinButton', 'course', this._organizationName);
+		this._canChangeCourseImage = organization._entity && organization.canChangeCourseImage();
+
 		this._organizationHomepageUrl = organization.organizationHomepageUrl();
 	}
 
@@ -315,6 +374,49 @@ class EnrollmentHeroBanner extends EntityMixin(PolymerElement) {
 
 	_onBlur() {
 		this._setActive(false);
+	}
+
+	_launchCourseImageSelector() {
+		this.fire('open-change-image-view', {
+			organization: this._organization
+		});
+	}
+
+	_pinClickHandler() {
+		this.fire(this._pinned ? 'enrollment-pinned' : 'enrollment-unpinned', {
+			enrollment: this._enrollment,
+			organization: this._organization
+		});
+
+		var localizeKey = this._pinned ? 'unpinActionResult' : 'pinActionResult';
+		this.fire('iron-announce', {
+			text: this.localize(localizeKey, 'course', this._organizationName)
+		}, { bubbles: true });
+
+		if (!this._pinAction) {
+			return;
+		}
+
+		return this._performAction(this._pinAction, enrollment => {
+			this.fire('d2l-course-pinned-change', {
+				enrollment: enrollment,
+				isPinned: enrollment.pinned()
+			});
+		});
+	}
+
+	_pinPressHandler(e) {
+		if (e.code === 'Space' || e.code === 'Enter') {
+			this._pinClickHandler();
+		}
+	}
+
+	_handlePinnedChange(pinned) {
+		if (pinned) {
+			this.setAttribute('pinned', '');
+		} else {
+			this.removeAttribute('pinned');
+		}
 	}
 }
 
