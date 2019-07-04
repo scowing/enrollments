@@ -224,7 +224,7 @@ class EnrollmentHeroBanner extends EnrollmentsLocalize(EntityMixin(PolymerElemen
 				<div class="dehb-container">
 					<div class="dehb-image">
 						<div class="dehb-image-shimmer"></div>
-						<d2l-organization-image type="wide" href="[[_organizationUrl]]" token$=[[token]]></d2l-organization-image>
+						<d2l-organization-image type="wide" href="[[_organizationUrl]]" token=[[token]]></d2l-organization-image>
 					</div>
 					<div class="dehb-info-container">
 						<div class="dehb-info-transparent"></div>
@@ -278,7 +278,7 @@ class EnrollmentHeroBanner extends EnrollmentsLocalize(EntityMixin(PolymerElemen
 							<div class="dehb-updates-container">
 								<d2l-enrollment-updates
 									href="[[_organizationUrl]]"
-									token$=[[token]]
+									token=[[token]]
 									show-unattempted-quizzes
 									show-dropbox-unread-feedback
 									show-ungraded-quiz-attempts
