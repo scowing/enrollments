@@ -3,6 +3,9 @@
     "name": "Enrollment",
     "source_dir": "components/lang",
     "output_file_path": "components/lang/%LANG%.json",
+    "parser_plugin": {
+      "plugin": "parse_d2l_fra"
+    },
     "output_lang_rewrite": [
       "ar-sa ar",
       "de-de de",
