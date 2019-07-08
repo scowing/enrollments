@@ -70,6 +70,7 @@
     "d2l-status-indicator": "BrightspaceUI/status-indicator#semver:^3",
     "d2l-tooltip": "BrightspaceUI/tooltip#semver:^3",
     "intersection-observer": "^0.5.1",
+    "lie": "^3.3.0",
     "siren-sdk": "BrightspaceHypermediaComponents/siren-sdk#semver:^1"
   }
 }

@@ -240,23 +240,25 @@ class EnrollmentCard extends mixinBehaviors([
 					</d2l-card-content-meta>
 				</div>
 
-				<d2l-dropdown-more slot="actions" text="[[_courseSettingsLabel]]" translucent="" visible-on-ancestor="">
-					<d2l-dropdown-menu>
-						<d2l-menu>
-							<d2l-menu-item-link hidden$="[[!_canAccessCourseInfo]]" text="[[localize('courseOfferingInformation')]]" href="[[_courseInfoUrl]]">
-							</d2l-menu-item-link>
-							<d2l-menu-item on-d2l-menu-item-select="_launchCourseImageSelector" hidden$="[[!_canChangeCourseImage]]" text="[[localize('changeImage')]]">
-							</d2l-menu-item>
-							<d2l-menu-item on-d2l-menu-item-select="_pinClickHandler" hidden$="[[_pinned]]" text="[[localize('pin')]]">
-							</d2l-menu-item>
-							<d2l-menu-item on-d2l-menu-item-select="_pinClickHandler" hidden$="[[!_pinned]]" text="[[localize('unpin')]]">
-							</d2l-menu-item>
-						</d2l-menu>
-					</d2l-dropdown-menu>
-				</d2l-dropdown-more>
+				<template is="dom-if" if="[[_shouldShowDropDown(_canAccessCourseInfo, _canChangeCourseImage)]]">
+					<d2l-dropdown-more slot="actions" text="[[_courseSettingsLabel]]" translucent="" visible-on-ancestor="">
+						<d2l-dropdown-menu>
+							<d2l-menu>
+								<d2l-menu-item-link hidden$="[[!_canAccessCourseInfo]]" text="[[localize('courseOfferingInformation')]]" href="[[_courseInfoUrl]]">
+								</d2l-menu-item-link>
+								<d2l-menu-item on-d2l-menu-item-select="_launchCourseImageSelector" hidden$="[[!_canChangeCourseImage]]" text="[[localize('changeImage')]]">
+								</d2l-menu-item>
+								<d2l-menu-item on-d2l-menu-item-select="_pinClickHandler" hidden$="[[_shouldHidePinOption(_pinned)]]" text="[[localize('pin')]]">
+								</d2l-menu-item>
+								<d2l-menu-item on-d2l-menu-item-select="_pinClickHandler" hidden$="[[_shouldHideUnpinOption(_pinned)]]" text="[[localize('unpin')]]">
+								</d2l-menu-item>
+							</d2l-menu>
+						</d2l-dropdown-menu>
+					</d2l-dropdown-more>
 
-				<d2l-button-icon slot="actions" translucent="" hidden$="[[!_pinned]]" text="[[_pinButtonLabel]]" icon="d2l-tier1:pin-filled" on-tap="_pinClickHandler" on-keypress="_pinPressHandler">
-				</d2l-button-icon>
+					<d2l-button-icon slot="actions" translucent="" hidden$="[[_shouldHideUnpinOption(_pinned)]]" text="[[_pinButtonLabel]]" icon="d2l-tier1:pin-filled" on-tap="_pinClickHandler" on-keypress="_pinPressHandler">
+					</d2l-button-icon>
+				</template>
 
 				<div slot="content" class="d2l-enrollment-card-alert-colour-circle" hidden$="[[!_newEnrollment]]"></div>
 
@@ -321,6 +323,10 @@ class EnrollmentCard extends mixinBehaviors([
 				value: false
 			},
 			hideCourseEndDate: {
+				type: Boolean,
+				value: false
+			},
+			hidePinning: {
 				type: Boolean,
 				value: false
 			},
@@ -507,6 +513,19 @@ class EnrollmentCard extends mixinBehaviors([
 		} else {
 			this.removeAttribute('pinned');
 		}
+	}
+
+	_shouldHidePinOption(pinned) {
+		return this.hidePinning || pinned;
+	}
+
+	_shouldHideUnpinOption(pinned) {
+		// console.log(`hide unpinned ${this.hidePinning} ${pinned}`);
+		return this.hidePinning || !pinned;
+	}
+
+	_shouldShowDropDown(canAccessCourseInfo, canChangeCourseImage) {
+		return !this.hidePinning || canAccessCourseInfo || canChangeCourseImage;
 	}
 
 	_handleDisabledChange(disabled) {
