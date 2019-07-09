@@ -175,7 +175,8 @@ describe('d2l-enrollment-card', () => {
 		it('should have a visible "Unpin" menu item when pinned', done => {
 			component._entity = enrollmentEntity;
 			setTimeout(() => {
-				var unpinMenuItem = component.$$('d2l-menu-item.d2l-menu-item-last');
+				var menuItems = component.root.querySelectorAll('d2l-menu-item:not([hidden])');
+				var unpinMenuItem = menuItems[menuItems.length - 1];
 				expect(unpinMenuItem).to.not.be.null;
 				expect(unpinMenuItem.text).to.equal('Unpin');
 				done();
@@ -187,7 +188,8 @@ describe('d2l-enrollment-card', () => {
 			component._entity = enrollmentEntity;
 
 			setTimeout(() => {
-				var pinMenuItem = component.$$('d2l-menu-item.d2l-menu-item-last');
+				var menuItems = component.root.querySelectorAll('d2l-menu-item:not([hidden])');
+				var pinMenuItem = menuItems[menuItems.length - 1];
 				expect(pinMenuItem).to.not.be.null;
 				expect(pinMenuItem.text).to.equal('Pin');
 				done();
@@ -242,7 +244,8 @@ describe('d2l-enrollment-card', () => {
 			component.hidePinning = true;
 			component._entity = enrollmentEntity;
 			setTimeout(() => {
-				var changeImageMenuItem = component.$$('d2l-menu-item.d2l-menu-item-last');
+				var menuItems = component.root.querySelectorAll('d2l-menu-item:not([hidden])');
+				var changeImageMenuItem = menuItems[menuItems.length - 1];
 				var pinButton = component.$$('d2l-button-icon');
 				expect(pinButton).to.not.be.null;
 				expect(pinButton.hasAttribute('hidden')).to.be.true;
