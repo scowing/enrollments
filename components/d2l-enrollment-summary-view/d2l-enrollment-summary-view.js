@@ -85,6 +85,11 @@ class D2lEnrollmentSummaryView extends EnrollmentsLocalize(EntityMixin(PolymerEl
 					overflow: hidden;
 					padding: 2.45rem 6.75rem 1rem 6.75rem;
 				}
+				.desv-sticky-header {
+					position: sticky;
+					top: 0;
+					z-index: 1000;
+				}
 				.desv-title-bar h1 {
 					@apply --d2l-heading-1;
 					color: var(--d2l-color-ferrite);
@@ -196,6 +201,8 @@ class D2lEnrollmentSummaryView extends EnrollmentsLocalize(EntityMixin(PolymerEl
 					<h1> [[_title]] </h1>
 					<d2l-enrollment-summary-view-tag-list list=[[_tags]]></d2l-enrollment-summary-view-tag-list>
 				</div>
+			</div>
+			<div class="desv-header desv-sticky-header">
 				<d2l-enrollment-summary-view-layout>
 					<div class="desv-progress" slot="first-column">
 						<d2l-enrollment-summary-view-meter
