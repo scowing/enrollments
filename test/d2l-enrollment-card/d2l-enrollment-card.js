@@ -18,6 +18,7 @@ describe('d2l-enrollment-card', () => {
 		dateStub,
 		isActiveStub,
 		processedDateStub,
+		courseInfoUrlStub,
 		date;
 
 	beforeEach(() => {
@@ -33,6 +34,7 @@ describe('d2l-enrollment-card', () => {
 		organizationHasActionByNameStub = sinon.stub();
 		isActiveStub = sinon.stub();
 		processedDateStub = sinon.stub();
+		courseInfoUrlStub = sinon.stub();
 		date = new Date(Date.parse('1998-01-01T00:00:00.000Z'));
 
 		enrollmentEntity = {
@@ -66,7 +68,7 @@ describe('d2l-enrollment-card', () => {
 				getLinkByRel: function() { return { href: 'organizationHref' }; }
 			},
 			imageEntity: function() { return imageEntity; },
-			courseInfoUrl: function() { return 'courseInfoUrl'; },
+			courseInfoUrl: courseInfoUrlStub,
 			organizationHomepageUrl: function() { return 'organizationHomepageUrl'; },
 			name: function() { return 'Course Name'; },
 			code: function() { return 'Course Code'; },
@@ -94,6 +96,7 @@ describe('d2l-enrollment-card', () => {
 		organizationHasActionByNameStub.returns(true);
 		isActiveStub.returns(true);
 		processedDateStub.returns(null);
+		courseInfoUrlStub.returns('courseInfoUrl');
 
 		component = fixture('d2l-enrollment-card-fixture');
 		component._load = true;
@@ -169,37 +172,48 @@ describe('d2l-enrollment-card', () => {
 	});
 
 	describe('Pinning functionality', () => {
-		it('should have a visible "Unpin" menu item when pinned', () => {
+		it('should have a visible "Unpin" menu item when pinned', done => {
 			component._entity = enrollmentEntity;
-
-			var unpinMenuItem = component.$$('d2l-menu-item.d2l-menu-item-last');
-
-			expect(unpinMenuItem).to.not.be.null;
-			expect(unpinMenuItem.text).to.equal('Unpin');
+			setTimeout(() => {
+				var menuItems = component.root.querySelectorAll('d2l-menu-item:not([hidden])');
+				var unpinMenuItem = menuItems[menuItems.length - 1];
+				expect(unpinMenuItem).to.not.be.null;
+				expect(unpinMenuItem.text).to.equal('Unpin');
+				done();
+			});
 		});
 
-		it('should have a visible "Pin" menu item when pinned', () => {
+		it('should have a visible "Pin" menu item when pinned', done => {
 			pinStub.returns(false);
 			component._entity = enrollmentEntity;
 
-			var pinMenuItem = component.$$('d2l-menu-item.d2l-menu-item-last');
-			expect(pinMenuItem).to.not.be.null;
-			expect(pinMenuItem.text).to.equal('Pin');
+			setTimeout(() => {
+				var menuItems = component.root.querySelectorAll('d2l-menu-item:not([hidden])');
+				var pinMenuItem = menuItems[menuItems.length - 1];
+				expect(pinMenuItem).to.not.be.null;
+				expect(pinMenuItem.text).to.equal('Pin');
+				done();
+			});
 		});
 
-		it('should have a visible pinned button when pinned', () => {
+		it('should have a visible pinned button when pinned', done => {
 			component._entity = enrollmentEntity;
-
-			var pinButton = component.$$('d2l-button-icon');
-			expect(pinButton.hasAttribute('hidden')).to.be.false;
+			setTimeout(() => {
+				var pinButton = component.$$('d2l-button-icon');
+				expect(pinButton.hasAttribute('hidden')).to.be.false;
+				done();
+			});
 		});
 
-		it('should hide the pinned button when unpinned', () => {
+		it('should hide the pinned button when unpinned', done => {
 			pinStub.returns(false);
 			component._entity = enrollmentEntity;
 
-			var pinButton = component.$$('d2l-button-icon');
-			expect(pinButton.hasAttribute('hidden')).to.be.true;
+			setTimeout(() => {
+				var pinButton = component.$$('d2l-button-icon');
+				expect(pinButton.hasAttribute('hidden')).to.be.true;
+				done();
+			});
 		});
 
 		it('should set the update action parameters correctly and call the pinning API', done => {
@@ -226,23 +240,59 @@ describe('d2l-enrollment-card', () => {
 			component._pinClickHandler();
 		});
 
+		it('should hide pinning options when hidePinning=true', done => {
+			component.hidePinning = true;
+			component._entity = enrollmentEntity;
+			setTimeout(() => {
+				var menuItems = component.root.querySelectorAll('d2l-menu-item:not([hidden])');
+				var changeImageMenuItem = menuItems[menuItems.length - 1];
+				var pinButton = component.$$('d2l-button-icon');
+				expect(pinButton).to.not.be.null;
+				expect(pinButton.hasAttribute('hidden')).to.be.true;
+				expect(changeImageMenuItem).to.not.be.null;
+				expect(changeImageMenuItem.text).to.equal('Change Image');
+				done();
+			});
+		});
+
+		it('should hide menu when no options are available', done => {
+			component.hidePinning = true;
+			organizationHasActionByNameStub.returns(false);
+			courseInfoUrlStub.returns(null);
+
+			component._entity = enrollmentEntity;
+			setTimeout(() => {
+				var d2lMenu = component.$$('d2l-menu');
+				var pinButton = component.$$('d2l-button-icon');
+				expect(pinButton).to.be.null;
+				expect(d2lMenu).to.be.null;
+				done();
+			});
+		});
+
 	});
 
 	describe('set-course-image event', () => {
-		it('should have a change-image-button if the set-catalog-image action exists on the organization', () => {
+		it('should have a change-image-button if the set-catalog-image action exists on the organization', done => {
 			component._entity = enrollmentEntity;
-			var changeImageMenuItem = component.$$('d2l-menu-item:not([hidden])').$$('span');
-			expect(changeImageMenuItem).to.not.be.null;
-			expect(changeImageMenuItem.innerText).to.equal('Change Image');
+			setTimeout(() => {
+				var changeImageMenuItem = component.$$('d2l-menu-item:not([hidden])').$$('span');
+				expect(changeImageMenuItem).to.not.be.null;
+				expect(changeImageMenuItem.innerText).to.equal('Change Image');
+				done();
+			});
 		});
 
-		it('should not have a change-image-button if the set-catalog-image action does not exist on the organization', () => {
+		it('should not have a change-image-button if the set-catalog-image action does not exist on the organization', done => {
 			organizationHasActionByNameStub.returns(false);
 			component._entity = enrollmentEntity;
 
-			var changeImageMenuItem = component.$$('d2l-menu-item[hidden]');
-			expect(changeImageMenuItem).to.not.be.null;
-			expect(changeImageMenuItem.text).to.contain('Change Image');
+			setTimeout(() => {
+				var changeImageMenuItem = component.$$('d2l-menu-item[hidden]');
+				expect(changeImageMenuItem).to.not.be.null;
+				expect(changeImageMenuItem.text).to.contain('Change Image');
+				done();
+			});
 		});
 
 		it('shows the loading spinner overlay when event status=set', () => {
