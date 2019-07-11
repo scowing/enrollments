@@ -54,6 +54,7 @@ $_documentContainer.innerHTML = `<style>
 		</style>`;
 
 document.body.appendChild($_documentContainer.content);
+window.D2L.Siren.WhitelistBehavior._inTestMode = true;
 </script>
 		<script type="module">
 import '@polymer/polymer/polymer-legacy.js';
@@ -69,6 +70,32 @@ Date.now = function() { return 5 * 3600000; };
 const $_documentContainer = document.createElement('template');
 
 $_documentContainer.innerHTML = `<div class="vertical-section-container centered">
+	<demo-snippet class="d2l-typography">
+				<template>
+					<div class="subtle-demo grid">
+
+						<d2l-enrollment-card href="../data/base/learning-path.json" token="abc"
+							show-organization-code
+							show-semester-name
+							show-unattempted-quizzes
+							show-dropbox-unread-feedback
+							show-ungraded-quiz-attempts
+							show-unread-discussion-messages
+							show-unread-dropbox-submissions
+						></d2l-enrollment-card>
+						<d2l-enrollment-card href="../data/enrollments/pin/2.json" token="abc"
+							show-organization-code
+							show-semester-name
+							show-unattempted-quizzes
+							show-dropbox-unread-feedback
+							show-ungraded-quiz-attempts
+							show-unread-discussion-messages
+							show-unread-dropbox-submissions
+						></d2l-enrollment-card>
+
+					</div>
+				</template>
+			</demo-snippet>
 
 			<h3>Enrollment Card - Pin</h3>
 			<demo-snippet class="d2l-typography" dir="rtl">
