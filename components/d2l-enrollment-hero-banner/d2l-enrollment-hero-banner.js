@@ -147,12 +147,14 @@ class EnrollmentHeroBanner extends EnrollmentsLocalize(EntityMixin(PolymerElemen
 			</style>
 			<!-- Loading Skeleton Styles -->
 			<style>
-				@keyframes loadingShimmer {
-					0% { transform: translate3d(-100%, 0, 0); }
-					100% { transform: translate3d(100%, 0, 0); }
+				@keyframes loadingPulse {
+					0% { background-color: var(--d2l-color-sylvite); }
+					50% { background-color: var(--d2l-color-regolith); }
+					100% { background-color: var(--d2l-color-sylvite); }
 				}
-				.dehb-image-shimmer {
-					background-color: var(--d2l-color-regolith);
+				.dehb-image-pulse {
+					animation: loadingPulse 1.8s linear infinite;
+					background-color: var(--d2l-color-sylvite);
 					border-radius: 8px;
 					display: var(--d2l-enrollment-hero-banner-image-shimmer-display, none);
 					height: 100%;
@@ -162,17 +164,6 @@ class EnrollmentHeroBanner extends EnrollmentsLocalize(EntityMixin(PolymerElemen
 					top: 0;
 					width: 100%;
 					z-index: 1;
-				}
-				.dehb-image-shimmer::after {
-					animation: loadingShimmer 1.5s ease-in-out infinite;
-					background-color: var(--d2l-color-regolith);
-					background: linear-gradient(90deg, rgba(249, 250, 251, 0.1), rgba(114, 119, 122, 0.1), rgba(249, 250, 251, 0.1));
-					content: '';
-					height: 100%;
-					left: 0;
-					position: absolute;
-					top: 0;
-					width: 100%;
 				}
 				.dehb-base-info-placeholder {
 					background-color: #ffffff;
@@ -200,6 +191,7 @@ class EnrollmentHeroBanner extends EnrollmentsLocalize(EntityMixin(PolymerElemen
 					width: 5rem;
 				}
 				.dehb-text-placeholder {
+					animation: loadingPulse 1.8s linear infinite;
 					background-color: var(--d2l-color-sylvite);
 					border-radius: 4px;
 				}
@@ -209,6 +201,7 @@ class EnrollmentHeroBanner extends EnrollmentsLocalize(EntityMixin(PolymerElemen
 					width: 60%;
 				}
 				.dehb-update-placeholder {
+					animation: loadingPulse 1.8s linear infinite;
 					background-color: var(--d2l-color-sylvite);
 					border-radius: 4px;
 					height: 18px;
@@ -223,7 +216,7 @@ class EnrollmentHeroBanner extends EnrollmentsLocalize(EntityMixin(PolymerElemen
 				</a>
 				<div class="dehb-container">
 					<div class="dehb-image">
-						<div class="dehb-image-shimmer"></div>
+						<div class="dehb-image-pulse"></div>
 						<d2l-organization-image type="wide" href="[[_organizationUrl]]" token=[[token]]></d2l-organization-image>
 					</div>
 					<div class="dehb-info-container">
