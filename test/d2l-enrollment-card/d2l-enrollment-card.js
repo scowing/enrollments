@@ -295,19 +295,21 @@ describe('d2l-enrollment-card', () => {
 			});
 		});
 
-		it('shows the loading spinner overlay when event status=set', () => {
+		it('shows the loading spinner overlay when event status=set', done => {
 			component._entity = enrollmentEntity;
-			window.dispatchEvent(new CustomEvent('set-course-image', {
-				detail: {
-					organization: organizationEntity._entity,
-					status: 'set'
-				}
-			}));
-
-			var imageOverlay = component.$$('div.d2l-enrollment-card-overlay');
-			expect(imageOverlay.hasAttribute('hidden')).to.be.false;
-			var spinner = component.$$('.d2l-enrollment-card-overlay d2l-loading-spinner');
-			expect(spinner.hasAttribute('hidden')).to.be.false;
+			setTimeout(() => {
+				window.dispatchEvent(new CustomEvent('set-course-image', {
+					detail: {
+						organization: organizationEntity._entity,
+						status: 'set'
+					}
+				}));
+				var imageOverlay = component.$$('div.d2l-enrollment-card-overlay');
+				expect(imageOverlay.hasAttribute('hidden')).to.be.false;
+				var spinner = component.$$('.d2l-enrollment-card-overlay d2l-loading-spinner');
+				expect(spinner.hasAttribute('hidden')).to.be.false;
+				done();
+			});
 		});
 
 		it('hides the loading spinner overlay and shows the checkmark when event status=success', () => {
