@@ -271,12 +271,24 @@ class D2lEnrollmentDetailCard extends mixinBehaviors([
 					line-height: 1.75;
 				}
 			</style>
-			<d2l-resize-aware class="dedc-container" mobile$="[[_mobile]]">
+			<!-- Force show styles here -->
+			<style>
+				.dedc-image[show-image] > .dedc-image-pulse {
+					display: none;
+				}
+				.dedc-container[show-text] .dedc-base-info-placeholder {
+					display: none;
+				}
+				.dedc-container[show-text] .dedc-module-list {
+					display: block;
+				}
+			</style>
+			<d2l-resize-aware class="dedc-container" mobile$="[[_mobile]]" show-text$=[[_forceShowText]]>
 				<div class="dedc-base-container" has-link$="[[_organizationHomepageUrl]]">
 					<a class="d2l-focusable" href$="[[_organizationHomepageUrl]]">
 						<span class="dedc-link-text">[[_title]]</span>
 					</a>
-					<div class="dedc-image">
+					<div class="dedc-image" show-image$=[[_forceShowImage]]>
 						<div class="dedc-image-pulse"></div>
 						<d2l-organization-image href="[[_organizationUrl]]" token="[[token]]"></d2l-organization-image>
 					</div>
@@ -336,7 +348,6 @@ class D2lEnrollmentDetailCard extends mixinBehaviors([
 				reflectToAttribute: true
 			},
 			_description: String,
-			_image: String,
 			_organizationUrl: String,
 			_sequenceLink: String,
 			_tags: String,
@@ -347,7 +358,32 @@ class D2lEnrollmentDetailCard extends mixinBehaviors([
 				value: false
 			},
 			_organizationHomepageUrl: String,
-			_ariaText: String
+			_ariaText: String,
+			_revealTimeoutMs: {
+				type: Number,
+				value: 2000
+			},
+			_revealTimeoutId: Number,
+			_revealOnLoad: {
+				type: Boolean,
+				value: false
+			},
+			_isImageLoaded: {
+				type: Boolean,
+				value: false
+			},
+			_isTextLoaded: {
+				type: Boolean,
+				value: false
+			},
+			_forceShowImage: {
+				type: Boolean,
+				computed: '_computeForceShowImage(_isImageLoaded, _revealOnLoad)'
+			},
+			_forceShowText: {
+				type: Boolean,
+				computed: '_computeForceShowText(_isTextLoaded, _revealOnLoad)'
+			}
 		};
 	}
 	static get observers() {
@@ -355,9 +391,17 @@ class D2lEnrollmentDetailCard extends mixinBehaviors([
 			'_onEnrollmentChange(_entity)'
 		];
 	}
+	_computeForceShowImage(isImageLoaded, showImmediatelyOnLoad) {
+		return isImageLoaded && showImmediatelyOnLoad;
+	}
+	_computeForceShowText(isTextLoaded, showImmediatelyOnLoad) {
+		return isTextLoaded && showImmediatelyOnLoad;
+	}
 	connectedCallback() {
 		super.connectedCallback();
 		afterNextRender(this, () => {
+			this._revealTimeoutId = setTimeout(this._onRevealTimeout.bind(this), this._revealTimeoutMs);
+
 			const resizeAware = this.shadowRoot.querySelector('d2l-resize-aware');
 			resizeAware.addEventListener('d2l-resize-aware-resized', this._onResize.bind(this));
 			resizeAware._onResize();
@@ -369,11 +413,15 @@ class D2lEnrollmentDetailCard extends mixinBehaviors([
 			const moduleList = this.shadowRoot.querySelector('.dedc-module-list');
 			moduleList.addEventListener('blur', this._onLinkBlurModuleList.bind(this));
 			moduleList.addEventListener('focus', this._onLinkFocusModuleList.bind(this));
+
+			this.addEventListener('d2l-organization-image-loaded', this._onImageLoaded.bind(this));
 		});
 	}
 
 	disconnectedCallback() {
 		super.disconnectedCallback();
+		clearTimeout(this._revealTimeoutId);
+
 		const resizeAware = this.shadowRoot.querySelector('d2l-resize-aware');
 		resizeAware.removeEventListener('d2l-resize-aware-resized', this._onResize.bind(this));
 
@@ -407,10 +455,28 @@ class D2lEnrollmentDetailCard extends mixinBehaviors([
 			this._description = org.description();
 			this._sequenceLink = org.sequenceLink();
 			this._organizationHomepageUrl = org.organizationHomepageUrl();
+
+			const loadedEvent = new CustomEvent(
+				'd2l-enrollment-detail-card-text-loaded',
+				{ composed: true, bubbles: true }
+			);
+			this.dispatchEvent(loadedEvent);
+			this._isTextLoaded = true;
 		});
 	}
 	_onResize(e) {
 		this._mobile = e.detail.current.width <= 389;
+	}
+	_onRevealTimeout() {
+		this._revealOnLoad = true;
+	}
+	_onImageLoaded() {
+		const loadedEvent = new CustomEvent(
+			'd2l-enrollment-detail-card-image-loaded',
+			{ composed: true, bubbles: true }
+		);
+		this.dispatchEvent(loadedEvent);
+		this._isImageLoaded = true;
 	}
 }
 
