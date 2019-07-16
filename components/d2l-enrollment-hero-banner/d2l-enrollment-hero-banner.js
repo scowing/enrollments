@@ -20,6 +20,9 @@ import 'd2l-dropdown/d2l-dropdown-more.js';
 import 'd2l-menu/d2l-menu-item.js';
 import 'd2l-menu/d2l-menu-item-link.js';
 import { EnrollmentsLocalize } from '../EnrollmentsLocalize.js';
+import '@brightspace-ui/core/components/meter/meter-linear.js';
+import { classes as organizationClasses } from 'siren-sdk/src/organizations/OrganizationEntity.js';
+import { StateTree } from 'siren-sdk/src/helpers/StateTree.js';
 
 /**
  * @customElement
@@ -29,6 +32,7 @@ class EnrollmentHeroBanner extends EnrollmentsLocalize(EntityMixin(PolymerElemen
 	constructor() {
 		super();
 		this._setEntityType(EnrollmentEntity);
+		this._orgModulesTree = new StateTree(this._onOrgModulesChanged.bind(this));
 	}
 
 	static get template() {
@@ -111,6 +115,9 @@ class EnrollmentHeroBanner extends EnrollmentsLocalize(EntityMixin(PolymerElemen
 				.dehb-progress-container {
 					margin-bottom: 1rem;
 					margin-top: 0.35rem;
+				}
+				.dehb-progress {
+					width: 55%;
 				}
 				.dehb-updates-container {
 					display: flex;
@@ -268,7 +275,7 @@ class EnrollmentHeroBanner extends EnrollmentsLocalize(EntityMixin(PolymerElemen
 								<div class="dehb-text-placeholder dehb-tag-placeholder"></div>
 							</div>
 							<div class="dehb-progress-container">
-								<div class="dehb-text-placeholder dehb-progress-placeholder"></div>
+								<d2l-meter-linear class="dehb-progress" value="[[_enrollmentCompletion.value]]" max="[[_enrollmentCompletion.max]]" text="[[_moduleProgressLabel]]" text-inline></d2l-meter-linear>
 							</div>
 							<div class="dehb-updates-container">
 								<d2l-enrollment-updates
@@ -316,6 +323,7 @@ class EnrollmentHeroBanner extends EnrollmentsLocalize(EntityMixin(PolymerElemen
 			_canChangeCourseImage: Boolean,
 			_courseSettingsLabel: String,
 			_pinButtonLabel: String,
+			_moduleProgressLabel: String,
 			_pinAction: String,
 			_pinned: {
 				type: Boolean,
@@ -329,6 +337,16 @@ class EnrollmentHeroBanner extends EnrollmentsLocalize(EntityMixin(PolymerElemen
 			_tags: {
 				type: Array,
 				value: () => ['Due April 25, 2018', '1 hour remaining']
+			},
+			_orgModulesTree: Object,
+			_enrollmentCompletion: {
+				type: Object,
+				value: function() {
+					return {
+						value: 0,
+						max: 0
+					};
+				}
 			}
 		};
 	}
@@ -342,6 +360,7 @@ class EnrollmentHeroBanner extends EnrollmentsLocalize(EntityMixin(PolymerElemen
 	static get is() { return 'd2l-enrollment-hero-banner'; }
 
 	_onEnrollmentChange(enrollment) {
+		this._orgModulesTree.removeAllChildren();
 		this._enrollment = enrollment._entity;
 		this._pinned = enrollment.pinned();
 		this._organizationUrl = enrollment.organizationHref();
@@ -351,6 +370,9 @@ class EnrollmentHeroBanner extends EnrollmentsLocalize(EntityMixin(PolymerElemen
 	}
 
 	_onOrganizationChange(organization) {
+
+		this._orgModulesTree.removeAllChildren();
+		this._updateOrganizationModules(organization, this._orgModulesTree);
 		this._organization = organization._entity;
 
 		this._courseInfoUrl = organization.courseInfoUrl();
@@ -358,9 +380,73 @@ class EnrollmentHeroBanner extends EnrollmentsLocalize(EntityMixin(PolymerElemen
 		this._organizationName = organization.name();
 		this._courseSettingsLabel = this._organizationName && this.localize('courseSettings', 'course', this._organizationName);
 		this._pinButtonLabel = this._organizationName && this.localize('coursePinButton', 'course', this._organizationName);
+		this._moduleProgressLabel = this.localize('moduleProgress');
 		this._canChangeCourseImage = organization._entity && organization.canChangeCourseImage();
 
 		this._organizationHomepageUrl = organization.organizationHomepageUrl();
+	}
+
+	_updateOrganizationModules(organization, modulesTree) {
+		if (organization.hasClass(organizationClasses.learningPath)) {
+			this._updateLearningPathModules(organization, modulesTree);
+		} else {
+			this._updateCourseOfferingModules(organization, modulesTree);
+		}
+	}
+
+	_updateLearningPathModules(organization, modulesTree) {
+
+		organization.onSequenceChange(rootSequence => {
+			modulesTree.removeAllChildren();
+
+			rootSequence.onSubSequencesChange(subSequence => {
+				const subSequenceNode = modulesTree.setChild(subSequence.index());
+
+				subSequence.onSequencedActivityChange(sequencedActivity => {
+					const sequencedActivityNode = subSequenceNode.setChild(sequencedActivity.index());
+
+					sequencedActivity.onOrganizationChange(organizationEntity => {
+						sequencedActivityNode.removeAllChildren();
+						this._updateCourseOfferingModules(organizationEntity, sequencedActivityNode);
+					});
+				});
+			});
+		});
+	}
+
+	_updateCourseOfferingModules(organization, modulesTree) {
+
+		organization.onSequenceChange(orgSequenceRoot => {
+			modulesTree.removeAllChildren();
+
+			orgSequenceRoot.onSubSequencesChange(orgModule => {
+				modulesTree.setChild(orgModule.index(), orgModule);
+			});
+		});
+	}
+
+	_onOrgModulesChanged(modulesTree) {
+		const orgModules = modulesTree.items();
+		this._updateOrganizationCompletion(orgModules);
+	}
+
+	_updateOrganizationCompletion(orgModules) {
+		let completedAcc = 0;
+		let totalAcc = 0;
+
+		orgModules.forEach(orgModule => {
+			const completion = orgModule.completion();
+			if (completion) {
+				const { completed, total } = completion;
+				completedAcc += completed || 0;
+				totalAcc += total || 0;
+			}
+		});
+
+		this._enrollmentCompletion = {
+			value: completedAcc,
+			max: totalAcc
+		};
 	}
 
 	_computeDisabled(organizationHomepage) {

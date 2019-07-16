@@ -31,6 +31,7 @@ const LangEnImpl = (superClass) => class extends superClass {
 			'endsAt': 'Ends {date} at {time}',
 			'enrollmentProgressBar': 'Completed {percentage}% of {title}',
 			'inactive': 'Inactive',
+			'moduleProgress': 'Modules',
 			'new': 'New',
 			'overdue': 'Overdue',
 			'pin': 'Pin',
