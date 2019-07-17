@@ -520,7 +520,6 @@ class EnrollmentCard extends mixinBehaviors([
 	}
 
 	_shouldHideUnpinOption(pinned) {
-		// console.log(`hide unpinned ${this.hidePinning} ${pinned}`);
 		return this.hidePinning || !pinned;
 	}
 
