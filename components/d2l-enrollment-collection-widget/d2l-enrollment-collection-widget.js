@@ -54,7 +54,7 @@ class EnrollmentCollectionWidget extends EntityMixin(PolymerElement) {
 				}
 			</style>
 			<template is="dom-if" if="[[!_hasTwoEnrollments]]">
-				<d2l-enrollment-hero-banner href="[[_enrollmentHeroHref]]" token="[[token]]"></d2l-enrollment-hero-banner>
+				<d2l-enrollment-hero-banner href="[[_enrollmentHeroHref]]" token="[[token]]" hide-pinning></d2l-enrollment-hero-banner>
 				<div class="decw-flex">
 					<template is="dom-repeat"  items="[[_enrollmentsHref]]">
 						<d2l-enrollment-card href="[[item]]" token="[[token]]"
@@ -62,20 +62,22 @@ class EnrollmentCollectionWidget extends EntityMixin(PolymerElement) {
 								show-dropbox-unread-feedback
 								show-ungraded-quiz-attempts
 								show-unread-discussion-messages
-								show-unread-dropbox-submissions>
+								show-unread-dropbox-submissions
+								hide-pinning>
 						</d2l-enrollment-card>
 					</template>
 				</div>
 			</template>
 			<template is="dom-if" if="[[_hasTwoEnrollments]]">
 				<div class="decw-flex-two">
-					<d2l-enrollment-hero-banner href="[[_enrollmentHeroHref]]" token="[[token]]"></d2l-enrollment-hero-banner>
+					<d2l-enrollment-hero-banner href="[[_enrollmentHeroHref]]" token="[[token]]" hide-pinning></d2l-enrollment-hero-banner>
 					<d2l-enrollment-card href="[[_enrollmentsHref.0]]" token="[[token]]"
 							show-unattempted-quizzes
 							show-dropbox-unread-feedback
 							show-ungraded-quiz-attempts
 							show-unread-discussion-messages
-							show-unread-dropbox-submissions>
+							show-unread-dropbox-submissions
+							hide-pinning>
 					</d2l-enrollment-card>
 				</div>
 			</template>

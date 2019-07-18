@@ -244,22 +244,24 @@ class EnrollmentHeroBanner extends EnrollmentsLocalize(EntityMixin(PolymerElemen
 						<div class="dehb-base-info">
 							<div class="dehb-title"><h2>[[_organizationName]]</h2></div>
 							<div class="dehb-context-menu">
-								<d2l-dropdown-more text="[[_courseSettingsLabel]]" visible-on-ancestor>
-									<d2l-dropdown-menu>
-										<d2l-menu label="[[_courseSettingsLabel]]">
-											<d2l-menu-item-link hidden$="[[!_canAccessCourseInfo]]" text="[[localize('courseOfferingInformation')]]" href="[[_courseInfoUrl]]">
-											</d2l-menu-item-link>
-											<d2l-menu-item on-d2l-menu-item-select="_launchCourseImageSelector" hidden$="[[!_canChangeCourseImage]]" text="[[localize('changeImage')]]">
-											</d2l-menu-item>
-											<d2l-menu-item on-d2l-menu-item-select="_pinClickHandler" hidden$="[[_pinned]]" text="[[localize('pin')]]">
-											</d2l-menu-item>
-											<d2l-menu-item on-d2l-menu-item-select="_pinClickHandler" hidden$="[[!_pinned]]" text="[[localize('unpin')]]">
-											</d2l-menu-item>
-									</d2l-dropdown-menu>
-								</d2l-dropdown-more>
+								<template is="dom-if" if="[[_shouldShowDropDown(_canAccessCourseInfo, _canChangeCourseImage)]]">
+									<d2l-dropdown-more text="[[_courseSettingsLabel]]" visible-on-ancestor>
+										<d2l-dropdown-menu>
+											<d2l-menu label="[[_courseSettingsLabel]]">
+												<d2l-menu-item-link hidden$="[[!_canAccessCourseInfo]]" text="[[localize('courseOfferingInformation')]]" href="[[_courseInfoUrl]]">
+												</d2l-menu-item-link>
+												<d2l-menu-item on-d2l-menu-item-select="_launchCourseImageSelector" hidden$="[[!_canChangeCourseImage]]" text="[[localize('changeImage')]]">
+												</d2l-menu-item>
+												<d2l-menu-item on-d2l-menu-item-select="_pinClickHandler" hidden$="[[_shouldHidePinOption(_pinned)]]" text="[[localize('pin')]]">
+												</d2l-menu-item>
+												<d2l-menu-item on-d2l-menu-item-select="_pinClickHandler" hidden$="[[_shouldHideUnpinOption(_pinned)]]" text="[[localize('unpin')]]">
+												</d2l-menu-item>
+										</d2l-dropdown-menu>
+									</d2l-dropdown-more>
 
-								<d2l-button-icon hidden$="[[!_pinned]]" text="[[_pinButtonLabel]]" icon="d2l-tier1:pin-filled" on-tap="_pinClickHandler" on-keypress="_pinPressHandler">
-								</d2l-button-icon>
+									<d2l-button-icon hidden$="[[_shouldHideUnpinOption(_pinned)]]" text="[[_pinButtonLabel]]" icon="d2l-tier1:pin-filled" on-tap="_pinClickHandler" on-keypress="_pinPressHandler">
+									</d2l-button-icon>
+								</template>
 							</div>
 							<div class="dehb-tag-container dehb-tag-placeholder-container">
 								<div class="dehb-text-placeholder dehb-tag-placeholder"></div>
@@ -299,6 +301,10 @@ class EnrollmentHeroBanner extends EnrollmentsLocalize(EntityMixin(PolymerElemen
 				computed: '_computeDisabled(_organizationHomepageUrl)',
 				reflectToAttribute: true,
 				readOnly: true
+			},
+			hidePinning: {
+				type: Boolean,
+				value: false
 			},
 			_organization: Object,
 			_organizationName: String,
@@ -410,6 +416,18 @@ class EnrollmentHeroBanner extends EnrollmentsLocalize(EntityMixin(PolymerElemen
 		} else {
 			this.removeAttribute('pinned');
 		}
+	}
+
+	_shouldHidePinOption(pinned) {
+		return this.hidePinning || pinned;
+	}
+
+	_shouldHideUnpinOption(pinned) {
+		return this.hidePinning || !pinned;
+	}
+
+	_shouldShowDropDown(canAccessCourseInfo, canChangeCourseImage) {
+		return !this.hidePinning || canAccessCourseInfo || canChangeCourseImage;
 	}
 }
 
