@@ -88,7 +88,7 @@ class D2lEnrollmentSummaryView extends EnrollmentsLocalize(EntityMixin(PolymerEl
 				.desv-sticky-header {
 					position: sticky;
 					top: 0;
-					z-index: 1000;
+					z-index: 100;
 				}
 				.desv-title-bar h1 {
 					@apply --d2l-heading-1;
