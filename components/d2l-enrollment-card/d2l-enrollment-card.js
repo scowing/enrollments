@@ -11,7 +11,6 @@ Polymer-based web component for a course/enrollment card.
   then delete this comment!
 */
 import { IronA11yAnnouncer } from '@polymer/iron-a11y-announcer/iron-a11y-announcer.js';
-import 'd2l-course-image/d2l-course-image.js';
 import 'd2l-dropdown/d2l-dropdown-menu.js';
 import 'd2l-dropdown/d2l-dropdown-more.js';
 import 'd2l-fetch/d2l-fetch.js';
@@ -22,6 +21,7 @@ import 'd2l-menu/d2l-menu-item.js';
 import 'd2l-menu/d2l-menu-item-link.js';
 import 'd2l-offscreen/d2l-offscreen.js';
 import 'd2l-organization-hm-behavior/d2l-organization-hm-behavior.js';
+import 'd2l-organizations/components/d2l-organization-image/d2l-organization-image.js';
 import 'd2l-organizations/components/d2l-organization-info/d2l-organization-info.js';
 import 'd2l-organizations/components/d2l-organization-updates/d2l-organization-updates.js';
 import 'd2l-organizations/components/d2l-organization-date/d2l-organization-date.js';
@@ -36,6 +36,7 @@ import { afterNextRender } from '@polymer/polymer/lib/utils/render-status.js';
 import { html, PolymerElement } from '@polymer/polymer/polymer-element.js';
 import { EntityMixin } from 'siren-sdk/src/mixin/entity-mixin.js';
 import { EnrollmentEntity } from 'siren-sdk/src/enrollments/EnrollmentEntity.js';
+import { updateEntity } from 'siren-sdk/src/es6/EntityFactory.js';
 import { mixinBehaviors } from '@polymer/polymer/lib/legacy/class.js';
 import { DateTextAndStatusMixin } from '../date-text-status-mixin.js';
 
@@ -210,8 +211,8 @@ class EnrollmentCard extends mixinBehaviors([
 			<d2l-card disabled$="[[disabled]]" href="[[_organizationHomepageUrl]]" text="[[_accessibilityDataToString(_accessibilityData)]]">
 				<div slot="header" aria-hidden="true">
 					<div class="d2l-enrollment-card-image-container">
-						<d2l-course-image image="[[_image]]" sizes="[[_tileSizes]]" type="tile">
-						</d2l-course-image>
+						<d2l-organization-image href="[[_organizationUrl]]" token="[[token]]" type="tile">
+						</d2l-organization-image>
 					</div>
 					<div hidden$="[[!_imageLoading]]" class="d2l-enrollment-card-overlay">
 						<d2l-loading-spinner hidden$="[[!_imageLoadingProgress]]" size="85"></d2l-loading-spinner>
@@ -361,29 +362,10 @@ class EnrollmentCard extends mixinBehaviors([
 				value: false,
 				observer: '_handlePinnedChange'
 			},
-			_tileSizes: {
-				type: Object,
-				value: function() {
-					return {
-						mobile: {
-							maxwidth: 767,
-							size: 100
-						},
-						tablet: {
-							maxwidth: 1243,
-							size: 67
-						},
-						desktop: {
-							size: 25
-						}
-					};
-				}
-			},
 			_canAccessCourseInfo: Boolean,
 			_canChangeCourseImage: Boolean,
 			_courseInfoUrl: String,
 			_courseSettingsLabel: String,
-			_image: Object,
 			_imageLoading: {
 				type: Boolean,
 				value: false
@@ -582,7 +564,7 @@ class EnrollmentCard extends mixinBehaviors([
 			this._imageLoadingProgress = false;
 
 			if (success && !skipSetImage) {
-				this._image = this._nextImage;
+				updateEntity(this._organizationUrl, this.token);
 			}
 
 			setTimeout(function() {
@@ -652,17 +634,6 @@ class EnrollmentCard extends mixinBehaviors([
 			this._performanceMark('d2l.enrollment-card.loadSemester');
 			this._performanceMeasureSinceAttached('d2l.enrollment-card.semesterLoadTime', 'd2l.enrollment-card.loadSemester');
 		}.bind(this));
-
-		const imageEntity = org.imageEntity();
-		if (imageEntity && imageEntity.href) {
-			org.onImageChange((image) => {
-				this._image = image.entity();
-				this._performanceMark('d2l.enrollment-card.loadImage');
-				this._performanceMeasureSinceAttached('d2l.enrollment-card.imageLoadTime', 'd2l.enrollment-card.loadImage');
-			});
-		} else {
-			this._image = imageEntity;
-		}
 
 		this._organizationHomepageUrl = org.organizationHomepageUrl();
 		if (!this._organizationHomepageUrl) {
@@ -774,7 +745,7 @@ class EnrollmentCard extends mixinBehaviors([
 					imagePreloader.setAttribute('srcset', newSrcSet);
 				}
 
-				imagePreloader.setAttribute('sizes', this.$$('d2l-course-image').getTileSizes());
+				imagePreloader.setAttribute('sizes', this.$$('d2l-organization-image').getTileSizes());
 				break;
 			case 'success':
 				this._displaySetImageResult(true);
