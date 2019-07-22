@@ -36,6 +36,7 @@ import { afterNextRender } from '@polymer/polymer/lib/utils/render-status.js';
 import { html, PolymerElement } from '@polymer/polymer/polymer-element.js';
 import { EntityMixin } from 'siren-sdk/src/mixin/entity-mixin.js';
 import { EnrollmentEntity } from 'siren-sdk/src/enrollments/EnrollmentEntity.js';
+import { updateEntity } from 'siren-sdk/src/es6/EntityFactory.js';
 import { mixinBehaviors } from '@polymer/polymer/lib/legacy/class.js';
 import { DateTextAndStatusMixin } from '../date-text-status-mixin.js';
 
@@ -365,7 +366,6 @@ class EnrollmentCard extends mixinBehaviors([
 			_canChangeCourseImage: Boolean,
 			_courseInfoUrl: String,
 			_courseSettingsLabel: String,
-			_image: Object,
 			_imageLoading: {
 				type: Boolean,
 				value: false
@@ -565,7 +565,7 @@ class EnrollmentCard extends mixinBehaviors([
 			this._imageLoadingProgress = false;
 
 			if (success && !skipSetImage) {
-				this._image = this._nextImage;
+				updateEntity(this._organizationUrl, this.token);
 			}
 
 			setTimeout(function() {
@@ -635,17 +635,6 @@ class EnrollmentCard extends mixinBehaviors([
 			this._performanceMark('d2l.enrollment-card.loadSemester');
 			this._performanceMeasureSinceAttached('d2l.enrollment-card.semesterLoadTime', 'd2l.enrollment-card.loadSemester');
 		}.bind(this));
-
-		const imageEntity = org.imageEntity();
-		if (imageEntity && imageEntity.href) {
-			org.onImageChange((image) => {
-				this._image = image.entity();
-				this._performanceMark('d2l.enrollment-card.loadImage');
-				this._performanceMeasureSinceAttached('d2l.enrollment-card.imageLoadTime', 'd2l.enrollment-card.loadImage');
-			});
-		} else {
-			this._image = imageEntity;
-		}
 
 		this._organizationHomepageUrl = org.organizationHomepageUrl();
 		if (!this._organizationHomepageUrl) {
