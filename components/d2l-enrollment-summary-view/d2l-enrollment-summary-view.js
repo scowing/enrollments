@@ -70,20 +70,23 @@ class D2lEnrollmentSummaryView extends EnrollmentsLocalize(EntityMixin(PolymerEl
 			</style>
 			<style include="d2l-typography-shared-styles">
 				:host {
+					--desv-header-background-color: #FFFFFF;
 					background: linear-gradient(to bottom, #f6f7f8, #f6f7f8), linear-gradient(to top, #ffffff, #f9fafb);
 					display: block;
 					margin: auto;
 				}
 				.desv-header {
-					background-color: #FFFFFF;
+					background-color: var(--desv-header-background-color);
 					margin: auto;
 				}
 				.desv-title-bar {
+					background-color: inherit;
 					box-sizing: border-box;
 					margin: auto;
 					max-width: 1230px;
 					overflow: hidden;
 					padding: 2.45rem 6.75rem 1rem 6.75rem;
+					position: relative;
 				}
 				.desv-sticky-header {
 					position: sticky;
@@ -119,6 +122,9 @@ class D2lEnrollmentSummaryView extends EnrollmentsLocalize(EntityMixin(PolymerEl
 					transform: translateY(-50%);
 					width: 100%;
 				}
+				.desv-continue {
+					position: relative;
+				}
 				.desv-continue span {
 					@apply --d2l-body-small-text;
 					letter-spacing: 0.3px;
@@ -134,6 +140,7 @@ class D2lEnrollmentSummaryView extends EnrollmentsLocalize(EntityMixin(PolymerEl
 				}
 				.desv-side-bar {
 					padding: 2.5rem 0 0 0;
+					position: relative;
 				}
 				.desv-side-bar h3 {
 					@apply --d2l-body-standard-text;
@@ -195,9 +202,103 @@ class D2lEnrollmentSummaryView extends EnrollmentsLocalize(EntityMixin(PolymerEl
 					}
 				}
 			</style>
+			<!-- Loading Skeleton Styles -->
+			<style>
+				@keyframes loadingPulse {
+					0% { background-color: var(--d2l-color-sylvite); }
+					50% { background-color: var(--d2l-color-regolith); }
+					100% { background-color: var(--d2l-color-sylvite); }
+				}
+				/* shared placeholder styles */
+				.desv-placeholder-container {
+					background-color: inherit;
+					bottom: 0;
+					box-sizing: border-box;
+					height: 100%;
+					left: 0;
+					padding: inherit;
+					position: absolute;
+					right: 0;
+					top: 0;
+					width: 100%;
+				}
+				.desv-placeholder {
+					animation: loadingPulse 1.8s linear infinite;
+					background-color: var(--d2l-color-sylvite);
+					border-radius: 4px;
+				}
+				.desv-header-1-placeholder {
+					height: 2rem;
+					margin: 0.2rem 0;
+					width: 18rem;
+				}
+				.desv-standard-text-placeholder {
+					height: 0.9rem;
+					margin-bottom: 0.7rem;
+					width: 5rem;
+				}
+				.desv-compact-text-placeholder {
+					height: 0.8rem;
+					width: 4.75rem;
+				}
+				.desv-paragraph-placeholder.desv-paragraph-placeholder {
+					width: 100%;
+				}
+				.desv-paragraph-placeholder + .desv-paragraph-placeholder {
+					margin-top: 0.25rem;
+				}
+				.desv-button-placeholder {
+					height: 2rem;
+					margin: 0.5rem 0.6rem 0.6rem 0;
+					min-width: 6rem;
+				}
+
+				/* desv-title-bar placeholder styles */
+				.desv-title-bar-placeholder {
+					display: var(--d2l-enrollment-summary-view-title-bar-placeholder-display, none);
+				}
+				.desv-title-placeholder + .desv-tags-placeholder {
+					margin-top: 0.4rem;
+				}
+
+				/* desv-progress placeholder styles */
+				.desv-progress-placeholder {
+					align-items: center;
+					background-color: var(--desv-header-background-color);
+					display: var(--d2l-enrollment-summary-view-progress-placeholder-display, none);
+					justify-content: center;
+					z-index: 2;
+				}
+				.desv-enrollment-summary-view-meter-placeholder {
+					border-radius: .225rem;
+					height: 0.6rem;
+					width: 100%;
+				}
+
+				/* desv-continue placeholder styles */
+				.desv-continue-placeholder {
+					align-items: center;
+					background-color: var(--desv-header-background-color);
+					display: var(--d2l-enrollment-summary-view-continue-placeholder-display, none);
+					z-index: 1;
+				}
+				.desv-continue-placeholder > * {
+					display: inline-block;
+				}
+
+				/* desv-side-bar placeholder styles */
+				.desv-side-bar-placeholder {
+					background-color: #f6f7f8;
+					display: var(--d2l-enrollment-summary-view-side-bar-placeholder-display, none);
+				}
+			</style>
 
 			<div class="desv-header">
 				<div class="desv-title-bar">
+					<div class="desv-placeholder-container desv-title-bar-placeholder">
+						<div class="desv-placeholder desv-header-1-placeholder desv-title-placeholder"></div>
+						<div class="desv-placeholder desv-compact-text-placeholder desv-tags-placeholder"></div>
+					</div>
 					<h1> [[_title]] </h1>
 					<d2l-enrollment-summary-view-tag-list list=[[_tags]]></d2l-enrollment-summary-view-tag-list>
 				</div>
@@ -205,6 +306,9 @@ class D2lEnrollmentSummaryView extends EnrollmentsLocalize(EntityMixin(PolymerEl
 			<div class="desv-header desv-sticky-header">
 				<d2l-enrollment-summary-view-layout>
 					<div class="desv-progress" slot="first-column">
+						<div class="desv-placeholder-container desv-progress-placeholder">
+							<div class="desv-placeholder desv-enrollment-summary-view-meter-placeholder"></div>
+						</div>
 						<d2l-enrollment-summary-view-meter
 							text$="[[_progressBarText(_title, _enrollmentCompletion.value, _enrollmentCompletion.max)]]"
 							value$="[[_enrollmentCompletion.value]]"
@@ -212,6 +316,10 @@ class D2lEnrollmentSummaryView extends EnrollmentsLocalize(EntityMixin(PolymerEl
 						</d2l-enrollment-summary-view-meter>
 					</div>
 					<div class="desv-continue" slot="second-column">
+						<div class="desv-placeholder-container desv-continue-placeholder">
+							<div class="desv-placeholder desv-button-placeholder"></div>
+							<div class="desv-placeholder desv-compact-text-placeholder desv-continue-title-placeholder"></div>
+						</div>
 						<a
 							class="desv-button"
 							primary
@@ -235,6 +343,14 @@ class D2lEnrollmentSummaryView extends EnrollmentsLocalize(EntityMixin(PolymerEl
 					</ul>
 				</div>
 				<div slot="second-column" class="desv-side-bar">
+					<div class="desv-placeholder-container desv-side-bar-placeholder">
+						<div class="desv-placeholder desv-standard-text-placeholder"></div>
+						<div class="desv-placeholder desv-compact-text-placeholder desv-paragraph-placeholder"></div>
+						<div class="desv-placeholder desv-compact-text-placeholder desv-paragraph-placeholder"></div>
+						<div class="desv-placeholder desv-compact-text-placeholder desv-paragraph-placeholder"></div>
+						<div class="desv-placeholder desv-compact-text-placeholder desv-paragraph-placeholder"></div>
+						<div class="desv-placeholder desv-compact-text-placeholder desv-paragraph-placeholder"></div>
+					</div>
 					<h3>[[localize('description')]]</h3>
 					<p>[[_description]]</p>
 				</div>
@@ -254,7 +370,7 @@ class D2lEnrollmentSummaryView extends EnrollmentsLocalize(EntityMixin(PolymerEl
 			_title: String,
 			_orgHrefs: {
 				type: Array,
-				value: function() { return []; }
+				value: function() { return ['', '', '', '']; }
 			},
 			_continueModule: {
 				type: Object,
@@ -306,7 +422,6 @@ class D2lEnrollmentSummaryView extends EnrollmentsLocalize(EntityMixin(PolymerEl
 					this._orgHrefs = this._flattenDeep(orgHrefsByActivitySequence)
 						.filter(element => typeof(element) !== 'undefined')
 						.map(element => element.href);
-
 					this._setLearningPathContinue(organizationEntity, orgHrefsByActivitySequence, subSequence.index(), sequencedActivity.index());
 				});
 
@@ -370,3 +485,53 @@ class D2lEnrollmentSummaryView extends EnrollmentsLocalize(EntityMixin(PolymerEl
 }
 
 window.customElements.define('d2l-enrollment-summary-view', D2lEnrollmentSummaryView);
+
+// Make shared style so it is easy to mass hide loading.
+const $_documentContainer = document.createElement('template');
+
+$_documentContainer.innerHTML = `
+<custom-style>
+	<style is="custom-style">
+		html {
+
+			--d2l-enrollment-summary-view-loading: {
+				@apply --d2l-enrollment-summary-view-header-loading-text;
+
+				@apply --d2l-enrollment-summary-view-side-bar-loading-text;
+				@apply --d2l-enrollment-summary-view-body-loading-image;
+				@apply --d2l-organization-detail-card-loading-text;
+			}
+
+			--d2l-enrollment-summary-view-header-loading: {
+				@apply --d2l-enrollment-summary-view-header-loading-text;
+			}
+
+			--d2l-enrollment-summary-view-header-loading-text: {
+				--d2l-enrollment-summary-view-title-bar-placeholder-display: block;
+				--d2l-enrollment-summary-view-continue-placeholder-display: flex;
+				--d2l-enrollment-summary-view-progress-placeholder-display: flex;
+			}
+
+			--d2l-enrollment-summary-view-body-loading: {
+				@apply --d2l-enrollment-summary-view-side-bar-loading-text;
+				@apply --d2l-organization-detail-card-loading-text;
+				@apply --d2l-enrollment-summary-view-body-loading-image;
+			}
+
+			--d2l-enrollment-summary-view-body-loading-text: {
+				@apply --d2l-enrollment-summary-view-side-bar-loading-text;
+				@apply --d2l-organization-detail-card-loading-text;
+			}
+
+			--d2l-enrollment-summary-view-body-loading-image: {
+				@apply --d2l-organization-detail-card-loading-image;
+			}
+
+			--d2l-enrollment-summary-view-side-bar-loading-text: {
+				--d2l-enrollment-summary-view-side-bar-placeholder-display: block;
+			};
+		}
+	</style>
+</custom-style>`;
+
+document.head.appendChild($_documentContainer.content);
