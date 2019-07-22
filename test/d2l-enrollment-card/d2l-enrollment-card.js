@@ -134,10 +134,6 @@ describe('d2l-enrollment-card', () => {
 			expect(component._courseInfoUrl).to.equal('courseInfoUrl');
 		});
 
-		it('should set the image entity', () => {
-			expect(component._image).to.equal(imageEntity);
-		});
-
 		it('should set the homepage URL', () => {
 			expect(component._organizationHomepageUrl).to.equal('organizationHomepageUrl');
 		});
