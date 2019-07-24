@@ -116,7 +116,7 @@ describe('d2l-enrollment-hero-banner', () => {
 		it('should have a visible "Unpin" menu item when pinned', done => {
 			component._entity = enrollmentEntity;
 
-			afterNextRender(component, () => {
+			setTimeout(() => {
 				var unpinMenuItem = component.$$('d2l-menu-item.d2l-menu-item-last');
 
 				expect(unpinMenuItem).to.not.be.null;
@@ -129,7 +129,7 @@ describe('d2l-enrollment-hero-banner', () => {
 			pinStub.returns(false);
 			component._entity = enrollmentEntity;
 
-			afterNextRender(component, () => {
+			setTimeout(() => {
 				var pinMenuItem = component.$$('d2l-menu-item.d2l-menu-item-last');
 				expect(pinMenuItem).to.not.be.null;
 				expect(pinMenuItem.text).to.equal('Pin');
@@ -140,7 +140,7 @@ describe('d2l-enrollment-hero-banner', () => {
 		it('should have a visible pinned button when pinned', done => {
 			component._entity = enrollmentEntity;
 
-			afterNextRender(component, () => {
+			setTimeout(() => {
 				var pinButton = component.$$('.dehb-context-menu > d2l-button-icon');
 				expect(pinButton.hasAttribute('hidden')).to.be.false;
 				done();
@@ -151,7 +151,7 @@ describe('d2l-enrollment-hero-banner', () => {
 			pinStub.returns(false);
 			component._entity = enrollmentEntity;
 
-			afterNextRender(component, () => {
+			setTimeout(() => {
 				var pinButton = component.$$('.dehb-context-menu > d2l-button-icon');
 				expect(pinButton.hasAttribute('hidden')).to.be.true;
 				done();
@@ -185,7 +185,7 @@ describe('d2l-enrollment-hero-banner', () => {
 		it('should hide pinning options when hidePinning=true', done => {
 			component.hidePinning = true;
 			component._entity = enrollmentEntity;
-			afterNextRender(component, () => {
+			setTimeout(() => {
 				var menuItems = component.root.querySelectorAll('d2l-menu-item:not([hidden])');
 				var changeImageMenuItem = menuItems[menuItems.length - 1];
 				var pinButton = component.$$('d2l-button-icon');
