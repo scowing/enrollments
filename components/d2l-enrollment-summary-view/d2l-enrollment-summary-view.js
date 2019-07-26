@@ -85,7 +85,7 @@ class D2lEnrollmentSummaryView extends EnrollmentsLocalize(EntityMixin(PolymerEl
 					margin: auto;
 					max-width: 1230px;
 					overflow: hidden;
-					padding: 2.45rem 6.75rem 1rem 6.75rem;
+					padding: 2.45rem 1.5rem 1rem 1.5rem;
 					position: relative;
 				}
 				.desv-sticky-header {
@@ -123,11 +123,13 @@ class D2lEnrollmentSummaryView extends EnrollmentsLocalize(EntityMixin(PolymerEl
 					width: 100%;
 				}
 				.desv-continue {
+					display: flex;
 					position: relative;
 				}
 				.desv-continue span {
 					@apply --d2l-body-small-text;
 					letter-spacing: 0.3px;
+					margin-left: 0.2rem;
 				}
 				.desv-course-list {
 					margin: 2.5rem 0 0 0;
@@ -163,7 +165,7 @@ class D2lEnrollmentSummaryView extends EnrollmentsLocalize(EntityMixin(PolymerEl
 					}
 					.desv-title-bar {
 						flex-direction: column;
-						max-width: 680px;
+						max-width: 908px;
 						padding-bottom: 0.8rem;
 						padding-top: 1.5rem;
 						padding: 0.9rem;
