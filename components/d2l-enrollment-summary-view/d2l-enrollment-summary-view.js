@@ -112,6 +112,9 @@ class D2lEnrollmentSummaryView extends EnrollmentsLocalize(EntityMixin(PolymerEl
 				.desv-button {
 					margin: 0.5rem 0.6rem 0.6rem 0;
 				}
+				:host(:dir(rtl)) .desv-button {
+					margin: 0.5rem 0 0.6rem 0.6rem;
+				}
 				.desv-progress {
 					position: relative;
 					height: 100%;
@@ -130,6 +133,10 @@ class D2lEnrollmentSummaryView extends EnrollmentsLocalize(EntityMixin(PolymerEl
 					@apply --d2l-body-small-text;
 					letter-spacing: 0.3px;
 					margin-left: 0.2rem;
+				}
+				:host(:dir(rtl)) .desv-continue span {
+					margin-left: 0;
+					margin-right: 0.2rem;
 				}
 				.desv-course-list {
 					margin: 2.5rem 0 0 0;
@@ -253,6 +260,9 @@ class D2lEnrollmentSummaryView extends EnrollmentsLocalize(EntityMixin(PolymerEl
 					height: 2rem;
 					margin: 0.5rem 0.6rem 0.6rem 0;
 					min-width: 6rem;
+				}
+				:host(:dir(rtl)) .desv-button-placeholder {
+					margin: 0.5rem 0 0.6rem 0.6rem;
 				}
 
 				/* desv-title-bar placeholder styles */

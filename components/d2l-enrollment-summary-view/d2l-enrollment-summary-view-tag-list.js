@@ -1,11 +1,12 @@
 import {html, PolymerElement} from '@polymer/polymer/polymer-element.js';
 import 'd2l-typography/d2l-typography-shared-styles.js';
+import { DirMixin } from '@polymer/polymer/lib/mixins/dir-mixin.js';
 
 /**
  * @customElement
  * @polymer
  */
-class D2lEnrollmentSummaryViewTagList extends PolymerElement {
+class D2lEnrollmentSummaryViewTagList extends DirMixin(PolymerElement) {
 	static get template() {
 		return html`
 			<style>
