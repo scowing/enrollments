@@ -1,11 +1,12 @@
 import {html, PolymerElement} from '@polymer/polymer/polymer-element.js';
 import 'd2l-typography/d2l-typography-shared-styles.js';
+import { DirMixin } from '@polymer/polymer/lib/mixins/dir-mixin.js';
 
 /**
  * @customElement
  * @polymer
  */
-class D2lEnrollmentSummaryViewMeter extends PolymerElement {
+class D2lEnrollmentSummaryViewMeter extends DirMixin(PolymerElement) {
 	static get template() {
 		return html`
 			<style>
@@ -32,6 +33,10 @@ class D2lEnrollmentSummaryViewMeter extends PolymerElement {
 					left: 0;
 					top: 0;
 					background-color: var(--d2l-color-celestine);
+				}
+
+				:host(:dir(rtl)) .desvm-linear-inner-bar {
+					right: 0;
 				}
 			</style>
 			<div
