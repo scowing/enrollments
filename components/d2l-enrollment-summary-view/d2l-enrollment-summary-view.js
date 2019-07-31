@@ -9,6 +9,7 @@ import './d2l-enrollment-summary-view-layout.js';
 import './d2l-enrollment-summary-view-tag-list.js';
 import './d2l-enrollment-summary-view-meter.js';
 import { EnrollmentsLocalize } from '../EnrollmentsLocalize.js';
+import { afterNextRender } from '@polymer/polymer/lib/utils/render-status';
 
 /**
  * @customElement
@@ -18,6 +19,8 @@ class D2lEnrollmentSummaryView extends EnrollmentsLocalize(EntityMixin(PolymerEl
 	constructor() {
 		super();
 		this._setEntityType(EnrollmentEntity);
+		this._onCourseTextLoaded = this._onCourseTextLoaded.bind(this);
+		this._onCourseImageLoaded = this._onCourseImageLoaded.bind(this);
 	}
 
 	static get template() {
@@ -257,7 +260,7 @@ class D2lEnrollmentSummaryView extends EnrollmentsLocalize(EntityMixin(PolymerEl
 
 				/* desv-title-bar placeholder styles */
 				.desv-title-bar-placeholder {
-					display: var(--d2l-enrollment-summary-view-title-bar-placeholder-display, none);
+					display: var(--d2l-enrollment-summary-view-title-bar-placeholder-display, block);
 				}
 				.desv-title-placeholder + .desv-tags-placeholder {
 					margin-top: 0.4rem;
@@ -267,7 +270,7 @@ class D2lEnrollmentSummaryView extends EnrollmentsLocalize(EntityMixin(PolymerEl
 				.desv-progress-placeholder {
 					align-items: center;
 					background-color: var(--desv-header-background-color);
-					display: var(--d2l-enrollment-summary-view-progress-placeholder-display, none);
+					display: var(--d2l-enrollment-summary-view-progress-placeholder-display, flex);
 					justify-content: center;
 					z-index: 2;
 				}
@@ -281,7 +284,7 @@ class D2lEnrollmentSummaryView extends EnrollmentsLocalize(EntityMixin(PolymerEl
 				.desv-continue-placeholder {
 					align-items: center;
 					background-color: var(--desv-header-background-color);
-					display: var(--d2l-enrollment-summary-view-continue-placeholder-display, none);
+					display: var(--d2l-enrollment-summary-view-continue-placeholder-display, flex);
 					z-index: 1;
 				}
 				.desv-continue-placeholder > * {
@@ -291,12 +294,33 @@ class D2lEnrollmentSummaryView extends EnrollmentsLocalize(EntityMixin(PolymerEl
 				/* desv-side-bar placeholder styles */
 				.desv-side-bar-placeholder {
 					background-color: #f6f7f8;
-					display: var(--d2l-enrollment-summary-view-side-bar-placeholder-display, none);
+					display: var(--d2l-enrollment-summary-view-side-bar-placeholder-display, block);
+				}
+			</style>
+			<!-- Loading Skeleton Reveal Styles -->
+			<style>
+				.desv-side-bar[show-text] {
+					--d2l-enrollment-summary-view-side-bar-placeholder-display: none;
+				}
+				.desv-course-list:not([show-text]) {
+					@apply --d2l-organization-detail-card-loading-text;
+				}
+				.desv-course-list:not([show-image]) {
+					@apply --d2l-organization-detail-card-loading-image;
+				}
+				.desv-title-bar[show-text] {
+					--d2l-enrollment-summary-view-title-bar-placeholder-display: none;
+				}
+				.desv-progress[show-text] {
+					--d2l-enrollment-summary-view-progress-placeholder-display: none;
+				}
+				.desv-continue[show-text] {
+					--d2l-enrollment-summary-view-continue-placeholder-display: none;
 				}
 			</style>
 
 			<div class="desv-header">
-				<div class="desv-title-bar">
+				<div class="desv-title-bar" show-text$=[[_showTitle]]>
 					<div class="desv-placeholder-container desv-title-bar-placeholder">
 						<div class="desv-placeholder desv-header-1-placeholder desv-title-placeholder"></div>
 						<div class="desv-placeholder desv-compact-text-placeholder desv-tags-placeholder"></div>
@@ -307,7 +331,7 @@ class D2lEnrollmentSummaryView extends EnrollmentsLocalize(EntityMixin(PolymerEl
 			</div>
 			<div class="desv-header desv-sticky-header">
 				<d2l-enrollment-summary-view-layout>
-					<div class="desv-progress" slot="first-column">
+					<div class="desv-progress" slot="first-column" show-text$=[[_showCompletionContinue]]>
 						<div class="desv-placeholder-container desv-progress-placeholder">
 							<div class="desv-placeholder desv-enrollment-summary-view-meter-placeholder"></div>
 						</div>
@@ -317,7 +341,7 @@ class D2lEnrollmentSummaryView extends EnrollmentsLocalize(EntityMixin(PolymerEl
 							max$="[[_enrollmentCompletion.max]]">
 						</d2l-enrollment-summary-view-meter>
 					</div>
-					<div class="desv-continue" slot="second-column">
+					<div class="desv-continue" slot="second-column" show-text$=[[_showCompletionContinue]]>
 						<div class="desv-placeholder-container desv-continue-placeholder">
 							<div class="desv-placeholder desv-button-placeholder"></div>
 							<div class="desv-placeholder desv-compact-text-placeholder desv-continue-title-placeholder"></div>
@@ -336,7 +360,7 @@ class D2lEnrollmentSummaryView extends EnrollmentsLocalize(EntityMixin(PolymerEl
 			</div>
 			<d2l-enrollment-summary-view-layout>
 				<div slot="first-column">
-					<ul class="desv-course-list">
+					<ul class="desv-course-list" show-text$=[[_showCourseTexts]] show-image$=[[_isBodyImagesChunkLoaded]]>
 						<template is="dom-repeat" items="[[_orgHrefs]]">
 							<li>
 								<d2l-organization-detail-card href="[[item]]" token="[[token]]"></d2l-organization-detail-card>
@@ -344,7 +368,7 @@ class D2lEnrollmentSummaryView extends EnrollmentsLocalize(EntityMixin(PolymerEl
 						</template>
 					</ul>
 				</div>
-				<div slot="second-column" class="desv-side-bar">
+				<div slot="second-column" class="desv-side-bar" show-text$=[[_showDescription]]>
 					<div class="desv-placeholder-container desv-side-bar-placeholder">
 						<div class="desv-placeholder desv-standard-text-placeholder"></div>
 						<div class="desv-placeholder desv-compact-text-placeholder desv-paragraph-placeholder"></div>
@@ -369,7 +393,10 @@ class D2lEnrollmentSummaryView extends EnrollmentsLocalize(EntityMixin(PolymerEl
 				value: function() { return []; },
 				computed: '_computeTags(_orgHrefs)'
 			},
-			_title: String,
+			_title: {
+				type: String,
+				value: '\0'
+			},
 			_orgHrefs: {
 				type: Array,
 				value: function() { return ['', '', '', '']; }
@@ -388,13 +415,112 @@ class D2lEnrollmentSummaryView extends EnrollmentsLocalize(EntityMixin(PolymerEl
 					value: 0,
 					max: 0
 				}; }
-			}
+			},
+			_revealTimeoutMs: {
+				type: Number,
+				value: 2000
+			},
+			_revealTimerId: Number,
+			_revealOnLoad: {
+				type: Boolean,
+				value: false
+			},
+			/* body text chunk loading */
+			_isDescriptionLoaded: {
+				type: Boolean,
+				value: false
+			},
+			_courseTextsLoaded: Object,
+			_isCourseTextsLoaded: {
+				type: Boolean,
+				value: false
+			},
+			_showDescription: {
+				type: Boolean,
+				computed: '_computeShowElement(_isDescriptionLoaded, _isBodyTextsChunkLoaded, _revealOnLoad)'
+			},
+			_showCourseTexts: {
+				type: Boolean,
+				computed: '_computeShowElement(_isCourseTextsLoaded, _isBodyTextsChunkLoaded, _revealOnLoad)'
+			},
+			_isBodyTextsChunkLoaded: {
+				type: Boolean,
+				computed: '_computeIsLoaded(_isDescriptionLoaded, _isCourseTextsLoaded)'
+			},
+			/* body images chunk loading */
+			_courseImagesLoaded: Object,
+			_isCourseImagesLoaded: {
+				type: Boolean,
+				value: false
+			},
+			_isBodyImagesChunkLoaded: {
+				type: Boolean,
+				computed: '_computeIsLoaded(_isCourseImagesLoaded)'
+			},
+			/* header chunk loading */
+			_isCompletionContinueLoaded: {
+				type: Boolean,
+				value: false
+			},
+			_isTitleLoaded: {
+				type: Boolean,
+				value: false
+			},
+			_showCompletionContinue: {
+				type: Boolean,
+				computed: '_computeShowElement(_isCompletionContinueLoaded, _isHeaderTextChunkLoaded, _revealOnLoad)'
+			},
+			_showTitle: {
+				type: Boolean,
+				computed: '_computeShowElement(_isTitleLoaded, _isHeaderTextChunkLoaded, _revealOnLoad)'
+			},
+			_isHeaderTextChunkLoaded: {
+				type: Boolean,
+				computed: '_computeIsLoaded(_isCompletionContinueLoaded, _isTitleLoaded)'
+			},
 		};
 	}
 	static get observers() {
 		return [
-			'_onEnrollmentChange(_entity)'
+			'_onEnrollmentChange(_entity)',
+			'_onCoursesChange(_orgHrefs)'
 		];
+	}
+	connectedCallback() {
+		super.connectedCallback();
+		afterNextRender(this, () => {
+			this._revealTimerId = setTimeout(this._onRevealTimeout.bind(this), this._revealTimeoutMs);
+
+			this.addEventListener('d2l-organization-detail-card-text-loaded', this._onCourseTextLoaded);
+			this.addEventListener('d2l-organization-detail-card-image-loaded', this._onCourseImageLoaded);
+		});
+	}
+	disconnectedCallback() {
+		super.disconnectedCallback();
+		clearTimeout(this._revealTimerId);
+		this.removeEventListener('d2l-organization-detail-card-text-loaded', this._onCourseTextLoaded);
+		this.removeEventListener('d2l-organization-detail-card-image-loaded', this._onCourseImageLoaded);
+	}
+	_onRevealTimeout() {
+		this._revealOnLoad = true;
+	}
+	_onCourseTextLoaded(e) {
+		this._courseTextsLoaded[e.detail.href] = true;
+		if (!this._isCourseTextsLoaded) {
+			this._isCourseTextsLoaded = this._computeIsLoaded(...Object.values(this._courseTextsLoaded));
+		}
+	}
+	_onCourseImageLoaded(e) {
+		this._courseImagesLoaded[e.detail.href] = true;
+		if (!this._isCourseImagesLoaded) {
+			this._isCourseImagesLoaded = this._computeIsLoaded(...Object.values(this._courseImagesLoaded));
+		}
+	}
+	_computeIsLoaded() {
+		return [...arguments].reduce((isLoadedA, isLoadedB) => isLoadedA && isLoadedB, true);
+	}
+	_computeShowElement(isElementLoaded, isChunkLoaded, revealOnLoad) {
+		return isChunkLoaded || (isElementLoaded && revealOnLoad);
 	}
 	_computeTags(courses) {
 		const tags = [];
@@ -403,10 +529,22 @@ class D2lEnrollmentSummaryView extends EnrollmentsLocalize(EntityMixin(PolymerEl
 		}
 		return tags;
 	}
+	_onCoursesChange(courses) {
+		const coursesLoaded = courses.reduce((map, href) => {
+			map[href] = false;
+			return map;
+		}, {});
+		this._courseTextsLoaded = {...coursesLoaded};
+		this._courseImagesLoaded = {...coursesLoaded};
+	}
 	_onEnrollmentChange(enrollment) {
 		enrollment.onOrganizationChange((org) => {
 			this._title = org.name();
+			this._isTitleLoaded = true;
+
 			this._description = org.description();
+			this._isDescriptionLoaded = true;
+
 			org.onSequenceChange(this._onRootSequenceChange.bind(this));
 		});
 	}
@@ -471,6 +609,10 @@ class D2lEnrollmentSummaryView extends EnrollmentsLocalize(EntityMixin(PolymerEl
 
 				this._continueModule = flattenModuleList.filter(element => element.continue).map(element => element.continue).shift();
 
+				// Stop-gap solution to delay loaded event firing until the module sequences have loaded until we can get the sequence count from the siren-sdk
+				setTimeout(() => {
+					this._isCompletionContinueLoaded = true;
+				}, 200);
 			});
 		});
 	}
@@ -487,53 +629,3 @@ class D2lEnrollmentSummaryView extends EnrollmentsLocalize(EntityMixin(PolymerEl
 }
 
 window.customElements.define('d2l-enrollment-summary-view', D2lEnrollmentSummaryView);
-
-// Make shared style so it is easy to mass hide loading.
-const $_documentContainer = document.createElement('template');
-
-$_documentContainer.innerHTML = `
-<custom-style>
-	<style is="custom-style">
-		html {
-
-			--d2l-enrollment-summary-view-loading: {
-				@apply --d2l-enrollment-summary-view-header-loading-text;
-
-				@apply --d2l-enrollment-summary-view-side-bar-loading-text;
-				@apply --d2l-enrollment-summary-view-body-loading-image;
-				@apply --d2l-organization-detail-card-loading-text;
-			}
-
-			--d2l-enrollment-summary-view-header-loading: {
-				@apply --d2l-enrollment-summary-view-header-loading-text;
-			}
-
-			--d2l-enrollment-summary-view-header-loading-text: {
-				--d2l-enrollment-summary-view-title-bar-placeholder-display: block;
-				--d2l-enrollment-summary-view-continue-placeholder-display: flex;
-				--d2l-enrollment-summary-view-progress-placeholder-display: flex;
-			}
-
-			--d2l-enrollment-summary-view-body-loading: {
-				@apply --d2l-enrollment-summary-view-side-bar-loading-text;
-				@apply --d2l-organization-detail-card-loading-text;
-				@apply --d2l-enrollment-summary-view-body-loading-image;
-			}
-
-			--d2l-enrollment-summary-view-body-loading-text: {
-				@apply --d2l-enrollment-summary-view-side-bar-loading-text;
-				@apply --d2l-organization-detail-card-loading-text;
-			}
-
-			--d2l-enrollment-summary-view-body-loading-image: {
-				@apply --d2l-organization-detail-card-loading-image;
-			}
-
-			--d2l-enrollment-summary-view-side-bar-loading-text: {
-				--d2l-enrollment-summary-view-side-bar-placeholder-display: block;
-			};
-		}
-	</style>
-</custom-style>`;
-
-document.head.appendChild($_documentContainer.content);
