@@ -95,6 +95,10 @@
     "translation": "Inactive",
     "context": "This item is currenlty not accessible to the user."
   },
+  "moduleProgress": {
+    "translation": "Modules",
+    "context": "x/y modules have been completed"
+  },
   "new": {
     "translation": "New",
     "context": "The user has never entered into the course."
