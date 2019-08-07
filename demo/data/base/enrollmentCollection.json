@@ -16,7 +16,7 @@
       "rel": [
         "https://api.brightspace.com/rels/user-enrollment"
       ],
-      "href": "../data/base/enrollment.json"
+      "href": "../data/base/learning-path.json"
     },
     {
       "class": [
