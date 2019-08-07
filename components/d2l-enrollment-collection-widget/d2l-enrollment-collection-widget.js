@@ -28,50 +28,35 @@ class EnrollmentCollectionWidget extends EntityMixin(PolymerElement) {
 				:host {
 					display: block;
 				}
-				.decw-flex {
-					display: flex;
-					justify-content: space-between;
+				.decw-grid {
+					display: grid;
+					grid-template-columns: [hero-start] 1fr [hero-end];
+					grid-auto-columns: 1fr;
+					grid-gap: 30px 30px;
 				}
-				.decw-flex d2l-enrollment-card {
-					--course-image-height: 136px;
-					flex-grow: 1;
-					margin-top: 30px;
+				.decw-grid-4 {
+					grid-template-columns: [hero-start] 1fr 1fr 1fr [hero-end];
 				}
-				.decw-flex d2l-enrollment-card ~ d2l-enrollment-card {
-					margin-left: 30px;
+				.decw-grid-3 {
+					grid-template-columns: [hero-start] 1fr 1fr [hero-end];
 				}
-				.decw-flex-two {
-					display: flex;
-					justify-content: space-between;
+				.decw-grid-2 {
+					grid-template-columns: [hero-start] 3fr [hero-end] 1fr;
 				}
-				.decw-flex-two d2l-enrollment-card {
+				.decw-grid-2 d2l-enrollment-card {
 					--course-image-height: 150px;
-					margin-left: 30px;
-					max-width: 307px;
 				}
-				.decw-flex-two d2l-enrollment-hero-banner{
-					flex-grow: 1;
+				d2l-enrollment-card {
+					--course-image-height: 136px;
+				}
+				d2l-enrollment-hero-banner {
+					grid-area: 1 / hero-start / 1 / hero-end;
 				}
 			</style>
-			<template is="dom-if" if="[[!_hasTwoEnrollments]]">
+			<div class$="decw-grid decw-grid-[[_countEnrollments]]">
 				<d2l-enrollment-hero-banner href="[[_enrollmentHeroHref]]" token="[[token]]" hide-pinning></d2l-enrollment-hero-banner>
-				<div class="decw-flex">
-					<template is="dom-repeat"  items="[[_enrollmentsHref]]">
-						<d2l-enrollment-card href="[[item]]" token="[[token]]"
-								show-unattempted-quizzes
-								show-dropbox-unread-feedback
-								show-ungraded-quiz-attempts
-								show-unread-discussion-messages
-								show-unread-dropbox-submissions
-								hide-pinning>
-						</d2l-enrollment-card>
-					</template>
-				</div>
-			</template>
-			<template is="dom-if" if="[[_hasTwoEnrollments]]">
-				<div class="decw-flex-two">
-					<d2l-enrollment-hero-banner href="[[_enrollmentHeroHref]]" token="[[token]]" hide-pinning></d2l-enrollment-hero-banner>
-					<d2l-enrollment-card href="[[_enrollmentsHref.0]]" token="[[token]]"
+				<template is="dom-repeat"  items="[[_enrollmentsHref]]">
+					<d2l-enrollment-card href="[[item]]" token="[[token]]"
 							show-unattempted-quizzes
 							show-dropbox-unread-feedback
 							show-ungraded-quiz-attempts
@@ -79,8 +64,8 @@ class EnrollmentCollectionWidget extends EntityMixin(PolymerElement) {
 							show-unread-dropbox-submissions
 							hide-pinning>
 					</d2l-enrollment-card>
-				</div>
-			</template>
+				</template>
+			</div>
 		`;
 	}
 	static get properties() {
@@ -90,9 +75,9 @@ class EnrollmentCollectionWidget extends EntityMixin(PolymerElement) {
 				type: Array,
 				value: () => []
 			},
-			_hasTwoEnrollments: {
-				type: Boolean,
-				value: false
+			_countEnrollments: {
+				type: Number,
+				value: 0
 			}
 		};
 	}
@@ -107,7 +92,7 @@ class EnrollmentCollectionWidget extends EntityMixin(PolymerElement) {
 
 	_onEnrollmentCollectionChange(enrollmentCollection) {
 		const enrollments = enrollmentCollection.enrollmentsHref();
-		this._hasTwoEnrollments = enrollments.length === 2;
+		this._countEnrollments = enrollments.length;
 		this._enrollmentHeroHref = enrollments.shift();
 		this._enrollmentsHref = enrollments;
 	}
