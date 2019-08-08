@@ -275,7 +275,7 @@ class EnrollmentHeroBanner extends EnrollmentsLocalize(EntityMixin(PolymerElemen
 								<div class="dehb-text-placeholder dehb-tag-placeholder"></div>
 							</div>
 							<div class="dehb-progress-container">
-								<d2l-meter-linear class="dehb-progress" value="[[_enrollmentCompletion.value]]" max="[[_enrollmentCompletion.max]]" text="[[_moduleProgressLabel]]" text-inline></d2l-meter-linear>
+								<d2l-meter-linear class="dehb-progress" value="[[_enrollmentCompletion.value]]" max="[[_enrollmentCompletion.max]]" text="[[_progressLabel]]" text-inline></d2l-meter-linear>
 							</div>
 							<div class="dehb-updates-container">
 								<d2l-enrollment-updates
@@ -313,6 +313,7 @@ class EnrollmentHeroBanner extends EnrollmentsLocalize(EntityMixin(PolymerElemen
 				type: Boolean,
 				value: false
 			},
+			_isLearningPath: Boolean,
 			_organization: Object,
 			_organizationName: String,
 			_organizationHomepageUrl: String,
@@ -323,7 +324,7 @@ class EnrollmentHeroBanner extends EnrollmentsLocalize(EntityMixin(PolymerElemen
 			_canChangeCourseImage: Boolean,
 			_courseSettingsLabel: String,
 			_pinButtonLabel: String,
-			_moduleProgressLabel: String,
+			_progressLabel: String,
 			_pinAction: String,
 			_pinned: {
 				type: Boolean,
@@ -371,6 +372,7 @@ class EnrollmentHeroBanner extends EnrollmentsLocalize(EntityMixin(PolymerElemen
 
 	_onOrganizationChange(organization) {
 
+		this._isLearningPath = organization.hasClass(organizationClasses.learningPath);
 		this._orgModulesTree.removeAllChildren();
 		this._updateOrganizationModules(organization, this._orgModulesTree);
 		this._organization = organization._entity;
@@ -380,7 +382,9 @@ class EnrollmentHeroBanner extends EnrollmentsLocalize(EntityMixin(PolymerElemen
 		this._organizationName = organization.name();
 		this._courseSettingsLabel = this._organizationName && this.localize('courseSettings', 'course', this._organizationName);
 		this._pinButtonLabel = this._organizationName && this.localize('coursePinButton', 'course', this._organizationName);
-		this._moduleProgressLabel = this.localize('moduleProgress');
+		this._progressLabel = this._isLearningPath
+			? this.localize('activityProgress')
+			: this.localize('moduleProgress');
 		this._canChangeCourseImage = organization._entity && organization.canChangeCourseImage();
 
 		this._organizationHomepageUrl = organization.organizationHomepageUrl();
@@ -390,7 +394,7 @@ class EnrollmentHeroBanner extends EnrollmentsLocalize(EntityMixin(PolymerElemen
 		if (organization.hasClass(organizationClasses.learningPath)) {
 			this._updateLearningPathModules(organization, modulesTree);
 		} else {
-			this._updateCourseOfferingModules(organization, modulesTree);
+			this._updateCourseOfferingModules('0', organization, modulesTree);
 		}
 	}
 
@@ -404,48 +408,65 @@ class EnrollmentHeroBanner extends EnrollmentsLocalize(EntityMixin(PolymerElemen
 
 				subSequence.onSequencedActivityChange(sequencedActivity => {
 					const sequencedActivityNode = subSequenceNode.setChild(sequencedActivity.index());
-
 					sequencedActivity.onOrganizationChange(organizationEntity => {
 						sequencedActivityNode.removeAllChildren();
-						this._updateCourseOfferingModules(organizationEntity, sequencedActivityNode);
+
+						const orgKey = `${subSequence.index()}-${sequencedActivity.index()}`;
+						this._updateCourseOfferingModules(orgKey, organizationEntity, sequencedActivityNode);
 					});
 				});
 			});
 		});
 	}
 
-	_updateCourseOfferingModules(organization, modulesTree) {
+	_updateCourseOfferingModules(orgKey, organization, modulesTree) {
 
 		organization.onSequenceChange(orgSequenceRoot => {
 			modulesTree.removeAllChildren();
 
 			orgSequenceRoot.onSubSequencesChange(orgModule => {
-				modulesTree.setChild(orgModule.index(), orgModule);
+				modulesTree.setChild(orgModule.index(), {
+					orgKey,
+					orgModule
+				});
 			});
 		});
 	}
 
 	_onOrgModulesChanged(modulesTree) {
-		const orgModules = modulesTree.items();
-		this._updateOrganizationCompletion(orgModules);
+		const moduleItems = modulesTree.items();
+		this._updateOrganizationCompletion(moduleItems);
 	}
 
-	_updateOrganizationCompletion(orgModules) {
-		let completedAcc = 0;
-		let totalAcc = 0;
+	_updateOrganizationCompletion(moduleItems) {
 
-		orgModules.forEach(orgModule => {
-			const completion = orgModule.completion();
-			if (completion) {
-				const { completed, total } = completion;
-				completedAcc += completed || 0;
-				totalAcc += total || 0;
-			}
+		const completions = {};
+		moduleItems.forEach(item => {
+			const curCompletion = item.orgModule.completion() || {};
+			const prevCompletion = completions[item.orgKey] || {};
+
+			completions[item.orgKey] = {
+				completed: (prevCompletion.completed || 0) + (curCompletion.completed || 0),
+				total: (prevCompletion.total || 0) + (curCompletion.total || 0)
+			};
 		});
+		const completionsList = Object.values(completions);
+
+		let completion;
+		if (this._isLearningPath) {
+			const completedActivities = completionsList
+				.map(activityCompletion => activityCompletion.completed === activityCompletion.total)
+				.filter(isComplete => isComplete)
+				.length;
+			const totalActivities = completionsList.length;
+			completion = { completed: completedActivities, total: totalActivities };
+		} else {
+			completion = completionsList[0] || {};
+		}
 
 		this._enrollmentCompletion = {
-			value: completedAcc,
-			max: totalAcc
+			value: completion.completed || 0,
+			max: completion.total || 0
 		};
 	}
 

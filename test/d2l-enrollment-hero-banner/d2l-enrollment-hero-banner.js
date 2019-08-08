@@ -287,7 +287,8 @@ describe('d2l-enrollment-hero-banner', () => {
 			completionEntity1,
 			completionEntity2,
 			completionEntity3,
-			onSubSequencesChangeStub;
+			onSubSequencesChangeStub,
+			activityCompletion;
 
 		function createCourseOfferingEntity(completion) {
 
@@ -359,7 +360,8 @@ describe('d2l-enrollment-hero-banner', () => {
 				onSubSequencesChange: onSubSequencesChangeStub
 			};
 
-			completionEntity1 = { completed: 3, total: 10 };
+			activityCompletion = { completed: 2, total: 3 };
+			completionEntity1 = { completed: 10, total: 10 };
 			completionEntity2 = undefined;
 			completionEntity3 = { completed: 2, total: 6 };
 
@@ -388,12 +390,12 @@ describe('d2l-enrollment-hero-banner', () => {
 			organizationHasClassStub.withArgs(sinon.match('learning-path')).returns(true);
 		});
 
-		describe('Module completion progress', () => {
+		describe('Activity completion progress', () => {
 			it('should sum linked organization completions', () => {
 				component._entity = enrollmentEntity;
 
-				const expectedValue = completionEntity1.completed + completionEntity3.completed;
-				const expectedMax = completionEntity1.total + completionEntity3.total;
+				const expectedValue = activityCompletion.completed;
+				const expectedMax = activityCompletion.total;
 
 				expect(component._enrollmentCompletion.value).to.equal(expectedValue);
 				expect(component._enrollmentCompletion.max).to.equal(expectedMax);
