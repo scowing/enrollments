@@ -1,4 +1,8 @@
 {
+  "activityProgress": {
+    "translation": "Activities",
+    "context": "x/y activities have been completed"
+  },
   "changeImage": {
     "translation": "Change Image",
     "context": "Change the decorative image of an item "
