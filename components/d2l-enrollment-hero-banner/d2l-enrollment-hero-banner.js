@@ -219,7 +219,7 @@ class EnrollmentHeroBanner extends EnrollmentsLocalize(EntityMixin(PolymerElemen
 			</style>
 			<div class="d2l-visible-on-ancestor-target">
 				<a class="d2l-focusable" href$="[[_organizationHomepageUrl]]" on-focus="_onFocus" on-blur="_onBlur">
-					<span class="dehb-link-text">[[_title]]</span>
+					<span class="dehb-link-text">[[_accessibilityDataToString(_accessibilityData)]]</span>
 				</a>
 				<div class="dehb-container">
 					<div class="dehb-image">
@@ -313,6 +313,10 @@ class EnrollmentHeroBanner extends EnrollmentsLocalize(EntityMixin(PolymerElemen
 				type: Boolean,
 				value: false
 			},
+			_accessibilityData: {
+				type: Object,
+				value: function() { return {}; }
+			},
 			_isLearningPath: Boolean,
 			_organization: Object,
 			_organizationName: String,
@@ -376,6 +380,7 @@ class EnrollmentHeroBanner extends EnrollmentsLocalize(EntityMixin(PolymerElemen
 		this._orgModulesTree.removeAllChildren();
 		this._updateOrganizationModules(organization, this._orgModulesTree);
 		this._organization = organization._entity;
+		this._setOrganizationAccessibleData(organization);
 
 		this._courseInfoUrl = organization.courseInfoUrl();
 		this._canAccessCourseInfo = !!this._courseInfoUrl;
@@ -535,6 +540,28 @@ class EnrollmentHeroBanner extends EnrollmentsLocalize(EntityMixin(PolymerElemen
 
 	_shouldShowDropDown(canAccessCourseInfo, canChangeCourseImage) {
 		return !this.hidePinning || canAccessCourseInfo || canChangeCourseImage;
+	}
+
+	_accessibilityDataReset() {
+		var accessiblity = this._accessibilityData;
+		this._accessibilityData = {};
+		this._accessibilityData = accessiblity;
+	}
+
+	_setOrganizationAccessibleData(organization) {
+		this._accessibilityData.organizationName = organization.name();
+		this._accessibilityData.organizationCode = organization.code();
+		this._accessibilityDataReset();
+	}
+
+	_accessibilityDataToString(accessibility) {
+		var textData = [
+			accessibility.organizationName,
+			accessibility.organizationCode
+		];
+		return textData.filter(function(text) {
+			return text && typeof text === 'string';
+		}).join(', ');
 	}
 }
 
