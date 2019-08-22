@@ -67,7 +67,6 @@ describe('d2l-enrollment-hero-banner', () => {
 					getLinkByRel: function() { return { href: 'organizationHref' }; }
 				},
 				name: function() { return 'name'; },
-				code: function() { return 'code'; },
 				courseInfoUrl: courseInfoUrlStub,
 				organizationHomepageUrl: function() { return 'organizationHomepageUrl'; },
 				hasClass: organizationHasClassStub,
@@ -350,7 +349,6 @@ describe('d2l-enrollment-hero-banner', () => {
 					getLinkByRel: function() { return { href: 'organizationHref' }; }
 				},
 				name: function() { return 'name'; },
-				code: function() { return 'code'; },
 				courseInfoUrl: courseInfoUrlStub,
 				organizationHomepageUrl: function() { return 'organizationHomepageUrl'; },
 				hasClass: organizationHasClassStub,
