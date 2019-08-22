@@ -219,7 +219,7 @@ class EnrollmentHeroBanner extends EnrollmentsLocalize(EntityMixin(PolymerElemen
 			</style>
 			<div class="d2l-visible-on-ancestor-target">
 				<a class="d2l-focusable" href$="[[_organizationHomepageUrl]]" on-focus="_onFocus" on-blur="_onBlur">
-					<span class="dehb-link-text">[[_title]]</span>
+					<span class="dehb-link-text">[[_organizationName]]</span>
 				</a>
 				<div class="dehb-container">
 					<div class="dehb-image">
