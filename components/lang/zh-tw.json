@@ -1,126 +1,134 @@
 {
-  "changeImage": {
-    "translation": "變更影像",
-    "context": "Change the decorative image of an item "
-  },
-  "closed": {
-    "translation": "已關閉",
-    "context": "This item has been closed. You can longer access this item"
-  },
-  "completed": {
-    "translation": "完成",
-    "context": "The user has done everything for this item."
-  },
-  "completedDaysAgo": {
-    "translation": "已完成：{number} 天前",
-    "context": "The item was completed x number of days ago in the past."
-  },
-  "completedOn": {
-    "translation": "已完成：{dateTime}",
-    "context": "The date at which this item was completed. The date is in the past."
-  },
-  "completedToday": {
-    "translation": "已完成：今天",
-    "context": "This item was completed today"
-  },
-  "completedTomorrow": {
-    "translation": "已完成：明天",
-    "context": "This item was completed tomorrow. In the future."
-  },
-  "completedYesterday": {
-    "translation": "已完成：昨天",
-    "context": "This item was completed yesterday."
-  },
-  "continue": {
-    "translation": "Continue",
-    "context": "Continue an item where you left off."
-  },
-  "continueToModule": {
-    "translation": "Continue by navigating to module, {module}",
-    "context": "Continue a course by going to the next module."
-  },
-  "courseOfferingInformation": {
-    "translation": "開課項目資訊",
-    "context": "Go to the settings page for a course offering information"
-  },
-  "coursePinButton": {
-    "translation": "{course} 已置頂。將課程取消置頂",
-    "context": "This course is pinned and will be at the top of the list. Click here to unpin the course."
-  },
-  "courseSettings": {
-    "translation": "{course} 課程設定",
-    "context": "Go to course setting page"
-  },
-  "description": {
-    "translation": "Description",
-    "context": "A description of an item. A course mainly"
-  },
-  "disabled": {
-    "translation": "已停用",
-    "context": "This course is current not accessible to the user."
-  },
-  "dueDaysAgo": {
-    "translation": "截止時間：{number} 天前",
-    "context": "This course needs to be done and was expected to be done x days ago"
-  },
-  "dueOn": {
-    "translation": "截止時間：{dateTime}",
-    "context": "This course needs to be finished at a future time."
-  },
-  "dueToday": {
-    "translation": "今天截止",
-    "context": "This course needs to be finished today."
-  },
-  "dueTomorrow": {
-    "translation": "截止時間：明天",
-    "context": "this course needs to be done tomorrow"
-  },
-  "dueYesterday": {
-    "translation": "截止時間：昨天",
-    "context": "The course needs to be done and was expected to be done yesterday"
-  },
-  "ended": {
-    "translation": "已結束於 {date} 的 {time}",
-    "context": "This course has ended sometime in the past."
-  },
-  "endsAt": {
-    "translation": "結束於 {date} 的 {time}",
-    "context": "This course will end in a future time."
-  },
-  "enrollmentProgressBar": {
-    "translation": "Completed {percentage}% of {title}",
-    "context": "How many things have you completed in the current item"
-  },
-  "inactive": {
-    "translation": "停用",
-    "context": "This item is currenlty not accessible to the user."
-  },
-  "new": {
-    "translation": "新",
-    "context": "The user has never entered into the course."
-  },
-  "overdue": {
-    "translation": "逾期",
-    "context": "The user is expected to finish this course in the past."
-  },
-  "pin": {
-    "translation": "置頂",
-    "context": "Action to make this course show up first in the list of courses"
-  },
-  "pinActionResult": {
-    "translation": "已將 {course} 置頂",
-    "context": "This course has just taken the action to be pin"
-  },
-  "startsAt": {
-    "translation": "開始於 {date} 的 {time}",
-    "context": "The course starts at a future date"
-  },
-  "unpin": {
-    "translation": "取消置頂",
-    "context": "Action: Stop the course from showing up first in the list of courses"
-  },
-  "unpinActionResult": {
-    "translation": "已將 {course} 取消置頂",
-    "context": "Response from the Unpin action verifying that this action has been taken place."
-  }
+    "activityProgress" : {
+        "context" : "x/y activities have been completed",
+        "translation" : "活動"
+    },
+    "changeImage" : {
+        "context" : "Change the decorative image of an item ",
+        "translation" : "變更影像"
+    },
+    "closed" : {
+        "context" : "This item has been closed. You can longer access this item",
+        "translation" : "已關閉"
+    },
+    "completed" : {
+        "context" : "The user has done everything for this item.",
+        "translation" : "完成"
+    },
+    "completedDaysAgo" : {
+        "context" : "The item was completed x number of days ago in the past.",
+        "translation" : "{number} 天前完成"
+    },
+    "completedOn" : {
+        "context" : "The date at which this item was completed. The date is in the past.",
+        "translation" : "{dateTime} 時完成"
+    },
+    "completedToday" : {
+        "context" : "This item was completed today",
+        "translation" : "今天完成"
+    },
+    "completedTomorrow" : {
+        "context" : "This item was completed tomorrow. In the future.",
+        "translation" : "明天完成"
+    },
+    "completedYesterday" : {
+        "context" : "This item was completed yesterday.",
+        "translation" : "昨天完成"
+    },
+    "continue" : {
+        "context" : "Continue an item where you left off.",
+        "translation" : "繼續"
+    },
+    "continueToModule" : {
+        "context" : "Continue a course by going to the next module.",
+        "translation" : "導覽至單元 {module} 以繼續"
+    },
+    "courseOfferingInformation" : {
+        "context" : "Go to the settings page for a course offering information",
+        "translation" : "開課項目資訊"
+    },
+    "coursePinButton" : {
+        "context" : "This course is pinned and will be at the top of the list. Click here to unpin the course.",
+        "translation" : "{course} 已置頂。將課程取消置頂"
+    },
+    "courseSettings" : {
+        "context" : "Go to course setting page",
+        "translation" : "{course} 課程設定"
+    },
+    "description" : {
+        "context" : "A description of an item. A course mainly",
+        "translation" : "說明"
+    },
+    "disabled" : {
+        "context" : "This course is current not accessible to the user.",
+        "translation" : "已停用"
+    },
+    "dueDaysAgo" : {
+        "context" : "This course needs to be done and was expected to be done x days ago",
+        "translation" : "{number} 天前截止"
+    },
+    "dueOn" : {
+        "context" : "This course needs to be finished at a future time.",
+        "translation" : "{dateTime} 時截止"
+    },
+    "dueToday" : {
+        "context" : "This course needs to be finished today.",
+        "translation" : "今天截止"
+    },
+    "dueTomorrow" : {
+        "context" : "this course needs to be done tomorrow",
+        "translation" : "明天截止"
+    },
+    "dueYesterday" : {
+        "context" : "The course needs to be done and was expected to be done yesterday",
+        "translation" : "昨天截止"
+    },
+    "ended" : {
+        "context" : "This course has ended sometime in the past.",
+        "translation" : "已於 {date} 的 {time} 結束"
+    },
+    "endsAt" : {
+        "context" : "This course will end in a future time.",
+        "translation" : "於 {date} 的 {time} 結束"
+    },
+    "enrollmentProgressBar" : {
+        "context" : "How many things have you completed in the current item",
+        "translation" : "{title} 已完成 {percentage}%"
+    },
+    "inactive" : {
+        "context" : "This item is currenlty not accessible to the user.",
+        "translation" : "停用"
+    },
+    "moduleProgress" : {
+        "context" : "x/y modules have been completed",
+        "translation" : "單元"
+    },
+    "new" : {
+        "context" : "The user has never entered into the course.",
+        "translation" : "新式"
+    },
+    "overdue" : {
+        "context" : "The user is expected to finish this course in the past.",
+        "translation" : "逾期"
+    },
+    "pin" : {
+        "context" : "Action to make this course show up first in the list of courses",
+        "translation" : "置頂"
+    },
+    "pinActionResult" : {
+        "context" : "This course has just taken the action to be pin",
+        "translation" : "已將 {course} 置頂"
+    },
+    "startsAt" : {
+        "context" : "The course starts at a future date",
+        "translation" : "於 {date} 的 {time} 開始"
+    },
+    "unpin" : {
+        "context" : "Action: Stop the course from showing up first in the list of courses",
+        "translation" : "取消置頂"
+    },
+    "unpinActionResult" : {
+        "context" : "Response from the Unpin action verifying that this action has been taken place.",
+        "translation" : "已將 {course} 取消置頂"
+    }
 }
