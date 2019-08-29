@@ -10,6 +10,7 @@ Polymer-based web component for a course/enrollment card.
   from HTML and may be out of place here. Review them and
   then delete this comment!
 */
+import '@brightspace-ui/core/helpers/requestIdleCallback.js';
 import { IronA11yAnnouncer } from '@polymer/iron-a11y-announcer/iron-a11y-announcer.js';
 import 'd2l-dropdown/d2l-dropdown-menu.js';
 import 'd2l-dropdown/d2l-dropdown-more.js';
@@ -438,9 +439,7 @@ class EnrollmentCard extends mixinBehaviors([
 				}
 			}.bind(this);
 
-			// Small shim for Edge/IE/Safari
-			var delayFunction = window.requestIdleCallback || setTimeout;
-			delayFunction(function() {
+			requestIdleCallback(function() {
 				if (this._load) {
 					// The tile already loaded via the IntersectionObserver
 					return;
