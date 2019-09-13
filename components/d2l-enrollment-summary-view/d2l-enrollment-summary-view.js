@@ -88,7 +88,7 @@ class D2lEnrollmentSummaryView extends EnrollmentsLocalize(EntityMixin(PolymerEl
 					margin: auto;
 					max-width: 1230px;
 					overflow: hidden;
-					padding: 2.45rem 1.5rem 1rem 1.5rem;
+					padding: 1.25rem 1.5rem;
 					position: relative;
 				}
 				.desv-sticky-header {
@@ -105,10 +105,12 @@ class D2lEnrollmentSummaryView extends EnrollmentsLocalize(EntityMixin(PolymerEl
 				.desv-title-bar d2l-enrollment-summary-view-tag-list {
 					@apply --d2l-body-compact-text;
 				}
+				.desv-header {
+					border-top: 1px solid var(--d2l-color-gypsum);
+				}
 				.desv-header d2l-enrollment-summary-view-layout {
 					--d2l-enrollment-summary-view-tag-layout-inner-border: 1px solid var(--d2l-color-gypsum);
 					border-bottom: 1px solid var(--d2l-color-gypsum);
-					border-top: 1px solid var(--d2l-color-gypsum);
 					box-shadow: 0 2px 4px -2px var(--d2l-color-mica);
 					display: block;
 				}
@@ -176,9 +178,7 @@ class D2lEnrollmentSummaryView extends EnrollmentsLocalize(EntityMixin(PolymerEl
 					.desv-title-bar {
 						flex-direction: column;
 						max-width: 908px;
-						padding-bottom: 0.8rem;
-						padding-top: 1.5rem;
-						padding: 0.9rem;
+						padding: 1.0rem 0.9rem;
 					}
 					.desv-title-bar h1 {
 						font-size: 1.6rem;
