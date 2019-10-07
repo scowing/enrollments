@@ -2,7 +2,7 @@
 `d2l-enrollment-hero-banner`
 
 Polymer-based web component for a organization name.
- 
+
 @demo demo/d2l-enrollment-hero-banner/d2l-enrollment-hero-banner-demo.html Organization Name
 */
 import { html, PolymerElement } from '@polymer/polymer/polymer-element.js';
