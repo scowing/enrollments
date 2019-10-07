@@ -133,7 +133,8 @@ class EnrollmentHeroBanner extends EnrollmentsLocalize(EntityMixin(PolymerElemen
 				}
 				.dehb-title {
 					align-items: flex-end;
-					display: flex;
+					display: inline-block;
+					overflow: hidden; 
 					max-height: 2.8em; /* not a typo meant em */
 					min-height: 2.26em; /* not a typo meant em */
 				}
@@ -227,8 +228,7 @@ class EnrollmentHeroBanner extends EnrollmentsLocalize(EntityMixin(PolymerElemen
 						<d2l-organization-image type="wide" href="[[_organizationUrl]]" token=[[token]]></d2l-organization-image>
 					</div>
 					<div class="dehb-info-container">
-						<div class="dehb-info-transparent"></div>
-						<!-- Skeleton for text -->
+						<div class="dehb-info-transparent"><!-- Skeleton for text -->
 						<div class="dehb-base-info-placeholder">
 							<div class="dehb-base-info">
 								<div class="dehb-title">
@@ -247,46 +247,47 @@ class EnrollmentHeroBanner extends EnrollmentsLocalize(EntityMixin(PolymerElemen
 									<div class="dehb-update dehb-update-placeholder"></div>
 								</div>
 							</div>
-						</div>
+						</div>	
 						<div class="dehb-base-info">
-							<div class="dehb-title"><h2>[[_organizationName]]</h2></div>
-							<div class="dehb-context-menu">
-								<template is="dom-if" if="[[_shouldShowDropDown(_canAccessCourseInfo, _canChangeCourseImage)]]">
-									<d2l-dropdown-more text="[[_courseSettingsLabel]]" visible-on-ancestor>
-										<d2l-dropdown-menu>
-											<d2l-menu label="[[_courseSettingsLabel]]">
-												<d2l-menu-item-link hidden$="[[!_canAccessCourseInfo]]" text="[[localize('courseOfferingInformation')]]" href="[[_courseInfoUrl]]">
-												</d2l-menu-item-link>
-												<d2l-menu-item on-d2l-menu-item-select="_launchCourseImageSelector" hidden$="[[!_canChangeCourseImage]]" text="[[localize('changeImage')]]">
-												</d2l-menu-item>
-												<d2l-menu-item on-d2l-menu-item-select="_pinClickHandler" hidden$="[[_shouldHidePinOption(_pinned)]]" text="[[localize('pin')]]">
-												</d2l-menu-item>
-												<d2l-menu-item on-d2l-menu-item-select="_pinClickHandler" hidden$="[[_shouldHideUnpinOption(_pinned)]]" text="[[localize('unpin')]]">
-												</d2l-menu-item>
-										</d2l-dropdown-menu>
-									</d2l-dropdown-more>
+								<div class="dehb-title"><h2>[[_organizationName]]</h2></div>
+								<div class="dehb-context-menu">
+									<template is="dom-if" if="[[_shouldShowDropDown(_canAccessCourseInfo, _canChangeCourseImage)]]">
+										<d2l-dropdown-more text="[[_courseSettingsLabel]]" visible-on-ancestor>
+											<d2l-dropdown-menu>
+												<d2l-menu label="[[_courseSettingsLabel]]">
+													<d2l-menu-item-link hidden$="[[!_canAccessCourseInfo]]" text="[[localize('courseOfferingInformation')]]" href="[[_courseInfoUrl]]">
+													</d2l-menu-item-link>
+													<d2l-menu-item on-d2l-menu-item-select="_launchCourseImageSelector" hidden$="[[!_canChangeCourseImage]]" text="[[localize('changeImage')]]">
+													</d2l-menu-item>
+													<d2l-menu-item on-d2l-menu-item-select="_pinClickHandler" hidden$="[[_shouldHidePinOption(_pinned)]]" text="[[localize('pin')]]">
+													</d2l-menu-item>
+													<d2l-menu-item on-d2l-menu-item-select="_pinClickHandler" hidden$="[[_shouldHideUnpinOption(_pinned)]]" text="[[localize('unpin')]]">
+													</d2l-menu-item>
+											</d2l-dropdown-menu>
+										</d2l-dropdown-more>
 
-									<d2l-button-icon hidden$="[[_shouldHideUnpinOption(_pinned)]]" text="[[_pinButtonLabel]]" icon="d2l-tier1:pin-filled" on-tap="_pinClickHandler" on-keypress="_pinPressHandler">
-									</d2l-button-icon>
-								</template>
-							</div>
-							<div class="dehb-tag-container dehb-tag-placeholder-container">
-								<div class="dehb-text-placeholder dehb-tag-placeholder"></div>
-								<div class="dehb-text-placeholder dehb-tag-placeholder"></div>
-							</div>
-							<div class="dehb-progress-container">
-								<d2l-meter-linear class="dehb-progress" value="[[_enrollmentCompletion.value]]" max="[[_enrollmentCompletion.max]]" text="[[_progressLabel]]" text-inline></d2l-meter-linear>
-							</div>
-							<div class="dehb-updates-container">
-								<d2l-enrollment-updates
-									href="[[_organizationUrl]]"
-									token=[[token]]
-									show-unattempted-quizzes
-									show-dropbox-unread-feedback
-									show-ungraded-quiz-attempts
-									show-unread-discussion-messages
-									show-unread-dropbox-submissions>
-								</d2l-enrollment-updates>
+										<d2l-button-icon hidden$="[[_shouldHideUnpinOption(_pinned)]]" text="[[_pinButtonLabel]]" icon="d2l-tier1:pin-filled" on-tap="_pinClickHandler" on-keypress="_pinPressHandler">
+										</d2l-button-icon>
+									</template>
+								</div>
+								<div class="dehb-tag-container dehb-tag-placeholder-container">
+									<div class="dehb-text-placeholder dehb-tag-placeholder"></div>
+									<div class="dehb-text-placeholder dehb-tag-placeholder"></div>
+								</div>
+								<div class="dehb-progress-container">
+									<d2l-meter-linear class="dehb-progress" value="[[_enrollmentCompletion.value]]" max="[[_enrollmentCompletion.max]]" text="[[_progressLabel]]" text-inline></d2l-meter-linear>
+								</div>
+								<div class="dehb-updates-container">
+									<d2l-enrollment-updates
+										href="[[_organizationUrl]]"
+										token=[[token]]
+										show-unattempted-quizzes
+										show-dropbox-unread-feedback
+										show-ungraded-quiz-attempts
+										show-unread-discussion-messages
+										show-unread-dropbox-submissions>
+									</d2l-enrollment-updates>
+								</div>
 							</div>
 						</div>
 					</div>
