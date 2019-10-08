@@ -130,6 +130,7 @@ class EnrollmentHeroBanner extends EnrollmentsLocalize(EntityMixin(PolymerElemen
 					letter-spacing: 0.8px;
 					line-height: 1.4;
 					margin: 0;
+					word-wrap: break-word;
 					width: 100%;
 				}
 				.dehb-title {
