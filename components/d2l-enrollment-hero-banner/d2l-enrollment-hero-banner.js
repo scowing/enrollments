@@ -88,17 +88,17 @@ class EnrollmentHeroBanner extends EnrollmentsLocalize(EntityMixin(PolymerElemen
 					z-index: -2;
 				}
 				.dehb-info-container {
-					height: 252px;
+					min-height: 252px;
 					position: relative;
 					width: 474px;
 				}
 				.dehb-info-transparent {
 					background: white;
 					border-radius: 8px;
-					height: 100%;
+					height: auto;
 					left: 0;
 					opacity: 0.98;
-					position: absolute;
+					position: relative;
 					top: 0;
 					width: 100%;
 					z-index: -1;
@@ -130,12 +130,12 @@ class EnrollmentHeroBanner extends EnrollmentsLocalize(EntityMixin(PolymerElemen
 					letter-spacing: 0.8px;
 					line-height: 1.4;
 					margin: 0;
+					width: 100%;
 				}
 				.dehb-title {
 					align-items: flex-end;
-					display: inline-block;
-					overflow: hidden; 
-					max-height: 2.8em; /* not a typo meant em */
+					display: flex;
+					overflow: hidden;
 					min-height: 2.26em; /* not a typo meant em */
 				}
 				.dehb-context-menu {
@@ -228,7 +228,8 @@ class EnrollmentHeroBanner extends EnrollmentsLocalize(EntityMixin(PolymerElemen
 						<d2l-organization-image type="wide" href="[[_organizationUrl]]" token=[[token]]></d2l-organization-image>
 					</div>
 					<div class="dehb-info-container">
-						<div class="dehb-info-transparent"><!-- Skeleton for text -->
+						<div class="dehb-info-transparent">
+						<!-- Skeleton for text -->
 						<div class="dehb-base-info-placeholder">
 							<div class="dehb-base-info">
 								<div class="dehb-title">
@@ -247,7 +248,7 @@ class EnrollmentHeroBanner extends EnrollmentsLocalize(EntityMixin(PolymerElemen
 									<div class="dehb-update dehb-update-placeholder"></div>
 								</div>
 							</div>
-						</div>	
+						</div>
 						<div class="dehb-base-info">
 								<div class="dehb-title"><h2>[[_organizationName]]</h2></div>
 								<div class="dehb-context-menu">
