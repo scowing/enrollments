@@ -137,7 +137,6 @@ class EnrollmentHeroBanner extends EnrollmentsLocalize(EntityMixin(PolymerElemen
 				.dehb-title {
 					align-items: flex-end;
 					display: flex;
-					overflow: hidden;
 					min-height: 2.26em; /* not a typo meant em */
 				}
 				.dehb-context-menu {
