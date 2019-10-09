@@ -88,13 +88,14 @@ class EnrollmentHeroBanner extends EnrollmentsLocalize(EntityMixin(PolymerElemen
 					z-index: -2;
 				}
 				.dehb-info-container {
-					height: 252px;
+					min-height: 252px;
 					position: relative;
 					width: 474px;
 				}
 				.dehb-info-transparent {
 					background: white;
 					border-radius: 8px;
+					min-height: 252px;
 					height: 100%;
 					left: 0;
 					opacity: 0.98;
@@ -130,11 +131,12 @@ class EnrollmentHeroBanner extends EnrollmentsLocalize(EntityMixin(PolymerElemen
 					letter-spacing: 0.8px;
 					line-height: 1.4;
 					margin: 0;
+					word-wrap: break-word;
+					width: 100%;
 				}
 				.dehb-title {
 					align-items: flex-end;
 					display: flex;
-					max-height: 2.8em; /* not a typo meant em */
 					min-height: 2.26em; /* not a typo meant em */
 				}
 				.dehb-context-menu {
