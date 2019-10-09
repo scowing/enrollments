@@ -95,6 +95,7 @@ class EnrollmentHeroBanner extends EnrollmentsLocalize(EntityMixin(PolymerElemen
 				.dehb-info-transparent {
 					background: white;
 					border-radius: 8px;
+					min-height: 252px;
 					height: auto;
 					left: 0;
 					opacity: 0.98;
@@ -230,27 +231,27 @@ class EnrollmentHeroBanner extends EnrollmentsLocalize(EntityMixin(PolymerElemen
 					</div>
 					<div class="dehb-info-container">
 						<div class="dehb-info-transparent">
-						<!-- Skeleton for text -->
-						<div class="dehb-base-info-placeholder">
-							<div class="dehb-base-info">
-								<div class="dehb-title">
-									<div class="dehb-text-placeholder dehb-title-placeholder"></div>
-								</div>
-								<div class="dehb-tag-container dehb-tag-placeholder-container">
-									<div class="dehb-text-placeholder dehb-tag-placeholder"></div>
-									<div class="dehb-text-placeholder dehb-tag-placeholder"></div>
-								</div>
-								<div class="dehb-progress-container">
-									<div class="dehb-text-placeholder dehb-progress-placeholder"></div>
-								</div>
-								<div class="dehb-updates-container">
-									<div class="dehb-update dehb-update-placeholder"></div>
-									<div class="dehb-update dehb-update-placeholder"></div>
-									<div class="dehb-update dehb-update-placeholder"></div>
+							<!-- Skeleton for text -->
+							<div class="dehb-base-info-placeholder">
+								<div class="dehb-base-info">
+									<div class="dehb-title">
+										<div class="dehb-text-placeholder dehb-title-placeholder"></div>
+									</div>
+									<div class="dehb-tag-container dehb-tag-placeholder-container">
+										<div class="dehb-text-placeholder dehb-tag-placeholder"></div>
+										<div class="dehb-text-placeholder dehb-tag-placeholder"></div>
+									</div>
+									<div class="dehb-progress-container">
+										<div class="dehb-text-placeholder dehb-progress-placeholder"></div>
+									</div>
+									<div class="dehb-updates-container">
+										<div class="dehb-update dehb-update-placeholder"></div>
+										<div class="dehb-update dehb-update-placeholder"></div>
+										<div class="dehb-update dehb-update-placeholder"></div>
+									</div>
 								</div>
 							</div>
-						</div>
-						<div class="dehb-base-info">
+							<div class="dehb-base-info">
 								<div class="dehb-title"><h2>[[_organizationName]]</h2></div>
 								<div class="dehb-context-menu">
 									<template is="dom-if" if="[[_shouldShowDropDown(_canAccessCourseInfo, _canChangeCourseImage)]]">
