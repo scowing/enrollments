@@ -138,6 +138,9 @@ class D2lEnrollmentSummaryView extends EnrollmentsLocalize(EntityMixin(PolymerEl
 					@apply --d2l-body-small-text;
 					letter-spacing: 0.3px;
 					margin-left: 0.2rem;
+					white-space: nowrap;
+					overflow: hidden;
+					text-overflow: ellipsis;
 				}
 				:host(:dir(rtl)) .desv-continue span {
 					margin-left: 0;
