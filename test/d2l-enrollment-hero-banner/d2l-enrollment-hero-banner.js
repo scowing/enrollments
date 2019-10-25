@@ -166,7 +166,8 @@ describe('d2l-enrollment-hero-banner', () => {
 				component._entity = enrollmentEntity;
 
 				setTimeout(() => {
-					var unpinMenuItem = component.$$('d2l-menu-item.d2l-menu-item-last');
+					var menuItems = component.root.querySelectorAll('d2l-menu-item:not([hidden])');
+					var unpinMenuItem = menuItems[menuItems.length - 1];
 
 					expect(unpinMenuItem).to.not.be.null;
 					expect(unpinMenuItem.text).to.equal('Unpin');
@@ -179,7 +180,9 @@ describe('d2l-enrollment-hero-banner', () => {
 				component._entity = enrollmentEntity;
 
 				setTimeout(() => {
-					var pinMenuItem = component.$$('d2l-menu-item.d2l-menu-item-last');
+					var menuItems = component.root.querySelectorAll('d2l-menu-item:not([hidden])');
+					var pinMenuItem = menuItems[menuItems.length - 1];
+
 					expect(pinMenuItem).to.not.be.null;
 					expect(pinMenuItem.text).to.equal('Pin');
 					done();
