@@ -628,6 +628,11 @@ class D2lEnrollmentSummaryView extends EnrollmentsLocalize(EntityMixin(PolymerEl
 				}, 200);
 			});
 		});
+
+		// Stop-gap solution to delay loaded event firing. If no module is ever loaded, ensures the loaded event still fires after a period of time.
+		setTimeout(() => {
+			this._isCompletionContinueLoaded = true;
+		}, 800);
 	}
 
 	// Couldn't use flat so I stole it from https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/flat
