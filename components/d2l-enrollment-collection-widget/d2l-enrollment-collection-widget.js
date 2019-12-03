@@ -11,12 +11,14 @@ import 'd2l-typography/d2l-typography-shared-styles.js';
 import { EnrollmentCollectionEntity } from 'siren-sdk/src/enrollments/EnrollmentCollectionEntity.js';
 import '../d2l-enrollment-card/d2l-enrollment-card.js';
 import '../d2l-enrollment-hero-banner/d2l-enrollment-hero-banner.js';
+import 'd2l-alert/d2l-alert.js';
+import { EnrollmentsLocalize } from '../EnrollmentsLocalize.js';
 
 /**
  * @customElement
  * @polymer
  */
-class EnrollmentCollectionWidget extends EntityMixin(PolymerElement) {
+class EnrollmentCollectionWidget extends EnrollmentsLocalize(EntityMixin(PolymerElement)) {
 	constructor() {
 		super();
 		this._setEntityType(EnrollmentCollectionEntity);
@@ -53,19 +55,26 @@ class EnrollmentCollectionWidget extends EntityMixin(PolymerElement) {
 					grid-area: 1 / hero-start / 1 / hero-end;
 				}
 			</style>
-			<div class$="decw-grid decw-grid-[[_countEnrollments]]">
-				<d2l-enrollment-hero-banner href="[[_enrollmentHeroHref]]" token="[[token]]" hide-pinning></d2l-enrollment-hero-banner>
-				<template is="dom-repeat"  items="[[_enrollmentsHref]]">
-					<d2l-enrollment-card href="[[item]]" token="[[token]]"
-							show-unattempted-quizzes
-							show-dropbox-unread-feedback
-							show-ungraded-quiz-attempts
-							show-unread-discussion-messages
-							show-unread-dropbox-submissions
-							hide-pinning>
-					</d2l-enrollment-card>
-				</template>
-			</div>
+			<template is="dom-if" if="[[_HasEnrollments]]">
+				<div class$="decw-grid decw-grid-[[_countEnrollments]]">
+					<d2l-enrollment-hero-banner href="[[_enrollmentHeroHref]]" token="[[token]]" hide-pinning></d2l-enrollment-hero-banner>
+					<template is="dom-repeat"  items="[[_enrollmentsHref]]">
+						<d2l-enrollment-card href="[[item]]" token="[[token]]"
+								show-unattempted-quizzes
+								show-dropbox-unread-feedback
+								show-ungraded-quiz-attempts
+								show-unread-discussion-messages
+								show-unread-dropbox-submissions
+								hide-pinning>
+						</d2l-enrollment-card>
+					</template>
+				</div>
+			</template>
+			<template is="dom-if" if="[[!_HasEnrollments]]">
+				<d2l-alert type="call-to-action">
+					[[localize('noCoursesMessage')]]
+				</d2l-alert>
+			</template>
 		`;
 	}
 	static get properties() {
@@ -78,6 +87,10 @@ class EnrollmentCollectionWidget extends EntityMixin(PolymerElement) {
 			_countEnrollments: {
 				type: Number,
 				value: 0
+			},
+			_HasEnrollments: {
+				type: Boolean,
+				value: true
 			}
 		};
 	}
@@ -95,6 +108,7 @@ class EnrollmentCollectionWidget extends EntityMixin(PolymerElement) {
 		this._countEnrollments = enrollments.length;
 		this._enrollmentHeroHref = enrollments.shift();
 		this._enrollmentsHref = enrollments;
+		this._HasEnrollments = this._countEnrollments !== 0;
 	}
 }
 

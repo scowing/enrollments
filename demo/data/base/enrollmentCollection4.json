@@ -1,0 +1,8 @@
+{
+  "entities": [
+  ],
+  "links": [{
+    "rel": ["self"],
+    "href": "../data/base/enrollmentCollection4.json"
+  }]
+}
