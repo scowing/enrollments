@@ -273,8 +273,8 @@ class EnrollmentHeroBanner extends EnrollmentsLocalize(EntityMixin(PolymerElemen
 								</template>
 							</div>
 							<div class="dehb-tag-container dehb-tag-placeholder-container">
-								<div class="dehb-tag-placeholder"></div>
-								<div class="dehb-tag-placeholder"></div>
+								<div class="dehb-text-placeholder dehb-tag-placeholder"></div>
+								<div class="dehb-text-placeholder dehb-tag-placeholder"></div>
 							</div>
 							<div class="dehb-progress-container">
 								<d2l-meter-linear class="dehb-progress" value="[[_enrollmentCompletion.value]]" max="[[_enrollmentCompletion.max]]" text="[[_progressLabel]]" text-inline></d2l-meter-linear>
