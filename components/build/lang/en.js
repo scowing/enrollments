@@ -34,6 +34,7 @@ const LangEnImpl = (superClass) => class extends superClass {
 			'inactive': 'Inactive',
 			'moduleProgress': 'Modules',
 			'new': 'New',
+			'noCoursesMessage': 'You don\'t have any courses or learning paths to display.',
 			'overdue': 'Overdue',
 			'pin': 'Pin',
 			'pinActionResult': '{course} has been pinned',
