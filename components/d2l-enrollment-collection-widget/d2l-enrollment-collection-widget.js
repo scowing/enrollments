@@ -55,7 +55,7 @@ class EnrollmentCollectionWidget extends EnrollmentsLocalize(EntityMixin(Polymer
 					grid-area: 1 / hero-start / 1 / hero-end;
 				}
 			</style>
-			<template is="dom-if" if="[[_HasEnrollments]]">
+			<template is="dom-if" if="[[_hasEnrollments]]">
 				<div class$="decw-grid decw-grid-[[_countEnrollments]]">
 					<d2l-enrollment-hero-banner href="[[_enrollmentHeroHref]]" token="[[token]]" hide-pinning></d2l-enrollment-hero-banner>
 					<template is="dom-repeat"  items="[[_enrollmentsHref]]">
@@ -70,7 +70,7 @@ class EnrollmentCollectionWidget extends EnrollmentsLocalize(EntityMixin(Polymer
 					</template>
 				</div>
 			</template>
-			<template is="dom-if" if="[[!_HasEnrollments]]">
+			<template is="dom-if" if="[[!_hasEnrollments]]">
 				<d2l-alert>
 					[[localize('noCoursesMessage')]]
 				</d2l-alert>
@@ -88,7 +88,7 @@ class EnrollmentCollectionWidget extends EnrollmentsLocalize(EntityMixin(Polymer
 				type: Number,
 				value: 0
 			},
-			_HasEnrollments: {
+			_hasEnrollments: {
 				type: Boolean,
 				value: true
 			}
@@ -108,7 +108,7 @@ class EnrollmentCollectionWidget extends EnrollmentsLocalize(EntityMixin(Polymer
 		this._countEnrollments = enrollments.length;
 		this._enrollmentHeroHref = enrollments.shift();
 		this._enrollmentsHref = enrollments;
-		this._HasEnrollments = this._countEnrollments !== 0;
+		this._hasEnrollments = this._countEnrollments !== 0;
 	}
 }
 
