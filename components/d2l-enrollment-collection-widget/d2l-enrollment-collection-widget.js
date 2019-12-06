@@ -71,7 +71,7 @@ class EnrollmentCollectionWidget extends EnrollmentsLocalize(EntityMixin(Polymer
 				</div>
 			</template>
 			<template is="dom-if" if="[[!_HasEnrollments]]">
-				<d2l-alert type="call-to-action">
+				<d2l-alert>
 					[[localize('noCoursesMessage')]]
 				</d2l-alert>
 			</template>
