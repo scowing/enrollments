@@ -45,12 +45,10 @@ class D2lEnrollmentSummaryViewTagSlotList  extends LitElement {
 			<ul class="desvtl-container d2l-body-small">
 				<li>
 					<slot name="first"></slot>
-				</li>
-				<li>
+				</li><li>
 					${this._showMiddleSlot ? html`<d2l-icon icon="d2l-tier1:bullet"></d2l-icon>` : null }
 					<slot name="middle"></slot>
-				</li>
-				<li>
+				</li><li>
 					${this._showLastSlot ? html`<d2l-icon icon="d2l-tier1:bullet"></d2l-icon>` : null }
 					<slot name="last"></slot>
 				</li>
