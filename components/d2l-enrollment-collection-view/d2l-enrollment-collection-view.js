@@ -13,6 +13,7 @@ import '@brightspace-ui/core/components/list/list.js';
 import '@brightspace-ui/core/components/list/list-item.js';
 import '@brightspace-ui/core/components/list/list-item-content.js';
 import '@brightspace-ui/core/components/inputs/input-search.js';
+import 'd2l-loading-spinner/d2l-loading-spinner.js';
 import 'd2l-organizations/components/d2l-organization-image/d2l-organization-image.js';
 
 class AdminList extends EntityMixinLit(LitElement) {
@@ -20,6 +21,7 @@ class AdminList extends EntityMixinLit(LitElement) {
 		super();
 		this._items = [];
 		this._setEntityType(EnrollmentCollectionEntity);
+		this._showSpinner = false;
 	}
 
 	set _entity(entity) {
@@ -52,12 +54,14 @@ class AdminList extends EntityMixinLit(LitElement) {
 
 		enrollmentCollection.subEntitiesLoaded().then(() => {
 			this._items = this._items.concat(items);
+			this._showSpinner = false;
 		});
 	}
 
 	_handleLoadMore() {
 		const nextEnrollmentHref = this._lastEnrollmentCollection.getNextEnrollmentHref();
 		if (nextEnrollmentHref !== null) {
+			this._showSpinner = true;
 			dispose(this._lastEnrollmentCollection);
 			if (typeof this._entityType === 'function') {
 				this._lastEnrollmentCollection = entityFactory(this._entityType, nextEnrollmentHref, this.token, entity => {
@@ -82,6 +86,9 @@ class AdminList extends EntityMixinLit(LitElement) {
 			},
 			_canLoadMore: {
 				type: Boolean
+			},
+			_showSpinner: {
+				type: Boolean,
 			}
 		};
 	}
@@ -121,8 +128,13 @@ class AdminList extends EntityMixinLit(LitElement) {
 					width: 100%;
 					padding-top: 26px;
 				}
-				.d2l-enrollment-collection-view-load-more {
-					margin:12px 12px 12px 0px;
+				.d2l-enrollment-collection-view-load-container {
+					display: flex;
+					justify-content: space-between;
+					width:50%;
+				}
+				.d2l-enrollment-collection-view-load-button {
+					margin:12px 16px 32px 0px;
 				}
 			`
 		];
@@ -153,8 +165,12 @@ class AdminList extends EntityMixinLit(LitElement) {
 					<d2l-input-search class="d2l-enrollment-collection-view-search" placeholder="Search..."></d2l-input-search>
 				<div class="d2l-enrollment-collection-view-body">
 					<d2l-list>${items}</d2l-list>
+
+					<div class="d2l-enrollment-collection-view-load-container">
+						<d2l-button class="d2l-enrollment-collection-view-load-button" @click=${this._handleLoadMore} ?hidden="${!this._canLoadMore}">Load More</d2l-button>
+						<d2l-loading-spinner size="85" ?hidden="${!this._showSpinner}"></d2l-loading-spinner>
+					</div>
 				</div>
-				<d2l-button class="d2l-enrollment-collection-view-load-more" @click=${this._handleLoadMore} ?hidden="${!this._canLoadMore}">Load More</d2l-button>
 			</div>
 		`;
 	}
