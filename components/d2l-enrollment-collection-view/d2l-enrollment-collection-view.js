@@ -21,7 +21,8 @@ class AdminList extends EntityMixinLit(LitElement) {
 		super();
 		this._items = [];
 		this._setEntityType(EnrollmentCollectionEntity);
-		this._showSpinner = false;
+		this._showLoadMoreSpinner = false;
+		this._showSearchSpinner = false;
 	}
 
 	set _entity(entity) {
@@ -53,15 +54,23 @@ class AdminList extends EntityMixinLit(LitElement) {
 		});
 
 		enrollmentCollection.subEntitiesLoaded().then(() => {
-			this._items = this._items.concat(items);
-			this._showSpinner = false;
+			if (enrollmentCollection.replaceItems === true)
+			{
+				this._items = items;
+			} else {
+				this._items = this._items.concat(items);
+			}
+
+			this._showLoadMoreSpinner = false;
+			this._showSearchSpinner = false;
+			this._loaded = true;
 		});
 	}
 
 	_handleLoadMore() {
 		const nextEnrollmentHref = this._lastEnrollmentCollection.getNextEnrollmentHref();
 		if (nextEnrollmentHref !== null) {
-			this._showSpinner = true;
+			this._showLoadMoreSpinner = true;
 			dispose(this._lastEnrollmentCollection);
 			if (typeof this._entityType === 'function') {
 				this._lastEnrollmentCollection = entityFactory(this._entityType, nextEnrollmentHref, this.token, entity => {
@@ -71,6 +80,31 @@ class AdminList extends EntityMixinLit(LitElement) {
 				});
 			}
 		}
+	}
+
+	_handleSearch(e) {
+		const searchHref = this._buildSearchURL(this.href, e.target.value);
+		this._showSearchSpinner = true;
+
+		dispose(this._lastEnrollmentCollection);
+		if (typeof this._entityType === 'function') {
+			this._lastEnrollmentCollection = entityFactory(this._entityType, searchHref, this.token, entity => {
+				this._lastEnrollmentCollection = entity;
+				this._lastEnrollmentCollection.replaceItems = true;
+				this._onEnrollmentUsageCollectionChanged(this._lastEnrollmentCollection);
+				this._canLoadMore = this._lastEnrollmentCollection.hasMoreEnrollments();
+
+			});
+		}
+	}
+
+	_buildSearchURL(href, searchQuery) {
+		if (href.indexOf('?') > -1) {
+			href = href + '&';
+		} else {
+			href = href + '?';
+		}
+		return href + 'search=' + encodeURIComponent(searchQuery);
 	}
 
 	static get properties() {
@@ -87,8 +121,14 @@ class AdminList extends EntityMixinLit(LitElement) {
 			_canLoadMore: {
 				type: Boolean
 			},
-			_showSpinner: {
-				type: Boolean,
+			_showLoadMoreSpinner: {
+				type: Boolean
+			},
+			_showSearchSpinner: {
+				type: Boolean
+			},
+			_loaded: {
+				type: Boolean
 			}
 		};
 	}
@@ -118,8 +158,14 @@ class AdminList extends EntityMixinLit(LitElement) {
 				.d2l-enrollment-collection-view-body-container {
 					background-color: --var(--d2l-color-regolith);
 				}
+				.d2l-enrollment-collection-view-body-navigation-container {
+					display: flex;
+				}
 				.d2l-enrollment-collection-view-search {
 					width:270px;
+					margin:12px 12px 12px 0px;
+				}
+				.d2l-enrollment-collection-view-search-spinner {
 					margin:12px 12px 12px 0px;
 				}
 				.d2l-enrollment-collection-view-body {
@@ -136,11 +182,44 @@ class AdminList extends EntityMixinLit(LitElement) {
 				.d2l-enrollment-collection-view-load-button {
 					margin:12px 16px 32px 0px;
 				}
+				.d2l-enrollment-collection-no-enrollments {
+					background-color: var(--d2l-color-regolith);
+					border: solid 1px var(--d2l-color-gypsum);
+					border-radius: 8px;
+					padding: 2.1rem 2rem;
+				}
 			`
 		];
 	}
 
 	render() {
+		const items = this._loaded ? this._renderItemList() : null;
+		return html`
+			<div class="d2l-enrollment-collection-view-header-container">
+				<h1 class="d2l-heading-1 d2l-enrollment-collection-view-header-label">${this['title-text']}</h1>
+			</div>
+			<div class="d2l-enrollment-collection-view-body-container">
+				<div class="d2l-enrollment-collection-view-body-navigation-container">
+					<d2l-input-search class="d2l-enrollment-collection-view-search" placeholder="Search..." @d2l-input-search-searched=${this._handleSearch}></d2l-input-search>
+					<d2l-loading-spinner class="d2l-enrollment-collection-view-search-spinner" size="42" ?hidden="${!this._showSearchSpinner}"></d2l-loading-spinner>
+				</div>
+
+				<div class="d2l-enrollment-collection-view-body">
+					${items}
+
+					<div class="d2l-enrollment-collection-view-load-container">
+						<d2l-button class="d2l-enrollment-collection-view-load-button" @click=${this._handleLoadMore} ?hidden="${!this._canLoadMore}">Load More</d2l-button>
+						<d2l-loading-spinner size="85" ?hidden="${!this._showLoadMoreSpinner}"></d2l-loading-spinner>
+					</div>
+				</div>
+			</div>
+		`;
+	}
+
+	_renderItemList() {
+		if (!this._showSearchSpinner && this._items.length <= 0) {
+			return html`<div class="d2l-enrollment-collection-no-enrollments">There are no courses or learning paths found for your search entry.</div>`;
+		}
 		const items = repeat(this._items, (item) => item.org.self(), item => {
 			var enrollmentType = item.org.hasClass(organizationClasses.learningPath) ? 'Learning Path' : 'Course';
 			return html`
@@ -156,23 +235,7 @@ class AdminList extends EntityMixinLit(LitElement) {
 				</d2l-list-item>
 			`;
 		});
-		return html`
-			<div class="d2l-enrollment-collection-view-header-container">
-				<h1 class="d2l-heading-1 d2l-enrollment-collection-view-header-label">${this['title-text']}</h1>
-			</div>
-			<div class="d2l-enrollment-collection-view-body-container">
-				<div class="d2l-enrollment-collection-view-body-navigation-container">
-					<d2l-input-search class="d2l-enrollment-collection-view-search" placeholder="Search..."></d2l-input-search>
-				<div class="d2l-enrollment-collection-view-body">
-					<d2l-list>${items}</d2l-list>
-
-					<div class="d2l-enrollment-collection-view-load-container">
-						<d2l-button class="d2l-enrollment-collection-view-load-button" @click=${this._handleLoadMore} ?hidden="${!this._canLoadMore}">Load More</d2l-button>
-						<d2l-loading-spinner size="85" ?hidden="${!this._showSpinner}"></d2l-loading-spinner>
-					</div>
-				</div>
-			</div>
-		`;
+		return html`<d2l-list>${items}</d2l-list>`;
 	}
 }
 customElements.define('d2l-enrollment-collection-view', AdminList);
