@@ -80,7 +80,6 @@ class EnrollmentHeroBanner extends EnrollmentsLocalize(EntityMixin(PolymerElemen
 					border-radius: 8px;
 					height: 100%;
 					left: 0;
-					min-width: 510px;
 					overflow:hidden;
 					position: absolute;
 					top: 0;
@@ -90,7 +89,7 @@ class EnrollmentHeroBanner extends EnrollmentsLocalize(EntityMixin(PolymerElemen
 				.dehb-info-container {
 					min-height: 252px;
 					position: relative;
-					width: 474px;
+					max-width: 474px;
 				}
 				.dehb-info-transparent {
 					background: white;
