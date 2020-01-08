@@ -22,6 +22,22 @@ class EnrollmentCollectionWidget extends EnrollmentsLocalize(EntityMixin(Polymer
 	constructor() {
 		super();
 		this._setEntityType(EnrollmentCollectionEntity);
+		this._onResize = this._onResize.bind(this);
+	}
+
+	connectedCallback() {
+		super.connectedCallback();
+		window.addEventListener('resize', this._onResize);
+		this._numColumns = this._computeNumColumns(this.offsetWidth);
+	}
+
+	disconnectedCallback() {
+		super.disconnectedCallback();
+		window.removeEventListener('resize', this._onResize);
+	}
+
+	_onResize() {
+		this._numColumns = this._computeNumColumns(this.offsetWidth);
 	}
 
 	static get template() {
@@ -32,19 +48,25 @@ class EnrollmentCollectionWidget extends EnrollmentsLocalize(EntityMixin(Polymer
 				}
 				.decw-grid {
 					display: grid;
-					grid-template-columns: [hero-start] 1fr [hero-end];
 					grid-auto-columns: 1fr;
-					grid-gap: 30px 30px;
-				}
-				.decw-grid-4 {
-					grid-template-columns: [hero-start] 1fr 1fr 1fr [hero-end];
+					grid-gap: 15px 15px;
 				}
 				.decw-grid-3 {
+					grid-template-columns: [hero-start] 1fr 1fr 1fr [hero-end];
+				}
+				.decw-grid-3-3 {
 					grid-template-columns: [hero-start] 1fr 1fr [hero-end];
 				}
-				.decw-grid-2 {
-					grid-template-columns: [hero-start] 3fr [hero-end] 1fr;
+				.decw-grid-3-2 {
+					grid-template-columns: [hero-start] 1fr 1fr [hero-end] 1fr;
 				}
+				.decw-grid-2 {
+					grid-template-columns: [hero-start] 1fr 1fr [hero-end];
+				}
+				.decw-grid-1 {
+					grid-template-columns: [hero-start] 1fr [hero-end];
+				}
+
 				.decw-grid-2 d2l-enrollment-card {
 					--course-image-height: 150px;
 				}
@@ -54,10 +76,16 @@ class EnrollmentCollectionWidget extends EnrollmentsLocalize(EntityMixin(Polymer
 				d2l-enrollment-hero-banner {
 					grid-area: 1 / hero-start / 1 / hero-end;
 				}
+				.decw-grid[has-hero] > d2l-enrollment-card:first-of-type {
+					display: none;
+				}
+
 			</style>
 			<template is="dom-if" if="[[_hasEnrollments]]">
-				<div class$="decw-grid decw-grid-[[_countEnrollments]]">
-					<d2l-enrollment-hero-banner href="[[_enrollmentHeroHref]]" token="[[token]]" hide-pinning></d2l-enrollment-hero-banner>
+				<div class$="decw-grid decw-grid-[[_numColumns]] decw-grid-[[_numColumns]]-[[_numEnrollments]]" has-hero$=[[_hasHero]]>
+					<template is="dom-if" if="[[_hasHero]]">
+						<d2l-enrollment-hero-banner href="[[_enrollmentHeroHref]]" token="[[token]]" hide-pinning></d2l-enrollment-hero-banner>
+					</template>
 					<template is="dom-repeat"  items="[[_enrollmentsHref]]">
 						<d2l-enrollment-card href="[[item]]" token="[[token]]"
 								show-unattempted-quizzes
@@ -84,9 +112,17 @@ class EnrollmentCollectionWidget extends EnrollmentsLocalize(EntityMixin(Polymer
 				type: Array,
 				value: () => []
 			},
-			_countEnrollments: {
+			_numColumns: {
 				type: Number,
 				value: 0
+			},
+			_numEnrollments: {
+				type: Number,
+				value: 0
+			},
+			_hasHero: {
+				type: Boolean,
+				computed: '_computeHasHero(_numColumns, _numEnrollments)'
 			},
 			_hasEnrollments: {
 				type: Boolean,
@@ -105,10 +141,24 @@ class EnrollmentCollectionWidget extends EnrollmentsLocalize(EntityMixin(Polymer
 
 	_onEnrollmentCollectionChange(enrollmentCollection) {
 		const enrollments = enrollmentCollection.enrollmentsHref();
-		this._countEnrollments = enrollments.length;
-		this._enrollmentHeroHref = enrollments.shift();
+		this._enrollmentHeroHref = enrollments[0];
 		this._enrollmentsHref = enrollments;
-		this._hasEnrollments = this._countEnrollments !== 0;
+		this._numEnrollments = enrollments.length;
+		this._hasEnrollments = this._numEnrollments !== 0;
+	}
+
+	_computeHasHero(numColumns, numEnrollments) {
+		if (numColumns === 3) {
+			return true;
+		}
+		if (numColumns === 2) {
+			return numEnrollments % 2 !== 0;
+		}
+		return false;
+	}
+
+	_computeNumColumns(containerWidth) {
+		return Math.min(Math.floor(containerWidth / 350), 2) + 1;
 	}
 }
 
