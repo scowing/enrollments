@@ -12,6 +12,7 @@ import { EnrollmentCollectionEntity } from 'siren-sdk/src/enrollments/Enrollment
 import '../d2l-enrollment-card/d2l-enrollment-card.js';
 import '../d2l-enrollment-hero-banner/d2l-enrollment-hero-banner.js';
 import 'd2l-alert/d2l-alert.js';
+import 'd2l-loading-spinner/d2l-loading-spinner.js';
 import { EnrollmentsLocalize } from '../EnrollmentsLocalize.js';
 import { ResizeObserver } from 'd2l-resize-aware/resize-observer-module.js';
 
@@ -74,7 +75,6 @@ class EnrollmentCollectionWidget extends EnrollmentsLocalize(EntityMixin(Polymer
 				.decw-grid-1 {
 					grid-template-columns: [hero-start] 1fr [hero-end];
 				}
-
 				.decw-grid-2 d2l-enrollment-card {
 					--course-image-height: 150px;
 				}
@@ -87,34 +87,51 @@ class EnrollmentCollectionWidget extends EnrollmentsLocalize(EntityMixin(Polymer
 				.decw-grid[has-hero] > d2l-enrollment-card:first-of-type {
 					display: none;
 				}
+				.spinner-container {
+					display: flex;
+					justify-content: center;
+					align-items: center;
+				}
 
 			</style>
-			<template is="dom-if" if="[[_hasEnrollments]]">
-				<div class$="decw-grid decw-grid-[[_numColumns]] decw-grid-[[_numColumns]]-[[_numEnrollments]]" has-hero$=[[_hasHero]]>
-					<template is="dom-if" if="[[_hasHero]]">
-						<d2l-enrollment-hero-banner href="[[_enrollmentHeroHref]]" token="[[token]]" hide-pinning></d2l-enrollment-hero-banner>
-					</template>
-					<template is="dom-repeat"  items="[[_enrollmentsHref]]">
-						<d2l-enrollment-card href="[[item]]" token="[[token]]"
-								show-unattempted-quizzes
-								show-dropbox-unread-feedback
-								show-ungraded-quiz-attempts
-								show-unread-discussion-messages
-								show-unread-dropbox-submissions
-								hide-pinning>
-						</d2l-enrollment-card>
-					</template>
-				</div>
+			<template is="dom-if" if="[[_isLoaded]]">
+				<template is="dom-if" if="[[_hasEnrollments]]">
+					<div class$="decw-grid decw-grid-[[_numColumns]] decw-grid-[[_numColumns]]-[[_numEnrollments]]" has-hero$=[[_hasHero]]>
+						<template is="dom-if" if="[[_hasHero]]">
+							<d2l-enrollment-hero-banner href="[[_enrollmentHeroHref]]" token="[[token]]" hide-pinning></d2l-enrollment-hero-banner>
+						</template>
+						<template is="dom-repeat"  items="[[_enrollmentsHref]]">
+							<d2l-enrollment-card href="[[item]]" token="[[token]]"
+									show-unattempted-quizzes
+									show-dropbox-unread-feedback
+									show-ungraded-quiz-attempts
+									show-unread-discussion-messages
+									show-unread-dropbox-submissions
+									hide-pinning>
+							</d2l-enrollment-card>
+						</template>
+					</div>
+				</template>
+				<template is="dom-if" if="[[!_hasEnrollments]]">
+					<d2l-alert>
+						[[localize('noCoursesMessage')]]
+					</d2l-alert>
+				</template>
 			</template>
-			<template is="dom-if" if="[[!_hasEnrollments]]">
-				<d2l-alert>
-					[[localize('noCoursesMessage')]]
-				</d2l-alert>
+			<template is="dom-if" if="[[!_isLoaded]]">
+				<div class="spinner-container">
+					<d2l-loading-spinner size="100">
+					</d2l-loading-spinner>
+				</div>
 			</template>
 		`;
 	}
 	static get properties() {
 		return {
+			_isLoaded: {
+				type: Boolean,
+				value: false
+			},
 			_enrollmentHeroHref: String,
 			_enrollmentsHref: {
 				type: Array,
@@ -148,6 +165,11 @@ class EnrollmentCollectionWidget extends EnrollmentsLocalize(EntityMixin(Polymer
 	static get is() { return 'd2l-enrollment-collection-widget'; }
 
 	_onEnrollmentCollectionChange(enrollmentCollection) {
+
+		enrollmentCollection.subEntitiesLoaded().then(() => {
+			this._isLoaded = true;
+		});
+
 		const enrollments = enrollmentCollection.enrollmentsHref();
 		this._enrollmentHeroHref = enrollments[0];
 		this._enrollmentsHref = enrollments;
