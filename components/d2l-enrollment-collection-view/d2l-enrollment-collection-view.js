@@ -54,8 +54,7 @@ class AdminList extends EntityMixinLit(LitElement) {
 		});
 
 		enrollmentCollection.subEntitiesLoaded().then(() => {
-			if (enrollmentCollection.replaceItems === true)
-			{
+			if (enrollmentCollection.replaceItems === true) {
 				this._items = items;
 			} else {
 				this._items = this._items.concat(items);
@@ -146,20 +145,32 @@ class AdminList extends EntityMixinLit(LitElement) {
 				}
 
 				.d2l-enrollment-collection-view-header-container {
+					display: flex;
+					justify-content: center;
+					position: relative;
 					border-bottom: solid 1px var(--d2l-color-gypsum);
 					box-sizing: border-box;
+					width: 100%;
+				}
+				.d2l-enrollment-collection-view-header{
+					box-sizing: border-box;
+					max-width: 1230px;
+					padding-left: 2.439%;
+					padding-right: 2.439%;
+					width: 100%;
+					align-items: center;
 				}
 				.d2l-enrollment-collection-view-header-label {
-					height:48px;
-					margin:0px;
-					padding:0px;
-					padding-bottom:22px;
+					margin: 24px 0;
 				}
 				.d2l-enrollment-collection-view-body-container {
 					background-color: --var(--d2l-color-regolith);
 				}
 				.d2l-enrollment-collection-view-body-navigation-container {
+					align-items: baseline;
 					display: flex;
+					justify-content: space-between;
+					padding-bottom: 10px;
 				}
 				.d2l-enrollment-collection-view-search {
 					width:270px;
@@ -196,7 +207,9 @@ class AdminList extends EntityMixinLit(LitElement) {
 		const items = this._loaded ? this._renderItemList() : null;
 		return html`
 			<div class="d2l-enrollment-collection-view-header-container">
-				<h1 class="d2l-heading-1 d2l-enrollment-collection-view-header-label">${this['title-text']}</h1>
+				<div class="d2l-enrollment-collection-view-header">
+					<h1 class="d2l-heading-1 d2l-enrollment-collection-view-header-label">My Learning</h1>
+				<div>
 			</div>
 			<div class="d2l-enrollment-collection-view-body-container">
 				<div class="d2l-enrollment-collection-view-body-navigation-container">
@@ -229,7 +242,7 @@ class AdminList extends EntityMixinLit(LitElement) {
 						${item.org.name()}
 						<d2l-enrollment-summary-view-tag-slot-list>
 							<span slot="first">${enrollmentType}</span>
-							${item.hasDueDate ? html`<d2l-user-activity-usage slot="middle" href="${item.activityUsageUrl}"></d2l-user-activity-usage>` : null }
+							${item.hasDueDate ? html`<d2l-user-activity-usage slot="middle" href="${item.activityUsageUrl}"></d2l-user-activity-usage>` : null}
 						</d2l-enrollment-summary-view-tag-slot-list>
 					</d2l-list-item-content>
 				</d2l-list-item>
