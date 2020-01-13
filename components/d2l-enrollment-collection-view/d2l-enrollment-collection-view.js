@@ -211,12 +211,14 @@ class AdminList extends LocalizeMixin(EntityMixinLit(LitElement)) {
 					padding: 2.1rem 2rem;
 				}
 				@media (max-width: 615px) {
+					.d2l-enrollment-collection-view-content,
 					.d2l-enrollment-collection-view-header {
 						padding-left: 15px;
 						padding-right: 15px;
 					}
 				}
 				@media (min-width: 1230px) {
+					.d2l-enrollment-collection-view-content,
 					.d2l-enrollment-collection-view-header {
 						padding-left: 30px;
 						padding-right: 30px;
