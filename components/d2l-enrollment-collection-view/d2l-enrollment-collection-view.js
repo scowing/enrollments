@@ -2,6 +2,8 @@ import { css, html, LitElement } from 'lit-element/lit-element.js';
 import { repeat } from 'lit-html/directives/repeat';
 import { heading1Styles, bodyStandardStyles } from '@brightspace-ui/core/components/typography/styles.js';
 import { EntityMixinLit } from 'siren-sdk/src/mixin/entity-mixin-lit.js';
+import { LocalizeMixin } from '@brightspace-ui/core/mixins/localize-mixin.js';
+import { getLocalizeResources } from './localization.js';
 import { entityFactory, dispose } from 'siren-sdk/src/es6/EntityFactory.js';
 import { EnrollmentCollectionEntity } from 'siren-sdk/src/enrollments/EnrollmentCollectionEntity.js';
 import { classes as organizationClasses } from 'siren-sdk/src/organizations/OrganizationEntity.js';
@@ -16,13 +18,17 @@ import '@brightspace-ui/core/components/inputs/input-search.js';
 import 'd2l-loading-spinner/d2l-loading-spinner.js';
 import 'd2l-organizations/components/d2l-organization-image/d2l-organization-image.js';
 
-class AdminList extends EntityMixinLit(LitElement) {
+class AdminList extends LocalizeMixin(EntityMixinLit(LitElement)) {
 	constructor() {
 		super();
 		this._items = [];
 		this._setEntityType(EnrollmentCollectionEntity);
 		this._showLoadMoreSpinner = false;
 		this._showSearchSpinner = false;
+	}
+
+	static async getLocalizeResources(langs) {
+		return getLocalizeResources(langs, import.meta.url);
 	}
 
 	set _entity(entity) {
@@ -54,8 +60,7 @@ class AdminList extends EntityMixinLit(LitElement) {
 		});
 
 		enrollmentCollection.subEntitiesLoaded().then(() => {
-			if (enrollmentCollection.replaceItems === true)
-			{
+			if (enrollmentCollection.replaceItems === true) {
 				this._items = items;
 			} else {
 				this._items = this._items.concat(items);
@@ -145,21 +150,41 @@ class AdminList extends EntityMixinLit(LitElement) {
 					display: none;
 				}
 
+				.d2l-enrollment-collection-view-container{
+					display: flex;
+					justify-content: center;
+				}
+
+				.d2l-enrollment-collection-view-content {
+					box-sizing: border-box;
+					padding: 0 30px;
+					max-width: 1230px;
+					width: 100%;
+				}
+
 				.d2l-enrollment-collection-view-header-container {
+					position: relative;
 					border-bottom: solid 1px var(--d2l-color-gypsum);
 					box-sizing: border-box;
+					width: 100%;
 				}
+				.d2l-enrollment-collection-view-header{
+					align-items: center;
+					display: flex;
+					padding-left: 2.439%;
+					padding-right: 2.439%;
+				}
+
 				.d2l-enrollment-collection-view-header-label {
-					height:48px;
-					margin:0px;
-					padding:0px;
-					padding-bottom:22px;
+					margin: 24px 0;
 				}
 				.d2l-enrollment-collection-view-body-container {
 					background-color: --var(--d2l-color-regolith);
 				}
 				.d2l-enrollment-collection-view-body-navigation-container {
 					display: flex;
+					justify-content: space-between;
+					margin: 12px 0;
 				}
 				.d2l-enrollment-collection-view-search {
 					width:270px;
@@ -172,7 +197,8 @@ class AdminList extends EntityMixinLit(LitElement) {
 					box-sizing: border-box;
 					max-width: 1230px;
 					width: 100%;
-					padding-top: 26px;
+					padding-left: 2.439%;
+					padding-right: 2.439%;
 				}
 				.d2l-enrollment-collection-view-load-container {
 					display: flex;
@@ -188,6 +214,20 @@ class AdminList extends EntityMixinLit(LitElement) {
 					border-radius: 8px;
 					padding: 2.1rem 2rem;
 				}
+				@media (max-width: 615px) {
+					.d2l-enrollment-collection-view-content,
+					.d2l-enrollment-collection-view-header {
+						padding-left: 15px;
+						padding-right: 15px;
+					}
+				}
+				@media (min-width: 1230px) {
+					.d2l-enrollment-collection-view-content,
+					.d2l-enrollment-collection-view-header {
+						padding-left: 30px;
+						padding-right: 30px;
+					}
+				}
 			`
 		];
 	}
@@ -195,18 +235,18 @@ class AdminList extends EntityMixinLit(LitElement) {
 	render() {
 		const items = this._loaded ? this._renderItemList() : null;
 		return html`
-			<div class="d2l-enrollment-collection-view-header-container">
-				<h1 class="d2l-heading-1 d2l-enrollment-collection-view-header-label">${this['title-text']}</h1>
-			</div>
-			<div class="d2l-enrollment-collection-view-body-container">
-				<div class="d2l-enrollment-collection-view-body-navigation-container">
-					<d2l-input-search class="d2l-enrollment-collection-view-search" placeholder="Search..." @d2l-input-search-searched=${this._handleSearch}></d2l-input-search>
-					<d2l-loading-spinner class="d2l-enrollment-collection-view-search-spinner" size="42" ?hidden="${!this._showSearchSpinner}"></d2l-loading-spinner>
+			<div class="d2l-enrollment-collection-view-container d2l-enrollment-collection-view-header-container">
+				<div class="d2l-enrollment-collection-view-content d2l-enrollment-collection-view-header">
+					<h1 class="d2l-heading-1 d2l-enrollment-collection-view-header-label">${this.localize('myLearning')}</h1>
 				</div>
-
-				<div class="d2l-enrollment-collection-view-body">
+			</div>
+			<div class="d2l-enrollment-collection-view-container d2l-enrollment-collection-view-body-container">
+				<div class="d2l-enrollment-collection-view-content d2l-enrollment-collection-view-body">
+					<div class="d2l-enrollment-collection-view-body-navigation-container">
+						<d2l-input-search class="d2l-enrollment-collection-view-search" placeholder="Search..." @d2l-input-search-searched=${this._handleSearch}></d2l-input-search>
+						<d2l-loading-spinner class="d2l-enrollment-collection-view-search-spinner" size="42" ?hidden="${!this._showSearchSpinner}"></d2l-loading-spinner>
+					</div>
 					${items}
-
 					<div class="d2l-enrollment-collection-view-load-container">
 						<d2l-button class="d2l-enrollment-collection-view-load-button" @click=${this._handleLoadMore} ?hidden="${!this._canLoadMore}">Load More</d2l-button>
 						<d2l-loading-spinner size="85" ?hidden="${!this._showLoadMoreSpinner}"></d2l-loading-spinner>
@@ -229,7 +269,7 @@ class AdminList extends EntityMixinLit(LitElement) {
 						${item.org.name()}
 						<d2l-enrollment-summary-view-tag-slot-list>
 							<span slot="first">${enrollmentType}</span>
-							${item.hasDueDate ? html`<d2l-user-activity-usage slot="middle" href="${item.activityUsageUrl}"></d2l-user-activity-usage>` : null }
+							${item.hasDueDate ? html`<d2l-user-activity-usage slot="middle" href="${item.activityUsageUrl}"></d2l-user-activity-usage>` : null}
 						</d2l-enrollment-summary-view-tag-slot-list>
 					</d2l-list-item-content>
 				</d2l-list-item>
