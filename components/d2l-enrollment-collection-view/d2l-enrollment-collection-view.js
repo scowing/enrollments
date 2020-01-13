@@ -164,13 +164,14 @@ class AdminList extends LocalizeMixin(EntityMixinLit(LitElement)) {
 					padding-left: 2.439%;
 					padding-right: 2.439%;
 					width: 100%;
-					align-items: center;
 				}
 				.d2l-enrollment-collection-view-header-label {
 					margin: 24px 0;
 				}
 				.d2l-enrollment-collection-view-body-container {
 					background-color: --var(--d2l-color-regolith);
+					padding-left: 78px;
+					padding-bottom: 72px;
 				}
 				.d2l-enrollment-collection-view-body-navigation-container {
 					align-items: baseline;
@@ -189,7 +190,6 @@ class AdminList extends LocalizeMixin(EntityMixinLit(LitElement)) {
 					box-sizing: border-box;
 					max-width: 1230px;
 					width: 100%;
-					padding-top: 26px;
 				}
 				.d2l-enrollment-collection-view-load-container {
 					display: flex;
@@ -205,6 +205,18 @@ class AdminList extends LocalizeMixin(EntityMixinLit(LitElement)) {
 					border-radius: 8px;
 					padding: 2.1rem 2rem;
 				}
+				@media (max-width: 615px) {
+					.d2l-enrollment-collection-view-header {
+						padding-left: 15px;
+						padding-right: 15px;
+					}
+				}
+				@media (min-width: 1230px) {
+					.d2l-enrollment-collection-view-header {
+						padding-left: 30px;
+						padding-right: 30px;
+					}
+				}
 			`
 		];
 	}
@@ -215,7 +227,7 @@ class AdminList extends LocalizeMixin(EntityMixinLit(LitElement)) {
 			<div class="d2l-enrollment-collection-view-header-container">
 				<div class="d2l-enrollment-collection-view-header">
 					<h1 class="d2l-heading-1 d2l-enrollment-collection-view-header-label">${this.localize('myLearning')}</h1>
-				<div>
+				</div>
 			</div>
 			<div class="d2l-enrollment-collection-view-body-container">
 				<div class="d2l-enrollment-collection-view-body-navigation-container">
