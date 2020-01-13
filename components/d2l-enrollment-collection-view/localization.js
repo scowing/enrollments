@@ -23,7 +23,6 @@ export async function getLocalizeResources(langs, importMetaUrl) {
 			langterms[langterm] = translationFile.default[langterm];
 		}
 	}
-	console.log(langterms)
 	return {
 		language: supportedLanguage,
 		resources: langterms
