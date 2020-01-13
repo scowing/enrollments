@@ -171,6 +171,8 @@ class AdminList extends LocalizeMixin(EntityMixinLit(LitElement)) {
 				.d2l-enrollment-collection-view-header{
 					align-items: center;
 					display: flex;
+					padding-left: 2.439%;
+					padding-right: 2.439%;
 				}
 
 				.d2l-enrollment-collection-view-header-label {
