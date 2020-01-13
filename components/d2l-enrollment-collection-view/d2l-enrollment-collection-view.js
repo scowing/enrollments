@@ -2,6 +2,8 @@ import { css, html, LitElement } from 'lit-element/lit-element.js';
 import { repeat } from 'lit-html/directives/repeat';
 import { heading1Styles, bodyStandardStyles } from '@brightspace-ui/core/components/typography/styles.js';
 import { EntityMixinLit } from 'siren-sdk/src/mixin/entity-mixin-lit.js';
+import { LocalizeMixin } from '@brightspace-ui/core/mixins/localize-mixin.js';
+import { getLocalizeResources } from './localization.js';
 import { entityFactory, dispose } from 'siren-sdk/src/es6/EntityFactory.js';
 import { EnrollmentCollectionEntity } from 'siren-sdk/src/enrollments/EnrollmentCollectionEntity.js';
 import { classes as organizationClasses } from 'siren-sdk/src/organizations/OrganizationEntity.js';
@@ -16,13 +18,17 @@ import '@brightspace-ui/core/components/inputs/input-search.js';
 import 'd2l-loading-spinner/d2l-loading-spinner.js';
 import 'd2l-organizations/components/d2l-organization-image/d2l-organization-image.js';
 
-class AdminList extends EntityMixinLit(LitElement) {
+class AdminList extends LocalizeMixin(EntityMixinLit(LitElement)) {
 	constructor() {
 		super();
 		this._items = [];
 		this._setEntityType(EnrollmentCollectionEntity);
 		this._showLoadMoreSpinner = false;
 		this._showSearchSpinner = false;
+	}
+
+	static async getLocalizeResources(langs) {
+		return getLocalizeResources(langs, import.meta.url);
 	}
 
 	set _entity(entity) {
@@ -208,7 +214,7 @@ class AdminList extends EntityMixinLit(LitElement) {
 		return html`
 			<div class="d2l-enrollment-collection-view-header-container">
 				<div class="d2l-enrollment-collection-view-header">
-					<h1 class="d2l-heading-1 d2l-enrollment-collection-view-header-label">My Learning</h1>
+					<h1 class="d2l-heading-1 d2l-enrollment-collection-view-header-label">${this.localize('myLearning')}</h1>
 				<div>
 			</div>
 			<div class="d2l-enrollment-collection-view-body-container">
