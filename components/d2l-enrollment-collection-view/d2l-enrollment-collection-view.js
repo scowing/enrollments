@@ -150,34 +150,39 @@ class AdminList extends LocalizeMixin(EntityMixinLit(LitElement)) {
 					display: none;
 				}
 
-				.d2l-enrollment-collection-view-header-container {
+				.d2l-enrollment-collection-view-container{
 					display: flex;
 					justify-content: center;
+				}
+
+				.d2l-enrollment-collection-view-content {
+					box-sizing: border-box;
+					padding: 0 30px;
+					max-width: 1230px;
+					width: 100%;
+				}
+
+				.d2l-enrollment-collection-view-header-container {
 					position: relative;
 					border-bottom: solid 1px var(--d2l-color-gypsum);
 					box-sizing: border-box;
 					width: 100%;
 				}
 				.d2l-enrollment-collection-view-header{
-					box-sizing: border-box;
-					max-width: 1230px;
-					padding-left: 2.439%;
-					padding-right: 2.439%;
-					width: 100%;
+					align-items: center;
+					display: flex;
 				}
+
 				.d2l-enrollment-collection-view-header-label {
 					margin: 24px 0;
 				}
 				.d2l-enrollment-collection-view-body-container {
 					background-color: --var(--d2l-color-regolith);
-					padding-left: 78px;
-					padding-bottom: 72px;
 				}
 				.d2l-enrollment-collection-view-body-navigation-container {
-					align-items: baseline;
 					display: flex;
 					justify-content: space-between;
-					padding-bottom: 10px;
+					margin: 12px 0;
 				}
 				.d2l-enrollment-collection-view-search {
 					width:270px;
@@ -224,20 +229,18 @@ class AdminList extends LocalizeMixin(EntityMixinLit(LitElement)) {
 	render() {
 		const items = this._loaded ? this._renderItemList() : null;
 		return html`
-			<div class="d2l-enrollment-collection-view-header-container">
-				<div class="d2l-enrollment-collection-view-header">
+			<div class="d2l-enrollment-collection-view-container d2l-enrollment-collection-view-header-container">
+				<div class="d2l-enrollment-collection-view-content d2l-enrollment-collection-view-header">
 					<h1 class="d2l-heading-1 d2l-enrollment-collection-view-header-label">${this.localize('myLearning')}</h1>
 				</div>
 			</div>
-			<div class="d2l-enrollment-collection-view-body-container">
-				<div class="d2l-enrollment-collection-view-body-navigation-container">
-					<d2l-input-search class="d2l-enrollment-collection-view-search" placeholder="Search..." @d2l-input-search-searched=${this._handleSearch}></d2l-input-search>
-					<d2l-loading-spinner class="d2l-enrollment-collection-view-search-spinner" size="42" ?hidden="${!this._showSearchSpinner}"></d2l-loading-spinner>
-				</div>
-
-				<div class="d2l-enrollment-collection-view-body">
+			<div class="d2l-enrollment-collection-view-container d2l-enrollment-collection-view-body-container">
+				<div class="d2l-enrollment-collection-view-content d2l-enrollment-collection-view-body">
+					<div class="d2l-enrollment-collection-view-body-navigation-container">
+						<d2l-input-search class="d2l-enrollment-collection-view-search" placeholder="Search..." @d2l-input-search-searched=${this._handleSearch}></d2l-input-search>
+						<d2l-loading-spinner class="d2l-enrollment-collection-view-search-spinner" size="42" ?hidden="${!this._showSearchSpinner}"></d2l-loading-spinner>
+					</div>
 					${items}
-
 					<div class="d2l-enrollment-collection-view-load-container">
 						<d2l-button class="d2l-enrollment-collection-view-load-button" @click=${this._handleLoadMore} ?hidden="${!this._canLoadMore}">Load More</d2l-button>
 						<d2l-loading-spinner size="85" ?hidden="${!this._showLoadMoreSpinner}"></d2l-loading-spinner>
