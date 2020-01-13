@@ -195,6 +195,8 @@ class AdminList extends LocalizeMixin(EntityMixinLit(LitElement)) {
 					box-sizing: border-box;
 					max-width: 1230px;
 					width: 100%;
+					padding-left: 2.439%;
+					padding-right: 2.439%;
 				}
 				.d2l-enrollment-collection-view-load-container {
 					display: flex;
