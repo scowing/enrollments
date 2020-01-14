@@ -24,6 +24,7 @@ class AdminList extends LocalizeMixin(EntityMixinLit(LitElement)) {
 		super();
 		this._items = [];
 		this._loadedImages = [];
+		this._hasFirstLoad = false;
 		this._mainPageLoad = new Promise(() => {});
 		this._setEntityType(EnrollmentCollectionEntity);
 
@@ -51,6 +52,7 @@ class AdminList extends LocalizeMixin(EntityMixinLit(LitElement)) {
 		this._loadMoreHref = enrollmentCollection.getNextEnrollmentHref();
 		this._mainPageLoad = this._loadEnrollmentItems(enrollmentCollection).then(items => {
 			this._items = items;
+			this._hasFirstLoad = true;
 		});
 	}
 
@@ -84,13 +86,14 @@ class AdminList extends LocalizeMixin(EntityMixinLit(LitElement)) {
 	_handleLoadMore() {
 		const nextEnrollmentHref = this._loadMoreHref + '&orgUnitTypeId=3';
 		if (nextEnrollmentHref !== null) {
-			this._showLoadMoreSpinner = true;
+			this._isLoadingMore = true;
 			entityFactory(this._entityType, nextEnrollmentHref, this.token, enrollmentCollection => {
 
 				this._hasLoadMore = enrollmentCollection.hasMoreEnrollments();
 				this._loadMoreHref = enrollmentCollection.getNextEnrollmentHref();
 				this._loadEnrollmentItems(enrollmentCollection).then(newItems => {
 					this._items = [ ...this._items, ...newItems ];
+					this._isLoadingMore = false;
 				});
 			});
 		}
@@ -126,6 +129,9 @@ class AdminList extends LocalizeMixin(EntityMixinLit(LitElement)) {
 				type: Array
 			},
 			_hasLoadMore: {
+				type: Boolean
+			},
+			_isLoadingMore: {
 				type: Boolean
 			},
 			_showLoadMoreSpinner: {
@@ -322,7 +328,11 @@ class AdminList extends LocalizeMixin(EntityMixinLit(LitElement)) {
 			`;
 		});
 
-		const items = this._handleFirstLoad(this._renderItemList.bind(this), () => html`${this._renderItemListSkeleton(3)}`);
+		const items = this._handleFirstLoad(
+			() => this._renderItemList(),
+			() => html`${this._renderItemListSkeleton(3)}`,
+			this._hasFirstLoad
+		);
 
 		return html`
 			<div class="d2l-enrollment-collection-view-container d2l-enrollment-collection-view-header-container">
@@ -340,6 +350,7 @@ class AdminList extends LocalizeMixin(EntityMixinLit(LitElement)) {
 
 					${items}
 					<div class="d2l-enrollment-collection-view-load-container">
+
 						<d2l-button class="d2l-enrollment-collection-view-load-button" @click=${this._handleLoadMore} ?hidden="${!this._hasLoadMore}">Load More</d2l-button>
 						<d2l-loading-spinner size="85" ?hidden="${!this._showLoadMoreSpinner}"></d2l-loading-spinner>
 					</div>
@@ -349,7 +360,7 @@ class AdminList extends LocalizeMixin(EntityMixinLit(LitElement)) {
 	}
 
 	_handleFirstLoad(whenLoaded, whileLoading = () => null, firstLoad = null, promiseToWatch = null) {
-		// firstLoad = firstLoad === null ? this._loaded : firstLoad;
+		firstLoad = firstLoad === null ? this._loaded : firstLoad;
 		promiseToWatch = promiseToWatch === null ? this._mainPageLoad : promiseToWatch;
 		return firstLoad ? whenLoaded() : until(promiseToWatch.then(whenLoaded), whileLoading());
 	}
