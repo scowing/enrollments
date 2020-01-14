@@ -350,9 +350,13 @@ class AdminList extends LocalizeMixin(EntityMixinLit(LitElement)) {
 
 					${items}
 					<div class="d2l-enrollment-collection-view-load-container">
-
-						<d2l-button class="d2l-enrollment-collection-view-load-button" @click=${this._handleLoadMore} ?hidden="${!this._hasLoadMore}">Load More</d2l-button>
-						<d2l-loading-spinner size="85" ?hidden="${!this._showLoadMoreSpinner}"></d2l-loading-spinner>
+						${
+							this._hasLoadMore && !this._isLoadingMore
+							? html`<d2l-button class="d2l-enrollment-collection-view-load-button" @click=${this._handleLoadMore}>Load More</d2l-button>`
+							: this._isLoadingMore
+							? html`<d2l-loading-spinner size="85"></d2l-loading-spinner>`
+							: null
+						}
 					</div>
 				</div>
 			</div>
