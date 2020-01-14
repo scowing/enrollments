@@ -1,7 +1,5 @@
 import { css, html, LitElement } from 'lit-element/lit-element.js';
 import { repeat } from 'lit-html/directives/repeat';
-import { until } from 'lit-html/directives/until.js';
-import { cache } from 'lit-html/directives/cache.js';
 import { heading1Styles, bodyStandardStyles } from '@brightspace-ui/core/components/typography/styles.js';
 import { EntityMixinLit } from 'siren-sdk/src/mixin/entity-mixin-lit.js';
 import { LocalizeMixin } from '@brightspace-ui/core/mixins/localize-mixin.js';
@@ -195,25 +193,19 @@ class AdminList extends LocalizeMixin(EntityMixinLit(LitElement)) {
 					padding: 0 30px;
 					max-width: 1230px;
 					width: 100%;
-				}
-
-				.d2l-enrollment-collection-view-header-container {
-					position: relative;
-					border-bottom: solid 1px var(--d2l-color-gypsum);
-					box-sizing: border-box;
-					width: 100%;
-				}
-				.d2l-enrollment-collection-view-header{
-					align-items: center;
-					display: flex;
 					padding-left: 2.439%;
 					padding-right: 2.439%;
 				}
 
-				.d2l-enrollment-collection-view-body-container {
-					background-color: --var(--d2l-color-regolith);
+				.d2l-enrollment-collection-view-header-container {
+					border-bottom: solid 1px var(--d2l-color-gypsum);
 				}
-				.d2l-enrollment-collection-view-body-navigation-container {
+				.d2l-enrollment-collection-view-header {
+					align-items: center;
+					display: flex;
+				}
+
+				.d2l-enrollment-collection-view-search-container {
 					display: flex;
 					justify-content: space-between;
 					margin: 24px 0;
@@ -221,21 +213,13 @@ class AdminList extends LocalizeMixin(EntityMixinLit(LitElement)) {
 				.d2l-enrollment-collection-view-search {
 					width: 270px;
 				}
-				.d2l-enrollment-collection-view-body {
-					box-sizing: border-box;
-					max-width: 1230px;
-					width: 100%;
-					padding-left: 2.439%;
-					padding-right: 2.439%;
-				}
+
 				.d2l-enrollment-collection-view-load-container {
 					display: flex;
 					justify-content: space-between;
-					width:50%;
+					margin:12px 0 32px 0;
 				}
-				.d2l-enrollment-collection-view-load-button {
-					margin:12px 16px 32px 0px;
-				}
+
 				.d2l-enrollment-collection-no-enrollments {
 					background-color: var(--d2l-color-regolith);
 					border: solid 1px var(--d2l-color-gypsum);
@@ -245,9 +229,6 @@ class AdminList extends LocalizeMixin(EntityMixinLit(LitElement)) {
 
 				.d2l-enrollment-collection-view-list-container {
 					position: relative;
-				}
-				.d2l-enrollment-collection-view-list {
-
 				}
 				.d2l-enrollment-collection-view-list-overlay {
 					display: none;
@@ -273,29 +254,11 @@ class AdminList extends LocalizeMixin(EntityMixinLit(LitElement)) {
 					grid-template-areas: only-one;
 					position: relative;
 				}
-
-				.d2l-activity-collection-image-skeleton,
+				.d2l-enrollment-collection-view-image-skeleton,
 				.d2l-enrollment-collection-view-organization-image {
 					grid-column: 1;
 					grid-row: 1;
 				}
-
-				@media (max-width: 615px) {
-					.d2l-enrollment-collection-view-content,
-					.d2l-enrollment-collection-view-header {
-						padding-left: 15px;
-						padding-right: 15px;
-					}
-				}
-				@media (min-width: 1230px) {
-					.d2l-enrollment-collection-view-content,
-					.d2l-enrollment-collection-view-header {
-						padding-left: 30px;
-						padding-right: 30px;
-					}
-				}
-
-
 
 				@keyframes loadingPulse {
 					0% { fill: var(--d2l-color-sylvite); }
@@ -303,28 +266,25 @@ class AdminList extends LocalizeMixin(EntityMixinLit(LitElement)) {
 					75% { fill: var(--d2l-color-sylvite); }
 					100% { fill: var(--d2l-color-sylvite); }
 				}
-				.d2l-activity-collection-skeleton-rect {
+				.d2l-enrollment-collection-view-skeleton-rect {
 					animation: loadingPulse 1.8s linear infinite;
 				}
 
-				.d2l-activity-collection-body-compact-skeleton-svg {
+				.d2l-enrollment-collection-view-image-skeleton {
+					width: 100%;
+				}
+				.d2l-enrollment-collection-view-body-compact-skeleton-svg {
 					height: 0.55rem;
 				}
-				.d2l-activity-collection-body-compact-skeleton-svg {
-					height: 0.55rem;
-				}
-				.d2l-activity-collection-body-small-skeleton-svg {
+				.d2l-enrollment-collection-view-body-small-skeleton-svg {
 					height: 0.5rem;
 				}
-				.d2l-activity-collection-header-1-skeleton-svg {
-					max-height: 0.95rem;
-				}
-				.d2l-activity-collection-header-1-skeleton {
+				.d2l-enrollment-collection-view-header-1-skeleton {
 					height: 2.4rem;
 					margin: 1.5rem 0;
 					min-width: 20rem;
 				}
-				.d2l-activity-collection-header-1-skeleton-svg {
+				.d2l-enrollment-collection-view-header-1-skeleton-svg {
 					max-height: 100%;
 				}
 				.d2l-enrollment-collection-view-search-skeleton {
@@ -336,7 +296,37 @@ class AdminList extends LocalizeMixin(EntityMixinLit(LitElement)) {
 				.d2l-enrollment-collection-view-search-skeleton-svg {
 					max-height: 100%;
 				}
+				.d2l-enrollment-collection-view-load-spinner {
+					margin: auto;
+				}
 
+				@media only screen and (max-width: 420px) {
+					.d2l-enrollment-collection-view-search,
+					.d2l-enrollment-collection-view-load-button,
+					.d2l-enrollment-collection-view-search-skeleton {
+						width: 100%;
+					}
+				}
+				@media only screen and (max-width: 615px) {
+					.d2l-enrollment-collection-view-content {
+						padding-left: 15px;
+						padding-right: 15px;
+					}
+					.d2l-enrollment-collection-view-body-small-skeleton-svg {
+						height: 0.4rem;
+					}
+					.d2l-enrollment-collection-view-header-1-skeleton {
+						height: 1.8rem;
+						min-width: 10rem;
+					}
+				}
+				@media only screen and (min-width: 1230px) {
+					.d2l-enrollment-collection-view-content {
+						padding-left: 30px;
+						padding-right: 30px;
+					}
+				}
+			}
 			`
 		];
 	}
@@ -349,9 +339,9 @@ class AdminList extends LocalizeMixin(EntityMixinLit(LitElement)) {
 			`;
 		}, () => {
 			return html`
-				<div class="d2l-activity-collection-header-1-skeleton">
-					<svg width="100%" class="d2l-activity-collection-header-1-skeleton-svg">
-						<rect x="0" width="70%" y="0" height="100%" stroke="none" rx="4" class="d2l-activity-collection-skeleton-rect"></rect>
+				<div class="d2l-enrollment-collection-view-header-1-skeleton">
+					<svg width="100%" class="d2l-enrollment-collection-view-header-1-skeleton-svg">
+						<rect x="0" width="70%" y="0" height="100%" stroke="none" rx="4" class="d2l-enrollment-collection-view-skeleton-rect"></rect>
 					</svg>
 				</div>
 			`;
@@ -363,7 +353,7 @@ class AdminList extends LocalizeMixin(EntityMixinLit(LitElement)) {
 			return html`
 				<div class="d2l-enrollment-collection-view-search-skeleton">
 						<svg width="100%" class="d2l-enrollment-collection-view-search-skeleton-svg">
-							<rect x="0" width="100%" y="0" height="100%" stroke="none" rx="4" class="d2l-activity-collection-skeleton-rect"></rect>
+							<rect x="0" width="100%" y="0" height="100%" stroke="none" rx="4" class="d2l-enrollment-collection-view-skeleton-rect"></rect>
 						</svg>
 					</div>
 				</div>
@@ -393,10 +383,10 @@ class AdminList extends LocalizeMixin(EntityMixinLit(LitElement)) {
 					${header}
 				</div>
 			</div>
-			<div class="d2l-enrollment-collection-view-container d2l-enrollment-collection-view-body-container">
-				<div class="d2l-enrollment-collection-view-content d2l-enrollment-collection-view-body">
+			<div class="d2l-enrollment-collection-view-container">
+				<div class="d2l-enrollment-collection-view-content">
 
-					<div class="d2l-enrollment-collection-view-body-navigation-container">
+					<div class="d2l-enrollment-collection-view-search-container">
 						${search}
 					</div>
 					<div class="d2l-enrollment-collection-view-list-container" ?searching=${this._isSearching}>
@@ -410,7 +400,7 @@ class AdminList extends LocalizeMixin(EntityMixinLit(LitElement)) {
 							this._currentLoadMoreHref(this._showSearchItems) && !this._isLoadingMore
 							? html`<d2l-button class="d2l-enrollment-collection-view-load-button" @click=${() => this._handleLoadMore(this._showSearchItems)}>Load More</d2l-button>`
 							: this._isLoadingMore
-							? html`<d2l-loading-spinner size="85"></d2l-loading-spinner>`
+							? html`<d2l-loading-spinner class="d2l-enrollment-collection-view-load-spinner"size="85"></d2l-loading-spinner>`
 							: null
 						}
 					</div>
@@ -477,8 +467,8 @@ class AdminList extends LocalizeMixin(EntityMixinLit(LitElement)) {
 
 	_renderCourseImageSkeleton() {
 		return html`
-			<svg viewBox="0 0 180 77" width="100%" slot="illustration" class="d2l-activity-collection-image-skeleton">
-				<rect x="0" width="100%" y="0" height="100%" stroke="none" class="d2l-activity-collection-skeleton-rect"></rect>
+			<svg viewBox="0 0 180 77" slot="illustration" class="d2l-enrollment-collection-view-image-skeleton">
+				<rect x="0" width="100%" y="0" height="100%" stroke="none" class="d2l-enrollment-collection-view-skeleton-rect"></rect>
 			</svg>
 		`;
 	}
@@ -488,12 +478,12 @@ class AdminList extends LocalizeMixin(EntityMixinLit(LitElement)) {
 			<d2l-list-item>
 				${this._renderCourseImageSkeleton()}
 				<d2l-list-item-content>
-					<svg width="100%" class="d2l-activity-collection-body-compact-skeleton-svg">
-						<rect x="0" width="40%" y="0" height="100%" stroke="none" rx="4" class="d2l-activity-collection-skeleton-rect"></rect>
+					<svg width="100%" class="d2l-enrollment-collection-view-body-compact-skeleton-svg">
+						<rect x="0" width="40%" y="0" height="100%" stroke="none" rx="4" class="d2l-enrollment-collection-view-skeleton-rect"></rect>
 					</svg>
 					<div slot="secondary">
-						<svg width="100%" class="d2l-activity-collection-body-small-skeleton-svg">
-							<rect x="0" width="30%" y="0" height="100%" stroke="none" rx="4" class="d2l-activity-collection-skeleton-rect"></rect>
+						<svg width="100%" class="d2l-enrollment-collection-view-body-small-skeleton-svg">
+							<rect x="0" width="30%" y="0" height="100%" stroke="none" rx="4" class="d2l-enrollment-collection-view-skeleton-rect"></rect>
 						</svg>
 					</div>
 				</d2l-list-item-content>
