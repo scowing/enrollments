@@ -20,7 +20,7 @@ import '@brightspace-ui/core/components/loading-spinner/loading-spinner.js';
 import 'd2l-organizations/components/d2l-organization-image/d2l-organization-image.js';
 import { performSirenAction } from 'siren-sdk/src/es6/SirenAction.js';
 
-class AdminList extends LocalizeMixin(EntityMixinLit(LitElement)) {
+class EnrollmentCollectionView extends LocalizeMixin(EntityMixinLit(LitElement)) {
 	constructor() {
 		super();
 		this._items = [];
@@ -539,4 +539,4 @@ ${
 		}
 	}
 }
-customElements.define('d2l-enrollment-collection-view', AdminList);
+customElements.define('d2l-enrollment-collection-view', EnrollmentCollectionView);
