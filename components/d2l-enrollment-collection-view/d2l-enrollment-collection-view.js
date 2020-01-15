@@ -332,7 +332,7 @@ class AdminList extends LocalizeMixin(EntityMixinLit(LitElement)) {
 			items = this._searchItems;
 			emptyMessage = this.localize('noSearchResults');
 		} else {
-			items = this._items
+			items = this._items;
 			emptyMessage = this.localize('noLearning');
 		}
 		return this._renderItemList(items, emptyMessage);
@@ -342,7 +342,7 @@ class AdminList extends LocalizeMixin(EntityMixinLit(LitElement)) {
 		if (items.length <= 0) {
 			return html`<div class="d2l-enrollment-collection-no-enrollments">${emptyMessage}</div>`;
 		}
-		const listItems = repeat(items, (item) => item.org.self(), item => 
+		const listItems = repeat(items, (item) => item.org.self(), item =>
 			html`
 				<d2l-list-item href="${ifDefined(this._isSearching ? undefined : item.org.organizationHomepageUrl())}">
 					<div slot="illustration" class="d2l-enrollment-collection-view-list-item-illustration">
@@ -358,14 +358,14 @@ class AdminList extends LocalizeMixin(EntityMixinLit(LitElement)) {
 						${item.org.name()}
 						<d2l-enrollment-summary-view-tag-slot-list>
 							<span slot="first">${this._enrollmentType(item)}</span>
-							${
-								item.hasDueDate ? html`
-									<d2l-user-activity-usage slot="middle" href=${ifDefined(item.activityUsageUrl)} .token=${this.token}>
-										<d2l-organization-date slot="default" href=${item.href} .token=${this.token} hide-course-start-date
-										></d2l-organization-date>
-									</d2l-user-activity-usage>
-								` : null
-							}
+${
+	item.hasDueDate ? html`
+		<d2l-user-activity-usage slot="middle" href=${ifDefined(item.activityUsageUrl)} .token=${this.token}>
+			<d2l-organization-date slot="default" href=${item.href} .token=${this.token} hide-course-start-date
+			></d2l-organization-date>
+		</d2l-user-activity-usage>
+	` : null
+}
 						</d2l-enrollment-summary-view-tag-slot-list>
 					</d2l-list-item-content>
 				</d2l-list-item>
