@@ -88,12 +88,12 @@ class EnrollmentCollectionWidget extends EnrollmentsLocalize(EntityMixin(Polymer
 				.decw-grid[has-hero] > d2l-enrollment-card:first-of-type {
 					display: none;
 				}
-				.spinner-container {
+				.decw-spinner-container {
 					display: flex;
 					justify-content: center;
 					align-items: center;
 				}
-				.view-all-learning-button {
+				.decw-view-all-learning-button {
 					margin-top: 24px;
 					margin-bottom: 4px;
 				}
@@ -118,7 +118,7 @@ class EnrollmentCollectionWidget extends EnrollmentsLocalize(EntityMixin(Polymer
 						<a href="[[_myLearningHref]]">
 							<d2l-button-subtle
 								aria-hidden="true"
-								class="view-all-learning-button"
+								class="decw-view-all-learning-button"
 								text="View All Learning">
 							</d2l-button-subtle>
 						</a>
@@ -131,7 +131,7 @@ class EnrollmentCollectionWidget extends EnrollmentsLocalize(EntityMixin(Polymer
 				</template>
 			</template>
 			<template is="dom-if" if="[[!_isLoaded]]">
-				<div class="spinner-container">
+				<div class="decw-spinner-container">
 					<d2l-loading-spinner size="100">
 					</d2l-loading-spinner>
 				</div>
