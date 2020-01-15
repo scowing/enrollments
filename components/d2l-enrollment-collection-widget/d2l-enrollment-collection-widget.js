@@ -119,7 +119,7 @@ class EnrollmentCollectionWidget extends EnrollmentsLocalize(EntityMixin(Polymer
 							<d2l-button-subtle
 								aria-hidden="true"
 								class="decw-view-all-learning-button"
-								text="View All Learning">
+								text="[[localize('viewAllLearning')]]">
 							</d2l-button-subtle>
 						</a>
 					</div>
