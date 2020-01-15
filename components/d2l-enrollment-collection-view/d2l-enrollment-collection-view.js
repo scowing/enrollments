@@ -1,10 +1,11 @@
 import { css, html, LitElement } from 'lit-element/lit-element.js';
 import { repeat } from 'lit-html/directives/repeat';
+import { ifDefined } from 'lit-html/directives/if-defined';
 import { heading1Styles, bodyStandardStyles } from '@brightspace-ui/core/components/typography/styles.js';
 import { EntityMixinLit } from 'siren-sdk/src/mixin/entity-mixin-lit.js';
 import { LocalizeMixin } from '@brightspace-ui/core/mixins/localize-mixin.js';
 import { getLocalizeResources } from './localization.js';
-import { entityFactory, dispose } from 'siren-sdk/src/es6/EntityFactory.js';
+import { entityFactory } from 'siren-sdk/src/es6/EntityFactory.js';
 import { EnrollmentCollectionEntity } from 'siren-sdk/src/enrollments/EnrollmentCollectionEntity.js';
 import { classes as organizationClasses } from 'siren-sdk/src/organizations/OrganizationEntity.js';
 import '../d2l-enrollment-summary-view/d2l-enrollment-summary-view-tag-slot-list';
@@ -63,85 +64,6 @@ class AdminList extends LocalizeMixin(EntityMixinLit(LitElement)) {
 		this._loadEnrollmentItems(enrollmentCollection).then(items => {
 			this._items = items;
 			this._hasFirstLoad = true;
-		});
-	}
-
-	async _loadEnrollmentItems(enrollmentCollection) {
-
-		const items = [];
-		const imageChunk = this._loadedImages.length;
-		this._loadedImages[imageChunk] = { loaded: 0, total: null };
-
-		let totalInLoadingChunk = 0;
-		enrollmentCollection.onEnrollmentsChange((enrollment, index) => {
-			items[index] = {};
-
-			const organizationHref = enrollment.organizationHref();
-			enrollment.onOrganizationChange((organization) => {
-
-				if (typeof this._organizationImageChunk[organizationHref] === 'undefined') {
-					this._organizationImageChunk[organizationHref] = imageChunk;
-					totalInLoadingChunk++;
-				}
-				items[index].imageChunk = imageChunk;
-				items[index].org = organization;
-				items[index].href = organizationHref;
-				items[index].activityUsageUrl = enrollment.userActivityUsageUrl();
-			});
-
-			enrollment.onUserActivityUsageChange((activityUsage) => {
-				items[index].hasDueDate = (activityUsage.date() !== null);
-			});
-		});
-		await enrollmentCollection.subEntitiesLoaded();
-		this._loadedImages[imageChunk].total = totalInLoadingChunk;
-		if (totalInLoadingChunk === 0) {
-			this._loadedImages[imageChunk].allLoaded = true;
-		}
-		return items;
-	}
-
-
-	_handleLoadMore(isSearching) {
-		const loadMoreHref = this._currentLoadMoreHref(isSearching); 
-		if (loadMoreHref !== null) {
-			const nextHref = loadMoreHref + '&orgUnitTypeId=3';
-			this._isLoadingMore = true;
-			entityFactory(this._entityType, nextHref, this.token, enrollmentCollection => {
-
-				const newLoadMoreHref = enrollmentCollection.getNextEnrollmentHref();
-				this._loadEnrollmentItems(enrollmentCollection).then(newItems => {
-					this._updateItems(isSearching, newItems, newLoadMoreHref);
-					this._isLoadingMore = false;
-				});
-			});
-		}
-	}
-
-	async _performSearch(e) {
-
-		const searchText = e && e.target && e.target.value;
-		if (!searchText) {
-			this._searchItems = [];
-			this._searchText = '';
-			this._showSearchItems = false;
-			return;
-		}
-		const fields = [
-			{ name: 'search', value: searchText },
-			{ name: 'orgUnitTypeId', value: 3 },
-			{ name: 'orgUnitTypeId', value: 7 }
-		];
-		this._searchText = searchText;
-		this._isSearching = true;
-
-		const entity = await performSirenAction(this.token, this._searchAction, fields, true);
-		const enrollmentCollection = new EnrollmentCollectionEntity(entity, this.token);
-		this._loadEnrollmentItems(enrollmentCollection).then(items => {
-			this._searchItems = items;
-			this._searchLoadMoreHref = enrollmentCollection.getNextEnrollmentHref();
-			this._showSearchItems = true;
-			this._isSearching = false;
 		});
 	}
 
@@ -239,7 +161,6 @@ class AdminList extends LocalizeMixin(EntityMixinLit(LitElement)) {
 					z-index: 1;
 				}
 				.d2l-enrollment-collection-view-list-container[searching] > .d2l-enrollment-collection-view-list {
-					pointer-events: none;
 					filter: grayscale(100%);
 					opacity: 0.6;
 				}
@@ -317,7 +238,7 @@ class AdminList extends LocalizeMixin(EntityMixinLit(LitElement)) {
 					}
 					.d2l-enrollment-collection-view-header-1-skeleton {
 						height: 1.8rem;
-						min-width: 10rem;
+						min-width: 10rem;f
 					}
 				}
 				@media only screen and (min-width: 1230px) {
@@ -333,49 +254,11 @@ class AdminList extends LocalizeMixin(EntityMixinLit(LitElement)) {
 
 	render() {
 
-		const header = this._handleFirstLoad(() => {
-			return html`
-					<h1 class="d2l-heading-1">${this.localize('myLearning')}</h1>
-			`;
-		}, () => {
-			return html`
-				<div class="d2l-enrollment-collection-view-header-1-skeleton">
-					<svg width="100%" class="d2l-enrollment-collection-view-header-1-skeleton-svg">
-						<rect x="0" width="70%" y="0" height="100%" stroke="none" rx="4" class="d2l-enrollment-collection-view-skeleton-rect"></rect>
-					</svg>
-				</div>
-			`;
-		}, this._hasFirstLoad);
-
-		const search = this._handleFirstLoad(() => {
-			return html`<d2l-input-search class="d2l-enrollment-collection-view-search" placeholder="Search..." value=${this._searchText} @d2l-input-search-searched=${this._performSearch}></d2l-input-search>`
-		}, () => {
-			return html`
-				<div class="d2l-enrollment-collection-view-search-skeleton">
-						<svg width="100%" class="d2l-enrollment-collection-view-search-skeleton-svg">
-							<rect x="0" width="100%" y="0" height="100%" stroke="none" rx="4" class="d2l-enrollment-collection-view-skeleton-rect"></rect>
-						</svg>
-					</div>
-				</div>
-			`;
-		}, this._hasFirstLoad);
-
-		const listItems = this._handleFirstLoad(
-			() => {
-				let items;
-				let emptyMessage;
-				if (this._showSearchItems) {
-					items = this._searchItems;
-					emptyMessage = 'There are no courses or learning paths found for your search entry.';
-				} else {
-					items = this._items
-					emptyMessage = 'Wow';
-				}
-				return this._renderItemList(items, emptyMessage);
-			},
-			() => html`${this._renderItemListSkeleton(3)}`,
-			this._hasFirstLoad
-		);
+		const isLoaded = this._hasFirstLoad;
+		const header = this._renderHeader(isLoaded);
+		const search = this._renderSearch(isLoaded);
+		const list = this._renderList(isLoaded);
+		const loadMore = this._renderLoadMore(isLoaded);
 
 		return html`
 			<div class="d2l-enrollment-collection-view-container d2l-enrollment-collection-view-header-container">
@@ -393,48 +276,75 @@ class AdminList extends LocalizeMixin(EntityMixinLit(LitElement)) {
 						<div class="d2l-enrollment-collection-view-list-overlay">
 							<d2l-loading-spinner class="d2l-enrollment-collection-view-search-spinner" size="100"></d2l-loading-spinner>
 						</div>
-						${listItems}
+						${list}
 					</div>
 					<div class="d2l-enrollment-collection-view-load-container">
-						${
-							this._currentLoadMoreHref(this._showSearchItems) && !this._isLoadingMore
-							? html`<d2l-button class="d2l-enrollment-collection-view-load-button" @click=${() => this._handleLoadMore(this._showSearchItems)}>Load More</d2l-button>`
-							: this._isLoadingMore
-							? html`<d2l-loading-spinner class="d2l-enrollment-collection-view-load-spinner"size="85"></d2l-loading-spinner>`
-							: null
-						}
+						${loadMore}
 					</div>
 				</div>
 			</div>
 		`;
 	}
 
-	_currentLoadMoreHref(isSearching) {
-		return isSearching ? this._searchLoadMoreHref : this._loadMoreHref;
-	}
-
-	_updateItems(isSearching, newItems, nextHref) {
-		if (isSearching) {
-			this._searchItems = [...this._searchItems, ...newItems];
-			this._searchLoadMoreHref = nextHref;
-		} else {
-			this._items = [...this._items, ...newItems];
-			this._loadMoreHref = nextHref;
+	_renderHeader(isLoaded) {
+		if (!isLoaded) {
+			return html`
+				<div class="d2l-enrollment-collection-view-header-1-skeleton">
+					<svg width="100%" class="d2l-enrollment-collection-view-header-1-skeleton-svg">
+						<rect x="0" width="70%" y="0" height="100%" stroke="none" rx="4" class="d2l-enrollment-collection-view-skeleton-rect"></rect>
+					</svg>
+				</div>
+			`;
 		}
+		return html`
+			<h1 class="d2l-heading-1">${this.localize('myLearning')}</h1>
+		`;
 	}
 
-	_handleFirstLoad(whenLoaded, whileLoading = () => null, firstLoad = null) {
-		return firstLoad ? whenLoaded() : whileLoading();
+	_renderSearch(isLoaded) {
+		if (!isLoaded) {
+			return html`
+				<div class="d2l-enrollment-collection-view-search-skeleton">
+						<svg width="100%" class="d2l-enrollment-collection-view-search-skeleton-svg">
+							<rect x="0" width="100%" y="0" height="100%" stroke="none" rx="4" class="d2l-enrollment-collection-view-skeleton-rect"></rect>
+						</svg>
+					</div>
+				</div>
+			`;
+		}
+		return html`
+			<d2l-input-search
+				class="d2l-enrollment-collection-view-search"
+				placeholder=${this.localize('searchPlaceholder')}
+				value=${this._searchText}
+				@d2l-input-search-searched=${this._performSearch}
+			></d2l-input-search>
+		`;
+	}
+
+	_renderList(isLoaded) {
+		if (!isLoaded) {
+			return this._renderItemListSkeleton(3);
+		}
+		let items;
+		let emptyMessage;
+		if (this._showSearchItems) {
+			items = this._searchItems;
+			emptyMessage = this.localize('noSearchResults');
+		} else {
+			items = this._items
+			emptyMessage = this.localize('noLearning');
+		}
+		return this._renderItemList(items, emptyMessage);
 	}
 
 	_renderItemList(items, emptyMessage) {
 		if (items.length <= 0) {
 			return html`<div class="d2l-enrollment-collection-no-enrollments">${emptyMessage}</div>`;
 		}
-		const listItems = repeat(items, (item) => item.org.self(), item => {
-			var enrollmentType = item.org.hasClass(organizationClasses.learningPath) ? 'Learning Path' : 'Course';
-			return html`
-				<d2l-list-item href=${item.org.organizationHomepageUrl()}>
+		const listItems = repeat(items, (item) => item.org.self(), item => 
+			html`
+				<d2l-list-item href="${ifDefined(this._isSearching ? undefined : item.org.organizationHomepageUrl())}">
 					<div slot="illustration" class="d2l-enrollment-collection-view-list-item-illustration">
 						${this._renderCourseImageSkeleton()}
 						<d2l-organization-image
@@ -447,30 +357,14 @@ class AdminList extends LocalizeMixin(EntityMixinLit(LitElement)) {
 					<d2l-list-item-content>
 						${item.org.name()}
 						<d2l-enrollment-summary-view-tag-slot-list>
-							<span slot="first">${enrollmentType}</span>
+							<span slot="first">${this._enrollmentType(item)}</span>
 							${item.hasDueDate ? html`<d2l-user-activity-usage slot="middle" href="${item.activityUsageUrl}"></d2l-user-activity-usage>` : null}
 						</d2l-enrollment-summary-view-tag-slot-list>
 					</d2l-list-item-content>
 				</d2l-list-item>
-			`;
-		});
+			`
+		);
 		return html`<d2l-list class="d2l-enrollment-collection-view-list">${listItems}</d2l-list>`;
-	}
-
-	_onListImageLoaded(imageChunk) {
-		this._loadedImages[imageChunk].loaded++;
-		if (!this._loadedImages[imageChunk].allLoaded && this._loadedImages[imageChunk].total && this._loadedImages[imageChunk].loaded >= this._loadedImages[imageChunk].total) {
-			this._loadedImages[imageChunk].allLoaded = true;
-			this.requestUpdate('_loadedImages', []);
-		}
-	}
-
-	_renderCourseImageSkeleton() {
-		return html`
-			<svg viewBox="0 0 180 77" slot="illustration" class="d2l-enrollment-collection-view-image-skeleton">
-				<rect x="0" width="100%" y="0" height="100%" stroke="none" class="d2l-enrollment-collection-view-skeleton-rect"></rect>
-			</svg>
-		`;
 	}
 
 	_renderItemListSkeleton(numberOfItems) {
@@ -490,6 +384,151 @@ class AdminList extends LocalizeMixin(EntityMixinLit(LitElement)) {
 			</d2l-list-item>
 		`;
 		return html`<d2l-list>${(new Array(numberOfItems)).fill(itemsSkeleton)}</d2l-list>`;
+	}
+
+	_renderCourseImageSkeleton() {
+		return html`
+			<svg viewBox="0 0 180 77" slot="illustration" class="d2l-enrollment-collection-view-image-skeleton">
+				<rect x="0" width="100%" y="0" height="100%" stroke="none" class="d2l-enrollment-collection-view-skeleton-rect"></rect>
+			</svg>
+		`;
+	}
+
+	_renderLoadMore(isLoaded) {
+		if (!isLoaded) {
+			return html`
+				<div class="d2l-enrollment-collection-view-search-skeleton">
+						<svg width="100%" class="d2l-enrollment-collection-view-search-skeleton-svg">
+							<rect x="0" width="100%" y="0" height="100%" stroke="none" rx="4" class="d2l-enrollment-collection-view-skeleton-rect"></rect>
+						</svg>
+					</div>
+				</div>
+			`;
+		}
+		if (this._isLoadingMore) {
+			return html`
+				<d2l-loading-spinner class="d2l-enrollment-collection-view-load-spinner"size="85"></d2l-loading-spinner>
+			`;
+		}
+		if (this._currentLoadMoreHref(this._showSearchItems)) {
+			return html`
+				<d2l-button class="d2l-enrollment-collection-view-load-button" @click=${() => this._performLoadMore(this._showSearchItems)}>
+					${this.localize('loadMore')}
+				</d2l-button>
+			`;
+		}
+		return null;
+	}
+
+	_currentLoadMoreHref(isSearching) {
+		return isSearching ? this._searchLoadMoreHref : this._loadMoreHref;
+	}
+
+	_performLoadMore(isSearching) {
+		const loadMoreHref = this._currentLoadMoreHref(isSearching);
+		if (loadMoreHref !== null) {
+			// This is terrible, don't do this. It is a temporary hack just in case the enrollments HM API can't be fixed in time to allow multiple orgUnitTypeIds
+			// You shouldn't be modifying HM entity links client side.
+			const nextHref = loadMoreHref + '&orgUnitTypeId=3&orgUnitTypeId=7';
+			this._isLoadingMore = true;
+			entityFactory(this._entityType, nextHref, this.token, enrollmentCollection => {
+
+				const newLoadMoreHref = enrollmentCollection.getNextEnrollmentHref();
+				this._loadEnrollmentItems(enrollmentCollection).then(newItems => {
+					this._updateItems(isSearching, newItems, newLoadMoreHref);
+					this._isLoadingMore = false;
+				});
+			});
+		}
+	}
+
+	_enrollmentType(enrollment) {
+		if (!enrollment || !enrollment.org) {
+			return null;
+		}
+		const isLearningPath = enrollment.org.hasClass(organizationClasses.learningPath);
+		return this.localize(isLearningPath ? 'learningPathEnrollmentType' : 'courseEnrollmentType');
+	}
+
+	async _performSearch(e) {
+
+		const searchText = e && e.target && e.target.value;
+		if (!searchText) {
+			this._searchItems = [];
+			this._searchText = '';
+			this._showSearchItems = false;
+			return;
+		}
+		const fields = [
+			{ name: 'search', value: searchText },
+			// This is terrible, don't do this. It is a temporary hack just in case the enrollments HM API can't be fixed in time to allow multiple orgUnitTypeIds
+			{ name: 'orgUnitTypeId', value: 3 },
+			{ name: 'orgUnitTypeId', value: 7 }
+		];
+		this._searchText = searchText;
+		this._isSearching = true;
+
+		const entity = await performSirenAction(this.token, this._searchAction, fields, true);
+		const enrollmentCollection = new EnrollmentCollectionEntity(entity, this.token);
+		this._loadEnrollmentItems(enrollmentCollection).then(items => {
+			this._searchItems = items;
+			this._searchLoadMoreHref = enrollmentCollection.getNextEnrollmentHref();
+			this._showSearchItems = true;
+			this._isSearching = false;
+		});
+	}
+
+	async _loadEnrollmentItems(enrollmentCollection) {
+
+		const items = [];
+		const imageChunk = this._loadedImages.length;
+		this._loadedImages[imageChunk] = { loaded: 0, total: null };
+
+		let totalInLoadingChunk = 0;
+		enrollmentCollection.onEnrollmentsChange((enrollment, index) => {
+			items[index] = {};
+
+			const organizationHref = enrollment.organizationHref();
+			enrollment.onOrganizationChange((organization) => {
+
+				if (typeof this._organizationImageChunk[organizationHref] === 'undefined') {
+					this._organizationImageChunk[organizationHref] = imageChunk;
+					totalInLoadingChunk++;
+				}
+				items[index].imageChunk = imageChunk;
+				items[index].org = organization;
+				items[index].href = organizationHref;
+				items[index].activityUsageUrl = enrollment.userActivityUsageUrl();
+			});
+
+			enrollment.onUserActivityUsageChange((activityUsage) => {
+				items[index].hasDueDate = (activityUsage.date() !== null);
+			});
+		});
+		await enrollmentCollection.subEntitiesLoaded();
+		this._loadedImages[imageChunk].total = totalInLoadingChunk;
+		if (totalInLoadingChunk === 0) {
+			this._loadedImages[imageChunk].allLoaded = true;
+		}
+		return items;
+	}
+
+	_updateItems(isSearching, newItems, nextHref) {
+		if (isSearching) {
+			this._searchItems = [...this._searchItems, ...newItems];
+			this._searchLoadMoreHref = nextHref;
+		} else {
+			this._items = [...this._items, ...newItems];
+			this._loadMoreHref = nextHref;
+		}
+	}
+
+	_onListImageLoaded(imageChunk) {
+		this._loadedImages[imageChunk].loaded++;
+		if (!this._loadedImages[imageChunk].allLoaded && this._loadedImages[imageChunk].total && this._loadedImages[imageChunk].loaded >= this._loadedImages[imageChunk].total) {
+			this._loadedImages[imageChunk].allLoaded = true;
+			this.requestUpdate('_loadedImages', []);
+		}
 	}
 }
 customElements.define('d2l-enrollment-collection-view', AdminList);
