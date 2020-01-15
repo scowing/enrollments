@@ -40,7 +40,8 @@ const LangEnImpl = (superClass) => class extends superClass {
 			'pinActionResult': '{course} has been pinned',
 			'startsAt': 'Starts {date} at {time}',
 			'unpin': 'Unpin',
-			'unpinActionResult': '{course} has been unpinned'
+			'unpinActionResult': '{course} has been unpinned',
+			'viewAllLearning': 'View All Learning'
 		};
 	}
 };

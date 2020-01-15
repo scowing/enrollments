@@ -8,6 +8,7 @@ Polymer-based web component for a organization name.
 import { html, PolymerElement } from '@polymer/polymer/polymer-element.js';
 import { EntityMixin } from 'siren-sdk/src/mixin/entity-mixin.js';
 import 'd2l-typography/d2l-typography-shared-styles.js';
+import 'd2l-button/d2l-button-subtle.js';
 import { EnrollmentCollectionEntity } from 'siren-sdk/src/enrollments/EnrollmentCollectionEntity.js';
 import '../d2l-enrollment-card/d2l-enrollment-card.js';
 import '../d2l-enrollment-hero-banner/d2l-enrollment-hero-banner.js';
@@ -87,10 +88,14 @@ class EnrollmentCollectionWidget extends EnrollmentsLocalize(EntityMixin(Polymer
 				.decw-grid[has-hero] > d2l-enrollment-card:first-of-type {
 					display: none;
 				}
-				.spinner-container {
+				.decw-spinner-container {
 					display: flex;
 					justify-content: center;
 					align-items: center;
+				}
+				.decw-view-all-learning-button {
+					margin-top: 24px;
+					margin-bottom: 4px;
 				}
 
 			</style>
@@ -110,6 +115,13 @@ class EnrollmentCollectionWidget extends EnrollmentsLocalize(EntityMixin(Polymer
 									hide-pinning>
 							</d2l-enrollment-card>
 						</template>
+						<a href="[[_myLearningHref]]">
+							<d2l-button-subtle
+								aria-hidden="true"
+								class="decw-view-all-learning-button"
+								text="[[localize('viewAllLearning')]]">
+							</d2l-button-subtle>
+						</a>
 					</div>
 				</template>
 				<template is="dom-if" if="[[!_hasEnrollments]]">
@@ -119,7 +131,7 @@ class EnrollmentCollectionWidget extends EnrollmentsLocalize(EntityMixin(Polymer
 				</template>
 			</template>
 			<template is="dom-if" if="[[!_isLoaded]]">
-				<div class="spinner-container">
+				<div class="decw-spinner-container">
 					<d2l-loading-spinner size="100">
 					</d2l-loading-spinner>
 				</div>
@@ -171,6 +183,7 @@ class EnrollmentCollectionWidget extends EnrollmentsLocalize(EntityMixin(Polymer
 		});
 
 		const enrollments = enrollmentCollection.enrollmentsHref();
+		this._myLearningHref = enrollmentCollection.getMyLearningHref();
 		this._enrollmentHeroHref = enrollments[0];
 		this._enrollmentsHref = enrollments;
 		this._numEnrollments = enrollments.length;
