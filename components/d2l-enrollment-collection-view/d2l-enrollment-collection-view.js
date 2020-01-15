@@ -358,7 +358,14 @@ class AdminList extends LocalizeMixin(EntityMixinLit(LitElement)) {
 						${item.org.name()}
 						<d2l-enrollment-summary-view-tag-slot-list>
 							<span slot="first">${this._enrollmentType(item)}</span>
-							${item.hasDueDate ? html`<d2l-user-activity-usage slot="middle" href="${item.activityUsageUrl}"></d2l-user-activity-usage>` : null}
+							${
+								item.hasDueDate ? html`
+									<d2l-user-activity-usage slot="middle" href=${ifDefined(item.activityUsageUrl)} .token=${this.token}>
+										<d2l-organization-date slot="default" href=${item.href} .token=${this.token} hide-course-start-date
+										></d2l-organization-date>
+									</d2l-user-activity-usage>
+								` : null
+							}
 						</d2l-enrollment-summary-view-tag-slot-list>
 					</d2l-list-item-content>
 				</d2l-list-item>
@@ -499,10 +506,11 @@ class AdminList extends LocalizeMixin(EntityMixinLit(LitElement)) {
 				items[index].org = organization;
 				items[index].href = organizationHref;
 				items[index].activityUsageUrl = enrollment.userActivityUsageUrl();
+				items[index].hasDueDate = items[index].hasDueDate || organization.endDate() !== null;
 			});
 
 			enrollment.onUserActivityUsageChange((activityUsage) => {
-				items[index].hasDueDate = (activityUsage.date() !== null);
+				items[index].hasDueDate = items[index].hasDueDate || activityUsage.date() !== null;
 			});
 		});
 		await enrollmentCollection.subEntitiesLoaded();
