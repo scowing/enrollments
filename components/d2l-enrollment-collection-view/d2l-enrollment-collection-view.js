@@ -16,7 +16,7 @@ import '@brightspace-ui/core/components/list/list.js';
 import '@brightspace-ui/core/components/list/list-item.js';
 import '@brightspace-ui/core/components/list/list-item-content.js';
 import '@brightspace-ui/core/components/inputs/input-search.js';
-import 'd2l-loading-spinner/d2l-loading-spinner.js';
+import '@brightspace-ui/core/components/loading-spinner/loading-spinner.js';
 import 'd2l-organizations/components/d2l-organization-image/d2l-organization-image.js';
 import { performSirenAction } from 'siren-sdk/src/es6/SirenAction.js';
 
