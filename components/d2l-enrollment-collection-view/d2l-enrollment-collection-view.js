@@ -18,6 +18,7 @@ import '@brightspace-ui/core/components/list/list-item-content.js';
 import '@brightspace-ui/core/components/inputs/input-search.js';
 import '@brightspace-ui/core/components/loading-spinner/loading-spinner.js';
 import 'd2l-organizations/components/d2l-organization-image/d2l-organization-image.js';
+import { announce } from '@brightspace-ui/core/helpers/announce.js';
 import { performSirenAction } from 'siren-sdk/src/es6/SirenAction.js';
 
 class EnrollmentCollectionView extends LocalizeMixin(EntityMixinLit(LitElement)) {
@@ -482,7 +483,21 @@ ${
 			this._searchLoadMoreHref = enrollmentCollection.getNextEnrollmentHref();
 			this._showSearchItems = true;
 			this._isSearching = false;
+
+			this._announceSearchCompleted(items.length, enrollmentCollection.hasMoreEnrollments());
 		});
+	}
+
+	_announceSearchCompleted(itemCount, hasMore) {
+		let message;
+		if (itemCount === 0) {
+			message = this.localize('noSearchResults');
+		} else if (hasMore) {
+			message = this.localize('searchCompletedPaged', 'count', itemCount);
+		} else {
+			message = this.localize('searchCompletedOne', 'count', itemCount);
+		}
+		announce(message);
 	}
 
 	async _loadEnrollmentItems(enrollmentCollection) {
@@ -522,13 +537,19 @@ ${
 	}
 
 	_updateItems(isSearching, newItems, nextHref) {
+		let firstNewItem;
 		if (isSearching) {
+			firstNewItem = this._searchItems.length + 1;
 			this._searchItems = [...this._searchItems, ...newItems];
 			this._searchLoadMoreHref = nextHref;
 		} else {
+			firstNewItem = this._items.length + 1;
 			this._items = [...this._items, ...newItems];
 			this._loadMoreHref = nextHref;
 		}
+		this.updateComplete.then(() => {
+			this.shadowRoot.querySelector(`.d2l-enrollment-collection-view-list > d2l-list-item:nth-of-type(${firstNewItem})`).focus();
+		});
 	}
 
 	_onListImageLoaded(imageChunk) {
