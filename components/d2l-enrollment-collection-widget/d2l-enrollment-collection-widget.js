@@ -8,6 +8,7 @@ Polymer-based web component for a organization name.
 import { html, PolymerElement } from '@polymer/polymer/polymer-element.js';
 import { EntityMixin } from 'siren-sdk/src/mixin/entity-mixin.js';
 import 'd2l-typography/d2l-typography-shared-styles.js';
+import 'd2l-button/d2l-button-subtle.js';
 import { EnrollmentCollectionEntity } from 'siren-sdk/src/enrollments/EnrollmentCollectionEntity.js';
 import '../d2l-enrollment-card/d2l-enrollment-card.js';
 import '../d2l-enrollment-hero-banner/d2l-enrollment-hero-banner.js';
@@ -92,6 +93,10 @@ class EnrollmentCollectionWidget extends EnrollmentsLocalize(EntityMixin(Polymer
 					justify-content: center;
 					align-items: center;
 				}
+				.view-all-learning-button {
+					margin-top: 24px;
+					margin-bottom: 4px;
+				}
 
 			</style>
 			<template is="dom-if" if="[[_isLoaded]]">
@@ -110,6 +115,13 @@ class EnrollmentCollectionWidget extends EnrollmentsLocalize(EntityMixin(Polymer
 									hide-pinning>
 							</d2l-enrollment-card>
 						</template>
+						<a href="[[_myLearningHref]]">
+							<d2l-button-subtle
+								aria-hidden="true"
+								class="view-all-learning-button"
+								text="View All Learning">
+							</d2l-button-subtle>
+						</a>
 					</div>
 				</template>
 				<template is="dom-if" if="[[!_hasEnrollments]]">
@@ -171,6 +183,7 @@ class EnrollmentCollectionWidget extends EnrollmentsLocalize(EntityMixin(Polymer
 		});
 
 		const enrollments = enrollmentCollection.enrollmentsHref();
+		this._myLearningHref = enrollmentCollection.getMyLearningHref();
 		this._enrollmentHeroHref = enrollments[0];
 		this._enrollmentsHref = enrollments;
 		this._numEnrollments = enrollments.length;
