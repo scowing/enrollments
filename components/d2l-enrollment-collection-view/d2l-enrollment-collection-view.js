@@ -17,6 +17,7 @@ import '@brightspace-ui/core/components/list/list-item.js';
 import '@brightspace-ui/core/components/list/list-item-content.js';
 import '@brightspace-ui/core/components/inputs/input-search.js';
 import '@brightspace-ui/core/components/loading-spinner/loading-spinner.js';
+import '../d2l-enrollment-card/d2l-enrollment-updates.js';
 import 'd2l-organizations/components/d2l-organization-image/d2l-organization-image.js';
 import { announce } from '@brightspace-ui/core/helpers/announce.js';
 import { performSirenAction } from 'siren-sdk/src/es6/SirenAction.js';
@@ -369,6 +370,15 @@ ${
 }
 						</d2l-enrollment-summary-view-tag-slot-list>
 					</d2l-list-item-content>
+					<d2l-enrollment-updates
+						slot="actions"
+						href=${item.href} .token=${this.token}
+						show-unattempted-quizzes
+						show-dropbox-unread-feedback
+						show-ungraded-quiz-attempts
+						show-unread-discussion-messages
+						show-unread-dropbox-submissions>
+					</d2l-enrollment-updates>
 				</d2l-list-item>
 			`
 		);
