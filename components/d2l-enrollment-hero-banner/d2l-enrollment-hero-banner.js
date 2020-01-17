@@ -11,6 +11,7 @@ import 'd2l-offscreen/d2l-offscreen-shared-styles.js';
 import 'd2l-polymer-behaviors/d2l-focusable-behavior.js';
 import 'd2l-organizations/components/d2l-organization-image/d2l-organization-image.js';
 import 'd2l-typography/d2l-typography-shared-styles.js';
+import 'd2l-status-indicator/d2l-status-indicator.js';
 import { EntityMixin } from 'siren-sdk/src/mixin/entity-mixin.js';
 import '../d2l-enrollment-card/d2l-enrollment-updates.js';
 import '../d2l-enrollment-summary-view/d2l-enrollment-summary-view-tag-list.js';
@@ -23,12 +24,13 @@ import { EnrollmentsLocalize } from '../EnrollmentsLocalize.js';
 import '@brightspace-ui/core/components/meter/meter-linear.js';
 import { classes as organizationClasses } from 'siren-sdk/src/organizations/OrganizationEntity.js';
 import { StateTree } from 'siren-sdk/src/helpers/StateTree.js';
+import { DateTextAndStatusMixin } from '../date-text-status-mixin.js';
 
 /**
  * @customElement
  * @polymer
  */
-class EnrollmentHeroBanner extends EnrollmentsLocalize(EntityMixin(PolymerElement)) {
+class EnrollmentHeroBanner extends DateTextAndStatusMixin(EnrollmentsLocalize(EntityMixin(PolymerElement))) {
 	constructor() {
 		super();
 		this._setEntityType(EnrollmentEntity);
@@ -73,6 +75,29 @@ class EnrollmentHeroBanner extends EnrollmentsLocalize(EntityMixin(PolymerElemen
 					width: 100%;
 					z-index: 1;
 				}
+				.dehb[disabled] {
+					/*
+					Chrome 19+,
+					Safari 6+,
+					Safari 6+ iOS,
+					Opera 15+
+					*/
+					-webkit-filter: grayscale(1);
+
+					/* Firefox 35+ */
+					filter: grayscale(1);
+
+					opacity: 0.5;
+					position: relative;
+					z-index: -1;
+				}
+				.dehb[disabled]:hover,
+				.dehb[disabled]:focus {
+					cursor: not-allowed;
+				}
+				.dehb[disabled] d2l-enrollment-updates {
+					display: none;
+				}
 				.dehb-container {
 					padding: 0.9rem;
 				}
@@ -108,6 +133,9 @@ class EnrollmentHeroBanner extends EnrollmentsLocalize(EntityMixin(PolymerElemen
 					flex-direction:column;
 					padding: 1.25rem 0.9rem;
 					position: relative;
+				}
+				.dehb-status-indicator {
+					align-self: flex-start
 				}
 				.dehb-tag-container {
 					margin: 0.4rem 0;
@@ -217,8 +245,22 @@ class EnrollmentHeroBanner extends EnrollmentsLocalize(EntityMixin(PolymerElemen
 					margin-top: 0.6rem;
 					width: 18px;
 				}
+				.dehb-alert-colour-circle {
+					height: .75rem;
+					width: .75rem;
+					border-radius: 50%;
+					border: 1px solid #f6f7f8;
+					background-color: var(--d2l-color-celestine);
+					position: absolute;
+
+					position: absolute;
+					z-index: 4;
+					top: -0.375rem;
+					right: -0.375rem;
+				}
+
 			</style>
-			<div class="d2l-visible-on-ancestor-target">
+			<div class="d2l-visible-on-ancestor-target dehb" disabled$="[[disabled]]">
 				<a class="d2l-focusable" href$="[[_organizationHomepageUrl]]" on-focus="_onFocus" on-blur="_onBlur">
 					<span class="dehb-link-text">[[_organizationName]]</span>
 				</a>
@@ -250,6 +292,7 @@ class EnrollmentHeroBanner extends EnrollmentsLocalize(EntityMixin(PolymerElemen
 							</div>
 						</div>
 						<div class="dehb-base-info">
+							<d2l-status-indicator class="dehb-status-indicator" state="[[_badgeState]]" text="[[localize(_badgeText)]]" hidden$="[[!_badgeText]]"></d2l-status-indicator>
 							<div class="dehb-title"><h2>[[_organizationName]]</h2></div>
 							<div class="dehb-context-menu">
 								<template is="dom-if" if="[[_shouldShowDropDown(_canAccessCourseInfo, _canChangeCourseImage)]]">
@@ -271,6 +314,7 @@ class EnrollmentHeroBanner extends EnrollmentsLocalize(EntityMixin(PolymerElemen
 									</d2l-button-icon>
 								</template>
 							</div>
+							<div class="dehb-alert-colour-circle" hidden$="[[!_newEnrollment]]"></div>
 							<div class="dehb-tag-container dehb-tag-placeholder-container">
 								<div class="dehb-tag-placeholder"></div>
 								<div class="dehb-tag-placeholder"></div>
@@ -305,8 +349,7 @@ class EnrollmentHeroBanner extends EnrollmentsLocalize(EntityMixin(PolymerElemen
 			},
 			disabled: {
 				type: Boolean,
-				value: true,
-				computed: '_computeDisabled(_organizationHomepageUrl)',
+				value: false,
 				reflectToAttribute: true,
 				readOnly: true
 			},
@@ -349,19 +392,61 @@ class EnrollmentHeroBanner extends EnrollmentsLocalize(EntityMixin(PolymerElemen
 						max: 0
 					};
 				}
-			}
+			},
+			_newEnrollment: {
+				type: Boolean,
+				value: false
+			},
+			_beforeStartDate: Boolean,
+			_badgeText: {
+				type: String,
+				value: null,
+			},
+			_badgeState: {
+				type: String,
+				value: null,
+			},
+			overdue: {
+				type: Boolean,
+				reflectToAttribute: true,
+				value: false,
+				readOnly: true
+			},
+			completed: {
+				type: Boolean,
+				reflectToAttribute: true,
+				readOnly: true,
+			},
+			closed: {
+				type: Boolean,
+				reflectToAttribute: true,
+				value: false,
+				readOnly: true,
+			},
+			inactive: {
+				type: Boolean,
+				reflectToAttribute: true,
+				value: false,
+				readOnly: true
+			},
 		};
 	}
 
 	static get observers() {
 		return [
-			'_onEnrollmentChange(_entity)'
+			'_onEnrollmentChange(_entity)',
+			'_startedInactive(_beforeStartDate, closed, inactive)'
 		];
 	}
 
 	static get is() { return 'd2l-enrollment-hero-banner'; }
 
 	_onEnrollmentChange(enrollment) {
+		this._resetState();
+		if (!enrollment) {
+			return;
+		}
+
 		this._orgModulesTree.removeAllChildren();
 		this._enrollment = enrollment._entity;
 		this._pinned = enrollment.pinned();
@@ -369,6 +454,7 @@ class EnrollmentHeroBanner extends EnrollmentsLocalize(EntityMixin(PolymerElemen
 		this._pinAction = enrollment.pinAction();
 
 		enrollment.onOrganizationChange(this._onOrganizationChange.bind(this));
+		enrollment.onUserActivityUsageChange(this._onUserActivityUsageChange.bind(this));
 	}
 
 	_onOrganizationChange(organization) {
@@ -389,6 +475,23 @@ class EnrollmentHeroBanner extends EnrollmentsLocalize(EntityMixin(PolymerElemen
 		this._canChangeCourseImage = organization._entity && organization.canChangeCourseImage();
 
 		this._organizationHomepageUrl = organization.organizationHomepageUrl();
+		if (!this._organizationHomepageUrl) {
+			// If the user doesn't have access, don't animate image/show menu/underline on hover
+			this._organizationHomepageUrl = null;
+			this._setDisabled(true);
+		}
+
+		const processedDate = organization.processedDate();
+		this._setOrganizationDate(processedDate, organization.isActive());
+	}
+
+	_onUserActivityUsageChange(userActivityUsage) {
+		const dateTextAndStatus = this.dateTextAndStatus(userActivityUsage.isCompletionDate(), userActivityUsage.date());
+		this._setEnrollmentStatus(dateTextAndStatus && dateTextAndStatus.status);
+
+		if (!userActivityUsage.isAttended()) {
+			this._newEnrollment = true;
+		}
 	}
 
 	_updateOrganizationModules(organization, modulesTree) {
@@ -471,10 +574,6 @@ class EnrollmentHeroBanner extends EnrollmentsLocalize(EntityMixin(PolymerElemen
 		};
 	}
 
-	_computeDisabled(organizationHomepage) {
-		return !organizationHomepage;
-	}
-
 	_onFocus() {
 		this._setActive(true);
 	}
@@ -524,6 +623,71 @@ class EnrollmentHeroBanner extends EnrollmentsLocalize(EntityMixin(PolymerElemen
 		} else {
 			this.removeAttribute('pinned');
 		}
+	}
+
+	_setOrganizationDate(date, isActive) {
+		this._setInactive(!isActive);
+		const afterEndDate = date && date.afterEndDate;
+		this._setClosed(afterEndDate);
+		this._beforeStartDate = date && date.beforeStartDate;
+		this._setBadgeText();
+	}
+
+	_setEnrollmentStatus(status) {
+		switch (status) {
+			case 'completed':
+				this._setCompleted(true);
+				break;
+			case 'overdue':
+				this._setOverdue(true);
+				break;
+			default:
+				this._setCompleted(false);
+				this._setOverdue(false);
+				break;
+		}
+
+		this._setBadgeText();
+	}
+
+	_setBadgeText() {
+		var priorityOrder = [
+			[this.completed, 'completed', 'success'],
+			[this._beforeStartDate && !this.inactive, null, null],
+			[this.inactive, 'inactive', 'default'],
+			[this.closed && !this.inactive, 'closed', 'default'],
+			[this.overdue, 'overdue', 'alert']
+		];
+		for (var i = 0; i < priorityOrder.length; i++) {
+			if (priorityOrder[i][0]) {
+				this._badgeText = priorityOrder[i][1];
+				this._badgeState = priorityOrder[i][2];
+				return;
+			}
+		}
+
+		this._badgeText = null;
+		this._badgeState = null;
+	}
+
+	_startedInactive(beforeStartDate, closed, inactive) {
+		if (!beforeStartDate && !closed && inactive) {
+			this.setAttribute('started-inactive', '');
+			this.fire('started-inactive');
+		} else {
+			this.removeAttribute('started-inactive');
+		}
+	}
+
+	_resetState() {
+		this._beforeStartDate = null;
+		this._setDisabled(false);
+		this._setCompleted(false);
+		this._setClosed(false);
+		this._setOverdue(false);
+		this._setInactive(false);
+		this._newEnrollment = false;
+		this._setBadgeText();
 	}
 
 	_shouldHidePinOption(pinned) {

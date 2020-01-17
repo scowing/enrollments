@@ -11,9 +11,17 @@ describe('d2l-enrollment-hero-banner', () => {
 		organizationHasClassStub,
 		enrollmentEntity,
 		organizationEntity,
+		userActivityUsageEntity,
 		rootSequenceEntity,
 		onOrganizationChangeStub,
-		onRootSequenceChangeStub;
+		onUserActivityUsageChangeStub,
+		onRootSequenceChangeStub,
+		isAttendedStub,
+		isCompletionDateStub,
+		dateStub,
+		isActiveStub,
+		processedDateStub,
+		date;
 
 	beforeEach(() => {
 		sandbox = sinon.sandbox.create();
@@ -22,16 +30,23 @@ describe('d2l-enrollment-hero-banner', () => {
 
 		pinStub = sinon.stub();
 		pinActionStub = sandbox.stub(component, 'performSirenAction');
+		isAttendedStub = sinon.stub();
+		isCompletionDateStub = sinon.stub();
 		organizationHasActionByNameStub = sinon.stub();
 		courseInfoUrlStub = sinon.stub();
 		organizationHasClassStub = sinon.stub();
-
+		dateStub = sinon.stub();
 		onOrganizationChangeStub = sinon.stub();
 		onRootSequenceChangeStub = sinon.stub();
+		onUserActivityUsageChangeStub = sinon.stub();
+		isActiveStub = sinon.stub();
+		processedDateStub = sinon.stub();
 
 		pinStub.returns(true);
+		isAttendedStub.returns(false);
 		organizationHasActionByNameStub.returns(true);
 		courseInfoUrlStub.returns('courseInfoUrl');
+		isActiveStub.returns(true);
 	});
 
 	afterEach(() => {
@@ -50,8 +65,12 @@ describe('d2l-enrollment-hero-banner', () => {
 		beforeEach(() => {
 
 			enrollmentEntity = {
+				_entity: {},
 				organizationHref: function() { return 'organizationHref'; },
+				self: function() { return 'self'; },
+				userActivityUsageUrl: function() { return 'userActivityUsageUrl'; },
 				onOrganizationChange: onOrganizationChangeStub,
+				onUserActivityUsageChange: onUserActivityUsageChangeStub,
 				pinned: pinStub,
 				pinAction: function() {
 					return {
@@ -71,7 +90,15 @@ describe('d2l-enrollment-hero-banner', () => {
 				organizationHomepageUrl: function() { return 'organizationHomepageUrl'; },
 				hasClass: organizationHasClassStub,
 				canChangeCourseImage: organizationHasActionByNameStub,
+				isActive: isActiveStub,
+				processedDate: processedDateStub,
 				onSequenceChange: onRootSequenceChangeStub
+			};
+
+			userActivityUsageEntity = {
+				isAttended: isAttendedStub,
+				isCompletionDate: isCompletionDateStub,
+				date: dateStub
 			};
 
 			completionEntity1 = { completed: 1, total: 3 };
@@ -100,6 +127,8 @@ describe('d2l-enrollment-hero-banner', () => {
 			};
 
 			onOrganizationChangeStub.callsArgWith(0, organizationEntity);
+
+			onUserActivityUsageChangeStub.callsArgWith(0, userActivityUsageEntity);
 			onRootSequenceChangeStub.callsArgWith(0, rootSequenceEntity);
 
 			pinActionStub.withArgs(sinon.match.defined).returns(Promise.resolve(enrollmentEntity._entity));
@@ -276,6 +305,146 @@ describe('d2l-enrollment-hero-banner', () => {
 				expect(component._enrollmentCompletion.max).to.equal(expectedMax);
 			});
 		});
+
+		describe('Display Badge', () => {
+			it('Completed Badge', done => {
+				isCompletionDateStub.returns(true);
+				dateStub.returns('2017-08-01T04:00:00.000Z');
+				component._entity = enrollmentEntity;
+
+				setTimeout(() => {
+					expect(component._badgeText).to.equal('completed');
+					expect(component._badgeState).to.equal('success');
+					var badge = component.$$('d2l-status-indicator');
+					expect(badge.hasAttribute('hidden')).to.be.false;
+					done();
+				});
+
+			});
+
+			it('Overdue Badge', done => {
+				isCompletionDateStub.returns(false);
+				dateStub.returns('2017-08-01T04:00:00.000Z');
+				component._entity = enrollmentEntity;
+
+				setTimeout(() => {
+
+					expect(component._badgeText).to.equal('overdue');
+					expect(component._badgeState).to.equal('alert');
+					var badge = component.$$('d2l-status-indicator');
+					expect(badge.hasAttribute('hidden')).to.be.false;
+					done();
+				});
+
+			});
+
+			it('Closed Badge', done => {
+				processedDateStub.returns({
+					type: 'ended',
+					date: date,
+					afterEndDate: true
+				});
+				component._entity = enrollmentEntity;
+
+				setTimeout(() => {
+					expect(component._badgeText).to.equal('closed');
+					expect(component._badgeState).to.equal('default');
+					var badge = component.$$('d2l-status-indicator');
+					expect(badge.hasAttribute('hidden')).to.be.false;
+					done();
+				});
+
+			});
+
+			it('No Badge', () => {
+				isCompletionDateStub.returns(true);
+				dateStub.returns('2050-08-01T04:00:00.000Z');
+
+				expect(component._badgeText).to.be.null;
+				expect(component._badgeState).to.be.null;
+
+				var badge = component.$$('d2l-status-indicator');
+				expect(badge.hasAttribute('hidden')).to.be.true;
+
+			});
+
+			describe('Badge Priority Order', () => {
+				var setClosed = function() {
+					component._setOrganizationDate({
+						type: 'ended',
+						date: date,
+						afterEndDate: true
+					}, true);
+				};
+				var setOverdue = function() {
+					component._setEnrollmentStatus('overdue');
+				};
+				var setCompleted = function() {
+					component._setEnrollmentStatus('completed');
+				};
+				var setBeforeStart = function() {
+					component._setOrganizationDate({
+						type: 'ended',
+						date: date,
+						afterEndDate: true
+					}, false);
+				};
+
+				[
+					{
+						name: 'Completed should be shown when recieved first',
+						methods: [setCompleted, setBeforeStart, setOverdue, setClosed],
+						badge: 'completed'
+					},
+					{
+						name: 'Completed should be shown when recieved last',
+						methods: [setBeforeStart, setOverdue, setClosed, setCompleted],
+						badge: 'completed'
+					},
+					{
+						name: 'Completed should be shown when recieved last',
+						methods: [setOverdue, setCompleted],
+						badge: 'completed'
+					},
+					{
+						name: 'An inactive card before start, should show inactive badge.',
+						methods: [setBeforeStart, setOverdue],
+						badge: 'inactive'
+					},
+					{
+						name: 'An inactive card before start, should show inactive badge.',
+						methods: [setOverdue, setClosed, setBeforeStart],
+						badge: 'inactive'
+					},
+					{
+						name: 'Closed should be shown over overdue when sent first.',
+						methods: [setClosed, setOverdue],
+						badge: 'closed'
+					},
+					{
+						name: 'Closed should be shown over overdue when sent second.',
+						methods: [setOverdue, setClosed],
+						badge: 'closed'
+					},
+				].forEach((testCase) => {
+					it(testCase.name, (done) => {
+						flush(() => {
+							testCase.methods.forEach((method) => method());
+
+							setTimeout(() => {
+								expect(component._badgeText).to.equal(testCase.badge);
+								var badge = component.$$('d2l-status-indicator');
+								expect(badge.hasAttribute('hidden')).to.be.false;
+								done();
+							});
+						});
+					});
+
+				});
+
+			});
+
+		});
 	});
 
 	describe('learning-path', () => {
@@ -335,8 +504,12 @@ describe('d2l-enrollment-hero-banner', () => {
 			onSubSequencesChangeStub = sinon.stub();
 
 			enrollmentEntity = {
+				_entity: {},
 				organizationHref: function() { return 'organizationHref'; },
+				self: function() { return 'self'; },
+				userActivityUsageUrl: function() { return 'userActivityUsageUrl'; },
 				onOrganizationChange: onOrganizationChangeStub,
+				onUserActivityUsageChange: onUserActivityUsageChangeStub,
 				pinned: pinStub,
 				pinAction: function() {
 					return {
@@ -356,6 +529,8 @@ describe('d2l-enrollment-hero-banner', () => {
 				organizationHomepageUrl: function() { return 'organizationHomepageUrl'; },
 				hasClass: organizationHasClassStub,
 				canChangeCourseImage: organizationHasActionByNameStub,
+				isActive: isActiveStub,
+				processedDate: processedDateStub,
 				onSequenceChange: onRootSequenceChangeStub
 			};
 
