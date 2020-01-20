@@ -115,10 +115,9 @@ class EnrollmentCollectionWidget extends EnrollmentsLocalize(EntityMixin(Polymer
 									hide-pinning>
 							</d2l-enrollment-card>
 						</template>
-						<a href="[[_myLearningHref]]">
+						<a href="[[_myLearningHref]]" class="decw-view-all-learning-button">
 							<d2l-button-subtle
 								aria-hidden="true"
-								class="decw-view-all-learning-button"
 								text="[[localize('viewAllLearning')]]">
 							</d2l-button-subtle>
 						</a>
