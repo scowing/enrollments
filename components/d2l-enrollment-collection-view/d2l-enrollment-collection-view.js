@@ -535,7 +535,8 @@ ${
 			});
 
 			enrollment.onUserActivityUsageChange((activityUsage) => {
-				items[index].hasDueDate = items[index].hasDueDate || activityUsage.date() !== null;
+				// activityUsage.date() is undefined for incomplete courses, so using == here
+				items[index].hasDueDate = items[index].hasDueDate || activityUsage.date() != null;
 			});
 		});
 		await enrollmentCollection.subEntitiesLoaded();
