@@ -13,8 +13,10 @@ describe('d2l-enrollment-hero-banner', () => {
 		organizationEntity,
 		userActivityUsageEntity,
 		rootSequenceEntity,
+		semesterEntity,
 		onOrganizationChangeStub,
 		onUserActivityUsageChangeStub,
+		onSemesterChangeStub,
 		onRootSequenceChangeStub,
 		isAttendedStub,
 		isCompletionDateStub,
@@ -39,14 +41,17 @@ describe('d2l-enrollment-hero-banner', () => {
 		onOrganizationChangeStub = sinon.stub();
 		onRootSequenceChangeStub = sinon.stub();
 		onUserActivityUsageChangeStub = sinon.stub();
+		onSemesterChangeStub = sinon.stub();
 		isActiveStub = sinon.stub();
 		processedDateStub = sinon.stub();
+		date = new Date(Date.parse('1998-01-01T00:00:00.000Z'));
 
 		pinStub.returns(true);
 		isAttendedStub.returns(false);
 		organizationHasActionByNameStub.returns(true);
 		courseInfoUrlStub.returns('courseInfoUrl');
 		isActiveStub.returns(true);
+		processedDateStub.returns(null);
 	});
 
 	afterEach(() => {
@@ -93,7 +98,8 @@ describe('d2l-enrollment-hero-banner', () => {
 				canChangeCourseImage: organizationHasActionByNameStub,
 				isActive: isActiveStub,
 				processedDate: processedDateStub,
-				onSequenceChange: onRootSequenceChangeStub
+				onSequenceChange: onRootSequenceChangeStub,
+				onSemesterChange: onSemesterChangeStub
 			};
 
 			userActivityUsageEntity = {
@@ -127,8 +133,12 @@ describe('d2l-enrollment-hero-banner', () => {
 				}
 			};
 
-			onOrganizationChangeStub.callsArgWith(0, organizationEntity);
+			semesterEntity = {
+				name: function() { return 'Semester Name'; },
+			};
 
+			onOrganizationChangeStub.callsArgWith(0, organizationEntity);
+			onSemesterChangeStub.callsArgWith(0, semesterEntity);
 			onUserActivityUsageChangeStub.callsArgWith(0, userActivityUsageEntity);
 			onRootSequenceChangeStub.callsArgWith(0, rootSequenceEntity);
 
@@ -533,7 +543,8 @@ describe('d2l-enrollment-hero-banner', () => {
 				canChangeCourseImage: organizationHasActionByNameStub,
 				isActive: isActiveStub,
 				processedDate: processedDateStub,
-				onSequenceChange: onRootSequenceChangeStub
+				onSequenceChange: onRootSequenceChangeStub,
+				onSemesterChange: onSemesterChangeStub
 			};
 
 			rootSequenceEntity = {

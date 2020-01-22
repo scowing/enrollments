@@ -9,12 +9,15 @@ import { html, PolymerElement } from '@polymer/polymer/polymer-element.js';
 import 'd2l-link/d2l-link-behavior.js';
 import 'd2l-offscreen/d2l-offscreen-shared-styles.js';
 import 'd2l-polymer-behaviors/d2l-focusable-behavior.js';
+import 'd2l-organizations/components/d2l-organization-date/d2l-organization-date.js';
 import 'd2l-organizations/components/d2l-organization-image/d2l-organization-image.js';
+import 'd2l-organizations/components/d2l-organization-info/d2l-organization-info.js';
 import 'd2l-typography/d2l-typography-shared-styles.js';
 import 'd2l-status-indicator/d2l-status-indicator.js';
 import { EntityMixin } from 'siren-sdk/src/mixin/entity-mixin.js';
 import '../d2l-enrollment-card/d2l-enrollment-updates.js';
 import '../d2l-enrollment-summary-view/d2l-enrollment-summary-view-tag-list.js';
+import '../d2l-user-activity-usage/d2l-user-activity-usage.js';
 import { EnrollmentEntity } from 'siren-sdk/src/enrollments/EnrollmentEntity.js';
 import 'd2l-dropdown/d2l-dropdown-menu.js';
 import 'd2l-dropdown/d2l-dropdown-more.js';
@@ -315,6 +318,19 @@ class EnrollmentHeroBanner extends DateTextAndStatusMixin(EnrollmentsLocalize(En
 								</template>
 							</div>
 							<div class="dehb-alert-colour-circle" hidden$="[[!_newEnrollment]]"></div>
+
+							<d2l-organization-info href="[[_organizationUrl]]" token="[[token]]"
+								show-organization-code
+								show-semester-name>
+							</d2l-organization-info>
+
+							<d2l-user-activity-usage class="enrollment-content-block" href="[[_userActivityUsageUrl]]" override-to-default$="[[_orgDateSlot]]" token="[[token]]">
+								<d2l-organization-date slot="default" href="[[_organizationUrl]]" token="[[token]]"
+									hide-course-start-date="[[hideCourseStartDate]]"
+									hide-course-end-date="[[hideCourseEndDate]]">
+								</d2l-organization-date>
+							</d2l-user-activity-usage>
+
 							<div class="dehb-tag-container dehb-tag-placeholder-container">
 								<div class="dehb-tag-placeholder"></div>
 								<div class="dehb-tag-placeholder"></div>
@@ -353,6 +369,14 @@ class EnrollmentHeroBanner extends DateTextAndStatusMixin(EnrollmentsLocalize(En
 				reflectToAttribute: true,
 				readOnly: true,
 				observer: '_handleDisabledChange'
+			},
+			hideCourseStartDate: {
+				type: Boolean,
+				value: false
+			},
+			hideCourseEndDate: {
+				type: Boolean,
+				value: false
 			},
 			hidePinning: {
 				type: Boolean,
@@ -398,6 +422,11 @@ class EnrollmentHeroBanner extends DateTextAndStatusMixin(EnrollmentsLocalize(En
 				type: Boolean,
 				value: false,
 				observer: '_handleNewChange'
+			},
+			_userActivityUsageUrl: String,
+			_orgDateSlot: {
+				type: Boolean,
+				value: false
 			},
 			_beforeStartDate: Boolean,
 			_badgeText: {
@@ -459,7 +488,7 @@ class EnrollmentHeroBanner extends DateTextAndStatusMixin(EnrollmentsLocalize(En
 		this._pinned = enrollment.pinned();
 		this._organizationUrl = enrollment.organizationHref();
 		this._pinAction = enrollment.pinAction();
-
+		this._userActivityUsageUrl = enrollment.userActivityUsageUrl();
 		enrollment.onOrganizationChange(this._onOrganizationChange.bind(this));
 		enrollment.onUserActivityUsageChange(this._onUserActivityUsageChange.bind(this));
 	}
@@ -488,15 +517,24 @@ class EnrollmentHeroBanner extends DateTextAndStatusMixin(EnrollmentsLocalize(En
 			this._setDisabled(true);
 		}
 
-		const processedDate = organization.processedDate();
-		this._setOrganizationAccessibleData(organization.name(), organization.code());
+		const processedDate = organization.processedDate(this.hideCourseStartDate, this.hideCourseEndDate);
+		const dateText = processedDate && this.localize(
+			processedDate.type,
+			'date', this.formatDate(processedDate.date, {format: 'MMMM d, yyyy'}),
+			'time', this.formatTime(processedDate.date)
+		);
+		this._setOrganizationAccessibleData(organization.name(), organization.code(), dateText);
 		this._setOrganizationDate(processedDate, organization.isActive());
+
+		organization.onSemesterChange(function(semester) {
+			this._setSemesterAccessibleData(semester.name());
+		}.bind(this));
 	}
 
 	_onUserActivityUsageChange(userActivityUsage) {
 		const dateTextAndStatus = this.dateTextAndStatus(userActivityUsage.isCompletionDate(), userActivityUsage.date());
 		this._setEnrollmentStatus(dateTextAndStatus && dateTextAndStatus.status);
-
+		this._setUserActivityUsageAccessible(dateTextAndStatus && dateTextAndStatus.dateText);
 		if (!userActivityUsage.isAttended()) {
 			this._newEnrollment = true;
 		}
@@ -511,6 +549,13 @@ class EnrollmentHeroBanner extends DateTextAndStatusMixin(EnrollmentsLocalize(En
 		}
 		if (dateText) {
 			this._accessibilityData.organizationDate = dateText;
+		}
+		this._accessibilityDataReset();
+	}
+
+	_setSemesterAccessibleData(semesterName) {
+		if (semesterName) {
+			this._accessibilityData.semesterName = semesterName;
 		}
 		this._accessibilityDataReset();
 	}
@@ -619,6 +664,7 @@ class EnrollmentHeroBanner extends DateTextAndStatusMixin(EnrollmentsLocalize(En
 			accessibility.badge,
 			accessibility.organizationName,
 			accessibility.organizationCode,
+			accessibility.semesterName,
 			accessibility.userActivityUsageInfo ? accessibility.userActivityUsageInfo : accessibility.organizationDate
 		];
 
@@ -706,6 +752,10 @@ class EnrollmentHeroBanner extends DateTextAndStatusMixin(EnrollmentsLocalize(En
 		const afterEndDate = date && date.afterEndDate;
 		this._setClosed(afterEndDate);
 		this._beforeStartDate = date && date.beforeStartDate;
+
+		if (this._beforeStartDate || (afterEndDate && !this.completed)) {
+			this._orgDateSlot = true;
+		}
 		this._setBadgeText();
 	}
 
@@ -724,6 +774,11 @@ class EnrollmentHeroBanner extends DateTextAndStatusMixin(EnrollmentsLocalize(En
 		}
 
 		this._setBadgeText();
+	}
+
+	_setUserActivityUsageAccessible(dateText) {
+		this._accessibilityData.userActivityUsageInfo = dateText;
+		this._accessibilityDataReset();
 	}
 
 	_setBadgeText() {
