@@ -536,7 +536,7 @@ ${
 
 			enrollment.onUserActivityUsageChange((activityUsage) => {
 				const date = activityUsage.date();
-				items[index].hasDueDate = items[index].hasDueDate || date !== null || date !== undefined;
+				items[index].hasDueDate = items[index].hasDueDate || (date !== null && date !== undefined);
 			});
 		});
 		await enrollmentCollection.subEntitiesLoaded();
