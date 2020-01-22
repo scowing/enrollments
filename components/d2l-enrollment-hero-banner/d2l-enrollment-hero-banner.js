@@ -262,7 +262,7 @@ class EnrollmentHeroBanner extends DateTextAndStatusMixin(EnrollmentsLocalize(En
 			</style>
 			<div class="d2l-visible-on-ancestor-target dehb" disabled$="[[disabled]]">
 				<a class="d2l-focusable" href$="[[_organizationHomepageUrl]]" on-focus="_onFocus" on-blur="_onBlur">
-					<span class="dehb-link-text">[[_organizationName]]</span>
+					<span class="dehb-link-text">[[_accessibilityDataToString(_accessibilityData)]]</span>
 				</a>
 				<div class="dehb-container">
 					<div class="dehb-image">
@@ -351,7 +351,8 @@ class EnrollmentHeroBanner extends DateTextAndStatusMixin(EnrollmentsLocalize(En
 				type: Boolean,
 				value: false,
 				reflectToAttribute: true,
-				readOnly: true
+				readOnly: true,
+				observer: '_handleDisabledChange'
 			},
 			hidePinning: {
 				type: Boolean,
@@ -395,12 +396,14 @@ class EnrollmentHeroBanner extends DateTextAndStatusMixin(EnrollmentsLocalize(En
 			},
 			_newEnrollment: {
 				type: Boolean,
-				value: false
+				value: false,
+				observer: '_handleNewChange'
 			},
 			_beforeStartDate: Boolean,
 			_badgeText: {
 				type: String,
 				value: null,
+				observer: '_handleBadgeTextChange'
 			},
 			_badgeState: {
 				type: String,
@@ -429,6 +432,10 @@ class EnrollmentHeroBanner extends DateTextAndStatusMixin(EnrollmentsLocalize(En
 				value: false,
 				readOnly: true
 			},
+			_accessibilityData: {
+				type: Object,
+				value: function() { return {}; }
+			}
 		};
 	}
 
@@ -482,6 +489,7 @@ class EnrollmentHeroBanner extends DateTextAndStatusMixin(EnrollmentsLocalize(En
 		}
 
 		const processedDate = organization.processedDate();
+		this._setOrganizationAccessibleData(organization.name(), organization.code());
 		this._setOrganizationDate(processedDate, organization.isActive());
 	}
 
@@ -492,6 +500,19 @@ class EnrollmentHeroBanner extends DateTextAndStatusMixin(EnrollmentsLocalize(En
 		if (!userActivityUsage.isAttended()) {
 			this._newEnrollment = true;
 		}
+	}
+
+	_setOrganizationAccessibleData(name, code, dateText) {
+		if (name) {
+			this._accessibilityData.organizationName = name;
+		}
+		if (code) {
+			this._accessibilityData.organizationCode = code;
+		}
+		if (dateText) {
+			this._accessibilityData.organizationDate = dateText;
+		}
+		this._accessibilityDataReset();
 	}
 
 	_updateOrganizationModules(organization, modulesTree) {
@@ -588,6 +609,31 @@ class EnrollmentHeroBanner extends DateTextAndStatusMixin(EnrollmentsLocalize(En
 		});
 	}
 
+	_accessibilityDataToString(accessibility) {
+		if (!accessibility || !accessibility.organizationName) {
+			return this.localize('closed');
+		}
+		const textData = [
+			accessibility.new,
+			accessibility.disabled,
+			accessibility.badge,
+			accessibility.organizationName,
+			accessibility.organizationCode,
+			accessibility.userActivityUsageInfo ? accessibility.userActivityUsageInfo : accessibility.organizationDate
+		];
+
+		return textData.filter(function(text) {
+			return text && typeof text === 'string';
+		}).join(', ');
+	}
+
+	//Refreshes template references to _accessibilityData.
+	_accessibilityDataReset() {
+		var accessiblity = this._accessibilityData;
+		this._accessibilityData = {};
+		this._accessibilityData = accessiblity;
+	}
+
 	_pinClickHandler() {
 		this.fire(this._pinned ? 'enrollment-pinned' : 'enrollment-unpinned', {
 			enrollment: this._enrollment,
@@ -623,6 +669,36 @@ class EnrollmentHeroBanner extends DateTextAndStatusMixin(EnrollmentsLocalize(En
 		} else {
 			this.removeAttribute('pinned');
 		}
+	}
+
+	_handleDisabledChange(disabled) {
+		if (disabled) {
+			this._accessibilityData.disabled = this.localize('disabled');
+		} else {
+			if (this._accessibilityData) {
+				this._accessibilityData.disabled = null;
+			}
+		}
+
+		this._accessibilityDataReset();
+	}
+
+	_handleNewChange(newValue) {
+		if (!newValue) {
+			return;
+		}
+
+		this._accessibilityData.new = this.localize('new');
+		this._accessibilityDataReset();
+	}
+
+	_handleBadgeTextChange(badgeText) {
+		if (!badgeText) {
+			return;
+		}
+
+		this._accessibilityData.badge = this.localize(badgeText);
+		this._accessibilityDataReset();
 	}
 
 	_setOrganizationDate(date, isActive) {
