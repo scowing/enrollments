@@ -47,7 +47,8 @@ class EnrollmentCollectionWidget extends EnrollmentsLocalize(EntityMixin(Polymer
 			return;
 		}
 		const entry = entries[0];
-		this._numColumns = this._computeNumColumns(entry.contentRect.width);
+
+		this._numColumns = this._computeNumColumns(parseInt(entry.contentRect.width, 10));
 	}
 
 	static get template() {
