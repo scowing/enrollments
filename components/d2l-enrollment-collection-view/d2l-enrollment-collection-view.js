@@ -332,7 +332,7 @@ class EnrollmentCollectionView extends LocalizeMixin(EntityMixinLit(LitElement))
 		let emptyMessage;
 		if (this._showSearchItems) {
 			items = this._searchItems;
-			emptyMessage = this.localize('noSearchResults');
+			emptyMessage = this.localize('noSearchResults', 'searchTerm', this._searchText);
 		} else {
 			items = this._items;
 			emptyMessage = this.localize('noLearning');
@@ -479,6 +479,7 @@ ${
 		}
 		const fields = [
 			{ name: 'search', value: searchText },
+			{ name: 'excludeIndirect', value: true },
 			// This is terrible, don't do this. It is a temporary hack just in case the enrollments HM API can't be fixed in time to allow multiple orgUnitTypeIds
 			{ name: 'orgUnitTypeId', value: 3 },
 			{ name: 'orgUnitTypeId', value: 7 }
@@ -501,7 +502,7 @@ ${
 	_announceSearchCompleted(itemCount, hasMore) {
 		let message;
 		if (itemCount === 0) {
-			message = this.localize('noSearchResults');
+			message = this.localize('noSearchResults', 'searchTerm', this._searchText);
 		} else if (hasMore) {
 			message = this.localize('searchCompletedPaged', 'count', itemCount);
 		} else {
