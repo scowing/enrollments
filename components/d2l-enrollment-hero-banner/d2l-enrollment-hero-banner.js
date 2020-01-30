@@ -569,7 +569,6 @@ class EnrollmentHeroBanner extends DateTextAndStatusMixin(EnrollmentsLocalize(En
 	}
 
 	_updateLearningPathModules(organization, modulesTree) {
-
 		organization.onSequenceChange(rootSequence => {
 			modulesTree.removeAllChildren();
 
@@ -577,7 +576,10 @@ class EnrollmentHeroBanner extends DateTextAndStatusMixin(EnrollmentsLocalize(En
 				const subSequenceNode = modulesTree.setChild(subSequence.index());
 
 				subSequence.onSequencedActivityChange(sequencedActivity => {
-					const sequencedActivityNode = subSequenceNode.setChild(sequencedActivity.index());
+					const sequencedActivityNode = subSequenceNode.setChild(sequencedActivity.index(), {
+						type: 'sequenced-activity',
+						sequencedActivity
+					});
 					sequencedActivity.onOrganizationChange(organizationEntity => {
 						sequencedActivityNode.removeAllChildren();
 
@@ -590,12 +592,12 @@ class EnrollmentHeroBanner extends DateTextAndStatusMixin(EnrollmentsLocalize(En
 	}
 
 	_updateCourseOfferingModules(orgKey, organization, modulesTree) {
-
 		organization.onSequenceChange(orgSequenceRoot => {
 			modulesTree.removeAllChildren();
 
 			orgSequenceRoot.onSubSequencesChange(orgModule => {
 				modulesTree.setChild(orgModule.index(), {
+					type: 'orgModule',
 					orgKey,
 					orgModule
 				});
@@ -609,16 +611,19 @@ class EnrollmentHeroBanner extends DateTextAndStatusMixin(EnrollmentsLocalize(En
 	}
 
 	_updateOrganizationCompletion(moduleItems) {
-
 		const completions = {};
+		let total = 0;
 		moduleItems.forEach(item => {
-			const curCompletion = item.orgModule.completion() || {};
-			const prevCompletion = completions[item.orgKey] || {};
-
-			completions[item.orgKey] = {
-				completed: (prevCompletion.completed || 0) + (curCompletion.completed || 0),
-				total: (prevCompletion.total || 0) + (curCompletion.total || 0)
-			};
+			if (item.type === 'sequenced-activity') {
+				total += 1;
+			} else {
+				const curCompletion = item.orgModule && item.orgModule.completion() || {};
+				const prevCompletion = completions[item.orgKey] || {};
+				completions[item.orgKey] = {
+					completed: (prevCompletion.completed || 0) + (curCompletion.completed || 0),
+					total: (prevCompletion.total || 0) + (curCompletion.total || 0)
+				};
+			}
 		});
 		const completionsList = Object.values(completions);
 
@@ -628,8 +633,7 @@ class EnrollmentHeroBanner extends DateTextAndStatusMixin(EnrollmentsLocalize(En
 				.map(activityCompletion => activityCompletion.completed === activityCompletion.total)
 				.filter(isComplete => isComplete)
 				.length;
-			const totalActivities = completionsList.length;
-			completion = { completed: completedActivities, total: totalActivities };
+			completion = { completed: completedActivities, total };
 		} else {
 			completion = completionsList[0] || {};
 		}

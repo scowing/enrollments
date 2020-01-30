@@ -503,7 +503,8 @@ describe('d2l-enrollment-hero-banner', () => {
 
 			const sequencedActivityEntity = {
 				onOrganizationChange: onOrganizationChangeStub,
-				index: () => index
+				index: () => index,
+				type: 'sequenced-activity'
 			};
 
 			onOrganizationChangeStub.callsArgWith(0, organizationEntity);
@@ -570,7 +571,8 @@ describe('d2l-enrollment-hero-banner', () => {
 					callback(sequencedActivityEntity2);
 					callback(sequencedActivityEntity3);
 				},
-				index: () => 0
+				index: () => 0,
+				type: 'sequenced-activity'
 			};
 
 			onOrganizationChangeStub.callsArgWith(0, organizationEntity);
