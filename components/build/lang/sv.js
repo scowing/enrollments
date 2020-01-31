@@ -7,6 +7,7 @@ const LangSvImpl = (superClass) => class extends superClass {
 	constructor() {
 		super();
 		this.sv = {
+			'activityProgress': 'Aktiviteter',
 			'changeImage': 'Ändra bild',
 			'closed': 'Stängd',
 			'completed': 'Klart',
@@ -15,12 +16,12 @@ const LangSvImpl = (superClass) => class extends superClass {
 			'completedToday': 'Slutfört idag',
 			'completedTomorrow': 'Slutförs imorgon',
 			'completedYesterday': 'Slutfördes igår',
-			'continue': 'Continue',
-			'continueToModule': 'Continue by navigating to module, {module}',
+			'continue': 'Fortsätt',
+			'continueToModule': 'Fortsätt genom att navigera till modulen {module}',
 			'courseOfferingInformation': 'Information om kursutbud',
 			'coursePinButton': '{course} är markerad. Avmarkera kurs',
 			'courseSettings': 'Kursinställningar för {course}',
-			'description': 'Description',
+			'description': 'Beskrivning',
 			'disabled': 'Avaktiverad',
 			'dueDaysAgo': 'Förföll för {number} dagar sedan',
 			'dueOn': 'Förföll {dateTime}',
@@ -29,15 +30,18 @@ const LangSvImpl = (superClass) => class extends superClass {
 			'dueYesterday': 'Förföll igår',
 			'ended': 'Slutade {date} kl. {time}',
 			'endsAt': 'Slutar {date} kl. {time}',
-			'enrollmentProgressBar': 'Completed {percentage}% of {title}',
+			'enrollmentProgressBar': 'Slutfört {percent} % av {title}',
 			'inactive': 'Inaktiv',
+			'moduleProgress': 'Moduler',
 			'new': 'Ny',
 			'overdue': 'Försenad',
 			'pin': 'Markera',
 			'pinActionResult': '{course} har markerats',
 			'startsAt': 'Startar {date} kl. {time}',
 			'unpin': 'Avmarkera',
-			'unpinActionResult': '{course} har avmarkerats'
+			'unpinActionResult': '{course} har avmarkerats',
+			'noCoursesMessage': 'You don\'t have any courses or learning paths to display.',
+			'viewAllLearning': 'View All Learning'
 		};
 	}
 };

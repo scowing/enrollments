@@ -37,7 +37,9 @@ const LangFrfrImpl = (superClass) => class extends superClass {
 			'pinActionResult': '{course} a été épinglé',
 			'startsAt': 'Commence le {date} à {time}',
 			'unpin': 'Désépingler',
-			'unpinActionResult': '{course} a été désépinglé'
+			'unpinActionResult': '{course} a été désépinglé',
+			'noCoursesMessage': 'Vous n\'avez aucun cours ou chemin d\'apprentissage à afficher.',
+			'viewAllLearning': 'Voir tous les apprentissages'
 		};
 	}
 };
