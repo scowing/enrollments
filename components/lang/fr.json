@@ -130,5 +130,13 @@
     "unpinActionResult" : {
         "context" : "Response from the Unpin action verifying that this action has been taken place.",
         "translation" : "L'épinglage du cours {course} a été annulé"
+    },
+    "noCoursesMessage": {
+        "translation": "Vous n'avez aucun cours ou chemin d'apprentissage à afficher.",
+        "context": "The message that is displayed when a user has no courses or Learning Paths assigned to them."
+    },
+    "viewAllLearning": {
+        "translation": "Voir tous les apprentissages",
+        "context": "The button text linking the user to the My Learning page to view all of their Learning items"
     }
 }

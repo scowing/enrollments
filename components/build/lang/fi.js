@@ -37,7 +37,9 @@ const LangFiImpl = (superClass) => class extends superClass {
 			'pinActionResult': '{course} has been pinned',
 			'startsAt': 'Starts {date} at {time}',
 			'unpin': 'Unpin',
-			'unpinActionResult': '{course} has been unpinned'
+			'unpinActionResult': '{course} has been unpinned',
+			'noCoursesMessage': 'You don\'t have any courses or learning paths to display.',
+			'viewAllLearning': 'View All Learning'
 		};
 	}
 };
