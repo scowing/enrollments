@@ -130,5 +130,13 @@
     "unpinActionResult" : {
         "context" : "Response from the Unpin action verifying that this action has been taken place.",
         "translation" : "{course} 고정 취소됨"
+    },
+    "noCoursesMessage": {
+        "translation": "You don't have any courses or learning paths to display.",
+        "context": "The message that is displayed when a user has no courses or Learning Paths assigned to them."
+    },
+    "viewAllLearning": {
+        "translation": "View All Learning",
+        "context": "The button text linking the user to the My Learning page to view all of their Learning items"
     }
 }
