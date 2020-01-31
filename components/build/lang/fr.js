@@ -7,6 +7,7 @@ const LangFrImpl = (superClass) => class extends superClass {
 	constructor() {
 		super();
 		this.fr = {
+			'activityProgress': 'Activités',
 			'changeImage': 'Modifier l\'image',
 			'closed': 'Fermé',
 			'completed': 'Terminé',
@@ -15,8 +16,8 @@ const LangFrImpl = (superClass) => class extends superClass {
 			'completedToday': 'Terminé aujourd\'hui',
 			'completedTomorrow': 'Terminé demain',
 			'completedYesterday': 'Terminé hier',
-			'continue': 'Continue',
-			'continueToModule': 'Continue by navigating to module, {module}',
+			'continue': 'Continuer',
+			'continueToModule': 'Continuer pour accéder au module, {module}',
 			'courseOfferingInformation': 'Information sur l\'offre de cours',
 			'coursePinButton': 'Le cours {course} est épinglé. Annuler l\'épinglage du cours',
 			'courseSettings': 'Paramètres du cours {course}',
@@ -27,17 +28,20 @@ const LangFrImpl = (superClass) => class extends superClass {
 			'dueToday': 'À remettre aujourd\'hui',
 			'dueTomorrow': 'À remettre demain',
 			'dueYesterday': 'À remettre hier',
-			'ended': 'S’est terminé le {date} à {time}',
+			'ended': 'S\'est terminé le {date} à {time}',
 			'endsAt': 'Se termine le {date} à {time}',
-			'enrollmentProgressBar': 'Completed {percentage}% of {title}',
+			'enrollmentProgressBar': 'Achèvement à {percentage} % pour {title}',
 			'inactive': 'Inactif',
+			'moduleProgress': 'Modules',
 			'new': 'Nouvelle',
 			'overdue': 'En retard',
 			'pin': 'Épingler',
 			'pinActionResult': 'Le cours {course} a été épinglé',
 			'startsAt': 'Commence le {date} à {time}',
 			'unpin': 'Annuler l\'épinglage',
-			'unpinActionResult': 'L\'épinglage du cours {course} a été annulé'
+			'unpinActionResult': 'L\'épinglage du cours {course} a été annulé',
+			'noCoursesMessage': 'Vous n\'avez aucun cours ou chemin d\'apprentissage à afficher.',
+			'viewAllLearning': 'Voir tous les apprentissages'
 		};
 	}
 };

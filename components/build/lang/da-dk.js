@@ -37,7 +37,9 @@ const LangDadkImpl = (superClass) => class extends superClass {
 			'pinActionResult': '{course} er blevet fastgjort',
 			'startsAt': 'Begynder {date} kl. {time}',
 			'unpin': 'Frigør',
-			'unpinActionResult': '{course} er blevet frigjort'
+			'unpinActionResult': '{course} er blevet frigjort',
+			'noCoursesMessage': 'You don\'t have any courses or learning paths to display.',
+			'viewAllLearning': 'View All Learning'
 		};
 	}
 };
