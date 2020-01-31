@@ -7,6 +7,7 @@ const LangPtImpl = (superClass) => class extends superClass {
 	constructor() {
 		super();
 		this.pt = {
+			'activityProgress': 'Atividades',
 			'changeImage': 'Alterar imagem',
 			'closed': 'Fechado',
 			'completed': 'Concluído',
@@ -15,12 +16,12 @@ const LangPtImpl = (superClass) => class extends superClass {
 			'completedToday': 'Concluído hoje',
 			'completedTomorrow': 'Concluído amanhã',
 			'completedYesterday': 'Concluído ontem',
-			'continue': 'Continue',
-			'continueToModule': 'Continue by navigating to module, {module}',
-			'courseOfferingInformation': 'Informações de Oferta de Curso',
-			'coursePinButton': '{course} está fixado. Desafixar curso',
-			'courseSettings': 'Configurações de curso de {course}',
-			'description': 'Description',
+			'continue': 'Continuar',
+			'continueToModule': 'Continue navegando até o módulo, {module}',
+			'courseOfferingInformation': 'Informações de oferta de curso',
+			'coursePinButton': '{curso} está fixado. Desafixar curso',
+			'courseSettings': 'Configurações do curso de {course}',
+			'description': 'Descrição',
 			'disabled': 'Desabilitado',
 			'dueDaysAgo': 'Vencido há {number} dias',
 			'dueOn': 'Vencido em {dateTime}',
@@ -29,15 +30,18 @@ const LangPtImpl = (superClass) => class extends superClass {
 			'dueYesterday': 'Venceu ontem',
 			'ended': 'Encerrado em {date} às {time}',
 			'endsAt': 'Encerra em {date} às {time}',
-			'enrollmentProgressBar': 'Completed {percentage}% of {title}',
+			'enrollmentProgressBar': '{percentage}% concluído de {title}',
 			'inactive': 'Inativo',
+			'moduleProgress': 'Módulos',
 			'new': 'Novo',
 			'overdue': 'Atraso',
 			'pin': 'Fixar',
 			'pinActionResult': '{course} foi fixado',
 			'startsAt': 'Inicia em {date} às {time}',
 			'unpin': 'Desafixar',
-			'unpinActionResult': '{course} foi desafixado'
+			'unpinActionResult': '{course} foi desafixado',
+			'noCoursesMessage': 'You don\'t have any courses or learning paths to display.',
+			'viewAllLearning': 'View All Learning'
 		};
 	}
 };

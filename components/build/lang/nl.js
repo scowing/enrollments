@@ -7,6 +7,7 @@ const LangNlImpl = (superClass) => class extends superClass {
 	constructor() {
 		super();
 		this.nl = {
+			'activityProgress': 'Activiteiten',
 			'changeImage': 'Afbeelding wijzigen',
 			'closed': 'Gesloten',
 			'completed': 'Voltooien',
@@ -15,12 +16,12 @@ const LangNlImpl = (superClass) => class extends superClass {
 			'completedToday': 'Vandaag voltooid',
 			'completedTomorrow': 'Morgen voltooid',
 			'completedYesterday': 'Gisteren voltooid',
-			'continue': 'Continue',
-			'continueToModule': 'Continue by navigating to module, {module}',
+			'continue': 'Doorgaan',
+			'continueToModule': 'Ga door naar module, {module}',
 			'courseOfferingInformation': 'Informatie cursuseditie',
 			'coursePinButton': '{course} is vastgepind. Cursus losmaken',
 			'courseSettings': '{course}-cursusinstellingen',
-			'description': 'Description',
+			'description': 'Beschrijving',
 			'disabled': 'Uitgeschakeld',
 			'dueDaysAgo': 'Uiterste datum {number} dagen geleden',
 			'dueOn': 'Uiterste datum {dateTime}',
@@ -29,15 +30,18 @@ const LangNlImpl = (superClass) => class extends superClass {
 			'dueYesterday': 'Uiterste datum gisteren',
 			'ended': 'Geëindigd op {date} om {time}',
 			'endsAt': 'Eindigt op {date} om {time}',
-			'enrollmentProgressBar': 'Completed {percentage}% of {title}',
+			'enrollmentProgressBar': 'Voltooid {percentage}% van {title}',
 			'inactive': 'Inactief',
+			'moduleProgress': 'Modules',
 			'new': 'Nieuw',
 			'overdue': 'Achterstallig',
 			'pin': 'Vastpinnen',
 			'pinActionResult': '{course} is vastgepind',
 			'startsAt': 'Start op {date} om {time}',
 			'unpin': 'Losmaken',
-			'unpinActionResult': '{course} is losgemaakt'
+			'unpinActionResult': '{course} is losgemaakt',
+			'noCoursesMessage': 'You don\'t have any courses or learning paths to display.',
+			'viewAllLearning': 'View All Learning'
 		};
 	}
 };
