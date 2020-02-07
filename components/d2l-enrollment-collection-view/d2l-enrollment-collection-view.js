@@ -191,6 +191,7 @@ class EnrollmentCollectionView extends LocalizeMixin(EntityMixinLit(LitElement))
 				}
 				.d2l-enrollment-collection-view-skeleton-rect {
 					animation: loadingPulse 1.8s linear infinite;
+					fill: var(--d2l-color-sylvite);
 				}
 
 				.d2l-enrollment-collection-view-image-skeleton {
