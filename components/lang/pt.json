@@ -49,7 +49,7 @@
     },
     "coursePinButton" : {
         "context" : "This course is pinned and will be at the top of the list. Click here to unpin the course.",
-        "translation" : "{curso} está fixado. Desafixar curso"
+        "translation" : "{course} está fixado. Desafixar curso"
     },
     "courseSettings" : {
         "context" : "Go to course setting page",
