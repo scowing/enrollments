@@ -19,7 +19,7 @@ const LangPtImpl = (superClass) => class extends superClass {
 			'continue': 'Continuar',
 			'continueToModule': 'Continue navegando até o módulo, {module}',
 			'courseOfferingInformation': 'Informações de oferta de curso',
-			'coursePinButton': '{curso} está fixado. Desafixar curso',
+			'coursePinButton': '{course} está fixado. Desafixar curso',
 			'courseSettings': 'Configurações do curso de {course}',
 			'description': 'Descrição',
 			'disabled': 'Desabilitado',
