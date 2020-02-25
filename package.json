@@ -43,7 +43,7 @@
     "siren-parser": "^8.0.0",
     "whatwg-fetch": "^3.0.0"
   },
-  "version": "4.0.51",
+  "version": "4.0.52",
   "resolutions": {
     "inherits": "2.0.3",
     "samsam": "1.1.3",
