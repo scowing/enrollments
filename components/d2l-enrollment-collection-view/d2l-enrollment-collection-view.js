@@ -353,6 +353,7 @@ class EnrollmentCollectionView extends LocalizeMixin(EntityMixinLit(LitElement))
 						<d2l-organization-image
 							class="d2l-enrollment-collection-view-organization-image"
 							href="${item.href}"
+							.token=${this.token}
 							@d2l-organization-image-loaded="${() => this._onListImageLoaded(item.imageChunk)}"
 							?hidden="${!this._loadedImages[item.imageChunk].allLoaded}">
 						</d2l-organization-image>

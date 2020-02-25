@@ -298,12 +298,12 @@ class D2lEnrollmentDetailCard extends mixinBehaviors([
 						</div>
 						<!-- Real text part -->
 						<div class="dedc-base-info">
-							<h3 class="dedc-title"><d2l-organization-name href="[[_organizationUrl]]"  token="[[token]]"></d2l-organization-name></h3>
+							<h3 class="dedc-title"><d2l-organization-name href="[[_organizationUrl]]" token="[[token]]"></d2l-organization-name></h3>
 							<div class="dedc-tag-container" hidden$="[[!_userActivityUsageUrl]]">
 									<span>
 										<d2l-icon icon="d2l-tier1:bullet"></d2l-icon>
 										<d2l-user-activity-usage href="[[_userActivityUsageUrl]]" token="[[token]]">
-											<d2l-organization-date slot="default" href="[[_organizationUrl]]"></d2l-organization-date>
+											<d2l-organization-date slot="default" href="[[_organizationUrl]]" token="[[token]]"></d2l-organization-date>
 										</d2l-user-activity-usage>
 									</span>
 							</div>
