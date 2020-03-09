@@ -274,7 +274,7 @@ describe('d2l-enrollment-card', () => {
 			setTimeout(() => {
 				var changeImageMenuItem = component.$$('d2l-menu-item:not([hidden])');
 				expect(changeImageMenuItem).to.not.be.null;
-				expect(changeImageMenuItem.getAttribute('text')).to.equal('Change Image');
+				expect(changeImageMenuItem.text).to.equal('Change Image');
 				done();
 			});
 		});
