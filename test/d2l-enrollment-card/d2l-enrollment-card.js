@@ -272,9 +272,9 @@ describe('d2l-enrollment-card', () => {
 		it('should have a change-image-button if the set-catalog-image action exists on the organization', done => {
 			component._entity = enrollmentEntity;
 			setTimeout(() => {
-				var changeImageMenuItem = component.$$('d2l-menu-item:not([hidden])').$$('span');
+				var changeImageMenuItem = component.$$('d2l-menu-item:not([hidden])');
 				expect(changeImageMenuItem).to.not.be.null;
-				expect(changeImageMenuItem.innerText).to.equal('Change Image');
+				expect(changeImageMenuItem.getAttribute('text').to.equal('Change Image');
 				done();
 			});
 		});
