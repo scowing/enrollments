@@ -346,7 +346,7 @@ class EnrollmentCollectionView extends LocalizeMixin(EntityMixinLit(LitElement))
 		}
 		const listItems = repeat(items, (item) => item.org.self(), item =>
 			html`
-				<d2l-list-item href="${ifDefined(this._isSearching ? undefined : item.org.organizationHomepageUrl())}">
+				<d2l-list-item href="${ifDefined(this._isSearching || !item.org.isActive() ? undefined : item.org.organizationHomepageUrl())}">
 					<div slot="illustration" class="d2l-enrollment-collection-view-list-item-illustration">
 						${this._renderCourseImageSkeleton()}
 						<d2l-organization-image
