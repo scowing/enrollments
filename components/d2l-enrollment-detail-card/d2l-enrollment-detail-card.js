@@ -176,9 +176,11 @@ class D2lEnrollmentDetailCard extends mixinBehaviors([
 					background-color: var(--d2l-color-sylvite);
 					border-radius: 4px;
 				}
+				.dedc-base-container[has-link] .dedc-title {
+					color: var(--d2l-color-celestine);
+				}
 				.dedc-title {
 					@apply --d2l-body-standard-text;
-					color: var(--d2l-color-celestine);
 					letter-spacing: 0.4px;
 					line-height: 1;
 					margin: 0 0 0.1rem 0;
@@ -298,7 +300,7 @@ class D2lEnrollmentDetailCard extends mixinBehaviors([
 						</div>
 						<!-- Real text part -->
 						<div class="dedc-base-info">
-							<h3 class="dedc-title"><d2l-organization-name href="[[_organizationUrl]]"  token="[[token]]"></d2l-organization-name></h3>
+							<h3 class="dedc-title"><d2l-organization-name href="[[_organizationUrl]]" token="[[token]]"></d2l-organization-name></h3>
 							<div class="dedc-tag-container" hidden$="[[!_userActivityUsageUrl]]">
 									<span>
 										<d2l-icon icon="d2l-tier1:bullet"></d2l-icon>
