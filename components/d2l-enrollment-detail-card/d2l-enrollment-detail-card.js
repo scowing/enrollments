@@ -105,6 +105,10 @@ class D2lEnrollmentDetailCard extends mixinBehaviors([
 					position: relative;
 					width: 220px;
 				}
+				.dedc-base-container:not([has-link]) .dedc-image {
+					filter: grayscale(1);
+					opacity: 0.5;
+				}
 				.dedc-image-pulse {
 					animation: loadingPulse 1.8s linear infinite;
 					background-color: var(--d2l-color-sylvite);
