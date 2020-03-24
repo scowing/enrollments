@@ -364,7 +364,7 @@ class D2lEnrollmentSummaryView extends EnrollmentsLocalize(EntityMixin(PolymerEl
 							primary
 							disabled$="[[!_continueModule.href]]"
 							href$="[[_continueModule.href]]"
-							aria-label="[[localize('continueToModule', 'module', _continueModule.title)]]">
+							aria-label$="[[localize('continueToModule', 'module', _continueModule.title)]]">
 								[[localize('continue')]]
 						</a>
 						<span>[[_continueModule.title]]</span>
