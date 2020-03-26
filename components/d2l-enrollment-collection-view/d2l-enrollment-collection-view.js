@@ -535,14 +535,14 @@ ${
 				items[index].href = organizationHref;
 				items[index].activityUsageUrl = enrollment.userActivityUsageUrl();
 				items[index].hasDueDate = items[index].hasDueDate || organization.endDate() !== null;
-				items[index].startDate = organization.startDate() !== null;
-				items[index].hasDate = items[index].hasDueDate || items[index].startDate;
+				items[index].hasStartDate = organization.startDate() !== null;
+				items[index].hasDate = items[index].hasDueDate || items[index].hasStartDate;
 			});
 
 			enrollment.onUserActivityUsageChange((activityUsage) => {
 				const date = activityUsage.date();
 				items[index].hasDueDate = items[index].hasDueDate || (date !== null && date !== undefined);
-				items[index].hasDate = items[index].hasDueDate || items[index].startDate;
+				items[index].hasDate = items[index].hasDueDate || items[index].hasStartDate;
 			});
 		});
 		await enrollmentCollection.subEntitiesLoaded();
