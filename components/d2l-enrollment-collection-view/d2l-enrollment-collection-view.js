@@ -363,9 +363,9 @@ class EnrollmentCollectionView extends LocalizeMixin(EntityMixinLit(LitElement))
 						<d2l-enrollment-summary-view-tag-slot-list>
 							<span slot="first">${this._enrollmentType(item)}</span>
 ${
-	item.hasDueDate ? html`
+	item.hasDate ? html`
 		<d2l-user-activity-usage slot="middle" href=${ifDefined(item.activityUsageUrl)} .token=${this.token}>
-			<d2l-organization-date slot="default" href=${item.href} .token=${this.token} hide-course-start-date
+			<d2l-organization-date slot="default" href=${item.href} .token=${this.token}
 			></d2l-organization-date>
 		</d2l-user-activity-usage>
 	` : null
@@ -535,11 +535,14 @@ ${
 				items[index].href = organizationHref;
 				items[index].activityUsageUrl = enrollment.userActivityUsageUrl();
 				items[index].hasDueDate = items[index].hasDueDate || organization.endDate() !== null;
+				items[index].hasStartDate = organization.startDate() !== null;
+				items[index].hasDate = items[index].hasDueDate || items[index].hasStartDate;
 			});
 
 			enrollment.onUserActivityUsageChange((activityUsage) => {
 				const date = activityUsage.date();
 				items[index].hasDueDate = items[index].hasDueDate || (date !== null && date !== undefined);
+				items[index].hasDate = items[index].hasDueDate || items[index].hasStartDate;
 			});
 		});
 		await enrollmentCollection.subEntitiesLoaded();
