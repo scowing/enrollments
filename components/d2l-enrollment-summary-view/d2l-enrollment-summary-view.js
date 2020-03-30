@@ -2,6 +2,7 @@ import { html, PolymerElement } from '@polymer/polymer/polymer-element.js';
 import { EntityMixin } from 'siren-sdk/src/mixin/entity-mixin.js';
 import { EnrollmentEntity } from 'siren-sdk/src/enrollments/EnrollmentEntity.js';
 import 'd2l-button/d2l-button-shared-styles.js';
+import 'd2l-button/d2l-button.js';
 import 'd2l-link/d2l-link.js';
 import 'd2l-typography/d2l-typography-shared-styles.js';
 import 'd2l-organizations/components/d2l-organization-detail-card/d2l-organization-detail-card.js';
@@ -27,48 +28,8 @@ class D2lEnrollmentSummaryView extends EnrollmentsLocalize(EntityMixin(PolymerEl
 		return html`
 			<!-- Style for the continue button -->
 			<style>
-				.desv-button {
-					font-family: inherit;
-					padding: 0.5rem 1.5rem;
-					@apply --d2l-button-shared;
-					@apply --d2l-label-text;
-					@apply --d2l-button;
-					@apply --d2l-button-clear-focus;
-					text-decoration: none;
-				}
-				/* Firefox includes a hidden border which messes up button dimensions */
-				.desv-button::-moz-focus-inner {
-					border: 0;
-				}
-				.desv-button,
-				.desv-button[disabled]:hover,
-				.desv-button[disabled]:focus {
-					background-color: var(--d2l-color-regolith);
-					border-color: var(--d2l-color-mica);
-					color: var(--d2l-color-ferrite);
-				}
-				.desv-button[disabled] {
-					opacity: 0.5;
-					cursor: default;
-				}
-				.desv-button[primary],
-				.desv-button[primary][disabled]:hover,
-				.desv-button[primary][disabled]:focus {
-					background-color: var(--d2l-color-celestine);
-					border-color: var(--d2l-color-celestine-minus-1);
-					color: #ffffff;
-					@apply --d2l-button-primary;
-				}
-				.desv-button[primary]:hover,
-				.desv-button[primary]:focus {
-					background-color: var(--d2l-color-celestine-minus-1);
-				}
-				.desv-button[primary]:hover {
-					@apply --d2l-button-primary-hover;
-				}
-				.desv-button[primary]:focus {
-					@apply --d2l-button-focus;
-					outline: none; /* needed for Edge, can't be in the mixin */
+				d2l-button {
+					margin: 0.6rem 0.6rem 0.6rem 0;
 				}
 			</style>
 			<style include="d2l-typography-shared-styles">
@@ -359,14 +320,13 @@ class D2lEnrollmentSummaryView extends EnrollmentsLocalize(EntityMixin(PolymerEl
 							<div class="desv-placeholder desv-button-placeholder"></div>
 							<div class="desv-placeholder desv-compact-text-placeholder desv-continue-title-placeholder"></div>
 						</div>
-						<a
-							class="desv-button"
+						<d2l-button
 							primary
 							disabled$="[[!_continueModule.href]]"
 							href$="[[_continueModule.href]]"
 							aria-label$="[[localize('continueToModule', 'module', _continueModule.title)]]">
 								[[localize('continue')]]
-						</a>
+						</d2l-button>
 						<span>[[_continueModule.title]]</span>
 					</div>
 				</d2l-enrollment-summary-view-layout>
