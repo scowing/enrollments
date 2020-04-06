@@ -324,6 +324,8 @@ class D2lEnrollmentSummaryView extends EnrollmentsLocalize(EntityMixin(PolymerEl
 							primary
 							disabled$="[[!_continueModule.href]]"
 							href$="[[_continueModule.href]]"
+							on-click="_navigateContinueModule"
+							role="link"
 							aria-label$="[[localize('continueToModule', 'module', _continueModule.title)]]">
 								[[localize('continue')]]
 						</d2l-button>
@@ -501,6 +503,15 @@ class D2lEnrollmentSummaryView extends EnrollmentsLocalize(EntityMixin(PolymerEl
 			tags.push(courses.length > 1 ? courses.length + ' Activities' : '1 Activity');
 		}
 		return tags;
+	}
+	_navigateContinueModule() {
+		this._setWindowLocationHref(this._continueModule.href);
+	}
+
+	_setWindowLocationHref(href) {
+		if (href !== '') {
+			window.location.href = href;
+		}
 	}
 	_onCoursesChange(courses) {
 		const coursesLoaded = courses.reduce((map, href) => {
