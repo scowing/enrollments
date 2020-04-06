@@ -135,7 +135,8 @@ class D2lEnrollmentSummaryView extends EnrollmentsLocalize(EntityMixin(PolymerEl
 					position: relative;
 				}
 				.desv-continue span {
-					@apply --d2l-body-small-text;
+					@apply --d2l-body-compact-text;
+					margin: auto;
 					letter-spacing: 0.3px;
 					margin-left: 0.2rem;
 					white-space: nowrap;
