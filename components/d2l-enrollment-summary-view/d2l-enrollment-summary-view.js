@@ -332,13 +332,13 @@ class D2lEnrollmentSummaryView extends EnrollmentsLocalize(EntityMixin(PolymerEl
 				}
 			</style>
 
-			<div class="desv-header">
+			<div class="desv-header" role="application" aria-labelledby="lp-title" aria-describedby="lp-summary-description">
 				<div class="desv-title-bar" show-text$=[[_showTitle]]>
 					<div class="desv-placeholder-container desv-title-bar-placeholder">
 						<div class="desv-placeholder desv-header-1-placeholder desv-title-placeholder"></div>
 						<div class="desv-placeholder desv-compact-text-placeholder desv-tags-placeholder"></div>
 					</div>
-					<h1> [[_title]] </h1>
+					<h1 id="lp-title"> [[_title]] </h1>
 					<d2l-enrollment-summary-view-tag-list list=[[_tags]]></d2l-enrollment-summary-view-tag-list>
 				</div>
 			</div>
@@ -391,7 +391,7 @@ class D2lEnrollmentSummaryView extends EnrollmentsLocalize(EntityMixin(PolymerEl
 						<div class="desv-placeholder desv-compact-text-placeholder desv-paragraph-placeholder"></div>
 					</div>
 					<h3>[[localize('description')]]</h3>
-					<p>[[_description]]</p>
+					<p id="lp-summary-description">[[_description]]</p>
 				</div>
 			</d2l-enrollment-summary-view-layout>
 		`;
