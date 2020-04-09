@@ -1,6 +1,7 @@
 import { html, PolymerElement } from '@polymer/polymer/polymer-element.js';
 import { EntityMixin } from 'siren-sdk/src/mixin/entity-mixin.js';
 import { EnrollmentEntity } from 'siren-sdk/src/enrollments/EnrollmentEntity.js';
+import '@brightspace-ui/core/components/offscreen/offscreen.js';
 import 'd2l-button/d2l-button-shared-styles.js';
 import 'd2l-link/d2l-link.js';
 import 'd2l-typography/d2l-typography-shared-styles.js';
@@ -339,6 +340,7 @@ class D2lEnrollmentSummaryView extends EnrollmentsLocalize(EntityMixin(PolymerEl
 						<div class="desv-placeholder desv-compact-text-placeholder desv-tags-placeholder"></div>
 					</div>
 					<h1> [[_title]] </h1>
+					<d2l-offscreen>[[_description]]</d2l-offscreen>
 					<d2l-enrollment-summary-view-tag-list list=[[_tags]]></d2l-enrollment-summary-view-tag-list>
 				</div>
 			</div>
