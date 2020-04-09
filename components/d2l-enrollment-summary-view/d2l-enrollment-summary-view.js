@@ -392,8 +392,8 @@ class D2lEnrollmentSummaryView extends EnrollmentsLocalize(EntityMixin(PolymerEl
 						<div class="desv-placeholder desv-compact-text-placeholder desv-paragraph-placeholder"></div>
 						<div class="desv-placeholder desv-compact-text-placeholder desv-paragraph-placeholder"></div>
 					</div>
-					<h3>[[localize('description')]]</h3>
-					<p>[[_description]]</p>
+					<h3 aria-hidden="true">[[localize('description')]]</h3>
+					<p aria-hidden="true">[[_description]]</p>
 				</div>
 			</d2l-enrollment-summary-view-layout>
 		`;
