@@ -488,6 +488,21 @@ class EnrollmentCard extends mixinBehaviors([
 			.catch(this._displaySetImageResult.bind(this, false));
 	}
 
+	focusDropdownOpener(organization) {
+		if (organization && this._getEntityIdentifier(organization) !== this._organizationUrl) {
+			return false;
+		}
+
+		const dropdown = this.shadowRoot.querySelector('d2l-dropdown-more');
+
+		if (dropdown) {
+			dropdown.getOpenerElement().focus();
+			return true;
+		}
+
+		return false;
+	}
+
 	_handlePinnedChange(pinned) {
 		if (pinned) {
 			this.setAttribute('pinned', '');
