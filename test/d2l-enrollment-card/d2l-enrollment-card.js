@@ -119,6 +119,30 @@ describe('d2l-enrollment-card', () => {
 			expect(component.href).to.equal(undefined);
 		});
 
+		it('if focusDropdownOpener called with different org, return false', (done) => {
+			component._entity = enrollmentEntity;
+
+			requestAnimationFrame(() => {
+				expect(component.focusDropdownOpener({
+					getLinkByRel: function() { return { href: 'different' }; }
+				})).to.be.false;
+				done();
+			});
+		});
+
+		it('if focusDropdownOpener called with same org, try to focus the opener and return true', (done) => {
+			component._entity = enrollmentEntity;
+
+			requestAnimationFrame(() => {
+				const spy = sandbox.spy(component.shadowRoot.querySelector('d2l-dropdown-more'), 'getOpenerElement');
+				expect(component.focusDropdownOpener({
+					getLinkByRel: function() { return { href: 'organizationHref' }; }
+				})).to.be.true;
+				expect(spy).to.have.been.called.calledOnce;
+				done();
+			});
+		});
+
 	});
 
 	describe('Setting the enrollment attribute', () => {
