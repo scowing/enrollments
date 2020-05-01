@@ -524,7 +524,7 @@ class EnrollmentHeroBanner extends DateTextAndStatusMixin(EnrollmentsLocalize(En
 			'time', this.formatTime(processedDate.date)
 		);
 		this._setOrganizationAccessibleData(organization.name(), organization.code(), dateText);
-		this._setOrganizationDate(processedDate, organization.isActive());
+		this._setOrganizationDate(organization.isBeforeStartDate(), organization.isAfterEndDate(), organization.isActive());
 
 		organization.onSemesterChange(function(semester) {
 			this._setSemesterAccessibleData(semester.name());
@@ -751,13 +751,12 @@ class EnrollmentHeroBanner extends DateTextAndStatusMixin(EnrollmentsLocalize(En
 		this._accessibilityDataReset();
 	}
 
-	_setOrganizationDate(date, isActive) {
+	_setOrganizationDate(isBeforeStartDate, isAfterEndDate, isActive) {
 		this._setInactive(!isActive);
-		const afterEndDate = date && date.afterEndDate;
-		this._setClosed(afterEndDate);
-		this._beforeStartDate = date && date.beforeStartDate;
+		this._setClosed(isAfterEndDate);
+		this._beforeStartDate = isBeforeStartDate;
 
-		if (this._beforeStartDate || (afterEndDate && !this.completed)) {
+		if (this._beforeStartDate || (isAfterEndDate && !this.completed)) {
 			this._orgDateSlot = true;
 		}
 		this._setBadgeText();

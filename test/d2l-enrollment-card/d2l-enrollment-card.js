@@ -18,6 +18,8 @@ describe('d2l-enrollment-card', () => {
 		dateStub,
 		isActiveStub,
 		processedDateStub,
+		isBeforeStartDateStub,
+		isAfterEndDateStub,
 		courseInfoUrlStub,
 		date;
 
@@ -34,6 +36,8 @@ describe('d2l-enrollment-card', () => {
 		organizationHasActionByNameStub = sinon.stub();
 		isActiveStub = sinon.stub();
 		processedDateStub = sinon.stub();
+		isBeforeStartDateStub = sinon.stub();
+		isAfterEndDateStub = sinon.stub();
 		courseInfoUrlStub = sinon.stub();
 		date = new Date(Date.parse('1998-01-01T00:00:00.000Z'));
 
@@ -75,6 +79,8 @@ describe('d2l-enrollment-card', () => {
 			canChangeCourseImage: organizationHasActionByNameStub,
 			isActive: isActiveStub,
 			processedDate: processedDateStub,
+			isBeforeStartDate: isBeforeStartDateStub,
+			isAfterEndDate: isAfterEndDateStub,
 			onSemesterChange: onSemesterChangeStub
 		};
 
@@ -96,6 +102,8 @@ describe('d2l-enrollment-card', () => {
 		organizationHasActionByNameStub.returns(true);
 		isActiveStub.returns(true);
 		processedDateStub.returns(null);
+		isBeforeStartDateStub.returns(null);
+		isAfterEndDateStub.returns(null);
 		courseInfoUrlStub.returns('courseInfoUrl');
 
 		component = fixture('d2l-enrollment-card-fixture');
@@ -416,9 +424,9 @@ describe('d2l-enrollment-card', () => {
 		it('Closed Badge', done => {
 			processedDateStub.returns({
 				type: 'ended',
-				date: date,
-				afterEndDate: true
+				date: date
 			});
+			isAfterEndDateStub.returns(true);
 			component._entity = enrollmentEntity;
 
 			setTimeout(() => {
@@ -442,11 +450,11 @@ describe('d2l-enrollment-card', () => {
 
 		describe('Badge Priority Order', () => {
 			var setClosed = function() {
-				component._setOrganizationDate({
-					type: 'ended',
-					date: date,
-					afterEndDate: true
-				}, true);
+				component._setOrganizationDate(
+					false, // isBeforeStartDate
+					true,  // isAfterEndDate
+					true   // isActive
+				);
 			};
 			var setOverdue = function() {
 				component._setEnrollmentStatus('overdue');
@@ -455,26 +463,26 @@ describe('d2l-enrollment-card', () => {
 				component._setEnrollmentStatus('completed');
 			};
 			var setBeforeStart = function() {
-				component._setOrganizationDate({
-					type: 'ended',
-					date: date,
-					afterEndDate: true
-				}, false);
+				component._setOrganizationDate(
+					true,   // isBeforeStartDate
+					false,  // isAfterEndDate
+					false   // isActive
+				);
 			};
 
 			[
 				{
-					name: 'Completed should be shown when recieved first',
+					name: 'Completed should be shown when received first',
 					methods: [setCompleted, setBeforeStart, setOverdue, setClosed],
 					badge: 'completed'
 				},
 				{
-					name: 'Completed should be shown when recieved last',
+					name: 'Completed should be shown when received last',
 					methods: [setBeforeStart, setOverdue, setClosed, setCompleted],
 					badge: 'completed'
 				},
 				{
-					name: 'Completed should be shown when recieved last',
+					name: 'Completed should be shown when received last',
 					methods: [setOverdue, setCompleted],
 					badge: 'completed'
 				},

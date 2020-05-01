@@ -640,8 +640,9 @@ class EnrollmentCard extends mixinBehaviors([
 			'date', this.formatDate(processedDate.date, {format: 'MMMM d, yyyy'}),
 			'time', this.formatTime(processedDate.date)
 		);
+
 		this._setOrganizationAccessibleData(org.name(), org.code(), dateText);
-		this._setOrganizationDate(processedDate, org.isActive());
+		this._setOrganizationDate(org.isBeforeStartDate(), org.isAfterEndDate(), org.isActive());
 
 		org.onSemesterChange(function(semester) {
 			this._setSemesterAccessibleData(semester.name());
@@ -681,12 +682,11 @@ class EnrollmentCard extends mixinBehaviors([
 		this._accessibilityDataReset();
 	}
 
-	_setOrganizationDate(date, isActive) {
+	_setOrganizationDate(isBeforeStartDate, isAfterEndDate, isActive) {
 		this._setInactive(!isActive);
-		const afterEndDate = date && date.afterEndDate;
-		this._setClosed(afterEndDate);
-		this._beforeStartDate = date && date.beforeStartDate;
-		if (this._beforeStartDate || (afterEndDate && !this.completed)) {
+		this._setClosed(isAfterEndDate);
+		this._beforeStartDate = isBeforeStartDate;
+		if (this._beforeStartDate || (isAfterEndDate && !this.completed)) {
 			this._orgDateSlot = true;
 		}
 
