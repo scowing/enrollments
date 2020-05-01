@@ -241,7 +241,7 @@ class EnrollmentCollectionView extends LocalizeMixin(EntityMixinLit(LitElement))
 					}
 					.d2l-enrollment-collection-view-header-1-skeleton {
 						height: 1.8rem;
-						min-width: 10rem;f
+						min-width: 10rem;
 					}
 				}
 				@media only screen and (min-width: 1230px) {
@@ -250,7 +250,6 @@ class EnrollmentCollectionView extends LocalizeMixin(EntityMixinLit(LitElement))
 						padding-right: 30px;
 					}
 				}
-			}
 			`
 		];
 	}
