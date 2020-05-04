@@ -23,6 +23,8 @@ describe('d2l-enrollment-hero-banner', () => {
 		dateStub,
 		isActiveStub,
 		processedDateStub,
+		isBeforeStartDateStub,
+		isAfterEndDateStub,
 		date;
 
 	beforeEach(() => {
@@ -44,6 +46,8 @@ describe('d2l-enrollment-hero-banner', () => {
 		onSemesterChangeStub = sinon.stub();
 		isActiveStub = sinon.stub();
 		processedDateStub = sinon.stub();
+		isBeforeStartDateStub = sinon.stub();
+		isAfterEndDateStub = sinon.stub();
 		date = new Date(Date.parse('1998-01-01T00:00:00.000Z'));
 
 		pinStub.returns(true);
@@ -52,6 +56,8 @@ describe('d2l-enrollment-hero-banner', () => {
 		courseInfoUrlStub.returns('courseInfoUrl');
 		isActiveStub.returns(true);
 		processedDateStub.returns(null);
+		isBeforeStartDateStub.returns(null);
+		isAfterEndDateStub.returns(null);
 	});
 
 	afterEach(() => {
@@ -98,6 +104,8 @@ describe('d2l-enrollment-hero-banner', () => {
 				canChangeCourseImage: organizationHasActionByNameStub,
 				isActive: isActiveStub,
 				processedDate: processedDateStub,
+				isBeforeStartDate: isBeforeStartDateStub,
+				isAfterEndDate: isAfterEndDateStub,
 				onSequenceChange: onRootSequenceChangeStub,
 				onSemesterChange: onSemesterChangeStub
 			};
@@ -352,9 +360,9 @@ describe('d2l-enrollment-hero-banner', () => {
 			it('Closed Badge', done => {
 				processedDateStub.returns({
 					type: 'ended',
-					date: date,
-					afterEndDate: true
+					date: date
 				});
+				isAfterEndDateStub.returns(true);
 				component._entity = enrollmentEntity;
 
 				setTimeout(() => {
@@ -381,11 +389,11 @@ describe('d2l-enrollment-hero-banner', () => {
 
 			describe('Badge Priority Order', () => {
 				var setClosed = function() {
-					component._setOrganizationDate({
-						type: 'ended',
-						date: date,
-						afterEndDate: true
-					}, true);
+					component._setOrganizationDate(
+						false, // isBeforeStartDate
+						true,  // isAfterEndDate
+						true   // isActive
+					);
 				};
 				var setOverdue = function() {
 					component._setEnrollmentStatus('overdue');
@@ -394,26 +402,26 @@ describe('d2l-enrollment-hero-banner', () => {
 					component._setEnrollmentStatus('completed');
 				};
 				var setBeforeStart = function() {
-					component._setOrganizationDate({
-						type: 'ended',
-						date: date,
-						afterEndDate: true
-					}, false);
+					component._setOrganizationDate(
+						true,   // isBeforeStartDate
+						false,  // isAfterEndDate
+						false   // isActive
+					);
 				};
 
 				[
 					{
-						name: 'Completed should be shown when recieved first',
+						name: 'Completed should be shown when received first',
 						methods: [setCompleted, setBeforeStart, setOverdue, setClosed],
 						badge: 'completed'
 					},
 					{
-						name: 'Completed should be shown when recieved last',
+						name: 'Completed should be shown when received last',
 						methods: [setBeforeStart, setOverdue, setClosed, setCompleted],
 						badge: 'completed'
 					},
 					{
-						name: 'Completed should be shown when recieved last',
+						name: 'Completed should be shown when received last',
 						methods: [setOverdue, setCompleted],
 						badge: 'completed'
 					},
@@ -544,6 +552,8 @@ describe('d2l-enrollment-hero-banner', () => {
 				canChangeCourseImage: organizationHasActionByNameStub,
 				isActive: isActiveStub,
 				processedDate: processedDateStub,
+				isBeforeStartDate: isBeforeStartDateStub,
+				isAfterEndDate: isAfterEndDateStub,
 				onSequenceChange: onRootSequenceChangeStub,
 				onSemesterChange: onSemesterChangeStub
 			};
