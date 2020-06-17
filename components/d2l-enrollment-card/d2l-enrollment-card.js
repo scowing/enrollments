@@ -270,6 +270,7 @@ class EnrollmentCard extends mixinBehaviors([
 					show-ungraded-quiz-attempts="[[showUngradedQuizAttempts]]"
 					show-unread-discussion-messages="[[showUnreadDiscussionMessages]]"
 					show-unread-dropbox-submissions="[[showUnreadDropboxSubmissions]]"
+					show-unapproved-portfolio-evidence="[[showUnapprovedPortfolioEvidence]]"
 				></d2l-enrollment-updates>
 			</d2l-card>
 		`;
@@ -349,6 +350,10 @@ class EnrollmentCard extends mixinBehaviors([
 				value: false
 			},
 			showUnreadDropboxSubmissions: {
+				type: Boolean,
+				value: false
+			},
+			showUnapprovedPortfolioEvidence: {
 				type: Boolean,
 				value: false
 			},

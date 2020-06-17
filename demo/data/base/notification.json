@@ -78,6 +78,20 @@
         "href": "http://example.com"
         }
       ]
+    },
+    {
+      "rel": [ "https://notifications.api.brightspace.com/rels/updates" ],
+      "properties": {
+        "count": 5,
+        "type": "UnapprovedPortfolioEvidence"
+      },
+      "links": [
+        {
+          "rel": [ "https://notifications.api.brightspace.com/rels/updates-source" ],
+          "title": "UnapprovedPortfolioEvidence",
+        "href": "http://example.com"
+        }
+      ]
     }
   ],
   "links": [

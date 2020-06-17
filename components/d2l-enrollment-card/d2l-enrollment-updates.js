@@ -78,6 +78,10 @@ class EnrollmentUpdates extends OrganizationUpdatesMixin(EntityMixin(PolymerElem
 				type: Boolean,
 				value: false
 			},
+			showUnapprovedPortfolioEvidence: {
+				type: Boolean,
+				value: false
+			},
 			_notifications: {
 				type: Array,
 				value: function() { return []; }
@@ -104,6 +108,7 @@ class EnrollmentUpdates extends OrganizationUpdatesMixin(EntityMixin(PolymerElem
 					'ShowUngradedQuizAttempts': this.showUngradedQuizAttempts,
 					'ShowUnreadDiscussionMessages': this.showUnreadDiscussionMessages,
 					'ShowUnreadDropboxSubmissions': this.showUnreadDropboxSubmissions,
+					'ShowUnapprovedPortfolioEvidence': this.showUnapprovedPortfolioEvidence,
 				};
 
 				var notification = this._orgUpdates_fetch(notificationList, presentationAttributes);
