@@ -394,7 +394,7 @@ ${
 					<svg width="100%" class="d2l-enrollment-collection-view-body-compact-skeleton-svg">
 						<rect x="0" width="40%" y="0" height="100%" stroke="none" rx="4" class="d2l-enrollment-collection-view-skeleton-rect"></rect>
 					</svg>
-					<div slot="secondary">
+					<div slot="supporting-info">
 						<svg width="100%" class="d2l-enrollment-collection-view-body-small-skeleton-svg">
 							<rect x="0" width="30%" y="0" height="100%" stroke="none" rx="4" class="d2l-enrollment-collection-view-skeleton-rect"></rect>
 						</svg>
