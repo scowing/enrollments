@@ -3,8 +3,7 @@ import { repeat } from 'lit-html/directives/repeat';
 import { ifDefined } from 'lit-html/directives/if-defined';
 import { heading1Styles, bodyStandardStyles } from '@brightspace-ui/core/components/typography/styles.js';
 import { EntityMixinLit } from 'siren-sdk/src/mixin/entity-mixin-lit.js';
-import { LocalizeMixin } from '@brightspace-ui/core/mixins/localize-mixin.js';
-import { getLocalizeResources } from './localization.js';
+import { LocalizeEnrollmentCollectionMixin } from './localization.js';
 import { entityFactory } from 'siren-sdk/src/es6/EntityFactory.js';
 import { EnrollmentCollectionEntity } from 'siren-sdk/src/enrollments/EnrollmentCollectionEntity.js';
 import { classes as organizationClasses } from 'siren-sdk/src/organizations/OrganizationEntity.js';
@@ -22,7 +21,7 @@ import 'd2l-organizations/components/d2l-organization-image/d2l-organization-ima
 import { announce } from '@brightspace-ui/core/helpers/announce.js';
 import { performSirenAction } from 'siren-sdk/src/es6/SirenAction.js';
 
-class EnrollmentCollectionView extends LocalizeMixin(EntityMixinLit(LitElement)) {
+class EnrollmentCollectionView extends LocalizeEnrollmentCollectionMixin(EntityMixinLit(LitElement)) {
 	constructor() {
 		super();
 		this._items = [];
@@ -44,10 +43,6 @@ class EnrollmentCollectionView extends LocalizeMixin(EntityMixinLit(LitElement))
 		this._organizationImageChunk = {};
 
 		this._setEntityType(EnrollmentCollectionEntity);
-	}
-
-	static async getLocalizeResources(langs) {
-		return getLocalizeResources(langs, import.meta.url);
 	}
 
 	set _entity(entity) {

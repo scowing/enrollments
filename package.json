@@ -6,6 +6,7 @@
   "homepage": "https://github.com/BrightspaceHypermediaComponents/enrollments",
   "name": "d2l-enrollments",
   "scripts": {
+    "start": "es-dev-server --node-resolve --dedupe --watch --open /demo/",
     "lang:update": "node scripts/updateLangJson.js",
     "lang:build": "gulp build",
     "test": "npm run lint && npm run test:polymer:local",
@@ -73,6 +74,7 @@
     "d2l-sequences": "BrightspaceHypermediaComponents/sequences#semver:^2",
     "d2l-status-indicator": "BrightspaceUI/status-indicator#semver:^3",
     "d2l-tooltip": "BrightspaceUI/tooltip#semver:^3",
+    "es-dev-server": "^1.56.1",
     "intersection-observer": "^0.5.1",
     "lie": "^3.3.0",
     "siren-sdk": "BrightspaceHypermediaComponents/siren-sdk#semver:^1"
