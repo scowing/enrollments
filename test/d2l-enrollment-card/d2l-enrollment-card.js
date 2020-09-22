@@ -573,11 +573,14 @@ describe('d2l-enrollment-card', () => {
 
 		});
 
-		it('No semester name', () => {
+		it('No semester name', done => {
 			component._setOrganizationAccessibleData('Course Name', 'Course Code', undefined, undefined);
-			expect(component._accessibilityData.semesterName).to.be.undefined;
-			var cardText = component.$$('d2l-card').getAttribute('text');
-			expect(cardText).to.not.contain('Semester Name');
+			setTimeout(() => {
+				expect(component._accessibilityData.semesterName).to.be.undefined;
+				var cardText = component.$$('d2l-card').getAttribute('text');
+				expect(cardText).to.not.contain('Semester Name');
+				done();
+			});
 		});
 
 	});
