@@ -2,6 +2,8 @@
 `d2l-enrollment-updates`
 
 Polymer-based web component for a enrollment updates.
+
+Note: Audited tooltip accessibility warning, all good (DE39047)
 */
 import { html, PolymerElement } from '@polymer/polymer/polymer-element.js';
 import { EntityMixin } from 'siren-sdk/src/mixin/entity-mixin.js';
