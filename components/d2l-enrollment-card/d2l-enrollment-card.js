@@ -556,11 +556,7 @@ class EnrollmentCard extends mixinBehaviors([
 	}
 
 	_handleBadgeTextChange(badgeText) {
-		if (!badgeText) {
-			return;
-		}
-
-		this._accessibilityData.badge = this.localize(badgeText);
+		this._accessibilityData.badge = badgeText ? this.localize(badgeText) : null;
 		this._accessibilityDataReset();
 	}
 
@@ -644,6 +640,7 @@ class EnrollmentCard extends mixinBehaviors([
 		this._setOrganizationAccessibleData(org.name(), org.code(), dateText);
 		this._setOrganizationDate(org.isBeforeStartDate(), org.isAfterEndDate(), org.isActive());
 
+		this._setSemesterAccessibleData(); // Clear semester data in case there is none for this org
 		org.onSemesterChange(function(semester) {
 			this._setSemesterAccessibleData(semester.name());
 			this._performanceMark('d2l.enrollment-card.loadSemester');
@@ -663,22 +660,15 @@ class EnrollmentCard extends mixinBehaviors([
 	}
 
 	_setOrganizationAccessibleData(name, code, dateText) {
-		if (name) {
-			this._accessibilityData.organizationName = name;
-		}
-		if (code) {
-			this._accessibilityData.organizationCode = code;
-		}
-		if (dateText) {
-			this._accessibilityData.organizationDate = dateText;
-		}
+		this._accessibilityData.organizationName = name;
+		this._accessibilityData.organizationCode = code;
+		this._accessibilityData.organizationDate = dateText;
+
 		this._accessibilityDataReset();
 	}
 
 	_setSemesterAccessibleData(semesterName) {
-		if (semesterName) {
-			this._accessibilityData.semesterName = semesterName;
-		}
+		this._accessibilityData.semesterName = semesterName;
 		this._accessibilityDataReset();
 	}
 

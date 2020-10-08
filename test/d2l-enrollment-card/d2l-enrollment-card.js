@@ -583,6 +583,39 @@ describe('d2l-enrollment-card', () => {
 			});
 		});
 
+		it('Properly clears values from previous org', done => {
+			organizationEntity.onSemesterChange = () => {};
+			component._badgeText = 'Closed';
+			component._accessibilityData = {
+				organizationName: 'Name',
+				organizationCode: 'Code',
+				semesterName: 'Semester',
+				organizationDate: 'Date',
+				badge: 'Closed'
+			};
+
+			setTimeout(() => {
+				const cardText = component.$$('d2l-card').getAttribute('text');
+				expect(cardText).to.contain('Name');
+				expect(cardText).to.contain('Code');
+				expect(cardText).to.contain('Semester');
+				expect(cardText).to.contain('Date');
+				expect(cardText).to.contain('Closed');
+
+				component.onOrganizationChange(organizationEntity);
+
+				setTimeout(() => {
+					const cardText = component.$$('d2l-card').getAttribute('text');
+					expect(cardText).to.contain('Course Name');
+					expect(cardText).to.contain('Course Code');
+					expect(cardText).to.not.contain('Semester');
+					expect(cardText).to.not.contain('Date');
+					expect(cardText).to.not.contain('Closed');
+					done();
+				});
+			});
+		});
+
 	});
 
 	describe('New Enrollment Highlight', () => {
