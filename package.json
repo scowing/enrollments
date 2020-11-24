@@ -32,7 +32,6 @@
     "eslint": "^5.1.0",
     "eslint-config-brightspace": "^0.4.0",
     "eslint-plugin-html": "^5.0.3",
-    "frau-ci": "^1.40.0",
     "gulp": "^4.0.0",
     "gulp-cli": "^2.0.1",
     "gulp-ejs": "^3.1.3",
