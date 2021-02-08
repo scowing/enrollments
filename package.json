@@ -29,6 +29,7 @@
     "axe-core": "^3.4.1",
     "babel-eslint": "^10.0.1",
     "del": "^3.0.0",
+    "es-dev-server": "^1.56.1",
     "eslint": "^5.1.0",
     "eslint-config-brightspace": "^0.4.0",
     "eslint-plugin-html": "^5.0.3",
@@ -73,7 +74,6 @@
     "d2l-sequences": "BrightspaceHypermediaComponents/sequences#semver:^2",
     "d2l-status-indicator": "BrightspaceUI/status-indicator#semver:^3",
     "d2l-tooltip": "BrightspaceUI/tooltip#semver:^3",
-    "es-dev-server": "^1.56.1",
     "intersection-observer": "^0.5.1",
     "lie": "^3.3.0",
     "siren-sdk": "BrightspaceHypermediaComponents/siren-sdk#semver:^1"
