@@ -1,111 +1,111 @@
 {
     "activityProgress" : {
         "context" : "x/y activities have been completed",
-        "translation" : "활동"
+        "translation" : "Actividades"
     },
     "changeImage" : {
         "context" : "Change the decorative image of an item ",
-        "translation" : "이미지 변경"
+        "translation" : "Cambiar imagen"
     },
     "closed" : {
         "context" : "This item has been closed. You can longer access this item",
-        "translation" : "닫힘"
+        "translation" : "Cerrado"
     },
     "completed" : {
         "context" : "The user has done everything for this item.",
-        "translation" : "완료"
+        "translation" : "Completo"
     },
     "completedDaysAgo" : {
         "context" : "The item was completed x number of days ago in the past.",
-        "translation" : "{number}일 전에 완료함"
+        "translation" : "Completed {number} Days Ago"
     },
     "completedOn" : {
         "context" : "The date at which this item was completed. The date is in the past.",
-        "translation" : "{dateTime}에 완료함"
+        "translation" : "Completed {dateTime}"
     },
     "completedToday" : {
         "context" : "This item was completed today",
-        "translation" : "오늘 완료함"
+        "translation" : "Completado hoy"
     },
     "completedTomorrow" : {
         "context" : "This item was completed tomorrow. In the future.",
-        "translation" : "내일 완료함"
+        "translation" : "Completed Tomorrow"
     },
     "completedYesterday" : {
         "context" : "This item was completed yesterday.",
-        "translation" : "어제 완료함"
+        "translation" : "Completado ayer"
     },
     "continue" : {
         "context" : "Continue an item where you left off.",
-        "translation" : "계속"
+        "translation" : "Continuar"
     },
     "continueToModule" : {
         "context" : "Continue a course by going to the next module.",
-        "translation" : "모듈, {module}(으)로 이동하여 계속 진행합니다."
+        "translation" : "Continue by navigating to module, {module}"
     },
     "courseOfferingInformation" : {
         "context" : "Go to the settings page for a course offering information",
-        "translation" : "개설 강의 정보"
+        "translation" : "Course Offering Information"
     },
     "coursePinButton" : {
         "context" : "This course is pinned and will be at the top of the list. Click here to unpin the course.",
-        "translation" : "{course} 강의가 고정되었습니다. 강의 고정 취소"
+        "translation" : "{course} is pinned. Unpin course"
     },
     "courseSettings" : {
         "context" : "Go to course setting page",
-        "translation" : "{course} 강의 설정"
+        "translation" : "{course} course settings"
     },
     "description" : {
         "context" : "A description of an item. A course mainly",
-        "translation" : "설명"
+        "translation" : "Descripción"
     },
     "disabled" : {
         "context" : "This course is current not accessible to the user.",
-        "translation" : "비활성화됨"
+        "translation" : "Desactivada"
     },
     "dueDaysAgo" : {
         "context" : "This course needs to be done and was expected to be done x days ago",
-        "translation" : "{number}일 전에 마감"
+        "translation" : "Due {number} Days Ago"
     },
     "dueOn" : {
         "context" : "This course needs to be finished at a future time.",
-        "translation" : "{dateTime}에 마감"
+        "translation" : "Due {dateTime}"
     },
     "dueToday" : {
         "context" : "This course needs to be finished today.",
-        "translation" : "오늘 마감"
+        "translation" : "Vence hoy"
     },
     "dueTomorrow" : {
         "context" : "this course needs to be done tomorrow",
-        "translation" : "내일 마감"
+        "translation" : "Vence mañana"
     },
     "dueYesterday" : {
         "context" : "The course needs to be done and was expected to be done yesterday",
-        "translation" : "어제 마감"
+        "translation" : "Vencimiento ayer"
     },
     "ended" : {
         "context" : "This course has ended sometime in the past.",
-        "translation" : "{date}일 {time}에 종료됨"
+        "translation" : "Finalizado el {date} a las {time}"
     },
     "endsAt" : {
         "context" : "This course will end in a future time.",
-        "translation" : "{date}일 {time}에 종료"
+        "translation" : "Finaliza el {date} a las {time}"
     },
     "enrollmentProgressBar" : {
         "context" : "How many things have you completed in the current item",
-        "translation" : "{title} 중 {percentage}% 완료됨"
+        "translation" : "Completed {percentage}% of {title}"
     },
     "inactive" : {
         "context" : "This item is currenlty not accessible to the user.",
-        "translation" : "비활성"
+        "translation" : "Inactiva"
     },
     "moduleProgress" : {
         "context" : "x/y modules have been completed",
-        "translation" : "모듈"
+        "translation" : "Modules"
     },
     "new" : {
         "context" : "The user has never entered into the course.",
-        "translation" : "신규"
+        "translation" : "Más reciente"
     },
     "noCoursesMessage" : {
         "context" : "The message that is displayed when a user has no courses or Learning Paths assigned to them.",
@@ -113,27 +113,27 @@
     },
     "overdue" : {
         "context" : "The user is expected to finish this course in the past.",
-        "translation" : "기한 경과"
+        "translation" : "Overdue"
     },
     "pin" : {
         "context" : "Action to make this course show up first in the list of courses",
-        "translation" : "고정"
+        "translation" : "Anclar"
     },
     "pinActionResult" : {
         "context" : "This course has just taken the action to be pin",
-        "translation" : "{course} 고정됨"
+        "translation" : "{course} has been pinned"
     },
     "startsAt" : {
         "context" : "The course starts at a future date",
-        "translation" : "{date}일 {time}에 시작"
+        "translation" : "Comienza el {date} a las {time}"
     },
     "unpin" : {
         "context" : "Action: Stop the course from showing up first in the list of courses",
-        "translation" : "고정 취소"
+        "translation" : "Desanclar"
     },
     "unpinActionResult" : {
         "context" : "Response from the Unpin action verifying that this action has been taken place.",
-        "translation" : "{course} 고정 취소됨"
+        "translation" : "{course} has been unpinned"
     },
     "viewAllLearning" : {
         "context" : "The button text linking the user to the My Learning page to view all of their Learning items",

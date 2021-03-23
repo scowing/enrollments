@@ -1,142 +1,142 @@
 {
     "activityProgress" : {
         "context" : "x/y activities have been completed",
-        "translation" : "Activiteiten"
+        "translation" : "$$$$$$$$$$$$$$$$"
     },
     "changeImage" : {
         "context" : "Change the decorative image of an item ",
-        "translation" : "Afbeelding wijzigen"
+        "translation" : "$$$$$$$$$$$$$ $$$$$$$$$$"
     },
     "closed" : {
         "context" : "This item has been closed. You can longer access this item",
-        "translation" : "Gesloten"
+        "translation" : "$$$$$$$$$$"
     },
     "completed" : {
         "context" : "The user has done everything for this item.",
-        "translation" : "Voltooien"
+        "translation" : "$$$$$$$$$$$$"
     },
     "completedDaysAgo" : {
         "context" : "The item was completed x number of days ago in the past.",
-        "translation" : "{number} dagen geleden voltooid"
+        "translation" : "{number} $$$$$$$ $$$$$$$$$ $$$$$$$$$$"
     },
     "completedOn" : {
         "context" : "The date at which this item was completed. The date is in the past.",
-        "translation" : "Voltooid op {dateTime}"
+        "translation" : "$$$$$$$$$$ $$$ {dateTime}"
     },
     "completedToday" : {
         "context" : "This item was completed today",
-        "translation" : "Vandaag voltooid"
+        "translation" : "$$$$$$$$$ $$$$$$$$$$"
     },
     "completedTomorrow" : {
         "context" : "This item was completed tomorrow. In the future.",
-        "translation" : "Morgen voltooid"
+        "translation" : "$$$$$$$$ $$$$$$$$$$"
     },
     "completedYesterday" : {
         "context" : "This item was completed yesterday.",
-        "translation" : "Gisteren voltooid"
+        "translation" : "$$$$$$$$$$ $$$$$$$$$$"
     },
     "continue" : {
         "context" : "Continue an item where you left off.",
-        "translation" : "Doorgaan"
+        "translation" : "$$$$$$$$$$"
     },
     "continueToModule" : {
         "context" : "Continue a course by going to the next module.",
-        "translation" : "Ga door naar module, {module}"
+        "translation" : "$$$ $$$$$ $$$$$ $$$$$$$$, {module}"
     },
     "courseOfferingInformation" : {
         "context" : "Go to the settings page for a course offering information",
-        "translation" : "Informatie cursuseditie"
+        "translation" : "$$$$$$$$$$$$$ $$$$$$$$$$$$$$$$"
     },
     "coursePinButton" : {
         "context" : "This course is pinned and will be at the top of the list. Click here to unpin the course.",
-        "translation" : "{course} is vastgepind. Cursus losmaken"
+        "translation" : "{course} $$$ $$$$$$$$$$$$$. $$$$$$$$ $$$$$$$$$$"
     },
     "courseSettings" : {
         "context" : "Go to course setting page",
-        "translation" : "{course}-cursusinstellingen"
+        "translation" : "{course}-$$$$$$$$$$$$$$$$$$$$$$$"
     },
     "description" : {
         "context" : "A description of an item. A course mainly",
-        "translation" : "Beschrijving"
+        "translation" : "$$$$$$$$$$$$$$$$"
     },
     "disabled" : {
         "context" : "This course is current not accessible to the user.",
-        "translation" : "Uitgeschakeld"
+        "translation" : "$$$$$$$$$$$$$$$$$"
     },
     "dueDaysAgo" : {
         "context" : "This course needs to be done and was expected to be done x days ago",
-        "translation" : "Uiterste datum {number} dagen geleden"
+        "translation" : "$$$$$$$$$$ $$$$$$$ {number} $$$$$$$ $$$$$$$$$"
     },
     "dueOn" : {
         "context" : "This course needs to be finished at a future time.",
-        "translation" : "Uiterste datum {dateTime}"
+        "translation" : "$$$$$$$$$$ $$$$$$$ {dateTime}"
     },
     "dueToday" : {
         "context" : "This course needs to be finished today.",
-        "translation" : "Uiterste datum vandaag"
+        "translation" : "$$$$$$$$$$ $$$$$$$ $$$$$$$$$"
     },
     "dueTomorrow" : {
         "context" : "this course needs to be done tomorrow",
-        "translation" : "Uiterste datum morgen"
+        "translation" : "$$$$$$$$$$ $$$$$$$ $$$$$$$$"
     },
     "dueYesterday" : {
         "context" : "The course needs to be done and was expected to be done yesterday",
-        "translation" : "Uiterste datum gisteren"
+        "translation" : "$$$$$$$$$$ $$$$$$$ $$$$$$$$$$"
     },
     "ended" : {
         "context" : "This course has ended sometime in the past.",
-        "translation" : "Geëindigd op {date} om {time}"
+        "translation" : "$$$$$$$$$$$$ $$$ {date} $$$ {time}"
     },
     "endsAt" : {
         "context" : "This course will end in a future time.",
-        "translation" : "Eindigt op {date} om {time}"
+        "translation" : "$$$$$$$$$ $$$ {date} $$$ {time}"
     },
     "enrollmentProgressBar" : {
         "context" : "How many things have you completed in the current item",
-        "translation" : "Voltooid {percentage}% van {title}"
+        "translation" : "$$$$$$$$$$ {percentage}% $$$$ {title}"
     },
     "inactive" : {
         "context" : "This item is currenlty not accessible to the user.",
-        "translation" : "Inactief"
+        "translation" : "$$$$$$$$$$"
     },
     "moduleProgress" : {
         "context" : "x/y modules have been completed",
-        "translation" : "Modules"
+        "translation" : "$$$$$$$$$"
     },
     "new" : {
         "context" : "The user has never entered into the course.",
-        "translation" : "Nieuw"
+        "translation" : "$$$$$$$"
+    },
+    "noCoursesMessage" : {
+        "context" : "The message that is displayed when a user has no courses or Learning Paths assigned to them.",
+        "translation" : "$$$$ $$$$'$ $$$$$ $$$$ $$$$$$$$$ $$$ $$$$$$$$$$ $$$$$$$ $$$ $$$$$$$$$."
     },
     "overdue" : {
         "context" : "The user is expected to finish this course in the past.",
-        "translation" : "Achterstallig"
+        "translation" : "$$$$$$$$$$$$$$$$$"
     },
     "pin" : {
         "context" : "Action to make this course show up first in the list of courses",
-        "translation" : "Vastpinnen"
+        "translation" : "$$$$$$$$$$$$$"
     },
     "pinActionResult" : {
         "context" : "This course has just taken the action to be pin",
-        "translation" : "{course} is vastgepind"
+        "translation" : "{course} $$$ $$$$$$$$$$$$$"
     },
     "startsAt" : {
         "context" : "The course starts at a future date",
-        "translation" : "Start op {date} om {time}"
+        "translation" : "$$$$$$$ $$$ {date} $$$ {time}"
     },
     "unpin" : {
         "context" : "Action: Stop the course from showing up first in the list of courses",
-        "translation" : "Losmaken"
+        "translation" : "$$$$$$$$$$"
     },
     "unpinActionResult" : {
         "context" : "Response from the Unpin action verifying that this action has been taken place.",
-        "translation" : "{course} is losgemaakt"
+        "translation" : "{course} $$$ $$$$$$$$$$$$$"
     },
-    "noCoursesMessage": {
-        "translation": "You don't have any courses or learning paths to display.",
-        "context": "The message that is displayed when a user has no courses or Learning Paths assigned to them."
-    },
-    "viewAllLearning": {
-        "translation": "View All Learning",
-        "context": "The button text linking the user to the My Learning page to view all of their Learning items"
+    "viewAllLearning" : {
+        "context" : "The button text linking the user to the My Learning page to view all of their Learning items",
+        "translation" : "$$$$$ $$$$ $$$$$$$$$$"
     }
 }

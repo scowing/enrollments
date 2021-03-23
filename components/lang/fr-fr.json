@@ -1,134 +1,142 @@
 {
-  "changeImage": {
-    "translation": "Modifier l’image",
-    "context": "Change the decorative image of an item "
-  },
-  "closed": {
-    "translation": "Fermé",
-    "context": "This item has been closed. You can longer access this item"
-  },
-  "completed": {
-    "translation": "Terminé",
-    "context": "The user has done everything for this item."
-  },
-  "completedDaysAgo": {
-    "translation": "Terminé il y a {number} jours",
-    "context": "The item was completed x number of days ago in the past."
-  },
-  "completedOn": {
-    "translation": "Terminé le {dateTime}",
-    "context": "The date at which this item was completed. The date is in the past."
-  },
-  "completedToday": {
-    "translation": "Terminé aujourd’hui",
-    "context": "This item was completed today"
-  },
-  "completedTomorrow": {
-    "translation": "Terminé demain",
-    "context": "This item was completed tomorrow. In the future."
-  },
-  "completedYesterday": {
-    "translation": "Terminé hier",
-    "context": "This item was completed yesterday."
-  },
-  "continue": {
-    "translation": "Continue",
-    "context": "Continue an item where you left off."
-  },
-  "continueToModule": {
-    "translation": "Continue by navigating to module, {module}",
-    "context": "Continue a course by going to the next module."
-  },
-  "courseOfferingInformation": {
-    "translation": "Informations sur l’offre de cours",
-    "context": "Go to the settings page for a course offering information"
-  },
-  "coursePinButton": {
-    "translation": "{course} est épinglé. Désépingler le cours",
-    "context": "This course is pinned and will be at the top of the list. Click here to unpin the course."
-  },
-  "courseSettings": {
-    "translation": "Paramètres du cours {course}",
-    "context": "Go to course setting page"
-  },
-  "description": {
-    "translation": "Description",
-    "context": "A description of an item. A course mainly"
-  },
-  "disabled": {
-    "translation": "Désactivé",
-    "context": "This course is current not accessible to the user."
-  },
-  "dueDaysAgo": {
-    "translation": "Dû dans {number} jours",
-    "context": "This course needs to be done and was expected to be done x days ago"
-  },
-  "dueOn": {
-    "translation": "Dû le {dateTime}",
-    "context": "This course needs to be finished at a future time."
-  },
-  "dueToday": {
-    "translation": "Dû aujourd’hui",
-    "context": "This course needs to be finished today."
-  },
-  "dueTomorrow": {
-    "translation": "Dû demain",
-    "context": "this course needs to be done tomorrow"
-  },
-  "dueYesterday": {
-    "translation": "Dû hier",
-    "context": "The course needs to be done and was expected to be done yesterday"
-  },
-  "ended": {
-    "translation": "Terminé le {date} à {time}",
-    "context": "This course has ended sometime in the past."
-  },
-  "endsAt": {
-    "translation": "Termine le {date} à {time}",
-    "context": "This course will end in a future time."
-  },
-  "enrollmentProgressBar": {
-    "translation": "Completed {percentage}% of {title}",
-    "context": "How many things have you completed in the current item"
-  },
-  "inactive": {
-    "translation": "Inactif",
-    "context": "This item is currenlty not accessible to the user."
-  },
-  "new": {
-    "translation": "Nouveau",
-    "context": "The user has never entered into the course."
-  },
-  "overdue": {
-    "translation": "En retard",
-    "context": "The user is expected to finish this course in the past."
-  },
-  "pin": {
-    "translation": "Épingler",
-    "context": "Action to make this course show up first in the list of courses"
-  },
-  "pinActionResult": {
-    "translation": "{course} a été épinglé",
-    "context": "This course has just taken the action to be pin"
-  },
-  "startsAt": {
-    "translation": "Commence le {date} à {time}",
-    "context": "The course starts at a future date"
-  },
-  "unpin": {
-    "translation": "Désépingler",
-    "context": "Action: Stop the course from showing up first in the list of courses"
-  },
-  "unpinActionResult": {
-    "translation": "{course} a été désépinglé",
-    "context": "Response from the Unpin action verifying that this action has been taken place."
-  },
-  "noCoursesMessage": {
-    "translation": "Vous n'avez aucun cours ou chemin d'apprentissage à afficher.",
-    "context": "The message that is displayed when a user has no courses or Learning Paths assigned to them."
-  },
-  "viewAllLearning": {
-    "translation": "Voir tous les apprentissages",
-    "context": "The button text linking the user to the My Learning page to view all of their Learning items"
-  }
+    "activityProgress" : {
+        "context" : "x/y activities have been completed",
+        "translation" : "Activités"
+    },
+    "changeImage" : {
+        "context" : "Change the decorative image of an item ",
+        "translation" : "Modifier l’image"
+    },
+    "closed" : {
+        "context" : "This item has been closed. You can longer access this item",
+        "translation" : "Fermé"
+    },
+    "completed" : {
+        "context" : "The user has done everything for this item.",
+        "translation" : "Terminé"
+    },
+    "completedDaysAgo" : {
+        "context" : "The item was completed x number of days ago in the past.",
+        "translation" : "Terminé il y a {number} jours"
+    },
+    "completedOn" : {
+        "context" : "The date at which this item was completed. The date is in the past.",
+        "translation" : "Terminé le {dateTime}"
+    },
+    "completedToday" : {
+        "context" : "This item was completed today",
+        "translation" : "Terminé aujourd’hui"
+    },
+    "completedTomorrow" : {
+        "context" : "This item was completed tomorrow. In the future.",
+        "translation" : "Terminé demain"
+    },
+    "completedYesterday" : {
+        "context" : "This item was completed yesterday.",
+        "translation" : "Terminé hier"
+    },
+    "continue" : {
+        "context" : "Continue an item where you left off.",
+        "translation" : "Continue"
+    },
+    "continueToModule" : {
+        "context" : "Continue a course by going to the next module.",
+        "translation" : "Continue by navigating to module, {module}"
+    },
+    "courseOfferingInformation" : {
+        "context" : "Go to the settings page for a course offering information",
+        "translation" : "Informations sur l’offre de cours"
+    },
+    "coursePinButton" : {
+        "context" : "This course is pinned and will be at the top of the list. Click here to unpin the course.",
+        "translation" : "{course} est épinglé. Désépingler le cours"
+    },
+    "courseSettings" : {
+        "context" : "Go to course setting page",
+        "translation" : "Paramètres du cours {course}"
+    },
+    "description" : {
+        "context" : "A description of an item. A course mainly",
+        "translation" : "Description"
+    },
+    "disabled" : {
+        "context" : "This course is current not accessible to the user.",
+        "translation" : "Désactivé"
+    },
+    "dueDaysAgo" : {
+        "context" : "This course needs to be done and was expected to be done x days ago",
+        "translation" : "Dû dans {number} jours"
+    },
+    "dueOn" : {
+        "context" : "This course needs to be finished at a future time.",
+        "translation" : "Dû le {dateTime}"
+    },
+    "dueToday" : {
+        "context" : "This course needs to be finished today.",
+        "translation" : "Dû aujourd’hui"
+    },
+    "dueTomorrow" : {
+        "context" : "this course needs to be done tomorrow",
+        "translation" : "Dû demain"
+    },
+    "dueYesterday" : {
+        "context" : "The course needs to be done and was expected to be done yesterday",
+        "translation" : "Dû hier"
+    },
+    "ended" : {
+        "context" : "This course has ended sometime in the past.",
+        "translation" : "Terminé le {date} à {time}"
+    },
+    "endsAt" : {
+        "context" : "This course will end in a future time.",
+        "translation" : "Termine le {date} à {time}"
+    },
+    "enrollmentProgressBar" : {
+        "context" : "How many things have you completed in the current item",
+        "translation" : "Completed {percentage}% of {title}"
+    },
+    "inactive" : {
+        "context" : "This item is currenlty not accessible to the user.",
+        "translation" : "Inactif"
+    },
+    "moduleProgress" : {
+        "context" : "x/y modules have been completed",
+        "translation" : "Modules"
+    },
+    "new" : {
+        "context" : "The user has never entered into the course.",
+        "translation" : "Nouveau"
+    },
+    "noCoursesMessage" : {
+        "context" : "The message that is displayed when a user has no courses or Learning Paths assigned to them.",
+        "translation" : "Vous n'avez aucun cours ou chemin d'apprentissage à afficher."
+    },
+    "overdue" : {
+        "context" : "The user is expected to finish this course in the past.",
+        "translation" : "En retard"
+    },
+    "pin" : {
+        "context" : "Action to make this course show up first in the list of courses",
+        "translation" : "Épingler"
+    },
+    "pinActionResult" : {
+        "context" : "This course has just taken the action to be pin",
+        "translation" : "{course} a été épinglé"
+    },
+    "startsAt" : {
+        "context" : "The course starts at a future date",
+        "translation" : "Commence le {date} à {time}"
+    },
+    "unpin" : {
+        "context" : "Action: Stop the course from showing up first in the list of courses",
+        "translation" : "Désépingler"
+    },
+    "unpinActionResult" : {
+        "context" : "Response from the Unpin action verifying that this action has been taken place.",
+        "translation" : "{course} a été désépinglé"
+    },
+    "viewAllLearning" : {
+        "context" : "The button text linking the user to the My Learning page to view all of their Learning items",
+        "translation" : "Voir tous les apprentissages"
+    }
 }
