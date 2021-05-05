@@ -1,4 +1,8 @@
 {
+  "activityCount": {
+    "translation": "{count, plural, =1 {1 Activity} other {{count} Activities}}",
+    "context": "number of activities in the collection"
+  },
   "activityProgress": {
     "translation": "Activities",
     "context": "x/y activities have been completed"

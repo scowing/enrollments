@@ -7,6 +7,7 @@ const LangEnImpl = (superClass) => class extends superClass {
 	constructor() {
 		super();
 		this.en = {
+			'activityCount': '{count, plural, =1 {1 Activity} other {{count} Activities}}',
 			'activityProgress': 'Activities',
 			'changeImage': 'Change Image',
 			'closed': 'Closed',

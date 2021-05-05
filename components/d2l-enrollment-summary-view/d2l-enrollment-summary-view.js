@@ -541,7 +541,7 @@ class D2lEnrollmentSummaryView extends EnrollmentsLocalize(EntityMixin(PolymerEl
 	_computeTags(courses) {
 		const tags = [];
 		if (courses) {
-			tags.push(courses.length > 1 ? courses.length + ' Activities' : '1 Activity');
+			tags.push(this.localize('activityCount', 'count', courses.length));
 		}
 		return tags;
 	}
