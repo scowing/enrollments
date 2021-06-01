@@ -17,7 +17,7 @@
     },
     "completed" : {
         "context" : "The user has done everything for this item.",
-        "translation" : "Tamamla"
+        "translation" : "Tamamla:"
     },
     "completedDaysAgo" : {
         "context" : "The item was completed x number of days ago in the past.",
@@ -41,7 +41,7 @@
     },
     "continue" : {
         "context" : "Continue an item where you left off.",
-        "translation" : "Devam"
+        "translation" : "Devam Et"
     },
     "continueToModule" : {
         "context" : "Continue a course by going to the next module.",
@@ -77,11 +77,11 @@
     },
     "dueToday" : {
         "context" : "This course needs to be finished today.",
-        "translation" : "En Geç Bugün Teslim Edilecek"
+        "translation" : "Bugün Teslim Edilecek"
     },
     "dueTomorrow" : {
         "context" : "this course needs to be done tomorrow",
-        "translation" : "En Geç Yarın Teslim Edilecek"
+        "translation" : "Yarın Teslim Edilecek"
     },
     "dueYesterday" : {
         "context" : "The course needs to be done and was expected to be done yesterday",
@@ -101,7 +101,7 @@
     },
     "inactive" : {
         "context" : "This item is currenlty not accessible to the user.",
-        "translation" : "Etkin Değil"
+        "translation" : "Devre dışı"
     },
     "moduleProgress" : {
         "context" : "x/y modules have been completed",
@@ -113,7 +113,7 @@
     },
     "noCoursesMessage" : {
         "context" : "The message that is displayed when a user has no courses or Learning Paths assigned to them.",
-        "translation" : "You don't have any courses or learning paths to display."
+        "translation" : "Gösterilecek bir dersiniz veya öğrenme yolunuz yok."
     },
     "overdue" : {
         "context" : "The user is expected to finish this course in the past.",
@@ -141,6 +141,6 @@
     },
     "viewAllLearning" : {
         "context" : "The button text linking the user to the My Learning page to view all of their Learning items",
-        "translation" : "View All Learning"
+        "translation" : "Tüm Öğrenim İçeriklerini Görüntüle"
     }
 }

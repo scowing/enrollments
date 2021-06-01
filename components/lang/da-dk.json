@@ -41,11 +41,11 @@
     },
     "continue" : {
         "context" : "Continue an item where you left off.",
-        "translation" : "Continue"
+        "translation" : "Fortsæt"
     },
     "continueToModule" : {
         "context" : "Continue a course by going to the next module.",
-        "translation" : "Continue by navigating to module, {module}"
+        "translation" : "Fortsæt ved at navigere til modulet, {module}"
     },
     "courseOfferingInformation" : {
         "context" : "Go to the settings page for a course offering information",
@@ -61,7 +61,7 @@
     },
     "description" : {
         "context" : "A description of an item. A course mainly",
-        "translation" : "Description"
+        "translation" : "Beskrivelse"
     },
     "disabled" : {
         "context" : "This course is current not accessible to the user.",
@@ -97,7 +97,7 @@
     },
     "enrollmentProgressBar" : {
         "context" : "How many things have you completed in the current item",
-        "translation" : "Completed {percentage}% of {title}"
+        "translation" : "Fuldført {percentage} % af {title}"
     },
     "inactive" : {
         "context" : "This item is currenlty not accessible to the user.",
@@ -105,7 +105,7 @@
     },
     "moduleProgress" : {
         "context" : "x/y modules have been completed",
-        "translation" : "Modules"
+        "translation" : "Moduler"
     },
     "new" : {
         "context" : "The user has never entered into the course.",
@@ -113,7 +113,7 @@
     },
     "noCoursesMessage" : {
         "context" : "The message that is displayed when a user has no courses or Learning Paths assigned to them.",
-        "translation" : "You don't have any courses or learning paths to display."
+        "translation" : "Du har ingen kurser eller undervisningsstier, der skal vises."
     },
     "overdue" : {
         "context" : "The user is expected to finish this course in the past.",
@@ -141,6 +141,6 @@
     },
     "viewAllLearning" : {
         "context" : "The button text linking the user to the My Learning page to view all of their Learning items",
-        "translation" : "View All Learning"
+        "translation" : "Vis Al undervisning"
     }
 }

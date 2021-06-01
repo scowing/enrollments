@@ -13,7 +13,7 @@
     },
     "closed" : {
         "context" : "This item has been closed. You can longer access this item",
-        "translation" : "已关闭"
+        "translation" : "已于 关闭"
     },
     "completed" : {
         "context" : "The user has done everything for this item.",
@@ -109,11 +109,11 @@
     },
     "new" : {
         "context" : "The user has never entered into the course.",
-        "translation" : "新的"
-    },
-    "noCoursesMessage" : {
-        "context" : "The message that is displayed when a user has no courses or Learning Paths assigned to them.",
-        "translation" : "You don't have any courses or learning paths to display."
+        "translation" : "新式"
+      },
+      "noCoursesMessage" : {
+          "context" : "The message that is displayed when a user has no courses or Learning Paths assigned to them.",
+          "translation" : "您没有任何要显示的课程或学习路径。"
     },
     "overdue" : {
         "context" : "The user is expected to finish this course in the past.",

@@ -9,11 +9,11 @@
     },
     "changeImage" : {
         "context" : "Change the decorative image of an item ",
-        "translation" : "Alterar imagem"
+        "translation" : "Alterar Imagem"
     },
     "closed" : {
         "context" : "This item has been closed. You can longer access this item",
-        "translation" : "Fechado"
+        "translation" : "Fechado em"
     },
     "completed" : {
         "context" : "The user has done everything for this item.",
@@ -65,7 +65,7 @@
     },
     "disabled" : {
         "context" : "This course is current not accessible to the user.",
-        "translation" : "Desabilitado"
+        "translation" : "Desativada"
     },
     "dueDaysAgo" : {
         "context" : "This course needs to be done and was expected to be done x days ago",
@@ -109,11 +109,11 @@
     },
     "new" : {
         "context" : "The user has never entered into the course.",
-        "translation" : "Novo"
+        "translation" : "Nova"
     },
     "noCoursesMessage" : {
         "context" : "The message that is displayed when a user has no courses or Learning Paths assigned to them.",
-        "translation" : "You don't have any courses or learning paths to display."
+        "translation" : "Você não tem nenhum curso/caminho de aprendizagem para ser exibido."
     },
     "overdue" : {
         "context" : "The user is expected to finish this course in the past.",
@@ -121,7 +121,7 @@
     },
     "pin" : {
         "context" : "Action to make this course show up first in the list of courses",
-        "translation" : "Fixar"
+        "translation" : "Afixar"
     },
     "pinActionResult" : {
         "context" : "This course has just taken the action to be pin",
@@ -141,6 +141,6 @@
     },
     "viewAllLearning" : {
         "context" : "The button text linking the user to the My Learning page to view all of their Learning items",
-        "translation" : "View All Learning"
+        "translation" : "Exibir Toda a Aprendizagem"
     }
 }

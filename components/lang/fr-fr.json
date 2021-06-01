@@ -41,11 +41,11 @@
     },
     "continue" : {
         "context" : "Continue an item where you left off.",
-        "translation" : "Continue"
+        "translation" : "Continuer"
     },
     "continueToModule" : {
         "context" : "Continue a course by going to the next module.",
-        "translation" : "Continue by navigating to module, {module}"
+        "translation" : "Continuez en accédant au module {module}"
     },
     "courseOfferingInformation" : {
         "context" : "Go to the settings page for a course offering information",
@@ -97,7 +97,7 @@
     },
     "enrollmentProgressBar" : {
         "context" : "How many things have you completed in the current item",
-        "translation" : "Completed {percentage}% of {title}"
+        "translation" : "{title} complété à {percentage} %"
     },
     "inactive" : {
         "context" : "This item is currenlty not accessible to the user.",
@@ -109,11 +109,11 @@
     },
     "new" : {
         "context" : "The user has never entered into the course.",
-        "translation" : "Nouveau"
+        "translation" : "Nouvelle"
     },
     "noCoursesMessage" : {
         "context" : "The message that is displayed when a user has no courses or Learning Paths assigned to them.",
-        "translation" : "Vous n'avez aucun cours ou chemin d'apprentissage à afficher."
+        "translation" : "Vous n’avez aucun cours ou parcours d’apprentissage à afficher."
     },
     "overdue" : {
         "context" : "The user is expected to finish this course in the past.",
@@ -141,6 +141,6 @@
     },
     "viewAllLearning" : {
         "context" : "The button text linking the user to the My Learning page to view all of their Learning items",
-        "translation" : "Voir tous les apprentissages"
+        "translation" : "Afficher toutes les formations"
     }
 }

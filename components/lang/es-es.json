@@ -21,11 +21,11 @@
     },
     "completedDaysAgo" : {
         "context" : "The item was completed x number of days ago in the past.",
-        "translation" : "Completed {number} Days Ago"
+        "translation" : "Completado hace {number} días"
     },
     "completedOn" : {
         "context" : "The date at which this item was completed. The date is in the past.",
-        "translation" : "Completed {dateTime}"
+        "translation" : "Completado el {dateTime}"
     },
     "completedToday" : {
         "context" : "This item was completed today",
@@ -33,7 +33,7 @@
     },
     "completedTomorrow" : {
         "context" : "This item was completed tomorrow. In the future.",
-        "translation" : "Completed Tomorrow"
+        "translation" : "Completado mañana"
     },
     "completedYesterday" : {
         "context" : "This item was completed yesterday.",
@@ -45,19 +45,19 @@
     },
     "continueToModule" : {
         "context" : "Continue a course by going to the next module.",
-        "translation" : "Continue by navigating to module, {module}"
+        "translation" : "Para continuar, vaya al módulo {module}"
     },
     "courseOfferingInformation" : {
         "context" : "Go to the settings page for a course offering information",
-        "translation" : "Course Offering Information"
+        "translation" : "Información de oferta de cursos"
     },
     "coursePinButton" : {
         "context" : "This course is pinned and will be at the top of the list. Click here to unpin the course.",
-        "translation" : "{course} is pinned. Unpin course"
+        "translation" : "{course} está anclado. Desanclar curso"
     },
     "courseSettings" : {
         "context" : "Go to course setting page",
-        "translation" : "{course} course settings"
+        "translation" : "Configuración del curso {course}"
     },
     "description" : {
         "context" : "A description of an item. A course mainly",
@@ -69,11 +69,11 @@
     },
     "dueDaysAgo" : {
         "context" : "This course needs to be done and was expected to be done x days ago",
-        "translation" : "Due {number} Days Ago"
+        "translation" : "Vencimiento hace {number} días"
     },
     "dueOn" : {
         "context" : "This course needs to be finished at a future time.",
-        "translation" : "Due {dateTime}"
+        "translation" : "Vencimiento el {dateTime}"
     },
     "dueToday" : {
         "context" : "This course needs to be finished today.",
@@ -97,7 +97,7 @@
     },
     "enrollmentProgressBar" : {
         "context" : "How many things have you completed in the current item",
-        "translation" : "Completed {percentage}% of {title}"
+        "translation" : "El {percentage} % de {title} está completo"
     },
     "inactive" : {
         "context" : "This item is currenlty not accessible to the user.",
@@ -105,7 +105,7 @@
     },
     "moduleProgress" : {
         "context" : "x/y modules have been completed",
-        "translation" : "Modules"
+        "translation" : "Módulos"
     },
     "new" : {
         "context" : "The user has never entered into the course.",
@@ -113,11 +113,11 @@
     },
     "noCoursesMessage" : {
         "context" : "The message that is displayed when a user has no courses or Learning Paths assigned to them.",
-        "translation" : "You don't have any courses or learning paths to display."
+        "translation" : "No tiene ningún curso o ruta de aprendizaje para mostrar."
     },
     "overdue" : {
         "context" : "The user is expected to finish this course in the past.",
-        "translation" : "Overdue"
+        "translation" : "Atrasadas"
     },
     "pin" : {
         "context" : "Action to make this course show up first in the list of courses",
@@ -125,7 +125,7 @@
     },
     "pinActionResult" : {
         "context" : "This course has just taken the action to be pin",
-        "translation" : "{course} has been pinned"
+        "translation" : "{course} se ha anclado"
     },
     "startsAt" : {
         "context" : "The course starts at a future date",
@@ -137,10 +137,10 @@
     },
     "unpinActionResult" : {
         "context" : "Response from the Unpin action verifying that this action has been taken place.",
-        "translation" : "{course} has been unpinned"
+        "translation" : "{course} se ha desanclado"
     },
     "viewAllLearning" : {
         "context" : "The button text linking the user to the My Learning page to view all of their Learning items",
-        "translation" : "View All Learning"
+        "translation" : "Ver todo el aprendizaje"
     }
 }

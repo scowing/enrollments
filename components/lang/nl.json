@@ -113,7 +113,7 @@
     },
     "noCoursesMessage" : {
         "context" : "The message that is displayed when a user has no courses or Learning Paths assigned to them.",
-        "translation" : "You don't have any courses or learning paths to display."
+        "translation" : "U hebt geen cursussen of leertrajecten om weer te geven."
     },
     "overdue" : {
         "context" : "The user is expected to finish this course in the past.",
@@ -141,6 +141,6 @@
     },
     "viewAllLearning" : {
         "context" : "The button text linking the user to the My Learning page to view all of their Learning items",
-        "translation" : "View All Learning"
+        "translation" : "Alle cursussen bekijken"
     }
 }

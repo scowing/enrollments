@@ -17,7 +17,7 @@
     },
     "completed" : {
         "context" : "The user has done everything for this item.",
-        "translation" : "完了"
+        "translation" : "の完了"
     },
     "completedDaysAgo" : {
         "context" : "The item was completed x number of days ago in the past.",
@@ -113,7 +113,7 @@
     },
     "noCoursesMessage" : {
         "context" : "The message that is displayed when a user has no courses or Learning Paths assigned to them.",
-        "translation" : "You don't have any courses or learning paths to display."
+        "translation" : "表示するコースまたは学習パスがありません。"
     },
     "overdue" : {
         "context" : "The user is expected to finish this course in the past.",
@@ -141,6 +141,6 @@
     },
     "viewAllLearning" : {
         "context" : "The button text linking the user to the My Learning page to view all of their Learning items",
-        "translation" : "View All Learning"
+        "translation" : "すべての学習内容を表示"
     }
 }

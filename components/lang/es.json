@@ -17,7 +17,7 @@
     },
     "completed" : {
         "context" : "The user has done everything for this item.",
-        "translation" : "Completo"
+        "translation" : "Completar"
     },
     "completedDaysAgo" : {
         "context" : "The item was completed x number of days ago in the past.",
@@ -77,15 +77,15 @@
     },
     "dueToday" : {
         "context" : "This course needs to be finished today.",
-        "translation" : "Entrega hoy"
+        "translation" : "Vence hoy"
     },
     "dueTomorrow" : {
         "context" : "this course needs to be done tomorrow",
-        "translation" : "Entrega mañana"
+        "translation" : "Vence mañana"
     },
     "dueYesterday" : {
         "context" : "The course needs to be done and was expected to be done yesterday",
-        "translation" : "Entrega ayer"
+        "translation" : "Venció ayer"
     },
     "ended" : {
         "context" : "This course has ended sometime in the past.",
@@ -113,11 +113,11 @@
     },
     "noCoursesMessage" : {
         "context" : "The message that is displayed when a user has no courses or Learning Paths assigned to them.",
-        "translation" : "You don't have any courses or learning paths to display."
+        "translation" : "No tiene ningún curso ni planes de aprendizaje para mostrar."
     },
     "overdue" : {
         "context" : "The user is expected to finish this course in the past.",
-        "translation" : "Plazo vencido"
+        "translation" : "Vencido"
     },
     "pin" : {
         "context" : "Action to make this course show up first in the list of courses",
@@ -141,6 +141,6 @@
     },
     "viewAllLearning" : {
         "context" : "The button text linking the user to the My Learning page to view all of their Learning items",
-        "translation" : "View All Learning"
+        "translation" : "Ver todo el aprendizaje"
     }
 }
