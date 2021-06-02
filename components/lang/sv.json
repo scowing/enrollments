@@ -111,9 +111,9 @@
         "context" : "The user has never entered into the course.",
         "translation" : "Nytt"
       },
-      "noCoursesMessage" : {
-          "context" : "The message that is displayed when a user has no courses or Learning Paths assigned to them.",
-          "translation" : "Du har inga kurser eller inlärningsvägar att visa."
+    "noCoursesMessage" : {
+        "context" : "The message that is displayed when a user has no courses or Learning Paths assigned to them.",
+        "translation" : "Du har inga kurser eller inlärningsvägar att visa."
     },
     "overdue" : {
         "context" : "The user is expected to finish this course in the past.",
