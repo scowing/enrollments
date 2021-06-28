@@ -2,7 +2,7 @@
   {
     "name": "Enrollment",
     "source_dir": "components/lang",
-    "output_file_path": "components/lang/%LANG%.json",
+    "output_file_path": "components/lang/%LANG%.js",
     "parser_plugin": {
       "plugin": "parse_d2l_fra"
     },
