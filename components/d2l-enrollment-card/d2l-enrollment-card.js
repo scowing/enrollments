@@ -638,12 +638,12 @@ class EnrollmentCard extends mixinBehaviors([
 		//about the provided timezone of the object.
 		if (processedDate) {
 			var intlDate = {
-				month: processedDate.getUTCMonth(),
-				date: processedDate.getUTCDate(),
-				year: processedDate.getUTCFullYear(),
-				hours:processedDate.getUTCHours(),
-				minutes:processedDate.getUTCMinutes(),
-				seconds:processedDate.getUTCSeconds()
+				month: processedDate.date.getUTCMonth(),
+				date: processedDate.date.getUTCDate(),
+				year: processedDate.date.getUTCFullYear(),
+				hours:processedDate.date.getUTCHours(),
+				minutes:processedDate.date.getUTCMinutes(),
+				seconds:processedDate.date.getUTCSeconds()
 			};
 			intlDate = convertUTCToLocalDateTime(intlDate);
 			processedDate.date = new Date(intlDate.year, intlDate.month, intlDate.date, intlDate.hours, intlDate.minutes, intlDate.seconds);
