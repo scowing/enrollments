@@ -641,9 +641,9 @@ class EnrollmentCard extends mixinBehaviors([
 				month: processedDate.date.getUTCMonth(),
 				date: processedDate.date.getUTCDate(),
 				year: processedDate.date.getUTCFullYear(),
-				hours:processedDate.date.getUTCHours(),
-				minutes:processedDate.date.getUTCMinutes(),
-				seconds:processedDate.date.getUTCSeconds()
+				hours: processedDate.date.getUTCHours(),
+				minutes: processedDate.date.getUTCMinutes(),
+				seconds: processedDate.date.getUTCSeconds()
 			};
 			intlDate = convertUTCToLocalDateTime(intlDate);
 			processedDate.date = new Date(intlDate.year, intlDate.month, intlDate.date, intlDate.hours, intlDate.minutes, intlDate.seconds);
