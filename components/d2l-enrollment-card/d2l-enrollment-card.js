@@ -632,11 +632,8 @@ class EnrollmentCard extends mixinBehaviors([
 		this._pinButtonLabel = this._organizationName && this.localize('coursePinButton', 'course', this._organizationName);
 		this._canChangeCourseImage = org._entity && org.canChangeCourseImage();
 		const processedDate = org.processedDate(this.hideCourseStartDate, this.hideCourseEndDate);
-		//DE444450: A new JS Date is always created in the browser's timezone, this causes issues as
-		//the browser's timezone is not always the same as the user's LMS preferred timezone
-		//Convert the date to the correct timezone, then create a new date object. FormatDate doesn't care
-		//about the provided timezone of the object.
 		if (processedDate) {
+			//convert date to user's LMS timzeone
 			var intlDate = {
 				month: processedDate.date.getUTCMonth(),
 				date: processedDate.date.getUTCDate(),
