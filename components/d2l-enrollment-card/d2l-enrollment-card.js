@@ -40,7 +40,6 @@ import { EnrollmentEntity } from 'siren-sdk/src/enrollments/EnrollmentEntity.js'
 import { updateEntity } from 'siren-sdk/src/es6/EntityFactory.js';
 import { mixinBehaviors } from '@polymer/polymer/lib/legacy/class.js';
 import { DateTextAndStatusMixin } from '../date-text-status-mixin.js';
-import { convertUTCToLocalDateTime } from '@brightspace-ui/intl/lib/dateTime.js';
 
 /**
  * @customElement
@@ -632,19 +631,6 @@ class EnrollmentCard extends mixinBehaviors([
 		this._pinButtonLabel = this._organizationName && this.localize('coursePinButton', 'course', this._organizationName);
 		this._canChangeCourseImage = org._entity && org.canChangeCourseImage();
 		const processedDate = org.processedDate(this.hideCourseStartDate, this.hideCourseEndDate);
-		if (processedDate) {
-			//convert date to user's LMS timzeone
-			var intlDate = {
-				month: processedDate.date.getUTCMonth(),
-				date: processedDate.date.getUTCDate(),
-				year: processedDate.date.getUTCFullYear(),
-				hours: processedDate.date.getUTCHours(),
-				minutes: processedDate.date.getUTCMinutes(),
-				seconds: processedDate.date.getUTCSeconds()
-			};
-			intlDate = convertUTCToLocalDateTime(intlDate);
-			processedDate.date = new Date(intlDate.year, intlDate.month, intlDate.date, intlDate.hours, intlDate.minutes, intlDate.seconds);
-		}
 		const dateText = processedDate && this.localize(
 			processedDate.type,
 			'date', this.formatDate(processedDate.date, {format: 'MMMM d, yyyy'}),
