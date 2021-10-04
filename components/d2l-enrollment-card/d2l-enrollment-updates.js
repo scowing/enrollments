@@ -45,15 +45,15 @@ class EnrollmentUpdates extends OrganizationUpdatesMixin(EntityMixin(PolymerElem
 			</style>
 			<template is="dom-repeat" items="[[_notifications]]">
 				<template is="dom-if" if="[[!item.isDisabled]]">
-					<d2l-card-footer-link id="[[item.key]]" icon="[[item.icon]]" text="[[item.ariaLabel]]" href$="[[item.link]]" secondary-text="[[_toString(item.updateCount)]]">
+					<d2l-card-footer-link id="[[item.key]]" icon="[[item.icon]]" text="[[item.ariaLabel]]" href$="[[item.link]]" secondary-text="[[_toNumber(item.updateCount)]]">
+						<d2l-tooltip slot="tooltip" class="d2l-enrollment-card-updates-tooltip" for="[[item.key]]" position="top" disabled$="[[item.isDisabled]]">
+							<ul>
+								<template is="dom-repeat" items="[[item.toolTip]]">
+									<li>[[item]]</li>
+								</template>
+							</ul>
+						</d2l-tooltip>
 					</d2l-card-footer-link>
-					<d2l-tooltip class="d2l-enrollment-card-updates-tooltip" for="[[item.key]]" position="top" disabled$="[[item.isDisabled]]">
-						<ul>
-							<template is="dom-repeat" items="[[item.toolTip]]">
-								<li>[[item]]</li>
-							</template>
-						</ul>
-					</d2l-tooltip>
 				</template>
 			</template>
 		`;
@@ -114,12 +114,12 @@ class EnrollmentUpdates extends OrganizationUpdatesMixin(EntityMixin(PolymerElem
 		);
 	}
 
-	_toString(a) {
-		if (typeof a !== String) {
-			return a.toString();
+	_toNumber(updateCount) {
+		if (typeof a === Number) {
+			return updateCount;
 		}
 
-		return a;
+		return updateCount === '99+' ? 100 : parseInt(updateCount);
 	}
 }
 
