@@ -45,7 +45,7 @@ class EnrollmentUpdates extends OrganizationUpdatesMixin(EntityMixin(PolymerElem
 			</style>
 			<template is="dom-repeat" items="[[_notifications]]">
 				<template is="dom-if" if="[[!item.isDisabled]]">
-					<d2l-card-footer-link id="[[item.key]]" icon="[[item.icon]]" text="[[item.ariaLabel]]" href$="[[item.link]]" secondary-text="[[_toNumber(item.updateCount)]]">
+					<d2l-card-footer-link id="[[item.key]]" icon="[[item.icon]]" text="[[item.ariaLabel]]" href$="[[item.link]]" secondary-count="[[_toNumber(item.updateCount)]]">
 						<d2l-tooltip slot="tooltip" class="d2l-enrollment-card-updates-tooltip" for="[[item.key]]" position="top" disabled$="[[item.isDisabled]]">
 							<ul>
 								<template is="dom-repeat" items="[[item.toolTip]]">
