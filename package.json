@@ -44,7 +44,7 @@
     "siren-parser": "^8.0.0",
     "whatwg-fetch": "^3.0.0"
   },
-  "version": "4.2.0",
+  "version": "4.3.0",
   "dependencies": {
     "@brightspace-ui/core": "^1",
     "@polymer/iron-a11y-announcer": "^3",
