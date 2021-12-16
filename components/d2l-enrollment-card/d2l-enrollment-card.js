@@ -12,14 +12,13 @@ Polymer-based web component for a course/enrollment card.
 */
 import '@brightspace-ui/core/helpers/requestIdleCallback.js';
 import { IronA11yAnnouncer } from '@polymer/iron-a11y-announcer/iron-a11y-announcer.js';
-import 'd2l-dropdown/d2l-dropdown-menu.js';
-import 'd2l-dropdown/d2l-dropdown-more.js';
+import '@brightspace-ui/core/components/dropdown/dropdown-menu.js';
+import '@brightspace-ui/core/components/dropdown/dropdown-more.js';
 import 'd2l-fetch/d2l-fetch.js';
-import 'd2l-icons/d2l-icon.js';
-import 'd2l-icons/tier1-icons.js';
-import 'd2l-loading-spinner/d2l-loading-spinner.js';
-import 'd2l-menu/d2l-menu-item.js';
-import 'd2l-menu/d2l-menu-item-link.js';
+import '@brightspace-ui/core/components/icons/icon.js';
+import '@brightspace-ui/core/components/loading-spinner/loading-spinner.js';
+import '@brightspace-ui/core/components/menu/menu-item.js';
+import '@brightspace-ui/core/components/menu/menu-item-link.js';
 import 'd2l-offscreen/d2l-offscreen.js';
 import 'd2l-organization-hm-behavior/d2l-organization-hm-behavior.js';
 import 'd2l-organizations/components/d2l-organization-image/d2l-organization-image.js';
@@ -27,10 +26,10 @@ import 'd2l-organizations/components/d2l-organization-info/d2l-organization-info
 import 'd2l-organizations/components/d2l-organization-updates/d2l-organization-updates.js';
 import 'd2l-organizations/components/d2l-organization-date/d2l-organization-date.js';
 import 'd2l-organizations/components/d2l-organization-name/d2l-organization-name.js';
-import 'd2l-card/d2l-card.js';
-import 'd2l-card/d2l-card-content-meta.js';
+import '@brightspace-ui/core/components/card/card.js';
+import '@brightspace-ui/core/components/card/card-content-meta.js';
 import 'd2l-button/d2l-button-icon.js';
-import 'd2l-status-indicator/d2l-status-indicator.js';
+import '@brightspace-ui/core/components/status-indicator/status-indicator.js';
 import '../d2l-user-activity-usage/d2l-user-activity-usage.js';
 import './d2l-enrollment-updates.js';
 import { afterNextRender } from '@polymer/polymer/lib/utils/render-status.js';
@@ -259,7 +258,7 @@ class EnrollmentCard extends mixinBehaviors([
 						</d2l-dropdown-menu>
 					</d2l-dropdown-more>
 
-					<d2l-button-icon slot="actions" translucent="" hidden$="[[_shouldHideUnpinOption(_pinned)]]" text="[[_pinButtonLabel]]" icon="d2l-tier1:pin-filled" on-tap="_pinClickHandler" on-keypress="_pinPressHandler">
+					<d2l-button-icon slot="actions" translucent="" hidden$="[[_shouldHideUnpinOption(_pinned)]]" text="[[_pinButtonLabel]]" icon="tier1:pin-filled" on-tap="_pinClickHandler" on-keypress="_pinPressHandler">
 					</d2l-button-icon>
 				</template>
 
@@ -566,7 +565,7 @@ class EnrollmentCard extends mixinBehaviors([
 			var icon = this.$$('.d2l-enrollment-card-icon-container d2l-icon');
 			this.toggleClass('d2l-enrollment-card-checkmark', false, icon);
 			this.toggleClass('d2l-enrollment-card-fail-icon', false, icon);
-			var iconName = success ? 'd2l-tier2:check' : 'd2l-tier3:close';
+			var iconName = success ? 'tier2:check' : 'tier3:close';
 			var className = success ? 'd2l-enrollment-card-checkmark' : 'd2l-enrollment-card-fail-icon';
 			icon.setAttribute('icon', iconName);
 			this.toggleClass(className, true, icon);

@@ -13,16 +13,16 @@ import 'd2l-organizations/components/d2l-organization-date/d2l-organization-date
 import 'd2l-organizations/components/d2l-organization-image/d2l-organization-image.js';
 import 'd2l-organizations/components/d2l-organization-info/d2l-organization-info.js';
 import 'd2l-typography/d2l-typography-shared-styles.js';
-import 'd2l-status-indicator/d2l-status-indicator.js';
+import '@brightspace-ui/core/components/status-indicator/status-indicator.js';
 import { EntityMixin } from 'siren-sdk/src/mixin/entity-mixin.js';
 import '../d2l-enrollment-card/d2l-enrollment-updates.js';
 import '../d2l-enrollment-summary-view/d2l-enrollment-summary-view-tag-list.js';
 import '../d2l-user-activity-usage/d2l-user-activity-usage.js';
 import { EnrollmentEntity } from 'siren-sdk/src/enrollments/EnrollmentEntity.js';
-import 'd2l-dropdown/d2l-dropdown-menu.js';
-import 'd2l-dropdown/d2l-dropdown-more.js';
-import 'd2l-menu/d2l-menu-item.js';
-import 'd2l-menu/d2l-menu-item-link.js';
+import '@brightspace-ui/core/components/dropdown/dropdown-menu.js';
+import '@brightspace-ui/core/components/dropdown/dropdown-more.js';
+import '@brightspace-ui/core/components/menu/menu-item.js';
+import '@brightspace-ui/core/components/menu/menu-item-link.js';
 import { EnrollmentsLocalize } from '../EnrollmentsLocalize.js';
 import '@brightspace-ui/core/components/meter/meter-linear.js';
 import { classes as organizationClasses } from 'siren-sdk/src/organizations/OrganizationEntity.js';
@@ -313,7 +313,7 @@ class EnrollmentHeroBanner extends DateTextAndStatusMixin(EnrollmentsLocalize(En
 										</d2l-dropdown-menu>
 									</d2l-dropdown-more>
 
-									<d2l-button-icon hidden$="[[_shouldHideUnpinOption(_pinned)]]" text="[[_pinButtonLabel]]" icon="d2l-tier1:pin-filled" on-tap="_pinClickHandler" on-keypress="_pinPressHandler">
+									<d2l-button-icon hidden$="[[_shouldHideUnpinOption(_pinned)]]" text="[[_pinButtonLabel]]" icon="tier1:pin-filled" on-tap="_pinClickHandler" on-keypress="_pinPressHandler">
 									</d2l-button-icon>
 								</template>
 							</div>

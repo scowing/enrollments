@@ -357,7 +357,7 @@ describe('d2l-enrollment-card', () => {
 			var spinner = component.$$('.d2l-enrollment-card-overlay d2l-loading-spinner');
 			expect(spinner.hasAttribute('hidden')).to.be.true;
 			var icon = component.$$('.d2l-enrollment-card-overlay .d2l-enrollment-card-icon-container d2l-icon');
-			expect(icon.getAttribute('icon')).to.equal('d2l-tier2:check');
+			expect(icon.getAttribute('icon')).to.equal('tier2:check');
 
 			clock.tick(1001);
 			expect(imageOverlay.hasAttribute('hidden')).to.be.true;
@@ -381,7 +381,7 @@ describe('d2l-enrollment-card', () => {
 			var spinner = component.$$('.d2l-enrollment-card-overlay d2l-loading-spinner');
 			expect(spinner.hasAttribute('hidden')).to.be.true;
 			var icon = component.$$('.d2l-enrollment-card-overlay .d2l-enrollment-card-icon-container d2l-icon');
-			expect(icon.getAttribute('icon')).to.equal('d2l-tier3:close');
+			expect(icon.getAttribute('icon')).to.equal('tier3:close');
 
 			clock.tick(1001);
 			expect(imageOverlay.hasAttribute('hidden')).to.be.true;

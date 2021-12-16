@@ -9,8 +9,8 @@ import { html, PolymerElement } from '@polymer/polymer/polymer-element.js';
 import { EntityMixin } from 'siren-sdk/src/mixin/entity-mixin.js';
 import { OrganizationEntity } from 'siren-sdk/src/organizations/OrganizationEntity.js';
 import { OrganizationUpdatesMixin } from 'd2l-organizations/components/d2l-organization-updates/OrganizationUpdatesMixin.js';
-import 'd2l-card/d2l-card-footer-link.js';
-import 'd2l-tooltip/d2l-tooltip.js';
+import '@brightspace-ui/core/components/card/card-footer-link.js';
+import '@brightspace-ui/core/components/tooltip/tooltip.js';
 
 /**
  * @customElement

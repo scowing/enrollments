@@ -46,10 +46,10 @@ class D2lEnrollmentSummaryViewTagSlotList  extends LitElement {
 				<li>
 					<slot name="first"></slot>
 				</li><li>
-					${this._showMiddleSlot ? html`<d2l-icon icon="d2l-tier1:bullet"></d2l-icon>` : null }
+					${this._showMiddleSlot ? html`<d2l-icon icon="tier1:bullet"></d2l-icon>` : null }
 					<slot name="middle"></slot>
 				</li><li>
-					${this._showLastSlot ? html`<d2l-icon icon="d2l-tier1:bullet"></d2l-icon>` : null }
+					${this._showLastSlot ? html`<d2l-icon icon="tier1:bullet"></d2l-icon>` : null }
 					<slot name="last"></slot>
 				</li>
 			</ul>

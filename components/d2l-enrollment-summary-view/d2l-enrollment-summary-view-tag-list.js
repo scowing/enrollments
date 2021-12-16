@@ -36,7 +36,7 @@ class D2lEnrollmentSummaryViewTagList extends DirMixin(PolymerElement) {
 			<ul class="desvtl-container" hidden$="[[!list]]">
 				<template is="dom-repeat" items="[[list]]">
 					<li>
-						<d2l-icon icon="d2l-tier1:bullet"></d2l-icon>
+						<d2l-icon icon="tier1:bullet"></d2l-icon>
 						[[item]]
 					</li>
 				</template>

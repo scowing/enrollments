@@ -12,8 +12,8 @@ import 'd2l-button/d2l-button-subtle.js';
 import { EnrollmentCollectionEntity } from 'siren-sdk/src/enrollments/EnrollmentCollectionEntity.js';
 import '../d2l-enrollment-card/d2l-enrollment-card.js';
 import '../d2l-enrollment-hero-banner/d2l-enrollment-hero-banner.js';
-import 'd2l-alert/d2l-alert.js';
-import 'd2l-loading-spinner/d2l-loading-spinner.js';
+import '@brightspace-ui/core/components/alert/alert.js';
+import '@brightspace-ui/core/components/loading-spinner/loading-spinner.js';
 import { EnrollmentsLocalize } from '../EnrollmentsLocalize.js';
 import { ResizeObserver } from 'd2l-resize-aware/resize-observer-module.js';
 
