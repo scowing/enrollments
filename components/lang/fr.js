@@ -3,7 +3,7 @@ export default {
 	'activityProgress': 'Activités', // x/y activities have been completed
 	'changeImage': 'Modifier l’image', // Change the decorative image of an item
 	'closed': 'Fermé le à', // This item has been closed. You can longer access this item
-	'completed': 'Terminer', // The user has done everything for this item.
+	'completed': 'Terminé', // The user has done everything for this item.
 	'completedDaysAgo': 'Terminé il y a {number} jours', // The item was completed x number of days ago in the past.
 	'completedOn': 'Terminé à {dateTime}', // The date at which this item was completed. The date is in the past.
 	'completedToday': 'Terminé aujourd’hui', // This item was completed today
