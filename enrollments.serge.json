@@ -4,8 +4,9 @@
     "source_dir": "components/lang",
     "output_file_path": "components/lang/%LANG%.js",
     "parser_plugin": {
-      "plugin": "parse_d2l_fra"
+      "plugin": "parse_js"
     },
+    "source_match": "en\\.js$",
     "output_lang_rewrite": [
       "ar-sa ar",
       "de-de de",
